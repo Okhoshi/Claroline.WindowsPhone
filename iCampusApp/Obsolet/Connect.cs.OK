@@ -1,0 +1,103 @@
+﻿using System;
+using System.Net;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Ink;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
+using System.IO;
+using System.Text;
+using System.ComponentModel;
+using System.Threading;
+
+namespace iCampusApp
+{
+    public static class Connect
+    {
+        public static RequestState _rs = null;
+
+        public static void connect(string url, string username, string password)
+        {
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+            // Création de l'objet état
+            //On ajoute la requete dans l'objet état pour pouvoir le récupérer dans la callback
+            _rs.Request = req;
+            req.Method = "POST";
+            req.CookieContainer = _rs.cookies;
+            _rs.data = "login=" + username + "&password=" + password;
+            req.ContentType = "application/x-www-form-urlencoded";
+
+            req.BeginGetRequestStream(new AsyncCallback(GetRequestStreamCallback), req);
+        }
+
+        public static void getPages(string url)
+        {
+            getPage(url);
+            Update.readHTML(Connect._rs.result,null);
+            var query = from CoursItem __cours in App.iCampusDb.CoursItems select __cours;
+
+            foreach (CoursItem item in query)
+            {
+                Connect.getPage(url+item.Url);
+                Update.readHTML(Connect._rs.result, null);
+            }
+        }
+
+        public static void getPage(string url)
+        {
+            HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
+            // Création de l'objet état
+            //On ajoute la requete dans l'objet état pour pouvoir le récupérer dans la callback
+            _rs.Request = req;
+
+            // Appel asynchrone
+            IAsyncResult Async = req.BeginGetResponse(new AsyncCallback(ResponseCallback), req);
+
+        }
+
+        private static void ResponseCallback(IAsyncResult ar)
+        {
+            //Récupération de la requete web (object HttpWebRequest)
+            HttpWebRequest req = (HttpWebRequest)ar.AsyncState;
+            //Récupération de la réponse Web	
+            HttpWebResponse resp = (HttpWebResponse)req.EndGetResponse(ar);
+
+            Stream responseStream = resp.GetResponseStream();
+            StreamReader sr = new StreamReader(responseStream, Encoding.GetEncoding("iso-8859-1"));
+            string strContent = sr.ReadToEnd();
+            responseStream.Close();
+            resp.Close();
+            // Stockage du code HTML de la page contactée dans le RequestState
+            _rs.result = strContent;
+
+        }
+
+        private static void GetRequestStreamCallback(IAsyncResult asynchronousResult)
+        {
+            HttpWebRequest request = (HttpWebRequest)asynchronousResult.AsyncState;
+            String postData = _rs.data;
+            // End the operation
+            Stream postStream = request.EndGetRequestStream(asynchronousResult);
+
+            // Convert the string into a byte array.
+            byte[] byteArray = Encoding.GetEncoding("iso-8859-1").GetBytes(postData);
+
+            // Write to the request stream.
+            postStream.Write(byteArray, 0, postData.Length);
+            postStream.Close();
+            // Start the asynchronous operation to get the response
+            request.BeginGetResponse(new AsyncCallback(ResponseCallback), request);
+        }
+
+        public static RequestState LogOut(RequestState rs)
+        {
+            MessageBox.Show("Logged Out!");
+            _rs = new RequestState();
+            return _rs;
+        }
+    }
+}

@@ -1,0 +1,170 @@
+﻿<iCampusApp_ViewModel:iCampusViewModel xmlns:iCampusApp_ViewModel="clr-namespace:ClarolineApp.ViewModel" xmlns:iCampusApp_Model="clr-namespace:ClarolineApp.Model">
+	<iCampusApp_ViewModel:iCampusViewModel.AllCours>
+		<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="56" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Class" titular="Aaberg, Jesper" title="Aenean mauris"/>
+		<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="86" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Aenean" titular="Adams, Ellen" title="Maecenas aliquam nullam"/>
+		<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="73" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Maecenas" titular="Adams, Terry" title="Cras integer"/>
+		<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="60" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Mauris" titular="Adams, Terry" title="Quisque aptent"/>
+		<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="45" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Aliquam" titular="Penor, Lori" title="Vivamus praesent accumsan"/>
+		<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="10" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Cras" titular="Pfeiffer, Michael" title="Auctor class congue nam"/>
+		<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="39" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Integer" titular="Philips, Carol" title="Bibendum duis curae"/>
+		<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="30" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Nam" titular="Poe, Toni" title="Cursus dictumst nunc donec"/>
+		<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="41" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Curae" titular="Hicks, Cassie" title="Sed aliquam dis"/>
+		<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="80" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Nullam" titular="Argentiero, Luca" title="Dictum amet"/>
+	</iCampusApp_ViewModel:iCampusViewModel.AllCours>
+	<iCampusApp_ViewModel:iCampusViewModel.AllFolders>
+		<iCampusApp_Model:Documents Description="Parturient integer" Extension="Tempor per pulvinar" IsFolder="True" Id="66" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Sagittis senectus penatibus sed sociosqu" path="Quisque porttitor" size="897.86" url="Augue duis tincidunt" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="73" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Aptent" titular="Perry, Brian" title="Lectus aliquet eleifend etiam"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Tortor aliquam ante" Extension="Vestibulum arcu felis adipiscing turpis" IsFolder="True" Id="17" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Varius diam aenean" path="Eget aliquet ipsum" size="442.91" url="Ultrices elit" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="28" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Auctor" titular="Ramos, Luciana" title="Ante est hac facilisi"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Venenatis justo sit vel praesent" Extension="Erat eros" IsFolder="True" Id="44" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Auctor adipiscing parturient lacus commodo" path="Congue vulputate" size="690.27" url="Nam cursus sed" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="98" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Sed" titular="Barber, David" title="Blandit libero arcu diam"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Eleifend lectus cubilia" Extension="Libero dapibus facilisi faucibus" IsFolder="True" Id="54" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Curabitur ligula est phasellus hac" path="Egestas consequat litora vestibulum euismod" size="311.04" url="Habitant feugiat" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="75" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Praesent" titular="Jamison, Jay" title="Fusce faucibus commodo habitant"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Adipiscing metus iaculis nunc" Extension="Dignissim magnis morbi parturient vestibulum" IsFolder="True" Id="77" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Inceptos odio orci" path="Vestibulum adipiscing nec" size="153.6" url="Elementum mattis parturient pede vestibulum" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="59" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Donec" titular="Reid, Miles" title="Ligula eget elit conubia"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Nascetur montes" Extension="Nostra sed" IsFolder="True" Id="51" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Sem ornare natoque" path="Neque vestibulum adipiscing posuere pharetra" size="568.58" url="Placerat fermentum fringilla" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="97" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Accumsan" titular="Bowen, Eli" title="Litora lorem luctus"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Platea primis" Extension="Parturient hendrerit purus" IsFolder="True" Id="58" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Rutrum sagittis pretium" path="Senectus vestibulum" size="469.63" url="Sociosqu suscipit vestibulum" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="95" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Dis" titular="Kane, John" title="Enim inceptos erat"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Dis amet sociis" Extension="Ultrices velit" IsFolder="True" Id="92" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Ante penatibus vehicula parturient" path="Volutpat sodales maecenas taciti" size="869.32" url="Vestibulum arcu est" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="76" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Bibendum" titular="Sarin, Raman" title="Leo morbi mus cubilia"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Vestibulum adipiscing tincidunt" Extension="Bibendum tellus nec" IsFolder="True" Id="58" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Dictumst parturient vestibulum aliquam" path="Vitae class" size="473.23" url="Curae donec integer" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="26" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Etiam" titular="Sato, Naoki" title="Interdum nulla"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Vivamus fusce faucibus erat habitant" Extension="Aliquam eros" IsFolder="True" Id="54" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Tristique non" path="Per inceptos aliquet" size="316.1" url="Tempus nibh vestibulum sed" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="28" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Dictumst" titular="Silva, Alexandre" title="Dapibus magnis"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+	</iCampusApp_ViewModel:iCampusViewModel.AllFolders>
+	<iCampusApp_ViewModel:iCampusViewModel.AllAnnonces>
+		<iCampusApp_Model:Annonce Id="48" Updated="True" content="Sed maecenas integer praesent phasellus" date="05/02/2012 09:41:15" notified="False" title="Parturient class cras dis" visibility="True">
+			<iCampusApp_Model:Annonce.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="31" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Quisque" titular="Cook, Kevin" title="Eros egestas"/>
+			</iCampusApp_Model:Annonce.Cours>
+		</iCampusApp_Model:Annonce>
+		<iCampusApp_Model:Annonce Id="95" Updated="False" content="Dignissim elementum amet" date="05/02/2012 09:41:15" notified="True" title="Vestibulum accumsan ante" visibility="False">
+			<iCampusApp_Model:Annonce.Cours>
+				<iCampusApp_Model:Cours Updated="False" annNotif="True" Id="14" dnlNotif="False" isAnn="True" isDnL="False" notified="True" sysCode="Eleifend" titular="Li, Yuhong" title="Lobortis mattis euismod"/>
+			</iCampusApp_Model:Annonce.Cours>
+		</iCampusApp_Model:Annonce>
+		<iCampusApp_Model:Annonce Id="36" Updated="True" content="Cursus dictumst" date="05/02/2012 09:41:15" notified="False" title="Eleifend aliquet" visibility="True">
+			<iCampusApp_Model:Annonce.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="77" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Facilisi" titular="Strande, Amy" title="Proin nibh feugiat augue"/>
+			</iCampusApp_Model:Annonce.Cours>
+		</iCampusApp_Model:Annonce>
+		<iCampusApp_Model:Annonce Id="36" Updated="False" content="Leo vestibulum adipiscing" date="05/02/2012 09:41:15" notified="True" title="Himenaeos parturient" visibility="False">
+			<iCampusApp_Model:Annonce.Cours>
+				<iCampusApp_Model:Cours Updated="False" annNotif="True" Id="72" dnlNotif="False" isAnn="True" isDnL="False" notified="True" sysCode="Duis" titular="Makovac, Zrinka" title="Dolor nec non"/>
+			</iCampusApp_Model:Annonce.Cours>
+		</iCampusApp_Model:Annonce>
+		<iCampusApp_Model:Annonce Id="44" Updated="True" content="Libero penatibus erat nulla" date="05/02/2012 09:41:15" notified="False" title="Adipiscing parturient lobortis" visibility="True">
+			<iCampusApp_Model:Annonce.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="38" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Vivamus" titular="Miller, Ben" title="Per sed"/>
+			</iCampusApp_Model:Annonce.Cours>
+		</iCampusApp_Model:Annonce>
+		<iCampusApp_Model:Annonce Id="44" Updated="False" content="Non porttitor per" date="05/02/2012 09:41:15" notified="True" title="Tincidunt sed nibh sem vestibulum" visibility="False">
+			<iCampusApp_Model:Annonce.Cours>
+				<iCampusApp_Model:Cours Updated="False" annNotif="True" Id="89" dnlNotif="False" isAnn="True" isDnL="False" notified="True" sysCode="Est" titular="Orton, Jon" title="Mauris mollis montes nostra"/>
+			</iCampusApp_Model:Annonce.Cours>
+		</iCampusApp_Model:Annonce>
+		<iCampusApp_Model:Annonce Id="31" Updated="True" content="Dapibus odio" date="05/02/2012 09:41:15" notified="False" title="Egestas euismod" visibility="True">
+			<iCampusApp_Model:Annonce.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="69" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Nunc" titular="Zhang, Larry" title="Gravida nascetur iaculis"/>
+			</iCampusApp_Model:Annonce.Cours>
+		</iCampusApp_Model:Annonce>
+		<iCampusApp_Model:Annonce Id="56" Updated="False" content="Pede placerat sed adipiscing dis" date="05/02/2012 09:41:15" notified="True" title="Est luctus quam gravida magnis" visibility="False">
+			<iCampusApp_Model:Annonce.Cours>
+				<iCampusApp_Model:Cours Updated="False" annNotif="True" Id="15" dnlNotif="False" isAnn="True" isDnL="False" notified="True" sysCode="Fusce" titular="Gladkikh, Andrey" title="Sem nisi ornare"/>
+			</iCampusApp_Model:Annonce.Cours>
+		</iCampusApp_Model:Annonce>
+		<iCampusApp_Model:Annonce Id="86" Updated="True" content="Ipsum convallis" date="05/02/2012 09:41:15" notified="False" title="Nec non per" visibility="True">
+			<iCampusApp_Model:Annonce.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="46" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Amet" titular="Meyer, April" title="Platea pharetra placerat lacinia"/>
+			</iCampusApp_Model:Annonce.Cours>
+		</iCampusApp_Model:Annonce>
+		<iCampusApp_Model:Annonce Id="31" Updated="False" content="Dignissim lorem sociosqu arcu" date="05/02/2012 09:41:15" notified="True" title="Elementum sem diam" visibility="False">
+			<iCampusApp_Model:Annonce.Cours>
+				<iCampusApp_Model:Cours Updated="False" annNotif="True" Id="47" dnlNotif="False" isAnn="True" isDnL="False" notified="True" sysCode="Congue" titular="Clark, Molly" title="Laoreet pulvinar primis"/>
+			</iCampusApp_Model:Annonce.Cours>
+		</iCampusApp_Model:Annonce>
+	</iCampusApp_ViewModel:iCampusViewModel.AllAnnonces>
+	<iCampusApp_ViewModel:iCampusViewModel.AllFiles>
+		<iCampusApp_Model:Documents Description="Arcu diam eget tortor nascetur" Extension="Porttitor pharetra" IsFolder="True" Id="97" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Elit vestibulum" path="Turpis tincidunt blandit sit adipiscing" size="310.39" url="Fusce vel" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="67" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Lorem" titular="Dellamore, Luca" title="Natoque fames sagittis"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Aenean mauris parturient est" Extension="Nullam eros" IsFolder="True" Id="20" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Conubia aptent" path="Nibh venenatis vulputate auctor cubilia" size="489.22" url="Curabitur dapibus morbi hac" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="28" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Faucibus" titular="Aaberg, Jesper" title="Rutrum senectus sit sociosqu"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Augue euismod dolor" Extension="Vestibulum fames phasellus senectus nisl" IsFolder="True" Id="60" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Sociosqu adipiscing felis cursus dictum" path="Lectus libero nec ipsum justo" size="149.84" url="Non parturient" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="12" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Habitant" titular="Adams, Ellen" title="Sapien suscipit"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Ligula litora iaculis orci" Extension="Vestibulum elementum facilisis lacinia laoreet" IsFolder="True" Id="66" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Vestibulum natoque fermentum" path="Massa torquent" size="957.55" url="Ultrices per" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="27" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Aliquam" titular="Adams, Terry" title="Felis torquent vel"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Morbi hendrerit pede potenti" Extension="Volutpat luctus pretium himenaeos sit" IsFolder="True" Id="91" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Quam neque adipiscing parturient imperdiet" path="Quis rhoncus urna" size="774.17" url="Magnis malesuada sodales vestibulum" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="87" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Morbi" titular="Adams, Terry" title="Nisl nunc"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Vestibulum tincidunt sed tristique" Extension="Praesent netus duis mattis" IsFolder="True" Id="82" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Ultricies nulla nunc dis" path="Adipiscing est aliquam integer" size="368.94" url="Hac accumsan bibendum amet parturient" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="96" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Inceptos" titular="Penor, Lori" title="Posuere odio"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Eget elit mollis" Extension="Enim facilisi" IsFolder="True" Id="22" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Vivamus faucibus vulputate vestibulum purus" path="Curabitur aliquam phasellus erat" size="725.99" url="Eros adipiscing risus" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="59" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Interdum" titular="Pfeiffer, Michael" title="Nam ultrices semper sed"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Elementum vestibulum" Extension="Nostra cubilia vitae" IsFolder="True" Id="95" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Class ornare" path="Inceptos dapibus per" size="365.27" url="Egestas nisi euismod sed interdum" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="34" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Nulla" titular="Philips, Carol" title="Ipsum sociis vehicula"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Donec quam iaculis lacinia primis" Extension="Sit etiam quis urna rutrum" IsFolder="True" Id="13" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Sapien vel" path="Laoreet fermentum lobortis fusce" size="389.85" url="Fringilla habitasse vestibulum nam sed" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="58" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Proin" titular="Poe, Toni" title="Potenti dis"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+		<iCampusApp_Model:Documents Description="Morbi sociis hac parturient" Extension="Nulla leo vestibulum pretium" IsFolder="True" Id="41" Updated="False" date="05/02/2012 09:41:15" notified="True" name="Rhoncus vestibulum taciti" path="Himenaeos proin adipiscing" size="442.75" url="Sodales pharetra placerat" visibility="False">
+			<iCampusApp_Model:Documents.Cours>
+				<iCampusApp_Model:Cours Updated="True" annNotif="False" Id="63" dnlNotif="True" isAnn="False" isDnL="True" notified="False" sysCode="Lobortis" titular="Hicks, Cassie" title="Taciti orci est pretium"/>
+			</iCampusApp_Model:Documents.Cours>
+		</iCampusApp_Model:Documents>
+	</iCampusApp_ViewModel:iCampusViewModel.AllFiles>
+</iCampusApp_ViewModel:iCampusViewModel>
