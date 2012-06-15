@@ -8,6 +8,26 @@ using ClarolineApp.Model;
 
 namespace ClarolineApp
 {
+    public class AnnouncePageLayout : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            String text = (string) value;
+
+            if ((bool)parameter)
+            {
+                text = text.Substring(0, 197);
+                text += "...";
+            }
+            return text;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
+    }
+
     public class ToLower : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
