@@ -45,7 +45,7 @@ namespace ClarolineApp
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (value as String).ToLower(culture);
+            return (value as String).ToUpper(culture);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -51,45 +51,39 @@
     	</Grid.RowDefinitions>
     	<controls:Panorama Title="Claroline" x:Name="Panorama" SelectionChanged="Panorama_SelectionChanged">
     		<controls:Panorama.Background>
-    			<ImageBrush Stretch="None" ImageSource="/BSTwp.png"/>
+    			<ImageBrush ImageSource="/BSTwp2.jpg" Stretch="None"/>
     		</controls:Panorama.Background>
     		<controls:Panorama.Foreground>
     			<SolidColorBrush Color="{StaticResource PhoneForegroundColor}"/>
     		</controls:Panorama.Foreground>
-            <controls:PanoramaItem x:Name="Cours_PI" Header="{Binding Path=LocalizedResources.MainPage_Cours_PI, Source={StaticResource LocalizedStrings}, Converter={StaticResource ToLower}}" Height="586" Width="432">
-            	<controls:PanoramaItem.Foreground>
-            		<SolidColorBrush Color="{StaticResource PhoneForegroundColor}"/>
-            	</controls:PanoramaItem.Foreground>
-    			<ListBox x:Name="CoursList" ItemsSource="{Binding AllCours, Mode=TwoWay}" Margin="0,-30,0,30" SelectionChanged="CoursList_SelectionChanged" FontSize="{StaticResource PhoneFontSizeLarge}">
-    				<ListBox.ItemTemplate>
-    					<DataTemplate>
-    						<StackPanel Width="420">
-    							<toolkit:PerformanceProgressBar Height="10" Margin="0,0,0,-10" Visibility="Collapsed" IsIndeterminate="True" Background="{StaticResource PhoneAccentBrush}" Foreground="{StaticResource PhoneAccentBrush}"/>
-    							<TextBlock  Text="{Binding title, Mode=TwoWay}" TextWrapping="Wrap" Foreground="{Binding notified, Converter={StaticResource StatusConverter}}" Margin="12,0"/>
-    							<TextBlock TextWrapping="Wrap" Text="{Binding sysCode}" d:LayoutOverrides="Width" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left"/>
-    							<TextBlock TextWrapping="Wrap" Text="{Binding titular}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left"/>
-                                <toolkit:ContextMenuService.ContextMenu>
-                                    <toolkit:ContextMenu>
-                                        <toolkit:MenuItem Tag="{Binding}" x:Name="sendMail" Header="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.MainPage_Cours_ContextMenuItem_Mail}" Click="sendMail_Click" />
-                                    </toolkit:ContextMenu>
-                                </toolkit:ContextMenuService.ContextMenu>
-    						</StackPanel>
-    					</DataTemplate>
-    				</ListBox.ItemTemplate>
-    			</ListBox>
+            <controls:PanoramaItem x:Name="Cours_PI" Header="{Binding LocalizedResources.MainPage_Cours_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Height="586" Width="432" Foreground="Black">
+            	<ListBox x:Name="CoursList" ItemsSource="{Binding AllCours, Mode=TwoWay}" Margin="0,-30,0,30" SelectionChanged="CoursList_SelectionChanged" FontSize="{StaticResource PhoneFontSizeLarge}">
+            		<ListBox.Foreground>
+            			<SolidColorBrush Color="{StaticResource PhoneForegroundColor}"/>
+            		</ListBox.Foreground>
+            		<ListBox.ItemTemplate>
+            			<DataTemplate>
+            				<StackPanel Width="420">
+            					<toolkit:ContextMenuService.ContextMenu>
+            						<toolkit:ContextMenu>
+            							<toolkit:MenuItem Tag="{Binding}" x:Name="sendMail" Header="{Binding LocalizedResources.MainPage_Cours_ContextMenuItem_Mail, Source={StaticResource LocalizedStrings}}" Click="sendMail_Click" />
+            						</toolkit:ContextMenu>
+            					</toolkit:ContextMenuService.ContextMenu>
+            					<toolkit:PerformanceProgressBar Height="10" Margin="0,0,0,-10" Visibility="Collapsed" IsIndeterminate="True" Background="{StaticResource PhoneAccentBrush}" Foreground="{StaticResource PhoneAccentBrush}"/>
+            					<TextBlock  Text="{Binding title, Mode=TwoWay}" TextWrapping="Wrap" Foreground="{Binding notified, ConverterParameter=Black, Converter={StaticResource StatusConverter}}" Margin="12,0"/>
+            					<TextBlock TextWrapping="Wrap" Text="{Binding sysCode}" d:LayoutOverrides="Width" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Foreground="#FF4B4B4B"/>
+            					<TextBlock TextWrapping="Wrap" Text="{Binding titular}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Foreground="#FF4B4B4B"/>
+            				</StackPanel>
+            			</DataTemplate>
+            		</ListBox.ItemTemplate>
+            	</ListBox>
     		</controls:PanoramaItem>
-            <controls:PanoramaItem x:Name="Infos_PI" Header="informations">
-            	<controls:PanoramaItem.Foreground>
-            		<SolidColorBrush Color="{StaticResource PhoneForegroundColor}"/>
-            	</controls:PanoramaItem.Foreground>
+            <controls:PanoramaItem x:Name="Infos_PI" Header="informations" Foreground="Black">
     			<ScrollViewer Margin="0,-30,0,30">
     				<TextBlock x:Name="output" TextWrapping="Wrap" Margin="0"/>
     			</ScrollViewer>
     		</controls:PanoramaItem>
-            <controls:PanoramaItem x:Name="About_PI" Header="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.MainPage_About_PI, Converter={StaticResource ToLower}}">
-            	<controls:PanoramaItem.Foreground>
-            		<SolidColorBrush Color="{StaticResource PhoneForegroundColor}"/>
-            	</controls:PanoramaItem.Foreground>
+            <controls:PanoramaItem x:Name="About_PI" Header="{Binding LocalizedResources.MainPage_About_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Foreground="Black">
             	<Grid Margin="0,-30,0,30" ShowGridLines="False">
             		<Grid.RowDefinitions>
             			<RowDefinition/>
@@ -101,14 +95,14 @@
             			<ColumnDefinition/>
             			<ColumnDefinition Width="2*"/>
             		</Grid.ColumnDefinitions>
-            		<TextBlock TextWrapping="Wrap" Text="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.MainPage_About_Version, Converter={StaticResource ToUpper}}" Foreground="#FF4B4B4B" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="16"/>
-            		<TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.MainPage_About_Author, Converter={StaticResource ToUpper}}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="16" Foreground="#FF4B4B4B"/>
+            		<TextBlock TextWrapping="Wrap" Text="{Binding LocalizedResources.MainPage_About_Version, Converter={StaticResource ToUpper}, Source={StaticResource LocalizedStrings}}" Foreground="#FF4B4B4B" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="16"/>
+            		<TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{Binding LocalizedResources.MainPage_About_Author, Converter={StaticResource ToUpper}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="16" Foreground="#FF4B4B4B"/>
             		<TextBlock Grid.Row="2" TextWrapping="Wrap" Text="TWITTER" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="16" Foreground="#FF4B4B4B"/>
             		<TextBlock Grid.Column="1" TextWrapping="Wrap" Text="1.0" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" FontSize="21.333"/>
             		<TextBlock Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Text="Quentin Devos" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="21.333"/>
             		<TextBlock x:Name="TwitterTag" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Text="@Okhoshi" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="21.333" />
-            		<Button x:Name="MailButton" Grid.ColumnSpan="2" Content="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.MainPage_About_DevMailButton, Converter={StaticResource ToLower}}" Grid.Row="3" Background="#7A4B4B4B" HorizontalAlignment="Center" Margin="0,138,0,84" d:LayoutOverrides="Height" Click="MailButton_Click"/>
-            		<Button x:Name="IEButton" Grid.ColumnSpan="2" Content="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.MainPage_About_IEButton}" Grid.Row="3" Background="#7A4B4B4B" HorizontalAlignment="Center" Margin="0,49,0,0" VerticalAlignment="Top" Click="IEButton_Click"/>
+            		<Button x:Name="MailButton" Grid.ColumnSpan="2" Content="{Binding LocalizedResources.MainPage_About_DevMailButton, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Grid.Row="3" Background="#7A4B4B4B" HorizontalAlignment="Center" Margin="0,138,0,73" d:LayoutOverrides="Height" Click="MailButton_Click"/>
+            		<Button x:Name="IEButton" Grid.ColumnSpan="2" Content="{Binding LocalizedResources.MainPage_About_IEButton, Source={StaticResource LocalizedStrings}}" Grid.Row="3" Background="#7A4B4B4B" HorizontalAlignment="Center" Margin="0,49,0,0" VerticalAlignment="Top" Click="IEButton_Click"/>
             	</Grid>
             </controls:PanoramaItem>
     	</controls:Panorama>
