@@ -34,7 +34,7 @@
 
     <!--Exemple de code illustrant l'utilisation d'ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Minimized" Opacity="0.575">
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Minimized">
             <shell:ApplicationBarIconButton x:Name="Connect_Btn" IconUri="/icons/appbar.download.rest.png" Text="Connect" Click="Connect_Click"/>
             <shell:ApplicationBarIconButton x:Name="Sync_Btn" IconUri="/icons/appbar.refresh.rest.png" Text="Sync" Click="Sync_Btn_Click"/>
             <shell:ApplicationBar.MenuItems>
