@@ -106,6 +106,7 @@ namespace ClarolineApp
         // Ce code ne s'exécute pas lorsque l'application est démarrée pour la première fois
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            App.Client.makeOperation(AllowedOperations.getUpdates);
         }
 
         // Code à exécuter lorsque l'application est désactivée (envoyée à l'arrière-plan)
