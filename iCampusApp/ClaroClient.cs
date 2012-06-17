@@ -272,7 +272,6 @@ namespace ClarolineApp
                         args.cidReq.dnlNotif = result.dnlNotif;
                         args.cidReq.isAnn = result.isAnn;
                         args.cidReq.isDnL = result.isDnL;
-                        args.cidReq.officialEmail = result.officialEmail;
                         Deployment.Current.Dispatcher.BeginInvoke(() =>
                         {
                             VM.AddCours(args.cidReq);

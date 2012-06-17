@@ -182,19 +182,12 @@ namespace ClarolineApp
             Cours _item = (sender as MenuItem).Tag as Cours;
             if (_item != null)
             {
-                if (_item.isLoaded)
+                EmailComposeTask mailToManagers = new EmailComposeTask()
                 {
-                    EmailComposeTask mailToManagers = new EmailComposeTask()
-                    {
-                        To = String.Format("\"{0}\" <{1}>", _item.titular, _item.officialEmail),
-                        Subject = String.Format("[{0}][{1}]", set.PlatformSetting, _item.sysCode)
-                    };
-                    mailToManagers.Show();
-                }
-                else
-                {
-                    MessageBox.Show(AppLanguage.ErrorMessage_LoadCourseNeeded);
-                }
+                    To = String.Format("\"{0}\" <{1}>", _item.titular, _item.officialEmail),
+                    Subject = String.Format("[{0}][{1}]", set.PlatformSetting, _item.sysCode)
+                };
+                mailToManagers.Show();
             }
         }
 
