@@ -86,6 +86,28 @@ namespace ClarolineApp.ViewModel
                 NotifyPropertyChanged("AnnByCours");
             }
         }
+
+        private ObservableCollection<Notification> _allNotifications;
+        public ObservableCollection<Notification> AllNotifications
+        {
+            get { return _allNotifications; }
+            set
+            {
+                _allNotifications = value;
+                NotifyPropertyChanged("AllNotifications");
+            }
+        }
+
+        private Dictionary<string, ObservableCollection<Notification>> _notifByCours;
+        public Dictionary<string, ObservableCollection<Notification>> NotifByCours
+        {
+            get { return _notifByCours; }
+            set
+            {
+                _notifByCours = value;
+                NotifyPropertyChanged("NotifByCours");
+            }
+        }
   
         // Write changes in the data context to the database.
 
@@ -126,20 +148,29 @@ namespace ClarolineApp.ViewModel
                               select ann;
             AllAnnonces = new ObservableCollection<Annonce>(annsInDb);
 
+            var notifsInDb = from Notification not in iCampusDB.Notifications
+                             select not;
+            AllNotifications = new ObservableCollection<Notification>(notifsInDb);
+
             // Query the database and load all associated items to their respective collections.
             DocByCours = new Dictionary<string, ObservableCollection<Documents>>();
             AnnByCours = new Dictionary<string, ObservableCollection<Annonce>>();
+            NotifByCours = new Dictionary<string, ObservableCollection<Notification>>();
 
             foreach (Cours _cours in coursInDB)
             {
                 DocByCours.Add(_cours.sysCode, new ObservableCollection<Documents>());
                 AnnByCours.Add(_cours.sysCode, new ObservableCollection<Annonce>());
+                NotifByCours.Add(_cours.sysCode, new ObservableCollection<Notification>());
 
                 foreach(Documents doc in _cours.Documents)
                     DocByCours[_cours.sysCode].Add(doc);
-
+                
                 foreach(Annonce ann in _cours.Annonces)
                     AnnByCours[_cours.sysCode].Add(ann);
+
+                foreach (Notification not in _cours.Notifications)
+                    NotifByCours[_cours.sysCode].Add(not);
             }
         }
 
@@ -148,14 +179,17 @@ namespace ClarolineApp.ViewModel
             iCampusDB.Documents.DeleteAllOnSubmit(AllFiles);
             iCampusDB.Documents.DeleteAllOnSubmit(AllFolders);
             iCampusDB.Annonces.DeleteAllOnSubmit(AllAnnonces);
+            iCampusDB.Notifications.DeleteAllOnSubmit(AllNotifications);
             iCampusDB.Cours_T.DeleteAllOnSubmit(AllCours);
             iCampusDB.SubmitChanges();
             _allFiles.Clear();
             _allFolders.Clear();
             _allAnnonces.Clear();
+            _allNotifications.Clear();
             _allCours.Clear();
             _docByCours.Clear();
             _annByCours.Clear();
+            _notifByCours.Clear();
         }
 
         public void AddDocument(Documents newDoc)
@@ -336,11 +370,70 @@ namespace ClarolineApp.ViewModel
 
             AllAnnonces.Remove(annForDelete);
 
-            AnnByCours.Remove(annForDelete.Cours.sysCode);
+            AnnByCours[annForDelete.Cours.sysCode].Remove(annForDelete);
 
             // Remove the cours item from the data context.
 
             iCampusDB.Annonces.DeleteOnSubmit(annForDelete);
+
+            // Save changes to the database.
+
+            iCampusDB.SubmitChanges();
+        }
+
+        public void AddNotification(Notification newNot)
+        {
+            newNot.Updated = true;
+            newNot.Cours.notified = true;
+            UpdateCours(newNot.Cours);
+
+            if (!AllNotifications.Contains(newNot))
+            {
+                // Add a to-do item to the data context.
+
+                iCampusDB.Notifications.InsertOnSubmit(newNot);
+
+                // Save changes to the database.
+
+                iCampusDB.SubmitChanges();
+
+                // Add a to-do item to the "all" observable collection.
+
+                AllNotifications.Add(newNot);
+
+                NotifByCours[newNot.Cours.sysCode].Add(newNot);
+            }
+            else
+                UpdateNot(newNot);
+        }
+
+        private void UpdateNot(Notification newNot)
+        {
+            Notification notInDb = (from Notification _not in iCampusDB.Notifications
+                               where _not.Equals(newNot)
+                               select _not).First();
+
+            notInDb.notified = newNot.notified;
+            NotifByCours[notInDb.Cours.sysCode][NotifByCours[notInDb.Cours.sysCode].IndexOf(notInDb)].notified = newNot.notified;
+            AllNotifications[AllNotifications.IndexOf(notInDb)].notified = newNot.notified;
+            notInDb.Updated = newNot.Updated;
+            NotifByCours[notInDb.Cours.sysCode][NotifByCours[notInDb.Cours.sysCode].IndexOf(notInDb)].Updated = newNot.Updated;
+            AllNotifications[AllNotifications.IndexOf(notInDb)].Updated = newNot.Updated;
+            iCampusDB.SubmitChanges();
+        }
+
+        public void DeleteNotification(Notification notForDelete)
+        {
+
+            // Remove the cours item from the "all" observable collection.
+
+            AllNotifications.Remove(notForDelete);
+
+            NotifByCours[notForDelete.Cours.sysCode].Remove(notForDelete);
+
+            // Remove the cours item from the data context.
+
+            iCampusDB.Notifications.DeleteOnSubmit(notForDelete);
 
             // Save changes to the database.
 
@@ -367,6 +460,7 @@ namespace ClarolineApp.ViewModel
 
                 DocByCours.Add(newCours.sysCode, new ObservableCollection<Documents>());
                 AnnByCours.Add(newCours.sysCode, new ObservableCollection<Annonce>());
+                NotifByCours.Add(newCours.sysCode, new ObservableCollection<Notification>());
             }
             else
                 UpdateCours(newCours);
@@ -412,6 +506,16 @@ namespace ClarolineApp.ViewModel
                 AllAnnonces.Remove(Ann);
             }
             AnnByCours.Remove(coursForDelete.sysCode);
+
+            var queryNot = from Notification _not in iCampusDB.Notifications
+                           where _not._coursId == coursForDelete.Id
+                           select _not;
+            foreach (var not in queryNot)
+            {
+                iCampusDB.Notifications.DeleteOnSubmit(not);
+                AllNotifications.Remove(not);
+            }
+            NotifByCours.Remove(coursForDelete.sysCode);
 
             // Remove the cours item from the data context.
 
@@ -462,6 +566,17 @@ namespace ClarolineApp.ViewModel
                     DeleteAnnonce(currentAnn);
                 else
                     currentAnn.Updated = false;
+            }
+        }
+
+        public void ClearNotifsOfCours(Cours coursToClear)
+        {
+            foreach (Notification currentNot in _notifByCours[coursToClear.sysCode])
+            {
+                if (!currentNot.Updated)
+                    DeleteNotification(currentNot);
+                else
+                    currentNot.Updated = false;
             }
         }
 
