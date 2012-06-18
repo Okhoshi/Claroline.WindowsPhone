@@ -194,7 +194,7 @@
   </data>
   <data name="ErrorMessage_ServerReturnCode" xml:space="preserve">
     <value>Le serveur a retourné le code d'erreur suivant : {0}. {1}</value>
-    <comment>{0} contient le code d'erreur renvoyé par le serveur, {1} la description du code. Alt+Enter pour le retour à la ligne.</comment>
+    <comment>{0} contient le code d'erreur renvoyé par le serveur, {1} la description du code.</comment>
   </data>
   <data name="ProgressBar_Connecting" xml:space="preserve">
     <value>Connexion...</value>
@@ -215,12 +215,27 @@
   <data name="SettingsPage_Config_CellularData" xml:space="preserve">
     <value>Utiliser le réseau
 cellulaire</value>
-    <comment>Texte d'un ToggleSwitch, passer à la ligne si le texte dépasse sur le switch.</comment>
+    <comment>Texte d'un ToggleSwitch, passer à la ligne si le texte dépasse sur le switch. Alt+Enter pour le retour à la ligne.</comment>
   </data>
   <data name="SettingsPage_Config_PI" xml:space="preserve">
     <value>Configuration</value>
   </data>
   <data name="ErrorMessage_UnreadableJson" xml:space="preserve">
     <value>Le serveur a retourné une réponse illisible. Si l'erreur se reproduit, veuillez contacter les développeurs.</value>
+  </data>
+  <data name="MainPage_Notif_PI" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="MainPage_Notif_AddAnn" xml:space="preserve">
+    <value>Une nouvelle annonce a été publiée.</value>
+  </data>
+  <data name="MainPage_Notif_AddDoc" xml:space="preserve">
+    <value>Le document {0} a été ajouté dans le dossier {1}</value>
+  </data>
+  <data name="MainPage_Notif_OldAnn" xml:space="preserve">
+    <value>Une annonce a été mise à jour.</value>
+  </data>
+  <data name="MainPage_Notif_OldDoc" xml:space="preserve">
+    <value>Le document {0} a été mis à jour.</value>
   </data>
 </root>

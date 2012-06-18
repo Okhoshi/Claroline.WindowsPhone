@@ -5,6 +5,7 @@ using System.Linq;
 using System.Data.Linq.Mapping;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using ClarolineApp.Languages;
 
 namespace ClarolineApp.Model
 {
@@ -248,9 +249,9 @@ namespace ClarolineApp.Model
 
         #endregion
 
-        
+
         #region Collections
-        
+
         #region Collection Side for DOCS - COURS
 
         // Define the entity set for the collection side of the relationship.
@@ -581,7 +582,7 @@ namespace ClarolineApp.Model
                 }
             }
         }
-        
+
         private string _ext;
 
         [Column]
@@ -601,7 +602,7 @@ namespace ClarolineApp.Model
                 }
             }
         }
-        
+
         private bool _isFolder;
 
         [Column]
@@ -799,7 +800,7 @@ namespace ClarolineApp.Model
             if (obj != null && obj.GetType() == typeof(Documents))
             {
                 Documents fld = obj as Documents;
-                    return (fld._url == this._url) && (fld.Cours == this.Cours) && (fld.path == this.path);
+                return (fld._url == this._url) && (fld.Cours == this.Cours) && (fld.path == this.path);
             }
             return false;
         }
@@ -835,8 +836,8 @@ namespace ClarolineApp.Model
         {
             return new ObservableCollection<Documents>((from Documents _doc
                         in App.ViewModel.DocByCours[this._cours.Entity.sysCode]
-                        where _doc._path == ((_doc._isFolder)?(this._path + "/" + _doc._name):(this._path + "/" + _doc._name + "." + _doc._ext))
-                        select _doc).ToList<Documents>());
+                                                        where _doc._path == ((_doc._isFolder) ? (this._path + "/" + _doc._name) : (this._path + "/" + _doc._name + "." + _doc._ext))
+                                                        select _doc).ToList<Documents>());
         }
     }
 
@@ -1201,6 +1202,26 @@ namespace ClarolineApp.Model
             }
         }
 
+        private bool _isOldRessource;
+
+        [Column]
+        public bool isOldRessource
+        {
+            get
+            {
+                return _isOldRessource;
+            }
+            set
+            {
+                if (_isOldRessource != value)
+                {
+                    NotifyPropertyChanging("isOldRessource");
+                    _isOldRessource = value;
+                    NotifyPropertyChanged("isOldRessource");
+                }
+            }
+        }
+
 
         #region Entity Side for NOTIF - COURS
 
@@ -1305,6 +1326,25 @@ namespace ClarolineApp.Model
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        public String Text
+        {
+            get
+            {
+                    switch(_ressourceType){
+                        case "Annonce":
+                            return (this._isOldRessource) ? AppLanguage.MainPage_Notif_OldAnn : AppLanguage.MainPage_Notif_AddAnn;
+                        case "Documents":
+                            Documents doc = (Documents)(from Documents _doc in App.ViewModel.DocByCours[this.Cours.sysCode]
+                                           where _doc.Id == this._ressourceId
+                                           select _doc).First();
+                            return (this._isOldRessource) ? String.Format(AppLanguage.MainPage_Notif_OldDoc, doc.path) : String.Format(AppLanguage.MainPage_Notif_AddDoc, doc.name, doc.getRoot().path);
+                        default:
+                            return "";
+                    }
+                
+            }
         }
     }
 }

@@ -187,6 +187,51 @@ namespace ClarolineApp.Languages {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Une nouvelle annonce a été publiée..
+        /// </summary>
+        public static string MainPage_Notif_AddAnn {
+            get {
+                return ResourceManager.GetString("MainPage_Notif_AddAnn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Le document {0} a été ajouté dans le dossier {1}.
+        /// </summary>
+        public static string MainPage_Notif_AddDoc {
+            get {
+                return ResourceManager.GetString("MainPage_Notif_AddDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Une annonce a été mise à jour..
+        /// </summary>
+        public static string MainPage_Notif_OldAnn {
+            get {
+                return ResourceManager.GetString("MainPage_Notif_OldAnn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Le document {0} a été mis à jour..
+        /// </summary>
+        public static string MainPage_Notif_OldDoc {
+            get {
+                return ResourceManager.GetString("MainPage_Notif_OldDoc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Notifications.
+        /// </summary>
+        public static string MainPage_Notif_PI {
+            get {
+                return ResourceManager.GetString("MainPage_Notif_PI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Connexion....
         /// </summary>
         public static string ProgressBar_Connecting {
