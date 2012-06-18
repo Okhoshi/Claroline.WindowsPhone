@@ -228,7 +228,6 @@ namespace ClarolineApp.ViewModel
                     // Add a to-do item to the data context.
 
                     iCampusDB.Documents.InsertOnSubmit(newDoc);
-
                     // Save changes to the database.
 
                     iCampusDB.SubmitChanges();
@@ -240,6 +239,9 @@ namespace ClarolineApp.ViewModel
                     // Add a to-do item to the appropriate filtered collection.
 
                     DocByCours[newDoc.Cours.sysCode].Add(newDoc);
+
+                    AddNotification(new Notification(newDoc, false));
+
                 }
                 else
                     UpdateFile(newDoc);
@@ -281,6 +283,8 @@ namespace ClarolineApp.ViewModel
             DocByCours[fileInDb.Cours.sysCode][DocByCours[fileInDb.Cours.sysCode].IndexOf(fileInDb)].Updated = newFile.Updated;
             fileInDb.Updated = newFile.Updated;
             iCampusDB.SubmitChanges();
+
+            AddNotification(new Notification(newFile, true));
         }
 
         public void DeleteFolder(Documents docForDelete)
@@ -343,6 +347,8 @@ namespace ClarolineApp.ViewModel
                 AllAnnonces.Add(newAnn);
 
                 AnnByCours[newAnn.Cours.sysCode].Add(newAnn);
+
+                AddNotification(new Notification(newAnn, false));
             }
             else
                 UpdateAnn(newAnn);
@@ -361,6 +367,8 @@ namespace ClarolineApp.ViewModel
             AnnByCours[annInDb.Cours.sysCode][AnnByCours[annInDb.Cours.sysCode].IndexOf(annInDb)].Updated = newAnn.Updated;
             AllAnnonces[AllAnnonces.IndexOf(annInDb)].Updated = newAnn.Updated;
             iCampusDB.SubmitChanges();
+
+            AddNotification(new Notification(newAnn, true));
         }
 
         public void DeleteAnnonce(Annonce annForDelete)

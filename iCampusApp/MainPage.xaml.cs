@@ -23,6 +23,7 @@ using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using System.Diagnostics;
 using ClarolineApp.Languages;
+using System.Windows.Data;
 
 namespace ClarolineApp
 {
@@ -37,6 +38,7 @@ namespace ClarolineApp
         {
             InitializeComponent();
             this.DataContext = App.ViewModel;
+            (this.Resources["Notifications"] as CollectionViewSource).Source = App.ViewModel.AllNotifications;
             set = new AppSettings();
             SystemTray.SetProgressIndicator(this, App.currentProgressInd);
             MainPage_Handler = new PropertyChangedEventHandler(MainPage_PropertyChanged);

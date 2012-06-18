@@ -9,6 +9,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:local="clr-namespace:ClarolineApp"
     xmlns:UC="clr-namespace:ClarolineApp.Settings"
+    xmlns:scm="clr-namespace:System.ComponentModel;assembly=System.Windows"
     x:Class="ClarolineApp.MainPage"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
 	d:DataContext="{d:DesignData SampleData/iCampusViewModelSampleData.xaml}"
@@ -21,6 +22,12 @@
     <phone:PhoneApplicationPage.Resources>
         <Color x:Key="DarkBG">#C94B4B4B</Color>
         <Color x:Key="LightBG">#DEB2B2B2</Color>
+        <CollectionViewSource x:Key="Notifications">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="date"
+                           Direction="Descending" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
     </phone:PhoneApplicationPage.Resources>
 	<phone:PhoneApplicationPage.FontFamily>
 		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
@@ -79,7 +86,7 @@
             	</ListBox>
     		</controls:PanoramaItem>
             <controls:PanoramaItem x:Name="Notif_PI" Header="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.MainPage_Notif_PI, Converter={StaticResource ToLower}}" Foreground="Black">
-                <ListBox x:Name="NotifList" ItemsSource="{Binding AllNotifications, Mode=TwoWay}" Margin="0,-30,0,30">
+                <ListBox x:Name="NotifList" ItemsSource="{Binding Source={StaticResource Notifications}}" Margin="0,-30,0,30">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="12,0,0,0" Width="420">
@@ -87,10 +94,8 @@
                             	<Grid>
                             		<TextBlock TextWrapping="Wrap" Text="{Binding Cours.sysCode}" HorizontalAlignment="Left" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0,0,12,0" Foreground="#FF4B4B4B"/>
                             		<TextBlock TextWrapping="Wrap" Text="{Binding date, Converter={StaticResource DateFormater}}" HorizontalAlignment="Right" Margin="83,0,12,0" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="#FF4B4B4B"/>
-                                
                             	</Grid>
                             	<Rectangle Height="2" Width="Auto" Fill="{Binding notified, ConverterParameter=Black, Converter={StaticResource StatusConverter}}" Margin="0,0,-36,0"/>
-                                
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

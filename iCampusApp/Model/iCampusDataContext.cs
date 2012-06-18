@@ -813,7 +813,7 @@ namespace ClarolineApp.Model
         public Documents getRoot()
         {
             string Find = (_isFolder) ? ("/" + _name) : ("/" + _name + "." + _ext);
-            string rootPath = _path.Remove(_path.LastIndexOf(Find), Find.Length);
+            string rootPath = _path.Remove(_path.LastIndexOf(Find,StringComparison.OrdinalIgnoreCase), Find.Length);
             if (rootPath == "")
             {
                 return new Documents()
@@ -1099,6 +1099,30 @@ namespace ClarolineApp.Model
     [Table]
     public class Notification : INotifyPropertyChanged, INotifyPropertyChanging
     {
+        public Notification()
+        {
+        }
+
+        public Notification(object resource, bool isOld)
+        {
+            this.isOldRessource = isOld;
+            notified = true;
+            if (resource is Annonce)
+            {
+                Cours = (resource as Annonce).Cours;
+                date = (resource as Annonce).date;
+                ressourceId = (resource as Annonce).Id;
+                ressourceType = ValidTypes.Annonce;
+            }
+            else if (resource is Documents)
+            {
+                Cours = (resource as Documents).Cours;
+                date = (resource as Documents).date;
+                ressourceId = (resource as Documents).Id;
+                ressourceType = ValidTypes.Documents;
+            }
+        }
+
         // Define ID: private Notifications, public property and database column.
 
         private int _Id;
@@ -1332,18 +1356,19 @@ namespace ClarolineApp.Model
         {
             get
             {
-                    switch(_ressourceType){
-                        case ValidTypes.Annonce:
-                            return (this._isOldRessource) ? AppLanguage.MainPage_Notif_OldAnn : AppLanguage.MainPage_Notif_AddAnn;
-                        case ValidTypes.Documents:
-                            Documents doc = (Documents)(from Documents _doc in App.ViewModel.DocByCours[this.Cours.sysCode]
-                                           where _doc.Id == this._ressourceId
-                                           select _doc).First();
-                            return (this._isOldRessource) ? String.Format(AppLanguage.MainPage_Notif_OldDoc, doc.path) : String.Format(AppLanguage.MainPage_Notif_AddDoc, doc.name, doc.getRoot().path);
-                        default:
-                            return "";
-                    }
-                
+                switch (_ressourceType)
+                {
+                    case ValidTypes.Annonce:
+                        return (this._isOldRessource) ? AppLanguage.MainPage_Notif_OldAnn : AppLanguage.MainPage_Notif_AddAnn;
+                    case ValidTypes.Documents:
+                        Documents doc = (Documents)(from Documents _doc in App.ViewModel.DocByCours[this.Cours.sysCode]
+                                                    where _doc.Id == this._ressourceId
+                                                    select _doc).First();
+                        return (this._isOldRessource) ? String.Format(AppLanguage.MainPage_Notif_OldDoc, doc.path) : String.Format(AppLanguage.MainPage_Notif_AddDoc, doc.name, (doc.getRoot().path == "") ? doc.getRoot().path : "/");
+                    default:
+                        return "";
+                }
+
             }
         }
     }

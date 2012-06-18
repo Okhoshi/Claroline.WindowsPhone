@@ -22,8 +22,10 @@ namespace ClarolineApp
         iCampusViewModel VM;
 
         Mutex Requesting;
+        Mutex Updating;
         BackgroundWorker bw;
         private int Waiting = 0;
+        private int Waiting2 = 0;
 
         CookieContainer cookies;
         DateTime CookieCreation;
@@ -43,6 +45,7 @@ namespace ClarolineApp
 
             //Threading stuff
             Requesting = new Mutex(false, "Request");
+            Updating = new Mutex(false, "Update");
             bw = new BackgroundWorker();
             bw.WorkerReportsProgress = true;
             bw.WorkerSupportsCancellation = true;
@@ -261,6 +264,7 @@ namespace ClarolineApp
                                 {
                                     VM.AddCours(cours);
                                 }
+                                pulse(Updating);
                             });
                         }
                         break;
@@ -290,6 +294,7 @@ namespace ClarolineApp
                                     doc.Cours = args.cidReq;
                                     VM.AddDocument(doc);
                                 }
+                                pulse(Updating);
                             });
                         }
                         break;
@@ -306,6 +311,7 @@ namespace ClarolineApp
                                     annonce.Cours = args.cidReq;
                                     VM.AddAnnonce(annonce);
                                 }
+                                pulse(Updating);
                             });
                         }
                         break;
@@ -323,7 +329,7 @@ namespace ClarolineApp
                                 if (upCours == null)
                                 {
                                     makeOperation(AllowedOperations.getCourseList);
-                                    wait();
+                                    wait(Updating);
                                     upCours = VM.AllCours.FirstOrDefault(cours => cours.sysCode.Equals(course.Key));
                                     if (upCours != null)
                                     {
@@ -341,7 +347,7 @@ namespace ClarolineApp
                                                 if (!upCours.isAnn)
                                                 {
                                                     makeOperation(AllowedOperations.getCourseToolList, upCours);
-                                                    wait();
+                                                    wait(Updating);
                                                     if (upCours.isAnn)
                                                     {
                                                         makeOperation(AllowedOperations.getAnnounceList, upCours);
@@ -364,6 +370,7 @@ namespace ClarolineApp
                                                                 upAnn.date = DateTime.Parse(ressource.Value["date"]);
                                                                 upAnn.notified = true;
                                                                 VM.AddAnnonce(upAnn);
+                                                                pulse(Updating);
                                                             });
                                                         }
                                                     }
@@ -373,7 +380,7 @@ namespace ClarolineApp
                                                 if (!upCours.isDnL)
                                                 {
                                                     makeOperation(AllowedOperations.getCourseToolList, upCours);
-                                                    wait();
+                                                    wait(Updating);
                                                     if (upCours.isDnL)
                                                     {
                                                         makeOperation(AllowedOperations.getDocList, upCours);
@@ -396,6 +403,7 @@ namespace ClarolineApp
                                                                 upDoc.date = DateTime.Parse(ressource.Value["date"]);
                                                                 upDoc.notified = true;
                                                                 VM.AddDocument(upDoc);
+                                                                pulse(Updating);
                                                             });
                                                         }
                                                     }
@@ -466,30 +474,43 @@ namespace ClarolineApp
             args.Request.BeginGetRequestStream(new AsyncCallback(RequestCallback), args);
         }
 
-        private void wait()
+        private void wait(Mutex mutex = null)
         {
-            lock (Requesting)
+            if (mutex == null) mutex = Requesting;
+            lock (mutex)
             {
-                Debug.WriteLine("Wait Pulse");
-                Waiting++;
-                Monitor.Wait(Requesting);
+                Debug.WriteLine("Wait Pulse " + mutex.Equals(Requesting));
+                if (mutex == Requesting)
+                {
+                    Waiting++;
+                }
+                else
+                {
+                    Waiting2++;
+                }
+                Monitor.Wait(mutex);
             }
         }
 
-        private void pulse()
+        private void pulse(Mutex mutex = null)
         {
-            //Deployment.Current.Dispatcher.BeginInvoke(() =>
-            //{
-            if (Waiting > 0)
+            if (mutex == null) mutex = Requesting;
+            if (((mutex == Requesting)?Waiting:Waiting2) > 0)
             {
-                lock (Requesting)
+                lock (mutex)
                 {
-                    Monitor.PulseAll(Requesting);
-                    Waiting--;
-                    Debug.WriteLine("PULSING");
+                    Monitor.PulseAll(mutex);
+                    if (mutex == Requesting)
+                    {
+                        Waiting--;
+                    }
+                    else
+                    {
+                        Waiting2--;
+                    }
+                    Debug.WriteLine("PULSING " + mutex.Equals(Requesting));
                 }
             }
-            //});
         }
 
         private void authNotify()
