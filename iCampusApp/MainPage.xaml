@@ -59,9 +59,6 @@
     		</controls:Panorama.Foreground>
             <controls:PanoramaItem x:Name="Cours_PI" Header="{Binding LocalizedResources.MainPage_Cours_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Height="586" Width="432" Foreground="Black">
             	<ListBox x:Name="CoursList" ItemsSource="{Binding AllCours, Mode=TwoWay}" Margin="0,-30,0,30" SelectionChanged="CoursList_SelectionChanged" FontSize="{StaticResource PhoneFontSizeLarge}">
-            		<ListBox.Foreground>
-            			<SolidColorBrush Color="{StaticResource PhoneForegroundColor}"/>
-            		</ListBox.Foreground>
             		<ListBox.ItemTemplate>
             			<DataTemplate>
                             <StackPanel Width="420">
@@ -81,6 +78,24 @@
             		</ListBox.ItemTemplate>
             	</ListBox>
     		</controls:PanoramaItem>
+            <controls:PanoramaItem x:Name="Notif_PI" Header="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.MainPage_Notif_PI, Converter={StaticResource ToLower}}" Foreground="Black">
+                <ListBox x:Name="NotifList" ItemsSource="{Binding AllNotifications, Mode=TwoWay}" Margin="0,-30,0,30">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="12,0,0,0" Width="420">
+                            	<TextBlock TextWrapping="Wrap" Text="{Binding Text, Mode=OneTime}" Foreground="{Binding notified, ConverterParameter=Black, Converter={StaticResource StatusConverter}, Mode=TwoWay}"/>
+                            	<Grid>
+                            		<TextBlock TextWrapping="Wrap" Text="{Binding Cours.sysCode}" HorizontalAlignment="Left" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0,0,12,0" Foreground="#FF4B4B4B"/>
+                            		<TextBlock TextWrapping="Wrap" Text="{Binding date, Converter={StaticResource DateFormater}}" HorizontalAlignment="Right" Margin="83,0,12,0" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="#FF4B4B4B"/>
+                                
+                            	</Grid>
+                            	<Rectangle Height="2" Width="Auto" Fill="{Binding notified, ConverterParameter=Black, Converter={StaticResource StatusConverter}}" Margin="0,0,-36,0"/>
+                                
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </controls:PanoramaItem>
             <controls:PanoramaItem x:Name="Infos_PI" Header="informations" Foreground="Black">
     			<ScrollViewer Margin="0,-30,0,30">
     				<TextBlock x:Name="output" TextWrapping="Wrap" Margin="0"/>
