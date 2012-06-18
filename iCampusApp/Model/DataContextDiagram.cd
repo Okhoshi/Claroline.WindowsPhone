@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="ClarolineApp.Model.iCampusDataContext" Collapsed="true">
-    <Position X="7.25" Y="1.75" Width="1.5" />
+  <Class Name="ClarolineApp.Model.iCampusDataContext">
+    <Position X="11.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAiEAAAAAAAAAA=</HashCode>
       <FileName>Model\iCampusDataContext.cs</FileName>
@@ -14,7 +14,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QCADEgKASAAAIIAAkAAAKACFgCAAAIgDUIABGCEFAQA=</HashCode>
+      <HashCode>QCADEgKASAAgIYABkAAAKACFgCAAAIgDUICBGCEFAQA=</HashCode>
       <FileName>Model\iCampusDataContext.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -38,6 +38,14 @@
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAACGAAAQAAAIIAAhIAAAACFiIAAAMAAQAAAAQJEAQA=</HashCode>
+      <FileName>Model\iCampusDataContext.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ClarolineApp.Model.Notification">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACEAAAAAAAIIAAhIAAAACFiAAAAMAAQAAAAQAEAQA=</HashCode>
       <FileName>Model\iCampusDataContext.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />

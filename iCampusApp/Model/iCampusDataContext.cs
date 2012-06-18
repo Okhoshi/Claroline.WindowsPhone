@@ -22,12 +22,13 @@ namespace ClarolineApp.Model
         public Table<Cours> Cours_T;
         public Table<Documents> Documents;
         public Table<Annonce> Annonces;
+        public Table<Notification> Notifications;
     }
 
     [Table]
     public class Cours : INotifyPropertyChanged, INotifyPropertyChanging
     {
-        // Define ID: private field, public property and database column.
+        // Define ID: private Notifications, public property and database column.
 
         private int _Id;
 
@@ -49,7 +50,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        // Define item name: private field, public property and database column.
+        // Define item name: private Notifications, public property and database column.
 
         private string _CoursName;
 
@@ -71,7 +72,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        // Define Responsable value: private field, public property and database column.
+        // Define Responsable value: private Notifications, public property and database column.
 
         private string _Titular;
 
@@ -113,9 +114,9 @@ namespace ClarolineApp.Model
             }
         }
 
-        // Define url value: private field, public property and database column.
+        // Define url value: private Notifications, public property and database column.
 
-        // Define status value: private field, public property and database column.
+        // Define status value: private Notifications, public property and database column.
 
         private bool _notified;
 
@@ -137,7 +138,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        // Define Tag value: private field, public property and database column.
+        // Define Tag value: private Notifications, public property and database column.
 
         private string _CoursTag;
 
@@ -161,7 +162,7 @@ namespace ClarolineApp.Model
 
         #region Presence of Section
 
-        // Define item presence: private field, public property and database column.
+        // Define item presence: private Notifications, public property and database column.
 
         private bool _isDnL;
 
@@ -203,7 +204,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        // Define item presence: private field, public property and database column.
+        // Define item presence: private Notifications, public property and database column.
 
         private bool _isAnn;
 
@@ -312,6 +313,37 @@ namespace ClarolineApp.Model
 
         #endregion
 
+        #region Collection Side for NOTIF - COURS
+
+        // Define the entity set for the collection side of the relationship.
+
+        private EntitySet<Notification> _Notif;
+
+        [Association(Storage = "_Notif", OtherKey = "_coursId", ThisKey = "Id")]
+        public EntitySet<Notification> Notifications
+        {
+            get { return this._Notif; }
+            set { this._Notif.Assign(value); }
+        }
+
+        // Called during an add operation
+
+        private void attach_Notif(Notification _notif)
+        {
+            NotifyPropertyChanging("Notification");
+            _notif.Cours = this;
+        }
+
+        // Called during a remove operation
+
+        private void detach_Notif(Notification _notif)
+        {
+            NotifyPropertyChanging("Notification");
+            _notif.Cours = null;
+        }
+
+        #endregion
+
         // Assign handlers for the add and remove operations, respectively.
 
         public Cours()
@@ -324,6 +356,10 @@ namespace ClarolineApp.Model
                 new Action<Annonce>(this.attach_Ann),
                 new Action<Annonce>(this.detach_Ann)
                 );
+            _Notif = new EntitySet<Notification>(
+                new Action<Notification>(this.attach_Notif),
+                new Action<Notification>(this.detach_Notif)
+                );
         }
 
         #endregion
@@ -333,7 +369,7 @@ namespace ClarolineApp.Model
         [Column(IsVersion = true)]
         private Binary _version;
 
-        // Define updated value: private field, public property and database column.
+        // Define updated value: private Notifications, public property and database column.
 
         private bool _updated;
 
@@ -440,7 +476,7 @@ namespace ClarolineApp.Model
             _path = string.Empty;
         }
 
-        // Define ID: private field, public property and database column.
+        // Define ID: private Notifications, public property and database column.
 
         private int _Id;
 
@@ -462,7 +498,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        // Define item name: private field, public property and database column.
+        // Define item name: private Notifications, public property and database column.
 
         private string _path;
 
@@ -504,7 +540,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        // Define url value: private field, public property and database column.
+        // Define url value: private Notifications, public property and database column.
 
         private string _url;
 
@@ -586,7 +622,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        // Define status value: private field, public property and database column.
+        // Define status value: private Notifications, public property and database column.
 
         private bool _notified;
 
@@ -704,7 +740,7 @@ namespace ClarolineApp.Model
         [Column(IsVersion = true)]
         private Binary _version;
 
-        // Define updated value: private field, public property and database column.
+        // Define updated value: private Notifications, public property and database column.
 
         private bool _updated;
 
@@ -807,7 +843,7 @@ namespace ClarolineApp.Model
     [Table]
     public class Annonce : INotifyPropertyChanged, INotifyPropertyChanging
     {
-        // Define ID: private field, public property and database column.
+        // Define ID: private Notifications, public property and database column.
 
         private int _Id;
 
@@ -829,7 +865,27 @@ namespace ClarolineApp.Model
             }
         }
 
-        // Define item name: private field, public property and database column.
+        private int _ressourceId;
+
+        [Column]
+        public int ressourceId
+        {
+            get
+            {
+                return _ressourceId;
+            }
+            set
+            {
+                if (_ressourceId != value)
+                {
+                    NotifyPropertyChanging("ressourceId");
+                    _ressourceId = value;
+                    NotifyPropertyChanged("ressourceId");
+                }
+            }
+        }
+
+        // Define item name: private Notifications, public property and database column.
 
         private string _Title;
 
@@ -871,7 +927,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        // Define status value: private field, public property and database column.
+        // Define status value: private Notifications, public property and database column.
 
         private bool _notified;
 
@@ -949,7 +1005,7 @@ namespace ClarolineApp.Model
         [Column(IsVersion = true)]
         private Binary _version;
 
-        // Define updated value: private field, public property and database column.
+        // Define updated value: private Notifications, public property and database column.
 
         private bool _updated;
 
@@ -1029,6 +1085,219 @@ namespace ClarolineApp.Model
             {
                 Annonce ann = obj as Annonce;
                 return this._Title == ann._Title && this._Text == ann._Text;
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+    }
+
+    [Table]
+    public class Notification : INotifyPropertyChanged, INotifyPropertyChanging
+    {
+        // Define ID: private Notifications, public property and database column.
+
+        private int _Id;
+
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public int Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    NotifyPropertyChanging("Id");
+                    _Id = value;
+                    NotifyPropertyChanged("Id");
+                }
+            }
+        }
+        // Define status value: private Notifications, public property and database column.
+
+        private bool _notified;
+
+        [Column]
+        public bool notified
+        {
+            get
+            {
+                return _notified;
+            }
+            set
+            {
+                if (_notified != value)
+                {
+                    NotifyPropertyChanging("notified");
+                    _notified = value;
+                    NotifyPropertyChanged("notified");
+                }
+            }
+        }
+
+        private DateTime _date;
+
+        [Column]
+        public DateTime date
+        {
+            get
+            {
+                return _date;
+            }
+            set
+            {
+                if (_date != value)
+                {
+                    NotifyPropertyChanging("date");
+                    _date = value;
+                    NotifyPropertyChanged("date");
+                }
+            }
+        }
+
+        private Type _ressourceType;
+
+        [Column]
+        public Type ressourceType
+        {
+            get
+            {
+                return _ressourceType;
+            }
+            set
+            {
+                if (_ressourceType != value)
+                {
+                    NotifyPropertyChanging("ressourceType");
+                    _ressourceType = value;
+                    NotifyPropertyChanged("ressourceType");
+                }
+            }
+        }
+
+        private int _ressourceId;
+
+        [Column]
+        public int ressourceId
+        {
+            get
+            {
+                return _ressourceId;
+            }
+            set
+            {
+                if (_ressourceId != value)
+                {
+                    NotifyPropertyChanging("ressourceId");
+                    _ressourceId = value;
+                    NotifyPropertyChanged("ressourceId");
+                }
+            }
+        }
+
+
+        #region Entity Side for NOTIF - COURS
+
+        [Column]
+        internal int _coursId;
+
+        // Entity reference, to identify the ToDoCategory "storage" table
+
+        private EntityRef<Cours> _cours;
+
+        // Association, to describe the relationship between this key and that "storage" table
+
+        [Association(Storage = "_cours", ThisKey = "_coursId", OtherKey = "Id", IsForeignKey = true)]
+        public Cours Cours
+        {
+            get { return _cours.Entity; }
+            set
+            {
+                NotifyPropertyChanging("Cours");
+                _cours.Entity = value;
+
+                if (value != null)
+                {
+                    _coursId = value.Id;
+                }
+
+                NotifyPropertyChanging("Cours");
+            }
+        }
+
+        #endregion
+
+        // Version column aids update performance.
+
+        [Column(IsVersion = true)]
+        private Binary _version;
+
+        // Define updated value: private Notifications, public property and database column.
+
+        private bool _updated;
+
+        [Column]
+        public bool Updated
+        {
+            get
+            {
+                return _updated;
+            }
+            set
+            {
+                if (_updated != value)
+                {
+                    NotifyPropertyChanging("Updated");
+                    _updated = value;
+                    NotifyPropertyChanged("Updated");
+                }
+            }
+        }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Used to notify that a property changed
+
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanging Members
+
+        public event PropertyChangingEventHandler PropertyChanging;
+
+        // Used to notify that a property is about to change
+
+        private void NotifyPropertyChanging(string propertyName)
+        {
+            if (PropertyChanging != null)
+            {
+                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+
+        public override bool Equals(object obj)
+        {
+            if (obj != null && obj.GetType() == typeof(Notification))
+            {
+                Notification notif = obj as Notification;
+                return this._Id == notif._Id;
             }
             return false;
         }
