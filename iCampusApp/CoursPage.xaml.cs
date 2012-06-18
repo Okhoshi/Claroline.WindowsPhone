@@ -45,7 +45,7 @@ namespace ClarolineApp
             }
             else
                 if (rootDoc.name == null)
-                    ApplicationBar.IsVisible = false;
+                    (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
             
             if (!_cours.isAnn || (SectionsPivot.Items.Count(p => ((PivotItem)p).Name == "Ann") == 0))
             {
@@ -77,9 +77,10 @@ namespace ClarolineApp
             if ((DocContent.SelectedItem as Documents).IsFolder)
             {
                 rootDoc = DocContent.SelectedItem as Documents;
-                ((PivotItem)SectionsPivot.Items.Single(p => ((PivotItem)p).Name == "DnL")).Header = rootDoc.name.ToLower();
-                ApplicationBar.IsVisible = true;
-
+                PivotItem PI = (PivotItem)SectionsPivot.Items.Single(p => ((PivotItem)p).Name == "DnL");
+                PI.Header = rootDoc.name.ToLower();
+                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
+               
                 DocContent.ItemsSource = rootDoc.getContent();
                 DocContent.SelectedIndex = -1;
             }
@@ -108,12 +109,12 @@ namespace ClarolineApp
             if (_root.name == null)
             {
                 PI.Header = AppLanguage.CoursPage_Doc_PI;
-                rootButton.IsEnabled = false;
+                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
             }
             else
             {
                 PI.Header = _root.name.ToLower();
-                rootButton.IsEnabled = true;
+                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
             }
             rootDoc = _root;
         }
@@ -121,6 +122,18 @@ namespace ClarolineApp
         private void refrButton_Click(object sender, EventArgs e)
         {
             App.Client.makeOperation(AllowedOperations.getUpdates, (Cours)this.DataContext);
+        }
+
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SectionsPivot.SelectedItem.Equals(DnL) && rootDoc.name != null)
+            {
+                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
+            }
+            else
+            {
+                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
+            }
         }
     }
 }

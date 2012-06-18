@@ -41,7 +41,7 @@
     <!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
     <Grid x:Name="LayoutRoot">
 <!--Contrôle Pivot-->
-        <controls:Pivot Title="{Binding Converter={StaticResource TitleConverter}, Path=sysCode, Mode=TwoWay}" x:Name="SectionsPivot">
+        <controls:Pivot Title="{Binding Converter={StaticResource TitleConverter}, Path=sysCode, Mode=TwoWay}" x:Name="SectionsPivot" SelectionChanged="Pivot_SelectionChanged">
             <controls:PivotItem x:Name="DnL" Foreground="{Binding dnlNotif, Converter={StaticResource StatusConverter}}" Header="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.CoursPage_Doc_PI, Converter={StaticResource ToLower}}" Margin="12,28,12,0" IsTabStop="True">
                     	<ListBox x:Name="DocContent" SelectionChanged="DocContent_SelectionChanged">
                         <ListBox.ItemTemplate>
