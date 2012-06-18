@@ -1162,10 +1162,10 @@ namespace ClarolineApp.Model
             }
         }
 
-        private String _ressourceType;
+        private ValidTypes _ressourceType;
 
         [Column]
-        public String ressourceType
+        public ValidTypes ressourceType
         {
             get
             {
@@ -1333,9 +1333,9 @@ namespace ClarolineApp.Model
             get
             {
                     switch(_ressourceType){
-                        case "Annonce":
+                        case ValidTypes.Annonce:
                             return (this._isOldRessource) ? AppLanguage.MainPage_Notif_OldAnn : AppLanguage.MainPage_Notif_AddAnn;
-                        case "Documents":
+                        case ValidTypes.Documents:
                             Documents doc = (Documents)(from Documents _doc in App.ViewModel.DocByCours[this.Cours.sysCode]
                                            where _doc.Id == this._ressourceId
                                            select _doc).First();
@@ -1346,6 +1346,12 @@ namespace ClarolineApp.Model
                 
             }
         }
+    }
+
+    public enum ValidTypes
+    {
+        Annonce,
+        Documents
     }
 }
 
