@@ -1161,10 +1161,10 @@ namespace ClarolineApp.Model
             }
         }
 
-        private Type _ressourceType;
+        private String _ressourceType;
 
         [Column]
-        public Type ressourceType
+        public String ressourceType
         {
             get
             {
