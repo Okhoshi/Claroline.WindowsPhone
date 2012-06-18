@@ -82,6 +82,9 @@
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Settings\AppSettings.cs" />
+    <Compile Include="Settings\LoginPrompt.xaml.cs">
+      <DependentUpon>LoginPrompt.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Settings\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -108,6 +111,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\LoginPrompt.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
