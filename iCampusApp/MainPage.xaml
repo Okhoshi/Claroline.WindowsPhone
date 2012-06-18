@@ -8,8 +8,9 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls" 
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:local="clr-namespace:ClarolineApp"
+    xmlns:UC="clr-namespace:ClarolineApp.Settings"
     x:Class="ClarolineApp.MainPage"
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
 	d:DataContext="{d:DesignData SampleData/iCampusViewModelSampleData.xaml}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
@@ -63,17 +64,19 @@
             		</ListBox.Foreground>
             		<ListBox.ItemTemplate>
             			<DataTemplate>
-            				<StackPanel Width="420">
-            					<toolkit:ContextMenuService.ContextMenu>
-            						<toolkit:ContextMenu>
-            							<toolkit:MenuItem Tag="{Binding}" x:Name="sendMail" Header="{Binding LocalizedResources.MainPage_Cours_ContextMenuItem_Mail, Source={StaticResource LocalizedStrings}}" Click="sendMail_Click" />
-            						</toolkit:ContextMenu>
-            					</toolkit:ContextMenuService.ContextMenu>
-            					<toolkit:PerformanceProgressBar Height="10" Margin="0,0,0,-10" Visibility="Collapsed" IsIndeterminate="True" Background="{StaticResource PhoneAccentBrush}" Foreground="{StaticResource PhoneAccentBrush}"/>
-            					<TextBlock  Text="{Binding title, Mode=TwoWay}" TextWrapping="Wrap" Foreground="{Binding notified, ConverterParameter=Black, Converter={StaticResource StatusConverter}}" Margin="12,0"/>
-            					<TextBlock TextWrapping="Wrap" Text="{Binding sysCode}" d:LayoutOverrides="Width" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Foreground="#FF4B4B4B"/>
-            					<TextBlock TextWrapping="Wrap" Text="{Binding titular}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Foreground="#FF4B4B4B"/>
-            				</StackPanel>
+                            <StackPanel Width="420">
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu IsZoomEnabled="False">
+                                        <toolkit:MenuItem Tag="{Binding}" x:Name="sendMail" Header="{Binding LocalizedResources.MainPage_Cours_ContextMenuItem_Mail, Source={StaticResource LocalizedStrings}}" Click="sendMail_Click" />
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding title, Mode=TwoWay}" TextWrapping="Wrap" Foreground="{Binding notified, ConverterParameter=Black, Converter={StaticResource StatusConverter}}" Margin="12,0"/>
+            					    <TextBlock TextWrapping="Wrap" Text="{Binding sysCode}" d:LayoutOverrides="Width" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Foreground="#FF4B4B4B"/>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding titular}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Foreground="#FF4B4B4B"/>
+                                    <toolkit:PerformanceProgressBar Height="10" Margin="0,0,0,-10" Visibility="Collapsed" IsIndeterminate="True" Background="{StaticResource PhoneAccentBrush}" Foreground="{StaticResource PhoneAccentBrush}"/>
+                                </StackPanel>
+                            </StackPanel>
             			</DataTemplate>
             		</ListBox.ItemTemplate>
             	</ListBox>

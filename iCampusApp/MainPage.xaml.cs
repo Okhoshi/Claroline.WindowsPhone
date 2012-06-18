@@ -185,7 +185,7 @@ namespace ClarolineApp
                 EmailComposeTask mailToManagers = new EmailComposeTask()
                 {
                     To = String.Format("\"{0}\" <{1}>", _item.titular, _item.officialEmail),
-                    Subject = String.Format("[{0}][{1}]", set.PlatformSetting, _item.sysCode)
+                    Subject = String.Format("[{0}][{1}]", set.PlatformSetting, _item.title)
                 };
                 mailToManagers.Show();
             }
