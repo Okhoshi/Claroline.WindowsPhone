@@ -106,6 +106,24 @@ namespace ClarolineApp.Languages {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Identifiants absents !.
+        /// </summary>
+        public static string ErrorMessage_NoLogin_Caption {
+            get {
+                return ResourceManager.GetString("ErrorMessage_NoLogin_Caption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Aucun compte n&apos;est configuré dans les paramètres. Vous devez entrer vos identifiants avant de pouvoir utiliser l&apos;application. Le faire maintenant ?.
+        /// </summary>
+        public static string ErrorMessage_NoLogin_Message {
+            get {
+                return ResourceManager.GetString("ErrorMessage_NoLogin_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Le serveur a retourné le code d&apos;erreur suivant : {0}. {1}.
         /// </summary>
         public static string ErrorMessage_ServerReturnCode {

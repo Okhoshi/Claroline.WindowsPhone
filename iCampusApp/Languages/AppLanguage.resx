@@ -238,4 +238,10 @@ cellulaire</value>
   <data name="MainPage_Notif_OldDoc" xml:space="preserve">
     <value>Le document {0} a été mis à jour.</value>
   </data>
+  <data name="ErrorMessage_NoLogin_Caption" xml:space="preserve">
+    <value>Identifiants absents !</value>
+  </data>
+  <data name="ErrorMessage_NoLogin_Message" xml:space="preserve">
+    <value>Aucun compte n'est configuré dans les paramètres. Vous devez entrer vos identifiants avant de pouvoir utiliser l'application. Le faire maintenant ?</value>
+  </data>
 </root>

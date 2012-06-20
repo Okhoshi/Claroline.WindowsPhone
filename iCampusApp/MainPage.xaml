@@ -22,7 +22,7 @@
     <phone:PhoneApplicationPage.Resources>
         <Color x:Key="DarkBG">#C94B4B4B</Color>
         <Color x:Key="LightBG">#DEB2B2B2</Color>
-        <CollectionViewSource x:Key="Notifications">
+        <CollectionViewSource x:Key="Notifications" Filter="CollectionViewSource_Filter">
             <CollectionViewSource.SortDescriptions>
                 <scm:SortDescription PropertyName="date"
                            Direction="Descending" />

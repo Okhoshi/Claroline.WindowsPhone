@@ -38,7 +38,6 @@ namespace ClarolineApp
         {
             InitializeComponent();
             this.DataContext = App.ViewModel;
-            (this.Resources["Notifications"] as CollectionViewSource).Source = App.ViewModel.AllNotifications;
             set = new AppSettings();
             SystemTray.SetProgressIndicator(this, App.currentProgressInd);
             MainPage_Handler = new PropertyChangedEventHandler(MainPage_PropertyChanged);
@@ -53,6 +52,19 @@ namespace ClarolineApp
         {
             base.OnNavigatedTo(e);
             this.Panorama.Title = (new AppSettings()).PlatformSetting;
+
+            if (set.UsernameSetting == "")
+            {
+                if (MessageBox.Show(AppLanguage.ErrorMessage_NoLogin_Message, AppLanguage.ErrorMessage_NoLogin_Caption, MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                {
+                    NavigationService.Navigate(new Uri("/Settings/SettingsPage.xaml", UriKind.Relative));
+                }
+            }
+
+            (this.Resources["Notifications"] as CollectionViewSource).Source = App.ViewModel.AllNotifications;
+            /*(from Notification _note in App.ViewModel.AllNotifications
+                                                                                orderby _note.date descending
+                                                                                select _note).Take(20);*/
         }
 
         #region INotifyPropertyChanged Members
@@ -203,6 +215,12 @@ namespace ClarolineApp
             {
                 ApplicationBar.Mode = ApplicationBarMode.Default;
             }
+        }
+
+        private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
+        {
+            Notification note = e.Item as Notification;
+            e.Accepted = !(note == null || note.date.CompareTo(DateTime.Now.AddDays(-7)) <= 0 || !note.notified);
         }
     }
 }

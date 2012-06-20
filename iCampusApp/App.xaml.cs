@@ -15,6 +15,7 @@ using Microsoft.Phone.Shell;
 using ClarolineApp.Model;
 using ClarolineApp.ViewModel;
 using ClarolineApp.Settings;
+using ClarolineApp.Languages;
 
 namespace ClarolineApp
 {

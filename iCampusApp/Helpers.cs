@@ -3,8 +3,10 @@ using System.Windows.Data;
 using System.Globalization;
 using System.Windows.Media;
 using System.Windows;
+using System.Linq;
 using ClarolineApp.Settings;
 using ClarolineApp.Model;
+using System.Collections.ObjectModel;
 
 namespace ClarolineApp
 {
