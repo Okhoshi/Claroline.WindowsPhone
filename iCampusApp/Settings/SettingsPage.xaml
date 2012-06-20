@@ -14,7 +14,7 @@
 	d:DataContext="{d:DesignData ../SampleData/AppSettingsSampleData.xaml}"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
 	
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:ClarolineApp.Settings">
     
     <phone:PhoneApplicationPage.Resources>
         <ControlTemplate x:Key="ConnectPageTemplate" TargetType="controls:PivotItem"/>
@@ -288,6 +288,7 @@
     <!--Exemple de code illustrant l'utilisation de l'ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton x:Name="Deco" Text="Déconnexion" Click="Deco_Click" IconUri="/icons/appbar.cancel.rest.png"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem x:Name="Reset" Text="Réinitialiser" Click="Reset_Click"/>
             </shell:ApplicationBar.MenuItems>

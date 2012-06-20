@@ -193,5 +193,14 @@ namespace ClarolineApp.Settings
             }
 
         }
+
+        private void Deco_Click(object sender, EventArgs e)
+        {
+            if (settings.UserSetting.userID > 0)
+            {
+                App.Client.invalidateClient();
+                Disconnected.Begin();
+            }
+        }
     }
 }
