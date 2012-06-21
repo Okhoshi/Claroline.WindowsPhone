@@ -11,6 +11,7 @@ using System.Windows;
 using ClarolineApp.Model;
 using ClarolineApp.ViewModel;
 using Newtonsoft.Json;
+using HtmlAgilityPack;
 using ClarolineApp.Settings;
 using ClarolineApp.Languages;
 
@@ -309,6 +310,8 @@ namespace ClarolineApp
                                 foreach (Annonce annonce in Annonces)
                                 {
                                     annonce.Cours = args.cidReq;
+                                    if(annonce.content != null)
+                                        annonce.content = (new HtmlToText()).ConvertHtml(annonce.content);
                                     VM.AddAnnonce(annonce);
                                 }
                                 pulse(Updating);
@@ -358,7 +361,7 @@ namespace ClarolineApp
                                                 {
                                                     foreach (KeyValuePair<String, Dictionary<String, String>> ressource in tool.Value)
                                                     {
-                                                        Annonce upAnn = VM.AnnByCours[course.Key].FirstOrDefault(announce => announce.Id == int.Parse(ressource.Key));
+                                                        Annonce upAnn = VM.AnnByCours[course.Key].FirstOrDefault(announce => announce.ressourceId == int.Parse(ressource.Key));
                                                         if (upAnn == null)
                                                         {
                                                             makeOperation(AllowedOperations.getAnnounceList, upCours);
