@@ -800,7 +800,7 @@ namespace ClarolineApp.Model
             if (obj != null && obj.GetType() == typeof(Documents))
             {
                 Documents fld = obj as Documents;
-                return (fld._url == this._url) && (fld.Cours == this.Cours) && (fld.path == this.path);
+                return (fld._coursId == this._coursId) && (fld.path == this.path);
             }
             return false;
         }
@@ -1085,7 +1085,7 @@ namespace ClarolineApp.Model
             if (obj != null && obj.GetType() == typeof(Annonce))
             {
                 Annonce ann = obj as Annonce;
-                return this._Title == ann._Title && this._Text == ann._Text;
+                return this._coursId == ann._coursId && this._ressourceId==ann._ressourceId;
             }
             return false;
         }
@@ -1099,28 +1099,27 @@ namespace ClarolineApp.Model
     [Table]
     public class Notification : INotifyPropertyChanged, INotifyPropertyChanging
     {
-        public Notification()
-        {
-        }
 
-        public Notification(object resource, bool isOld)
+        public static Notification CreateNotification(object resource, bool isOld)
         {
-            this.isOldRessource = isOld;
-            notified = true;
+            Notification note = new Notification();
+            note.isOldRessource = isOld;
+            note.notified = true;
             if (resource is Annonce)
             {
-                Cours = (resource as Annonce).Cours;
-                date = (resource as Annonce).date;
-                ressourceId = (resource as Annonce).Id;
-                ressourceType = ValidTypes.Annonce;
+                note.Cours = (resource as Annonce).Cours;
+                note.date = (resource as Annonce).date;
+                note.ressourceId = (resource as Annonce).ressourceId;
+                note.ressourceType = ValidTypes.Annonce;
             }
             else if (resource is Documents)
             {
-                Cours = (resource as Documents).Cours;
-                date = (resource as Documents).date;
-                ressourceId = (resource as Documents).Id;
-                ressourceType = ValidTypes.Documents;
+                note.Cours = (resource as Documents).Cours;
+                note.date = (resource as Documents).date;
+                note.ressourceId = (resource as Documents).Id;
+                note.ressourceType = ValidTypes.Documents;
             }
+            return note;
         }
 
         // Define ID: private Notifications, public property and database column.
@@ -1342,7 +1341,7 @@ namespace ClarolineApp.Model
             if (obj != null && obj.GetType() == typeof(Notification))
             {
                 Notification notif = obj as Notification;
-                return this._Id == notif._Id;
+                return this._ressourceId == notif._ressourceId && this._ressourceType == notif._ressourceType && this._coursId == notif._coursId;
             }
             return false;
         }

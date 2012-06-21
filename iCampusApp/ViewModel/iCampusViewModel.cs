@@ -240,7 +240,7 @@ namespace ClarolineApp.ViewModel
 
                     DocByCours[newDoc.Cours.sysCode].Add(newDoc);
 
-                    AddNotification(new Notification(newDoc, false));
+                    AddNotification(Notification.CreateNotification(newDoc, false));
 
                 }
                 else
@@ -251,7 +251,7 @@ namespace ClarolineApp.ViewModel
         private void UpdateFolder(Documents newDoc)
         {
             Documents foldInDb = (from Documents _fold in iCampusDB.Documents
-                                  where ((_fold.Cours == newDoc.Cours) && (_fold.path == newDoc.path))
+                                  where _fold.Equals(newDoc)
                                   select _fold).First();
 
             AllFolders[AllFolders.IndexOf(foldInDb)].notified = newDoc.notified;
@@ -262,7 +262,7 @@ namespace ClarolineApp.ViewModel
             foldInDb.date = newDoc.date;
             AllFolders[AllFolders.IndexOf(foldInDb)].Updated = newDoc.Updated;
             DocByCours[foldInDb.Cours.sysCode][DocByCours[foldInDb.Cours.sysCode].IndexOf(foldInDb)].Updated = newDoc.Updated;
-            foldInDb.Updated = newDoc.Updated; 
+            foldInDb.Updated = newDoc.Updated;
             iCampusDB.SubmitChanges();
 
         }
@@ -270,7 +270,7 @@ namespace ClarolineApp.ViewModel
         private void UpdateFile(Documents newFile)
         {
             Documents fileInDb = (from Documents _file in iCampusDB.Documents
-                                  where ((_file.url == newFile.url) && (_file.Cours == newFile.Cours) && (_file.path == newFile.path))
+                                  where _file.Equals(newFile)
                              select _file).First();
 
             AllFiles[AllFiles.IndexOf(fileInDb)].notified = newFile.notified;
@@ -282,9 +282,12 @@ namespace ClarolineApp.ViewModel
             AllFiles[AllFiles.IndexOf(fileInDb)].Updated = newFile.Updated;
             DocByCours[fileInDb.Cours.sysCode][DocByCours[fileInDb.Cours.sysCode].IndexOf(fileInDb)].Updated = newFile.Updated;
             fileInDb.Updated = newFile.Updated;
+            AllFiles[AllFiles.IndexOf(fileInDb)].date = newFile.date;
+            DocByCours[fileInDb.Cours.sysCode][DocByCours[fileInDb.Cours.sysCode].IndexOf(fileInDb)].date = newFile.date;
+            fileInDb.date = newFile.date;
             iCampusDB.SubmitChanges();
 
-            AddNotification(new Notification(newFile, true));
+            AddNotification(Notification.CreateNotification(newFile, true));
         }
 
         public void DeleteFolder(Documents docForDelete)
@@ -348,7 +351,7 @@ namespace ClarolineApp.ViewModel
 
                 AnnByCours[newAnn.Cours.sysCode].Add(newAnn);
 
-                AddNotification(new Notification(newAnn, false));
+                AddNotification(Notification.CreateNotification(newAnn, false));
             }
             else
                 UpdateAnn(newAnn);
@@ -357,7 +360,7 @@ namespace ClarolineApp.ViewModel
         private void UpdateAnn(Annonce newAnn)
         {
             Annonce annInDb = (from Annonce _ann in iCampusDB.Annonces
-                               where _ann.title == newAnn.title
+                               where _ann.Equals(newAnn)
                                select _ann).First();
 
             annInDb.notified = newAnn.notified;
@@ -366,9 +369,12 @@ namespace ClarolineApp.ViewModel
             annInDb.Updated = newAnn.Updated;
             AnnByCours[annInDb.Cours.sysCode][AnnByCours[annInDb.Cours.sysCode].IndexOf(annInDb)].Updated = newAnn.Updated;
             AllAnnonces[AllAnnonces.IndexOf(annInDb)].Updated = newAnn.Updated;
+            annInDb.date = newAnn.date;
+            AnnByCours[annInDb.Cours.sysCode][AnnByCours[annInDb.Cours.sysCode].IndexOf(annInDb)].date = newAnn.date;
+            AllAnnonces[AllAnnonces.IndexOf(annInDb)].date = newAnn.date;
             iCampusDB.SubmitChanges();
 
-            AddNotification(new Notification(newAnn, true));
+            AddNotification(Notification.CreateNotification(newAnn, true));
         }
 
         public void DeleteAnnonce(Annonce annForDelete)
@@ -395,8 +401,15 @@ namespace ClarolineApp.ViewModel
             newNot.Cours.notified = true;
             UpdateCours(newNot.Cours);
 
-            if (!AllNotifications.Contains(newNot))
+            if (AllNotifications.Contains(newNot))
             {
+                Notification not = (from Notification not_ in AllNotifications
+                                    where not_.Equals(newNot)
+                                    orderby not_.date descending
+                                    select not_).First();
+                if (not.date == newNot.date)
+                    return;
+            }
                 // Add a to-do item to the data context.
 
                 iCampusDB.Notifications.InsertOnSubmit(newNot);
@@ -410,9 +423,9 @@ namespace ClarolineApp.ViewModel
                 AllNotifications.Add(newNot);
 
                 NotifByCours[newNot.Cours.sysCode].Add(newNot);
-            }
+            /*}
             else
-                UpdateNot(newNot);
+                UpdateNot(newNot);*/
         }
 
         private void UpdateNot(Notification newNot)
@@ -477,7 +490,7 @@ namespace ClarolineApp.ViewModel
         private void UpdateCours(Cours newCours)
         {
             Cours coursInDb = (from Cours _cours in iCampusDB.Cours_T
-                               where _cours.sysCode == newCours.sysCode
+                               where _cours.Equals(newCours)
                                select _cours).First();
 
             coursInDb.notified = newCours.notified;
