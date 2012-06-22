@@ -11,10 +11,9 @@
     <Position X="2.5" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Events" Collapsed="true" />
-      <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>QCADEgKASAAgIYABkAAAKACFgCAAAIgDUICBGCEFAQA=</HashCode>
+      <HashCode>QCADEgKASgAgIYABkAAAKACFgCAAAIgDUICBGCENAQA=</HashCode>
       <FileName>Model\iCampusDataContext.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -25,7 +24,7 @@
       <Compartment Name="Events" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAACMACAAAAiIMAAhKACAACFjAQMAcAAQAAAAQJkBQA=</HashCode>
+      <HashCode>AAACMACAAgAiIMAAhKACAACFjAQMAcAAQAAAAQJkBQA=</HashCode>
       <FileName>Model\iCampusDataContext.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -45,7 +44,7 @@
   <Class Name="ClarolineApp.Model.Notification" BaseTypeListCollapsed="true">
     <Position X="6" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACEAAAAQAEIIAAhIAAAACFiAAAMMAAQAAACYAEAQA=</HashCode>
+      <HashCode>AAACUAAAAwAEIIAAhIAAAACFiAAAMMAAQAAACYAEAQA=</HashCode>
       <FileName>Model\iCampusDataContext.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />

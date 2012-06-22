@@ -439,7 +439,7 @@ namespace ClarolineApp.Model
             return base.GetHashCode();
         }
 
-        private DateTime _isLoaded = DateTime.MinValue;
+        private DateTime _isLoaded = DateTime.Parse("01/01/1753");
 
         [Column]
         public DateTime isLoaded
@@ -461,7 +461,7 @@ namespace ClarolineApp.Model
 
         internal bool loadedToday()
         {
-            return _isLoaded.AddDays(1).CompareTo(DateTime.Now) <= 0;
+            return _isLoaded.AddDays(1).CompareTo(DateTime.Now) >= 0;
         }
 
         public void checkNotified()
@@ -1392,6 +1392,15 @@ namespace ClarolineApp.Model
                 }
 
             }
+        }
+
+        internal void checkNotified()
+        {
+            App.ViewModel.AllNotifications.Where(not => not.notified && not.ressourceId == this.ressourceId && not.ressourceType == this.ressourceType).ToList().ForEach(not =>
+            {
+                not.notified = false;
+                App.ViewModel.AddNotification(not);
+            });
         }
     }
 

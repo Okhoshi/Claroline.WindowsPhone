@@ -1,5 +1,5 @@
 ﻿<ClarolineApp_Model:Annonce xmlns:ClarolineApp_Model="clr-namespace:ClarolineApp.Model" Id="53" Updated="False" content="Vestibulum aliquam adipiscing integer aenean nam phasellus suspendisse sed quisque vivamus consequat mauris class curae convallis dis maecenas dignissim pellentesque praesent donec est hac consectetuer pellentesque elementum parturient nullam etiam fusce aptent accumsan leo aliquam auctor bibendum aliquet facilisis congue sollicitudin lorem morbi pellentesque consectetuer fermentum condimentum pellentesque dictumst sollicitudin nulla eleifend duis vestibulum fringilla facilisi" date="06/21/2012" notified="True" ressourceId="77" title="Donec dis maecenas" visibility="False">
 	<ClarolineApp_Model:Annonce.Cours>
-		<ClarolineApp_Model:Cours Id="24" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Cras curabitur" sysCode="Duis phasellus nam aenean aliquam" titular="Mauris curae nunc amet ante" title="Sed class"/>
+		<ClarolineApp_Model:Cours Id="24" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Cras curabitur" sysCode="Duis phasellus nam aenean aliquam" titular="Mauris curae nunc amet ante" title="Sed class"/>
 	</ClarolineApp_Model:Annonce.Cours>
 </ClarolineApp_Model:Annonce>
