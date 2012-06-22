@@ -265,6 +265,7 @@ namespace ClarolineApp
                                 {
                                     VM.AddCours(cours);
                                 }
+                                VM.ClearCoursList();
                                 pulse(Updating);
                             });
                         }
@@ -295,6 +296,7 @@ namespace ClarolineApp
                                     doc.Cours = args.cidReq;
                                     VM.AddDocument(doc);
                                 }
+                                VM.ClearDocsOfCours(args.cidReq);
                                 pulse(Updating);
                             });
                         }
@@ -314,6 +316,7 @@ namespace ClarolineApp
                                         annonce.content = (new HtmlToText()).ConvertHtml(annonce.content);
                                     VM.AddAnnonce(annonce);
                                 }
+                                VM.ClearAnnsOfCours(args.cidReq);
                                 pulse(Updating);
                             });
                         }
