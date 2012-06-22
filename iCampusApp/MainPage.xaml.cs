@@ -218,5 +218,40 @@ namespace ClarolineApp
             Notification note = e.Item as Notification;
             e.Accepted = !(note == null || note.date.CompareTo(DateTime.Now.AddDays(-7)) <= 0 || !note.notified);
         }
+
+        private void NotifList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (NotifList.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            Notification notif = NotifList.SelectedItem as Notification;
+            notif.checkNotified();
+            switch (notif.ressourceType)
+            {
+                case ValidTypes.Annonce:
+                    Annonce ressource = App.ViewModel.AllAnnonces.Single(ann => ann.ressourceId == notif.ressourceId);
+                    if (ressource.notified)
+                    {
+                        ressource.notified = false;
+                        App.ViewModel.AddAnnonce(ressource);
+                        ressource.Cours.checkNotified();
+                    }
+                    App.selecteditem = ressource;
+                    NavigationService.Navigate(new Uri("/AnnonceDetail.xaml", UriKind.Relative));
+                    break;
+                case ValidTypes.Documents:
+                    Documents ressource_doc = App.ViewModel.AllFiles.Single(doc => doc.Id == notif.ressourceId);
+                    if (ressource_doc.notified)
+                    {
+                        ressource_doc.notified = false;
+                        App.ViewModel.AddDocument(ressource_doc);
+                        ressource_doc.Cours.checkNotified();
+                    }
+                    break;
+            }
+            NotifList.SelectedIndex = -1;
+        }
     }
 }
