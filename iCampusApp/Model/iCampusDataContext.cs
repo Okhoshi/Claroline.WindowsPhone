@@ -856,10 +856,15 @@ namespace ClarolineApp.Model
 
         public void checkNotified()
         {
-            if (getContent().All(doc => !doc.notified))
+            if (!this.IsFolder | getContent().All(doc => !doc.notified))
             {
                 this.notified = false;
                 App.ViewModel.AddDocument(this);
+                App.ViewModel.AllNotifications.Where(not => not.notified && not.ressourceId == this.Id && not.ressourceType == ValidTypes.Documents).ToList().ForEach(not =>
+                {
+                    not.notified = false;
+                    App.ViewModel.AddNotification(not);
+                });
             }
         }
     }
@@ -924,9 +929,9 @@ namespace ClarolineApp.Model
             {
                 if (_Title != value)
                 {
-                    NotifyPropertyChanging("Titre");
+                    NotifyPropertyChanging("title");
                     _Title = value;
-                    NotifyPropertyChanged("Titre");
+                    NotifyPropertyChanged("title");
                 }
             }
         }
@@ -944,9 +949,9 @@ namespace ClarolineApp.Model
             {
                 if (_Text != value)
                 {
-                    NotifyPropertyChanging("Texte");
+                    NotifyPropertyChanging("content");
                     _Text = value;
-                    NotifyPropertyChanged("Texte");
+                    NotifyPropertyChanged("content");
                 }
             }
         }
@@ -1127,13 +1132,13 @@ namespace ClarolineApp.Model
         {
             Notification note = new Notification();
             note.isOldRessource = isOld;
-            note.notified = true;
             if (resource is Annonce)
             {
                 note.Cours = (resource as Annonce).Cours;
                 note.date = (resource as Annonce).date;
                 note.ressourceId = (resource as Annonce).ressourceId;
                 note.ressourceType = ValidTypes.Annonce;
+                note.notified = (resource as Annonce).notified;
             }
             else if (resource is Documents)
             {
@@ -1141,6 +1146,7 @@ namespace ClarolineApp.Model
                 note.date = (resource as Documents).date;
                 note.ressourceId = (resource as Documents).Id;
                 note.ressourceType = ValidTypes.Documents;
+                note.notified = (resource as Documents).notified;
             }
             return note;
         }

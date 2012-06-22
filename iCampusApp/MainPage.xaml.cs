@@ -228,16 +228,11 @@ namespace ClarolineApp
 
             Notification notif = NotifList.SelectedItem as Notification;
             notif.checkNotified();
+            NotifList.SelectedIndex = -1;
             switch (notif.ressourceType)
             {
                 case ValidTypes.Annonce:
                     Annonce ressource = App.ViewModel.AllAnnonces.Single(ann => ann.ressourceId == notif.ressourceId);
-                    if (ressource.notified)
-                    {
-                        ressource.notified = false;
-                        App.ViewModel.AddAnnonce(ressource);
-                        ressource.Cours.checkNotified();
-                    }
                     App.selecteditem = ressource;
                     NavigationService.Navigate(new Uri("/AnnonceDetail.xaml", UriKind.Relative));
                     break;
@@ -251,7 +246,6 @@ namespace ClarolineApp
                     }
                     break;
             }
-            NotifList.SelectedIndex = -1;
         }
     }
 }

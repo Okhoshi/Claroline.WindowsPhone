@@ -68,7 +68,7 @@ namespace ClarolineApp
             return client;
         }
 
-        public void makeOperation(AllowedOperations op, Cours reqCours = null)
+        public void makeOperation(AllowedOperations op, Cours reqCours = null, int resID = -1)
         {
             if (IsNetworkAvailable())
             {
@@ -77,6 +77,14 @@ namespace ClarolineApp
                     CallbackArgs args;
                     switch (op)
                     {
+                        case AllowedOperations.getSingleAnnounce:
+                            if (reqCours == null && resID < 0)
+                            {
+                                return;
+                            }
+                            args = new CallbackArgs() { Request = getClient(), cidReq = reqCours, resId = resID, operation = op };
+                            bw.RunWorkerAsync(args);
+                            break;
                         case AllowedOperations.getCourseToolList:
                         case AllowedOperations.getDocList:
                         case AllowedOperations.getAnnounceList:
@@ -312,7 +320,7 @@ namespace ClarolineApp
                                 foreach (Annonce annonce in Annonces)
                                 {
                                     annonce.Cours = args.cidReq;
-                                    if(annonce.content != null)
+                                    if (annonce.content != null)
                                         annonce.content = (new HtmlToText()).ConvertHtml(annonce.content);
                                     VM.AddAnnonce(annonce);
                                 }
@@ -320,6 +328,19 @@ namespace ClarolineApp
                                 pulse(Updating);
                             });
                         }
+                        break;
+
+                    case AllowedOperations.getSingleAnnounce:
+                        setProgressIndicator(true, String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.CoursPage_Ann_PI));
+                        Annonce singleAnnonce = JsonConvert.DeserializeObject<Annonce>(strContent);
+                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                        {
+                            singleAnnonce.Cours = args.cidReq;
+                            if (singleAnnonce.content != null)
+                                singleAnnonce.content = (new HtmlToText()).ConvertHtml(singleAnnonce.content);
+                            VM.AddAnnonce(singleAnnonce);
+                            pulse(Updating);
+                        });
                         break;
 
                     case AllowedOperations.getUpdates:
@@ -501,7 +522,7 @@ namespace ClarolineApp
         private void pulse(Mutex mutex = null)
         {
             if (mutex == null) mutex = Requesting;
-            if (((mutex == Requesting)?Waiting:Waiting2) > 0)
+            if (((mutex == Requesting) ? Waiting : Waiting2) > 0)
             {
                 lock (mutex)
                 {
@@ -572,6 +593,7 @@ namespace ClarolineApp
         public Cours cidReq;
         public String login;
         public String password;
+        public int resId;
 
         public override string ToString()
         {
@@ -589,6 +611,8 @@ namespace ClarolineApp
                     return "Method=getDocList&cidReq=" + cidReq.sysCode;
                 case AllowedOperations.getAnnounceList:
                     return "Method=getAnnounceList&cidReq=" + cidReq.sysCode;
+                case AllowedOperations.getSingleAnnounce:
+                    return "Method=getSingleAnnounce&cidReq=" + cidReq.sysCode + "&resId=" + resId;
                 case AllowedOperations.getUpdates:
                     return "Method=getUpdates";
                 default:
@@ -605,6 +629,7 @@ namespace ClarolineApp
         getCourseToolList,
         getDocList,
         getAnnounceList,
+        getSingleAnnounce,
         updateCompleteCourse,
         getUpdates
     }

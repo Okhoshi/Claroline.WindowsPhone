@@ -288,7 +288,7 @@ namespace ClarolineApp.ViewModel
             fileInDb.date = newFile.date;
             iCampusDB.SubmitChanges();
 
-            AddNotification(Notification.CreateNotification(newFile, true));
+            AddNotification(Notification.CreateNotification(fileInDb, true));
         }
 
         public void DeleteFolder(Documents docForDelete)
@@ -370,15 +370,18 @@ namespace ClarolineApp.ViewModel
             annInDb.Updated = newAnn.Updated;
             AnnByCours[annInDb.Cours.sysCode][AnnByCours[annInDb.Cours.sysCode].IndexOf(annInDb)].Updated = newAnn.Updated;
             AllAnnonces[AllAnnonces.IndexOf(annInDb)].Updated = newAnn.Updated;
-            annInDb.date = newAnn.date;
-            AnnByCours[annInDb.Cours.sysCode][AnnByCours[annInDb.Cours.sysCode].IndexOf(annInDb)].date = newAnn.date;
-            AllAnnonces[AllAnnonces.IndexOf(annInDb)].date = newAnn.date;
+            if (annInDb.date.CompareTo(newAnn.date) < 0)
+            {
+                annInDb.date = newAnn.date;
+                AnnByCours[annInDb.Cours.sysCode][AnnByCours[annInDb.Cours.sysCode].IndexOf(annInDb)].date = newAnn.date;
+                AllAnnonces[AllAnnonces.IndexOf(annInDb)].date = newAnn.date;
+            }
             annInDb.content = newAnn.content;
             AnnByCours[annInDb.Cours.sysCode][AnnByCours[annInDb.Cours.sysCode].IndexOf(annInDb)].content = newAnn.content;
             AllAnnonces[AllAnnonces.IndexOf(annInDb)].content = newAnn.content;
             iCampusDB.SubmitChanges();
 
-            AddNotification(Notification.CreateNotification(newAnn, true));
+            AddNotification(Notification.CreateNotification(annInDb, true));
         }
 
         public void DeleteAnnonce(Annonce annForDelete)

@@ -31,9 +31,10 @@ namespace ClarolineApp
             InitializeComponent();
 
             _cours = App.selecteditem as Cours;
+            SystemTray.SetProgressIndicator(this, App.currentProgressInd);
 
             this.DataContext = _cours;
-            rootDoc = new Documents() { Cours = _cours, name = null, IsFolder = true, path = ""};
+            rootDoc = new Documents() { Cours = _cours, name = null, IsFolder = true, path = "" };
             DocContent.ItemsSource = rootDoc.getContent();
             AnnList.ItemsSource = App.ViewModel.AnnByCours[_cours.sysCode];
 
@@ -47,13 +48,13 @@ namespace ClarolineApp
             else
                 if (rootDoc.name == null)
                     (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
-            
+
             if (!_cours.isAnn || (SectionsPivot.Items.Count(p => ((PivotItem)p).Name == "Ann") == 0))
             {
                 SectionsPivot.Items.Remove(SectionsPivot.Items.Single(p => ((PivotItem)p).Name == "Ann"));
             }
         }
-        
+
         //--------------------------------------------------------------------
         // Event handler
         //--------------------------------------------------------------------
@@ -61,7 +62,6 @@ namespace ClarolineApp
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            SystemTray.SetProgressIndicator(this, App.currentProgressInd);
         }
 
         private void DocContent_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -80,7 +80,7 @@ namespace ClarolineApp
                 PivotItem PI = (PivotItem)SectionsPivot.Items.Single(p => ((PivotItem)p).Name == "DnL");
                 PI.Header = rootDoc.name.ToLower();
                 (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
-               
+
                 DocContent.ItemsSource = rootDoc.getContent();
                 DocContent.SelectedIndex = -1;
             }
@@ -141,15 +141,14 @@ namespace ClarolineApp
 
         private void AnnList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((AnnList.SelectedItem as Annonce).notified)
+            if (AnnList.SelectedIndex == -1)
             {
-                _cours.checkNotified();
+                return;
             }
-            else
-            {
-                App.selecteditem = AnnList.SelectedItem;
-                NavigationService.Navigate(new Uri("/AnnonceDetail.xaml", UriKind.Relative));
-            }
+
+            App.selecteditem = AnnList.SelectedItem;
+            AnnList.SelectedIndex = -1;
+            NavigationService.Navigate(new Uri("/AnnonceDetail.xaml", UriKind.Relative));
         }
     }
 }
