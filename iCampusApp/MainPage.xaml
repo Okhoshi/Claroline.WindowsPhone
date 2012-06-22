@@ -90,7 +90,7 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="12,0,0,0" Width="420">
-                            	<TextBlock TextWrapping="Wrap" Text="{Binding Text, Mode=OneTime}" Foreground="{Binding notified, ConverterParameter=Black, Converter={StaticResource StatusConverter}, Mode=TwoWay}"/>
+                            	<TextBlock TextWrapping="Wrap" Text="{Binding Text, Mode=OneWay}" Foreground="{Binding notified, ConverterParameter=Black, Converter={StaticResource StatusConverter}, Mode=TwoWay}"/>
                             	<Grid>
                             		<TextBlock TextWrapping="Wrap" Text="{Binding Cours.sysCode}" HorizontalAlignment="Left" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0,0,12,0" Foreground="#FF4B4B4B"/>
                             		<TextBlock TextWrapping="Wrap" Text="{Binding date, Converter={StaticResource DateFormater}}" HorizontalAlignment="Right" Margin="83,0,12,0" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="#FF4B4B4B"/>

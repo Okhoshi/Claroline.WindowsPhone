@@ -414,7 +414,7 @@ namespace ClarolineApp.ViewModel
                                     where not_.Equals(newNot)
                                     orderby not_.date descending
                                     select not_).First();
-                if (not.date == newNot.date)
+                if (not.date.Date == newNot.date.Date)
                     return;
             }
                 // Add a to-do item to the data context.

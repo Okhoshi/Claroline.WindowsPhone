@@ -38,10 +38,12 @@ namespace ClarolineApp
         {
             InitializeComponent();
             this.DataContext = App.ViewModel;
-            set = new AppSettings();
             SystemTray.SetProgressIndicator(this, App.currentProgressInd);
             MainPage_Handler = new PropertyChangedEventHandler(MainPage_PropertyChanged);
             Failure_Handler = new PropertyChangedEventHandler(FailureOccured);
+
+            (this.Resources["Notifications"] as CollectionViewSource).Source = App.ViewModel.AllNotifications;
+            set = new AppSettings();
         }
         //--------------------------------------------------------------------
         // Event handler
@@ -61,7 +63,6 @@ namespace ClarolineApp
                 }
             }
 
-            (this.Resources["Notifications"] as CollectionViewSource).Source = App.ViewModel.AllNotifications;
             /*(from Notification _note in App.ViewModel.AllNotifications
                                                                                 orderby _note.date descending
                                                                                 select _note).Take(20);*/
@@ -221,7 +222,7 @@ namespace ClarolineApp
 
         private void NotifList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (NotifList.SelectedIndex == -1)
+            if (NotifList.SelectedIndex == -1 || set == null)
             {
                 return;
             }
