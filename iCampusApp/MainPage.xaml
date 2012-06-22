@@ -86,7 +86,7 @@
             	</ListBox>
     		</controls:PanoramaItem>
             <controls:PanoramaItem x:Name="Notif_PI" Header="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.MainPage_Notif_PI, Converter={StaticResource ToLower}}" Foreground="Black">
-                <ListBox x:Name="NotifList" ItemsSource="{Binding Source={StaticResource Notifications}}" Margin="0,-30,0,30" SelectionChanged="NotifList_SelectionChanged">
+                <ListBox x:Name="NotifList" ItemsSource="{Binding Source={StaticResource Notifications}, Mode=OneWay}" Margin="0,-30,0,30" SelectionChanged="NotifList_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="12,0,0,0" Width="420">

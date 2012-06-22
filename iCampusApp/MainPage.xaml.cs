@@ -216,7 +216,7 @@ namespace ClarolineApp
         private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
         {
             Notification note = e.Item as Notification;
-            e.Accepted = !(note == null || note.date.CompareTo(DateTime.Now.AddDays(-7)) <= 0 || !note.notified);
+            e.Accepted = !(note == null || note.date.CompareTo(DateTime.Now.AddDays(-7)) <= 0);
         }
 
         private void NotifList_SelectionChanged(object sender, SelectionChangedEventArgs e)
