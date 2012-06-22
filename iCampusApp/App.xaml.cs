@@ -22,7 +22,7 @@ namespace ClarolineApp
     public partial class App : Application
     {
         public static object selecteditem = null;
-        public const string ApplicationName = "Claroline Xplorer";
+        public const string ApplicationName = "Claroline Mobile";
         public static ProgressIndicator currentProgressInd = null;
         public static ClaroClient Client;
 
