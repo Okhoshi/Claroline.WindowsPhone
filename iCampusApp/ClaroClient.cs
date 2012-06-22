@@ -163,7 +163,7 @@ namespace ClarolineApp
                     wait();
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        ((CallbackArgs)e.Argument).cidReq.isLoaded = true;
+                        ((CallbackArgs)e.Argument).cidReq.isLoaded = DateTime.Now;
                     });
                     break;
                 default:

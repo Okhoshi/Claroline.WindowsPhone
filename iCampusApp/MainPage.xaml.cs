@@ -91,14 +91,10 @@ namespace ClarolineApp
 
             App.selecteditem = CoursList.SelectedItem;
 
-            if ((CoursList.SelectedItem as Cours).isLoaded)
+            if ((CoursList.SelectedItem as Cours).loadedToday())
             {
-                if ((CoursList.SelectedItem as Cours).notified)
-                {
-                    ((Cours)CoursList.SelectedItem).notified = false;
-                    App.ViewModel.AddCours((Cours)CoursList.SelectedItem);
-                }
-
+                if((CoursList.SelectedItem as Cours).notified)
+                    (CoursList.SelectedItem as Cours).checkNotified();
                 NavigationService.Navigate(new Uri("/CoursPage.xaml", UriKind.Relative));
             }
             else

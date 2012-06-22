@@ -439,10 +439,10 @@ namespace ClarolineApp.Model
             return base.GetHashCode();
         }
 
-        private bool _isLoaded = false;
+        private DateTime _isLoaded = DateTime.MinValue;
 
         [Column]
-        public bool isLoaded
+        public DateTime isLoaded
         {
             get
             {
@@ -456,6 +456,20 @@ namespace ClarolineApp.Model
                     _isLoaded = value;
                     NotifyPropertyChanged("isLoaded");
                 }
+            }
+        }
+
+        internal bool loadedToday()
+        {
+            return _isLoaded.AddDays(1).CompareTo(DateTime.Now) <= 0;
+        }
+
+        public void checkNotified()
+        {
+            if (App.ViewModel.AnnByCours[this.sysCode].All(announce => !announce.notified) && App.ViewModel.DocByCours[this.sysCode].All(file => !file.notified))
+            {
+                this.notified = false;
+                App.ViewModel.AddCours(this);
             }
         }
     }
@@ -838,6 +852,15 @@ namespace ClarolineApp.Model
                         in App.ViewModel.DocByCours[this._cours.Entity.sysCode]
                                                         where _doc._path == ((_doc._isFolder) ? (this._path + "/" + _doc._name) : (this._path + "/" + _doc._name + "." + _doc._ext))
                                                         select _doc).ToList<Documents>());
+        }
+
+        public void checkNotified()
+        {
+            if (getContent().All(doc => !doc.notified))
+            {
+                this.notified = false;
+                App.ViewModel.AddDocument(this);
+            }
         }
     }
 

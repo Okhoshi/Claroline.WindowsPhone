@@ -24,12 +24,13 @@ namespace ClarolineApp
     {
 
         private Documents rootDoc;
+        private Cours _cours;
 
         public CoursPage()
         {
             InitializeComponent();
 
-            Cours _cours = App.selecteditem as Cours;
+            _cours = App.selecteditem as Cours;
 
             this.DataContext = _cours;
             rootDoc = new Documents() { Cours = _cours, name = null, IsFolder = true, path = ""};
@@ -71,8 +72,7 @@ namespace ClarolineApp
             }
             if ((DocContent.SelectedItem as Documents).notified)
             {
-                ((Documents)DocContent.SelectedItem).notified = false;
-                App.ViewModel.AddDocument((Documents)DocContent.SelectedItem);
+                (DocContent.SelectedItem as Documents).checkNotified();
             }
             if ((DocContent.SelectedItem as Documents).IsFolder)
             {
@@ -86,6 +86,7 @@ namespace ClarolineApp
             }
             else
             {
+                rootDoc.checkNotified();
                 AppSettings appSet = new AppSettings();
                 byte[] toEncodeAsBytes = System.Text.Encoding.GetEncoding("iso-8859-1").GetBytes(appSet.DomainSetting + (DocContent.SelectedItem as Documents).url.Replace("&amp;", "&"));
                 string EncodedURL = System.Convert.ToBase64String(toEncodeAsBytes);
@@ -108,11 +109,13 @@ namespace ClarolineApp
 
             if (_root.name == null)
             {
+                _cours.checkNotified();
                 PI.Header = AppLanguage.CoursPage_Doc_PI;
                 (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
             }
             else
             {
+                _root.checkNotified();
                 PI.Header = _root.name.ToLower();
                 (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
             }
@@ -121,7 +124,7 @@ namespace ClarolineApp
 
         private void refrButton_Click(object sender, EventArgs e)
         {
-            App.Client.makeOperation(AllowedOperations.getUpdates, (Cours)this.DataContext);
+            App.Client.makeOperation(AllowedOperations.getUpdates, _cours);
         }
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -140,7 +143,7 @@ namespace ClarolineApp
         {
             if ((AnnList.SelectedItem as Annonce).notified)
             {
-
+                _cours.checkNotified();
             }
             else
             {
