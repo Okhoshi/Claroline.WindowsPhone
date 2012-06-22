@@ -148,8 +148,9 @@ namespace ClarolineApp.ViewModel
                               select ann;
             AllAnnonces = new ObservableCollection<Annonce>(annsInDb);
 
-            var notifsInDb = from Notification not in iCampusDB.Notifications
-                             select not;
+            var notifsInDb = (from Notification not in iCampusDB.Notifications
+                             orderby not.date descending
+                             select not).Take(1000);
             AllNotifications = new ObservableCollection<Notification>(notifsInDb);
 
             // Query the database and load all associated items to their respective collections.
@@ -251,7 +252,7 @@ namespace ClarolineApp.ViewModel
         private void UpdateFolder(Documents newDoc)
         {
             Documents foldInDb = (from Documents _fold in iCampusDB.Documents
-                                  where _fold.Equals(newDoc)
+                                  where _fold.Equals(AllFolders[AllFolders.IndexOf(newDoc)])
                                   select _fold).First();
 
             AllFolders[AllFolders.IndexOf(foldInDb)].notified = newDoc.notified;
@@ -270,7 +271,7 @@ namespace ClarolineApp.ViewModel
         private void UpdateFile(Documents newFile)
         {
             Documents fileInDb = (from Documents _file in iCampusDB.Documents
-                                  where _file.Equals(newFile)
+                                  where _file.Equals(AllFiles[AllFiles.IndexOf(newFile)])
                              select _file).First();
 
             AllFiles[AllFiles.IndexOf(fileInDb)].notified = newFile.notified;
@@ -360,7 +361,7 @@ namespace ClarolineApp.ViewModel
         private void UpdateAnn(Annonce newAnn)
         {
             Annonce annInDb = (from Annonce _ann in iCampusDB.Annonces
-                               where _ann.Equals(newAnn)
+                               where _ann.Equals(AllAnnonces[AllAnnonces.IndexOf(newAnn)])
                                select _ann).First();
 
             annInDb.notified = newAnn.notified;
@@ -372,6 +373,9 @@ namespace ClarolineApp.ViewModel
             annInDb.date = newAnn.date;
             AnnByCours[annInDb.Cours.sysCode][AnnByCours[annInDb.Cours.sysCode].IndexOf(annInDb)].date = newAnn.date;
             AllAnnonces[AllAnnonces.IndexOf(annInDb)].date = newAnn.date;
+            annInDb.content = newAnn.content;
+            AnnByCours[annInDb.Cours.sysCode][AnnByCours[annInDb.Cours.sysCode].IndexOf(annInDb)].content = newAnn.content;
+            AllAnnonces[AllAnnonces.IndexOf(annInDb)].content = newAnn.content;
             iCampusDB.SubmitChanges();
 
             AddNotification(Notification.CreateNotification(newAnn, true));
@@ -490,7 +494,7 @@ namespace ClarolineApp.ViewModel
         private void UpdateCours(Cours newCours)
         {
             Cours coursInDb = (from Cours _cours in iCampusDB.Cours_T
-                               where _cours.Equals(newCours)
+                               where _cours.Equals(AllCours[AllCours.IndexOf(newCours)])
                                select _cours).First();
 
             coursInDb.notified = newCours.notified;
