@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{d227b75f-0d69-40c4-838b-a821a20a2e4b}" Title="Claroline Explorer" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="iCampusApp author" Description="Sample description" Publisher="iCampusApp">
+  <App xmlns="" ProductID="{d227b75f-0d69-40c4-838b-a821a20a2e4b}" Title="Claroline Mobile" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="iCampusApp author" Description="Sample description" Publisher="iCampusApp">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_GAMERSERVICES" />
@@ -26,7 +26,7 @@
         <TemplateType5>
           <BackgroundImageURI IsRelative="true" IsResource="false">Background.png</BackgroundImageURI>
           <Count>0</Count>
-          <Title>Claroline Xplorer</Title>
+          <Title>Claroline Mobile</Title>
         </TemplateType5>
       </PrimaryToken>
     </Tokens>

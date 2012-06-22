@@ -7,29 +7,10 @@ using System.Linq;
 using ClarolineApp.Settings;
 using ClarolineApp.Model;
 using System.Collections.ObjectModel;
+using ClarolineApp.Languages;
 
 namespace ClarolineApp
 {
-    public class AnnouncePageLayout : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            String text = (string) value;
-
-            if ((bool)parameter)
-            {
-                text = text.Substring(0, 197);
-                text += "...";
-            }
-            return text;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return value;
-        }
-    }
-
     public class ToLower : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -101,7 +82,13 @@ namespace ClarolineApp
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             DateTime Date = (DateTime) value;
-            return Date.ToShortDateString();
+            switch ((string)parameter)
+            {
+                case "2":
+                    return String.Format(AppLanguage.AnnoncePage_DateFormater_Published, Date.ToLongDateString());
+                default:
+                    return Date.ToShortDateString();
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

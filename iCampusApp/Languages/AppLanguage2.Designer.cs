@@ -61,6 +61,15 @@ namespace ClarolineApp.Languages {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Publiée le {0}.
+        /// </summary>
+        public static string AnnoncePage_DateFormater_Published {
+            get {
+                return ResourceManager.GetString("AnnoncePage_DateFormater_Published", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Annonces.
         /// </summary>
         public static string CoursPage_Ann_PI {

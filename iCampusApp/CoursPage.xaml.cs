@@ -135,5 +135,18 @@ namespace ClarolineApp
                 (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
             }
         }
+
+        private void AnnList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((AnnList.SelectedItem as Annonce).notified)
+            {
+
+            }
+            else
+            {
+                App.selecteditem = AnnList.SelectedItem;
+                NavigationService.Navigate(new Uri("/AnnonceDetail.xaml", UriKind.Relative));
+            }
+        }
     }
 }
