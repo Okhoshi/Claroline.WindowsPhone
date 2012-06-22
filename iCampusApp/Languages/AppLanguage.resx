@@ -244,4 +244,7 @@ cellulaire</value>
   <data name="ErrorMessage_NoLogin_Message" xml:space="preserve">
     <value>Aucun compte n'est configuré dans les paramètres. Vous devez entrer vos identifiants avant de pouvoir utiliser l'application. Le faire maintenant ?</value>
   </data>
+  <data name="AnnoncePage_DateFormater_Published" xml:space="preserve">
+    <value>Publiée le {0}</value>
+  </data>
 </root>
