@@ -379,6 +379,9 @@ namespace ClarolineApp.ViewModel
             annInDb.content = newAnn.content;
             AnnByCours[annInDb.Cours.sysCode][AnnByCours[annInDb.Cours.sysCode].IndexOf(annInDb)].content = newAnn.content;
             AllAnnonces[AllAnnonces.IndexOf(annInDb)].content = newAnn.content;
+            annInDb.upToDateContent = newAnn.upToDateContent;
+            AnnByCours[annInDb.Cours.sysCode][AnnByCours[annInDb.Cours.sysCode].IndexOf(annInDb)].upToDateContent = newAnn.upToDateContent;
+            AllAnnonces[AllAnnonces.IndexOf(annInDb)].upToDateContent = newAnn.upToDateContent;
             iCampusDB.SubmitChanges();
 
             AddNotification(Notification.CreateNotification(annInDb, true));

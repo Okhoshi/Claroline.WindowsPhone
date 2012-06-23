@@ -47,7 +47,8 @@ namespace ClarolineApp
                     App.ViewModel.AddNotification(not);
                 });
 
-                App.Client.makeOperation(AllowedOperations.getSingleAnnounce, _annonce.Cours, _annonce.ressourceId);
+                if(!_annonce.upToDateContent)
+                    App.Client.makeOperation(AllowedOperations.getSingleAnnounce, _annonce.Cours, _annonce.ressourceId);
             }
         }
     }

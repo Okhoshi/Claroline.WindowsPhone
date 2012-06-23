@@ -396,6 +396,7 @@ namespace ClarolineApp
                                                             {
                                                                 upAnn.date = DateTime.Parse(ressource.Value["date"]);
                                                                 upAnn.notified = true;
+                                                                upAnn.upToDateContent = false;
                                                                 VM.AddAnnonce(upAnn);
                                                                 pulse(Updating);
                                                             });

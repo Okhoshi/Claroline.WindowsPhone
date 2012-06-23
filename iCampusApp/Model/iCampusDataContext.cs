@@ -1076,6 +1076,8 @@ namespace ClarolineApp.Model
             }
         }
 
+        public bool upToDateContent = true;
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
