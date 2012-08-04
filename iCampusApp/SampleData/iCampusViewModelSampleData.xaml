@@ -2,220 +2,220 @@
 	<ClarolineApp_ViewModel:iCampusViewModel.AllCours>
 		<ClarolineApp_Model:Cours Id="83" Updated="True" annNotif="False" dnlNotif="True"  isAnn="False" isDnL="True" notified="True" officialEmail="Posuere ultrices auctor" sysCode="Nam" titular="Non cursus" title="Amet vehicula parturient"/>
 		<ClarolineApp_Model:Cours Id="69" Updated="False" annNotif="True" dnlNotif="False"  isAnn="True" isDnL="False" notified="False" officialEmail="Class pretium dictum vestibulum" sysCode="Cras" titular="Praesent arcu diam" title="Rhoncus maecenas donec vestibulum"/>
-		<ClarolineApp_Model:Cours Id="52" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Sodales etiam eget elit accumsan" sysCode="Sed" titular="Habitasse dictumst" title="Per fusce adipiscing parturient"/>
-		<ClarolineApp_Model:Cours Id="95" Updated="False" annNotif="True" dnlNotif="False" isLoaded="True" isAnn="True" isDnL="False" notified="False" officialEmail="Aliquam enim lectus lorem libero" sysCode="Dis" titular="Sed sem vestibulum erat eros" title="Litora facilisi morbi luctus"/>
-		<ClarolineApp_Model:Cours Id="60" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Integer sit nulla adipiscing" sysCode="Duis" titular="Mattis nibh parturient malesuada" title="Proin faucibus habitant"/>
-		<ClarolineApp_Model:Cours Id="99" Updated="False" annNotif="True" dnlNotif="False" isLoaded="True" isAnn="True" isDnL="False" notified="False" officialEmail="Quisque vivamus vel" sysCode="Nunc" titular="Sed vestibulum aliquam penatibus" title="Nam mollis vestibulum nisl montes"/>
-		<ClarolineApp_Model:Cours Id="57" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Nunc inceptos aliquet odio orci" sysCode="Est" titular="Dis platea pede est" title="Ornare blandit augue"/>
-		<ClarolineApp_Model:Cours Id="20" Updated="False" annNotif="True" dnlNotif="False" isLoaded="True" isAnn="True" isDnL="False" notified="False" officialEmail="Dolor quam fames" sysCode="Amet" titular="Hac commodo lobortis" title="Tincidunt parturient"/>
-		<ClarolineApp_Model:Cours Id="55" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Leo nascetur conubia vestibulum tristique" sysCode="Aenean" titular="Mus vestibulum quis" title="Adipiscing parturient"/>
-		<ClarolineApp_Model:Cours Id="67" Updated="False" annNotif="True" dnlNotif="False" isLoaded="True" isAnn="True" isDnL="False" notified="False" officialEmail="Felis vestibulum urna ipsum" sysCode="Ante" titular="Cubilia justo" title="Non cras"/>
+		<ClarolineApp_Model:Cours Id="52" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Sodales etiam eget elit accumsan" sysCode="Sed" titular="Habitasse dictumst" title="Per fusce adipiscing parturient"/>
+		<ClarolineApp_Model:Cours Id="95" Updated="False" annNotif="True" dnlNotif="False" isAnn="True" isDnL="False" notified="False" officialEmail="Aliquam enim lectus lorem libero" sysCode="Dis" titular="Sed sem vestibulum erat eros" title="Litora facilisi morbi luctus"/>
+		<ClarolineApp_Model:Cours Id="60" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Integer sit nulla adipiscing" sysCode="Duis" titular="Mattis nibh parturient malesuada" title="Proin faucibus habitant"/>
+		<ClarolineApp_Model:Cours Id="99" Updated="False" annNotif="True" dnlNotif="False" isAnn="True" isDnL="False" notified="False" officialEmail="Quisque vivamus vel" sysCode="Nunc" titular="Sed vestibulum aliquam penatibus" title="Nam mollis vestibulum nisl montes"/>
+		<ClarolineApp_Model:Cours Id="57" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Nunc inceptos aliquet odio orci" sysCode="Est" titular="Dis platea pede est" title="Ornare blandit augue"/>
+		<ClarolineApp_Model:Cours Id="20" Updated="False" annNotif="True" dnlNotif="False" isAnn="True" isDnL="False" notified="False" officialEmail="Dolor quam fames" sysCode="Amet" titular="Hac commodo lobortis" title="Tincidunt parturient"/>
+		<ClarolineApp_Model:Cours Id="55" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Leo nascetur conubia vestibulum tristique" sysCode="Aenean" titular="Mus vestibulum quis" title="Adipiscing parturient"/>
+		<ClarolineApp_Model:Cours Id="67" Updated="False" annNotif="True" dnlNotif="False" isAnn="True" isDnL="False" notified="False" officialEmail="Felis vestibulum urna ipsum" sysCode="Ante" titular="Cubilia justo" title="Non cras"/>
 	</ClarolineApp_ViewModel:iCampusViewModel.AllCours>
 	<ClarolineApp_ViewModel:iCampusViewModel.AllFolders>
 		<ClarolineApp_Model:Documents Description="Sagittis laoreet senectus dolor" Extension="Fames convallis sociosqu cras" IsFolder="False" Id="82" Updated="True" date="06/18/2012 15:33:56" notified="False" name="Adipiscing dignissim taciti elementum felis" path="Duis natoque nunc amet" size="278.76" url="Facilisis tellus parturient" visibility="True">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="49" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Nulla nec proin venenatis vulputate" sysCode="Mauris" titular="Sem consequat pulvinar urna" title="Lacinia curabitur sed phasellus"/>
+				<ClarolineApp_Model:Cours Id="49" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Nulla nec proin venenatis vulputate" sysCode="Mauris" titular="Sem consequat pulvinar urna" title="Lacinia curabitur sed phasellus"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Tempus eget lacus" Extension="Posuere vel" IsFolder="True" Id="13" Updated="False" date="06/18/2012 15:33:56" notified="True" name="Lorem potenti volutpat adipiscing elit" path="Maecenas tortor parturient magna enim" size="230.13" url="Fringilla praesent massa" visibility="False">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="45" Updated="False" annNotif="True" dnlNotif="False" isLoaded="True" isAnn="True" isDnL="False" notified="False" officialEmail="Suscipit tempor" sysCode="Maecenas" titular="Justo diam fermentum vehicula" title="Ultrices ipsum ante arcu"/>
+				<ClarolineApp_Model:Cours Id="45" Updated="False" annNotif="True" dnlNotif="False" isAnn="True" isDnL="False" notified="False" officialEmail="Suscipit tempor" sysCode="Maecenas" titular="Justo diam fermentum vehicula" title="Ultrices ipsum ante arcu"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Eleifend nisi" Extension="Netus parturient rhoncus" IsFolder="False" Id="58" Updated="True" date="06/18/2012 15:33:56" notified="False" name="Facilisi sed sodales vestibulum nulla" path="Nisl porta viverra dis" size="407.56" url="Faucibus vestibulum purus" visibility="True">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="75" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Turpis habitasse varius erat accumsan" sysCode="Praesent" titular="Bibendum himenaeos aenean adipiscing dictumst" title="Nam hendrerit pretium nibh vestibulum"/>
+				<ClarolineApp_Model:Cours Id="75" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Turpis habitasse varius erat accumsan" sysCode="Praesent" titular="Bibendum himenaeos aenean adipiscing dictumst" title="Nam hendrerit pretium nibh vestibulum"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Adipiscing parturient lobortis class" Extension="Auctor congue" IsFolder="True" Id="45" Updated="False" date="06/18/2012 15:33:56" notified="True" name="Nascetur vestibulum vestibulum pharetra" path="Cursus malesuada" size="462.62" url="Odio placerat curae" visibility="False">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="70" Updated="False" annNotif="True" dnlNotif="False" isLoaded="True" isAnn="True" isDnL="False" notified="False" officialEmail="Risus aliquam mauris" sysCode="Accumsan" titular="Nullam aptent vitae integer imperdiet" title="Est velit inceptos hac interdum"/>
+				<ClarolineApp_Model:Cours Id="70" Updated="False" annNotif="True" dnlNotif="False" isAnn="True" isDnL="False" notified="False" officialEmail="Risus aliquam mauris" sysCode="Accumsan" titular="Nullam aptent vitae integer imperdiet" title="Est velit inceptos hac interdum"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Nec donec" Extension="Ligula non aliquet orci" IsFolder="False" Id="24" Updated="True" date="06/18/2012 15:33:56" notified="False" name="Blandit pulvinar etiam litora commodo" path="Fusce luctus conubia penatibus" size="242.76" url="Cubilia dapibus magnis egestas" visibility="True">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="86" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Quisque vivamus" sysCode="Arcu" titular="Parturient mus" title="Adipiscing aliquam libero"/>
+				<ClarolineApp_Model:Cours Id="86" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Quisque vivamus" sysCode="Arcu" titular="Parturient mus" title="Adipiscing aliquam libero"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Urna cras parturient morbi feugiat" Extension="Tincidunt sit tristique" IsFolder="True" Id="25" Updated="False" date="06/18/2012 15:33:56" notified="True" name="Nulla ultricies duis vel" path="Montes senectus venenatis proin" size="216.85" url="Nam vestibulum" visibility="False">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="63" Updated="False" annNotif="True" dnlNotif="False" isLoaded="True" isAnn="True" isDnL="False" notified="False" officialEmail="Lorem pede quam per" sysCode="Aliquam" titular="Euismod sagittis quis mollis" title="Sem adipiscing mauris"/>
+				<ClarolineApp_Model:Cours Id="63" Updated="False" annNotif="True" dnlNotif="False" isAnn="True" isDnL="False" notified="False" officialEmail="Lorem pede quam per" sysCode="Aliquam" titular="Euismod sagittis quis mollis" title="Sem adipiscing mauris"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Parturient volutpat amet ante iaculis" Extension="Ornare lacinia arcu vestibulum platea" IsFolder="False" Id="70" Updated="True" date="06/18/2012 15:33:56" notified="False" name="Dis augue" path="Curabitur est vestibulum" size="354.29" url="Phasellus hac diam eget" visibility="True">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="82" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Sociosqu vulputate" sysCode="Class" titular="Nostra sed" title="Torquent ultrices vehicula"/>
+				<ClarolineApp_Model:Cours Id="82" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Sociosqu vulputate" sysCode="Class" titular="Nostra sed" title="Torquent ultrices vehicula"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Sapien elit" Extension="Consequat potenti" IsFolder="True" Id="92" Updated="False" date="06/18/2012 15:33:56" notified="True" name="Vestibulum felis non semper" path="Convallis dignissim vestibulum enim" size="383.3" url="Elementum pretium sociis rhoncus" visibility="False">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="74" Updated="False" annNotif="True" dnlNotif="False" isLoaded="True" isAnn="True" isDnL="False" notified="False" officialEmail="Laoreet dolor maecenas" sysCode="Curae" titular="Parturient nec rutrum" title="Primis adipiscing natoque mus posuere"/>
+				<ClarolineApp_Model:Cours Id="74" Updated="False" annNotif="True" dnlNotif="False" isAnn="True" isDnL="False" notified="False" officialEmail="Laoreet dolor maecenas" sysCode="Curae" titular="Parturient nec rutrum" title="Primis adipiscing natoque mus posuere"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Tellus integer" Extension="Sed justo dictumst" IsFolder="False" Id="46" Updated="True" date="06/18/2012 15:33:56" notified="False" name="Hendrerit quisque lacus lorem" path="Adipiscing eleifend" size="377.22" url="Erat himenaeos imperdiet vivamus" visibility="True">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="56" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Per facilisis" sysCode="Integer" titular="Aliquam habitasse" title="Ipsum viverra fringilla bibendum"/>
+				<ClarolineApp_Model:Cours Id="56" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Per facilisis" sysCode="Integer" titular="Aliquam habitasse" title="Ipsum viverra fringilla bibendum"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Conubia nam sed" Extension="Cubilia tempor" IsFolder="True" Id="66" Updated="False" date="06/18/2012 15:33:56" notified="True" name="Habitant magna nibh vestibulum porttitor" path="Dis tincidunt vestibulum" size="116.08" url="Nisi inceptos adipiscing" visibility="False">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="46" Updated="False" annNotif="True" dnlNotif="False" isLoaded="True" isAnn="True" isDnL="False" notified="False" officialEmail="Facilisi parturient" sysCode="Donec" titular="Vel faucibus commodo" title="Penatibus eros blandit"/>
+				<ClarolineApp_Model:Cours Id="46" Updated="False" annNotif="True" dnlNotif="False" isAnn="True" isDnL="False" notified="False" officialEmail="Facilisi parturient" sysCode="Donec" titular="Vel faucibus commodo" title="Penatibus eros blandit"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 	</ClarolineApp_ViewModel:iCampusViewModel.AllFolders>
 	<ClarolineApp_ViewModel:iCampusViewModel.AllAnnonces>
 		<ClarolineApp_Model:Annonce Id="20" Updated="False" content="Phasellus curae parturient donec" date="06/18/2012 15:33:56" notified="True" ressourceId="20" title="Accumsan consequat" visibility="False">
 			<ClarolineApp_Model:Annonce.Cours>
-				<ClarolineApp_Model:Cours Id="52" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Aenean nam class" sysCode="Bibendum" titular="Cras praesent mauris sed duis" title="Curabitur adipiscing"/>
+				<ClarolineApp_Model:Cours Id="52" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Aenean nam class" sysCode="Bibendum" titular="Cras praesent mauris sed duis" title="Curabitur adipiscing"/>
 			</ClarolineApp_Model:Annonce.Cours>
 		</ClarolineApp_Model:Annonce>
 		<ClarolineApp_Model:Annonce Id="68" Updated="False" content="Morbi dis" date="06/18/2012 15:33:56" notified="True" ressourceId="22" title="Auctor congue" visibility="False">
 			<ClarolineApp_Model:Annonce.Cours>
-				<ClarolineApp_Model:Cours Id="99" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Etiam vestibulum fusce" sysCode="Nullam" titular="Parturient dignissim elementum bibendum" title="Amet vestibulum adipiscing"/>
+				<ClarolineApp_Model:Cours Id="99" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Etiam vestibulum fusce" sysCode="Nullam" titular="Parturient dignissim elementum bibendum" title="Amet vestibulum adipiscing"/>
 			</ClarolineApp_Model:Annonce.Cours>
 		</ClarolineApp_Model:Annonce>
 		<ClarolineApp_Model:Annonce Id="86" Updated="False" content="Adipiscing quisque parturient" date="06/18/2012 15:33:56" notified="True" ressourceId="46" title="Libero est eleifend" visibility="False">
 			<ClarolineApp_Model:Annonce.Cours>
-				<ClarolineApp_Model:Cours Id="53" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Vestibulum cursus dictum" sysCode="Diam" titular="Integer dictumst" title="Vestibulum aliquam"/>
+				<ClarolineApp_Model:Cours Id="53" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Vestibulum cursus dictum" sysCode="Diam" titular="Integer dictumst" title="Vestibulum aliquam"/>
 			</ClarolineApp_Model:Annonce.Cours>
 		</ClarolineApp_Model:Annonce>
 		<ClarolineApp_Model:Annonce Id="27" Updated="False" content="Diam litora himenaeos" date="06/18/2012 15:33:56" notified="True" ressourceId="23" title="Imperdiet luctus" visibility="False">
 			<ClarolineApp_Model:Annonce.Cours>
-				<ClarolineApp_Model:Cours Id="59" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Vivamus ante hac" sysCode="Hac" titular="Hendrerit aliquet arcu blandit ligula" title="Habitasse aliquam facilisi vestibulum proin"/>
+				<ClarolineApp_Model:Cours Id="59" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Vivamus ante hac" sysCode="Hac" titular="Hendrerit aliquet arcu blandit ligula" title="Habitasse aliquam facilisi vestibulum proin"/>
 			</ClarolineApp_Model:Annonce.Cours>
 		</ClarolineApp_Model:Annonce>
 		<ClarolineApp_Model:Annonce Id="46" Updated="False" content="Non enim parturient" date="06/18/2012 15:33:56" notified="True" ressourceId="24" title="Habitant commodo per" visibility="False">
 			<ClarolineApp_Model:Annonce.Cours>
-				<ClarolineApp_Model:Cours Id="40" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Malesuada leo penatibus mus" sysCode="Eget" titular="Adipiscing mattis faucibus nec" title="Augue porttitor elit magnis"/>
+				<ClarolineApp_Model:Cours Id="40" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Malesuada leo penatibus mus" sysCode="Eget" titular="Adipiscing mattis faucibus nec" title="Augue porttitor elit magnis"/>
 			</ClarolineApp_Model:Annonce.Cours>
 		</ClarolineApp_Model:Annonce>
 		<ClarolineApp_Model:Annonce Id="35" Updated="False" content="Sit interdum parturient egestas" date="06/18/2012 15:33:56" notified="True" ressourceId="38" title="Ultricies montes nostra felis ipsum" visibility="False">
 			<ClarolineApp_Model:Annonce.Cours>
-				<ClarolineApp_Model:Cours Id="21" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Tincidunt tristique vestibulum erat mauris" sysCode="Dictumst" titular="Conubia cubilia adipiscing dapibus fames" title="Inceptos sed sem"/>
+				<ClarolineApp_Model:Cours Id="21" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Tincidunt tristique vestibulum erat mauris" sysCode="Dictumst" titular="Conubia cubilia adipiscing dapibus fames" title="Inceptos sed sem"/>
 			</ClarolineApp_Model:Annonce.Cours>
 		</ClarolineApp_Model:Annonce>
 		<ClarolineApp_Model:Annonce Id="11" Updated="False" content="Platea lorem gravida" date="06/18/2012 15:33:56" notified="True" ressourceId="90" title="Primis rutrum vestibulum adipiscing nisl" visibility="False">
 			<ClarolineApp_Model:Annonce.Cours>
-				<ClarolineApp_Model:Cours Id="37" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Vestibulum vel ornare justo" sysCode="Elit" titular="Nisi lobortis feugiat curabitur" title="Nibh vulputate euismod nam"/>
+				<ClarolineApp_Model:Cours Id="37" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Vestibulum vel ornare justo" sysCode="Elit" titular="Nisi lobortis feugiat curabitur" title="Nibh vulputate euismod nam"/>
 			</ClarolineApp_Model:Annonce.Cours>
 		</ClarolineApp_Model:Annonce>
 		<ClarolineApp_Model:Annonce Id="35" Updated="False" content="Lacinia consequat tellus orci convallis" date="06/18/2012 15:33:56" notified="True" ressourceId="17" title="Dignissim dis adipiscing massa" visibility="False">
 			<ClarolineApp_Model:Annonce.Cours>
-				<ClarolineApp_Model:Cours Id="95" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Nunc iaculis phasellus" sysCode="Enim" titular="Sociis taciti" title="Magna semper vestibulum odio"/>
+				<ClarolineApp_Model:Cours Id="95" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Nunc iaculis phasellus" sysCode="Enim" titular="Sociis taciti" title="Magna semper vestibulum odio"/>
 			</ClarolineApp_Model:Annonce.Cours>
 		</ClarolineApp_Model:Annonce>
 		<ClarolineApp_Model:Annonce Id="30" Updated="False" content="Netus varius" date="06/18/2012 15:33:56" notified="True" ressourceId="72" title="Placerat pulvinar sagittis aenean mauris" visibility="False">
 			<ClarolineApp_Model:Annonce.Cours>
-				<ClarolineApp_Model:Cours Id="66" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Pharetra tempor elementum tempus metus" sysCode="Eleifend" titular="Turpis neque vestibulum laoreet" title="Tortor facilisis fermentum vestibulum"/>
+				<ClarolineApp_Model:Cours Id="66" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Pharetra tempor elementum tempus metus" sysCode="Eleifend" titular="Turpis neque vestibulum laoreet" title="Tortor facilisis fermentum vestibulum"/>
 			</ClarolineApp_Model:Annonce.Cours>
 		</ClarolineApp_Model:Annonce>
 		<ClarolineApp_Model:Annonce Id="51" Updated="False" content="Adipiscing risus aptent" date="06/18/2012 15:33:56" notified="True" ressourceId="42" title="Natoque suscipit torquent" visibility="False">
 			<ClarolineApp_Model:Annonce.Cours>
-				<ClarolineApp_Model:Cours Id="71" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Hac senectus sociosqu leo" sysCode="Leo" titular="Purus nunc" title="Porta urna cras nullam duis"/>
+				<ClarolineApp_Model:Cours Id="71" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Hac senectus sociosqu leo" sysCode="Leo" titular="Purus nunc" title="Porta urna cras nullam duis"/>
 			</ClarolineApp_Model:Annonce.Cours>
 		</ClarolineApp_Model:Annonce>
 	</ClarolineApp_ViewModel:iCampusViewModel.AllAnnonces>
 	<ClarolineApp_ViewModel:iCampusViewModel.AllFiles>
 		<ClarolineApp_Model:Documents Description="Phasellus pulvinar" Extension="Sagittis semper sem" IsFolder="False" Id="97" Updated="True" date="06/18/2012 15:33:56" notified="False" name="Egestas sit vel nam" path="Vestibulum sociis magna euismod" size="526.42" url="Adipiscing parturient" visibility="True">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="36" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Vulputate adipiscing lacus" sysCode="Erat" titular="Sapien sed duis vestibulum" title="Per lorem placerat parturient"/>
+				<ClarolineApp_Model:Cours Id="36" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Vulputate adipiscing lacus" sysCode="Erat" titular="Sapien sed duis vestibulum" title="Per lorem placerat parturient"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Neque amet convallis dignissim" Extension="Adipiscing tellus sed tempor suscipit" IsFolder="True" Id="89" Updated="False" date="06/18/2012 15:33:56" notified="True" name="Lacinia dis est" path="Netus torquent elementum tempus nulla" size="203.76" url="Porta hac leo purus" visibility="False">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="49" Updated="False" annNotif="True" dnlNotif="False" isLoaded="True" isAnn="True" isDnL="False" notified="False" officialEmail="Senectus feugiat gravida iaculis" sysCode="Eros" titular="Metus morbi vestibulum consequat" title="Vestibulum taciti nunc"/>
+				<ClarolineApp_Model:Cours Id="49" Updated="False" annNotif="True" dnlNotif="False" isAnn="True" isDnL="False" notified="False" officialEmail="Senectus feugiat gravida iaculis" sysCode="Eros" titular="Metus morbi vestibulum consequat" title="Vestibulum taciti nunc"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Diam fermentum" Extension="Posuere risus ultrices adipiscing mus" IsFolder="False" Id="10" Updated="True" date="06/18/2012 15:33:56" notified="False" name="Potenti velit" path="Eget fringilla" size="209.78" url="Turpis parturient vestibulum" visibility="True">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="70" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Parturient tortor" sysCode="Quisque" titular="Arcu natoque" title="Ante facilisis"/>
+				<ClarolineApp_Model:Cours Id="70" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Parturient tortor" sysCode="Quisque" titular="Arcu natoque" title="Ante facilisis"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Himenaeos adipiscing" Extension="Vitae sem class" IsFolder="True" Id="59" Updated="False" date="06/18/2012 15:33:56" notified="True" name="Curae donec sit" path="Nullam etiam aptent" size="996.8" url="Parturient vel" visibility="False">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="78" Updated="False" annNotif="True" dnlNotif="False" isLoaded="True" isAnn="True" isDnL="False" notified="False" officialEmail="Varius pretium nec vestibulum" sysCode="Nibh" titular="Hendrerit aenean mauris" title="Sed elit"/>
+				<ClarolineApp_Model:Cours Id="78" Updated="False" annNotif="True" dnlNotif="False" isAnn="True" isDnL="False" notified="False" officialEmail="Varius pretium nec vestibulum" sysCode="Nibh" titular="Hendrerit aenean mauris" title="Sed elit"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Enim penatibus dis porttitor" Extension="Erat sodales tincidunt tristique lorem" IsFolder="False" Id="74" Updated="True" date="06/18/2012 15:33:56" notified="False" name="Eros est nibh nisi" path="Ultricies viverra nisl vestibulum" size="683.3" url="Cursus nunc" visibility="True">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="83" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Vestibulum auctor imperdiet" sysCode="Nisi" titular="Congue sed malesuada" title="Fusce parturient nam rhoncus"/>
+				<ClarolineApp_Model:Cours Id="83" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Vestibulum auctor imperdiet" sysCode="Nisi" titular="Congue sed malesuada" title="Fusce parturient nam rhoncus"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Augue orci nec lectus pede" Extension="Quam dolor volutpat quisque" IsFolder="True" Id="55" Updated="False" date="06/18/2012 15:33:56" notified="True" name="Non maecenas venenatis fames praesent" path="Accumsan per" size="223.7" url="Bibendum dictumst sed sem" visibility="False">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="58" Updated="False" annNotif="True" dnlNotif="False" isLoaded="True" isAnn="True" isDnL="False" notified="False" officialEmail="Hac leo vestibulum odio" sysCode="Mus" titular="Proin dictum" title="Integer nulla"/>
+				<ClarolineApp_Model:Cours Id="58" Updated="False" annNotif="True" dnlNotif="False" isAnn="True" isDnL="False" notified="False" officialEmail="Hac leo vestibulum odio" sysCode="Mus" titular="Proin dictum" title="Integer nulla"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Vivamus vestibulum nam phasellus" Extension="Sed dis" IsFolder="False" Id="82" Updated="True" date="06/18/2012 15:33:56" notified="False" name="Facilisi est aliquam aliquet adipiscing" path="Magna massa metus quis morbi" size="533.28" url="Urna consequat" visibility="True">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="27" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Felis parturient" sysCode="Vivamus" titular="Justo lacus lorem vel curabitur" title="Libero vestibulum sit"/>
+				<ClarolineApp_Model:Cours Id="27" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Felis parturient" sysCode="Vivamus" titular="Justo lacus lorem vel curabitur" title="Libero vestibulum sit"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Parturient fermentum fringilla" Extension="Inceptos purus blandit" IsFolder="True" Id="57" Updated="False" date="06/18/2012 15:33:56" notified="True" name="Commodo luctus vestibulum habitasse magnis" path="Hendrerit vestibulum risus amet interdum" size="865.3" url="Himenaeos ante mattis mauris" visibility="False">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="62" Updated="False" annNotif="True" dnlNotif="False" isLoaded="True" isAnn="True" isDnL="False" notified="False" officialEmail="Convallis cras duis nunc ligula" sysCode="Aliquam" titular="Facilisis habitant" title="Faucibus neque netus nulla porta"/>
+				<ClarolineApp_Model:Cours Id="62" Updated="False" annNotif="True" dnlNotif="False" isAnn="True" isDnL="False" notified="False" officialEmail="Convallis cras duis nunc ligula" sysCode="Aliquam" titular="Facilisis habitant" title="Faucibus neque netus nulla porta"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Vitae ornare platea" Extension="Dapibus parturient elit" IsFolder="False" Id="13" Updated="True" date="06/18/2012 15:33:56" notified="False" name="Class penatibus enim primis vestibulum" path="Pharetra vestibulum egestas" size="464.24" url="Rutrum euismod" visibility="True">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="85" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Imperdiet lobortis" sysCode="Aptent" titular="Eget nascetur" title="Montes nostra malesuada arcu diam"/>
+				<ClarolineApp_Model:Cours Id="85" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Imperdiet lobortis" sysCode="Aptent" titular="Eget nascetur" title="Montes nostra malesuada arcu diam"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 		<ClarolineApp_Model:Documents Description="Nisl gravida nunc" Extension="Parturient tincidunt odio orci morbi" IsFolder="True" Id="47" Updated="False" date="06/18/2012 15:33:56" notified="True" name="Pede quam vestibulum sociis" path="Leo iaculis" size="594.65" url="Tristique mus placerat vestibulum ultricies" visibility="False">
 			<ClarolineApp_Model:Documents.Cours>
-				<ClarolineApp_Model:Cours Id="42" Updated="False" annNotif="True" dnlNotif="False" isLoaded="True" isAnn="True" isDnL="False" notified="False" officialEmail="Sapien erat adipiscing" sysCode="Aliquet" titular="Nibh hac nisi feugiat" title="Etiam eros fusce lorem"/>
+				<ClarolineApp_Model:Cours Id="42" Updated="False" annNotif="True" dnlNotif="False" isAnn="True" isDnL="False" notified="False" officialEmail="Sapien erat adipiscing" sysCode="Aliquet" titular="Nibh hac nisi feugiat" title="Etiam eros fusce lorem"/>
 			</ClarolineApp_Model:Documents.Cours>
 		</ClarolineApp_Model:Documents>
 	</ClarolineApp_ViewModel:iCampusViewModel.AllFiles>
 	<ClarolineApp_ViewModel:iCampusViewModel.AllNotifications>
 		<ClarolineApp_Model:Notification Id="22" Text="Maecenas praesent aenean mauris accumsan class nam bibendum dictumst cras eleifend aliquam" Updated="False" date="06/18/2012 15:33:56" isOldRessource="True" notified="False" ressourceType="Annonce" ressourceId="87">
 			<ClarolineApp_Model:Notification.Cours>
-				<ClarolineApp_Model:Cours Id="51" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Parturient massa interdum est hac" sysCode="Nisl" titular="Vulputate dapibus nisl" title="Pharetra tempus ultricies venenatis"/>
+				<ClarolineApp_Model:Cours Id="51" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Parturient massa interdum est hac" sysCode="Nisl" titular="Vulputate dapibus nisl" title="Pharetra tempus ultricies venenatis"/>
 			</ClarolineApp_Model:Notification.Cours>
 		</ClarolineApp_Model:Notification>
 		<ClarolineApp_Model:Notification Id="84" Text="Duis nullam facilisi curae sed integer aptent nunc faucibus quisque vivamus dis est hac" Updated="False" date="06/18/2012 15:33:56" isOldRessource="True" notified="False" ressourceType="Documents" ressourceId="38">
 			<ClarolineApp_Model:Notification.Cours>
-				<ClarolineApp_Model:Cours Id="77" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Pulvinar nec tortor neque sagittis" sysCode="Facilisi" titular="Phasellus netus nunc" title="Per egestas curabitur varius"/>
+				<ClarolineApp_Model:Cours Id="77" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Pulvinar nec tortor neque sagittis" sysCode="Facilisi" titular="Phasellus netus nunc" title="Per egestas curabitur varius"/>
 			</ClarolineApp_Model:Notification.Cours>
 		</ClarolineApp_Model:Notification>
 		<ClarolineApp_Model:Notification Id="70" Text="Leo donec auctor aliquam etiam mus amet congue nec" Updated="False" date="06/18/2012 15:33:56" isOldRessource="True" notified="False" ressourceType="Documents" ressourceId="42">
 			<ClarolineApp_Model:Notification.Cours>
-				<ClarolineApp_Model:Cours Id="52" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Consequat convallis nullam" sysCode="Etiam" titular="Vestibulum iaculis porta sem adipiscing" title="Feugiat gravida"/>
+				<ClarolineApp_Model:Cours Id="52" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Consequat convallis nullam" sysCode="Etiam" titular="Vestibulum iaculis porta sem adipiscing" title="Feugiat gravida"/>
 			</ClarolineApp_Model:Notification.Cours>
 		</ClarolineApp_Model:Notification>
 		<ClarolineApp_Model:Notification Id="24" Text="Fusce cursus ante arcu habitant non aliquet inceptos diam blandit dictum" Updated="False" date="06/18/2012 15:33:56" isOldRessource="True" notified="False" ressourceType="Documents" ressourceId="54">
 			<ClarolineApp_Model:Notification.Cours>
-				<ClarolineApp_Model:Cours Id="12" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Sociosqu dignissim parturient laoreet elementum" sysCode="Faucibus" titular="Potenti congue fermentum" title="Sit vestibulum natoque posuere orci"/>
+				<ClarolineApp_Model:Cours Id="12" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Sociosqu dignissim parturient laoreet elementum" sysCode="Faucibus" titular="Potenti congue fermentum" title="Sit vestibulum natoque posuere orci"/>
 			</ClarolineApp_Model:Notification.Cours>
 		</ClarolineApp_Model:Notification>
 		<ClarolineApp_Model:Notification Id="18" Text="Lectus interdum lobortis per eget commodo conubia cubilia elit" Updated="False" date="06/18/2012 15:33:56" isOldRessource="True" notified="False" ressourceType="Annonce" ressourceId="28">
 			<ClarolineApp_Model:Notification.Cours>
-				<ClarolineApp_Model:Cours Id="77" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Pretium fringilla rhoncus dis vestibulum" sysCode="Fusce" titular="Ultrices vestibulum vehicula vestibulum hac" title="Cursus viverra adipiscing parturient"/>
+				<ClarolineApp_Model:Cours Id="77" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Pretium fringilla rhoncus dis vestibulum" sysCode="Fusce" titular="Ultrices vestibulum vehicula vestibulum hac" title="Cursus viverra adipiscing parturient"/>
 			</ClarolineApp_Model:Notification.Cours>
 		</ClarolineApp_Model:Notification>
 		<ClarolineApp_Model:Notification Id="62" Text="Enim erat libero lorem nascetur eros ligula morbi sed pharetra placerat litora" Updated="False" date="06/18/2012 15:33:56" isOldRessource="True" notified="False" ressourceType="Annonce" ressourceId="45">
 			<ClarolineApp_Model:Notification.Cours>
-				<ClarolineApp_Model:Cours Id="54" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Dictum volutpat" sysCode="Lorem" titular="Vitae vestibulum integer ligula litora" title="Aliquam maecenas"/>
+				<ClarolineApp_Model:Cours Id="54" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Dictum volutpat" sysCode="Lorem" titular="Vitae vestibulum integer ligula litora" title="Aliquam maecenas"/>
 			</ClarolineApp_Model:Notification.Cours>
 		</ClarolineApp_Model:Notification>
 		<ClarolineApp_Model:Notification Id="22" Text="Luctus nulla magnis dapibus pulvinar mattis mauris nibh nisi egestas proin" Updated="False" date="06/18/2012 15:33:56" isOldRessource="True" notified="False" ressourceType="Annonce" ressourceId="40">
 			<ClarolineApp_Model:Notification.Cours>
-				<ClarolineApp_Model:Cours Id="23" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Quis hendrerit magnis vestibulum urna" sysCode="Auctor" titular="Duis nunc curae parturient vivamus" title="Praesent himenaeos adipiscing class"/>
+				<ClarolineApp_Model:Cours Id="23" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Quis hendrerit magnis vestibulum urna" sysCode="Auctor" titular="Duis nunc curae parturient vivamus" title="Praesent himenaeos adipiscing class"/>
 			</ClarolineApp_Model:Notification.Cours>
 		</ClarolineApp_Model:Notification>
 		<ClarolineApp_Model:Notification Id="73" Text="Nisl mollis augue nunc montes dolor nostra" Updated="False" date="06/18/2012 15:33:56" isOldRessource="True" notified="False" ressourceType="Documents" ressourceId="68">
 			<ClarolineApp_Model:Notification.Cours>
-				<ClarolineApp_Model:Cours Id="43" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Amet accumsan malesuada penatibus" sysCode="Nunc" titular="Bibendum nec eget commodo conubia" title="Blandit arcu mus vestibulum diam"/>
+				<ClarolineApp_Model:Cours Id="43" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Amet accumsan malesuada penatibus" sysCode="Nunc" titular="Bibendum nec eget commodo conubia" title="Blandit arcu mus vestibulum diam"/>
 			</ClarolineApp_Model:Notification.Cours>
 		</ClarolineApp_Model:Notification>
 		<ClarolineApp_Model:Notification Id="43" Text="Ornare odio fames orci sagittis pede senectus euismod" Updated="False" date="06/18/2012 15:33:56" isOldRessource="True" notified="False" ressourceType="Annonce" ressourceId="72">
 			<ClarolineApp_Model:Notification.Cours>
-				<ClarolineApp_Model:Cours Id="20" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Ultricies montes" sysCode="Nec" titular="Adipiscing ornare euismod facilisi venenatis" title="Dapibus egestas"/>
+				<ClarolineApp_Model:Cours Id="20" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Ultricies montes" sysCode="Nec" titular="Adipiscing ornare euismod facilisi venenatis" title="Dapibus egestas"/>
 			</ClarolineApp_Model:Notification.Cours>
 		</ClarolineApp_Model:Notification>
 		<ClarolineApp_Model:Notification Id="17" Text="Quam platea felis ipsum sociosqu justo suscipit torquent ultrices" Updated="False" date="06/18/2012 15:33:56" isOldRessource="True" notified="False" ressourceType="Annonce" ressourceId="70">
 			<ClarolineApp_Model:Notification.Cours>
-				<ClarolineApp_Model:Cours Id="56" Updated="True" annNotif="False" dnlNotif="True" isLoaded="False" isAnn="False" isDnL="True" notified="True" officialEmail="Curabitur parturient vestibulum fusce per" sysCode="Odio" titular="Sem nulla" title="Nibh morbi"/>
+				<ClarolineApp_Model:Cours Id="56" Updated="True" annNotif="False" dnlNotif="True" isAnn="False" isDnL="True" notified="True" officialEmail="Curabitur parturient vestibulum fusce per" sysCode="Odio" titular="Sem nulla" title="Nibh morbi"/>
 			</ClarolineApp_Model:Notification.Cours>
 		</ClarolineApp_Model:Notification>
 	</ClarolineApp_ViewModel:iCampusViewModel.AllNotifications>
