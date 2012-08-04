@@ -187,6 +187,26 @@ namespace ClarolineApp.Languages {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Remerciements.
+        /// </summary>
+        public static string MainPage_About_Thanks {
+            get {
+                return ResourceManager.GetString("MainPage_About_Thanks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Georges-Henri Leclercq
+        ///Pr. Kim Mens (UCL)
+        ///Claroline Dev Team.
+        /// </summary>
+        public static string MainPage_About_ThanksText {
+            get {
+                return ResourceManager.GetString("MainPage_About_ThanksText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Version.
         /// </summary>
         public static string MainPage_About_Version {

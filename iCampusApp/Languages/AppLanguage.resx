@@ -247,4 +247,13 @@ cellulaire</value>
   <data name="AnnoncePage_DateFormater_Published" xml:space="preserve">
     <value>Publiée le {0}</value>
   </data>
+  <data name="MainPage_About_Thanks" xml:space="preserve">
+    <value>Remerciements</value>
+  </data>
+  <data name="MainPage_About_ThanksText" xml:space="preserve">
+    <value>Georges-Henri Leclercq
+Pr. Kim Mens (UCL)
+Claroline Dev Team</value>
+    <comment>DO NOT DUPLICATE IN OTHER LANGAGE</comment>
+  </data>
 </root>

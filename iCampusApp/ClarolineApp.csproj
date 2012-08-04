@@ -18,7 +18,6 @@
     <SilverlightApplication>true</SilverlightApplication>
     <SupportedCultures>
       fr-BE;
-      en-GB;
       en-US;
     </SupportedCultures>
     <XapOutputs>true</XapOutputs>
@@ -79,6 +78,11 @@
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Languages\AppLanguage.en-US.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppLanguage.en-US.resx</DependentUpon>
     </Compile>
     <Compile Include="Languages\AppLanguage2.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -211,6 +215,10 @@
     </DesignData>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Languages\AppLanguage.en-US.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppLanguage.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Languages\AppLanguage.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AppLanguage2.Designer.cs</LastGenOutput>
