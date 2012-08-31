@@ -46,10 +46,8 @@ namespace ClarolineApp.Settings
         {
             userTextBox.Text = "";
             passwordBox.Password = "";
-            App.Client = new ClaroClient();
             App.ViewModel.ResetDatabase();
             App.Client.invalidateClient();
-            NavigationService.GoBack();
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -81,16 +79,17 @@ namespace ClarolineApp.Settings
         {
             if (App.Client.isValidAccount())
             {
-                updatePanels(true);
+                updatePanels(false);
                 App.Client.PropertyChanged -= Refresh;
                 settings.PropertyChanged -= ResetHandler;
             }
             else
             {
-                updatePanels(false);
+                updatePanels(true);
             }
         }
 
+#if DEBUG
         private void QAccBut_Click(object sender, RoutedEventArgs e)
         {
             userTextBox.Text = "devosq";
@@ -107,7 +106,7 @@ namespace ClarolineApp.Settings
         {
             ((Button)e.OriginalSource).Content = App.Client.isValidAccount().ToString();
         }
-
+#endif
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             App.Client.makeOperation(AllowedOperations.getCourseList);
@@ -141,6 +140,7 @@ namespace ClarolineApp.Settings
             }
             App.Client.invalidateClient();
 			Disconnected.Begin();
+            updatePanels(true);
             settings.PropertyChanged -= ResetHandler;
         }
 
@@ -158,6 +158,7 @@ namespace ClarolineApp.Settings
         {
             if (status)
             {
+                //Display Connect Page & Address Page
                 ConnectPage.Opacity = 100;
                 ConnectPage.Visibility = System.Windows.Visibility.Visible;
                 userTextBox.IsEnabled = true;
@@ -175,6 +176,7 @@ namespace ClarolineApp.Settings
             }
             else
             {
+                //Display User Page & Platform Page
                 ConnectPage.Opacity = 0;
                 ConnectPage.Visibility = System.Windows.Visibility.Collapsed;
                 userTextBox.IsEnabled = false;
@@ -196,11 +198,9 @@ namespace ClarolineApp.Settings
 
         private void Deco_Click(object sender, EventArgs e)
         {
-            if (settings.UserSetting.userID > 0)
-            {
-                App.Client.invalidateClient();
-                Disconnected.Begin();
-            }
+            App.Client.invalidateClient();
+            Disconnected.Begin();
+            updatePanels(true);
         }
     }
 }
