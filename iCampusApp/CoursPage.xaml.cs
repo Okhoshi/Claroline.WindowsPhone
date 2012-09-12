@@ -88,13 +88,11 @@ namespace ClarolineApp
             {
                 rootDoc.checkNotified();
                 AppSettings appSet = new AppSettings();
-                byte[] toEncodeAsBytes = System.Text.Encoding.GetEncoding("iso-8859-1").GetBytes(appSet.DomainSetting + (DocContent.SelectedItem as Documents).url.Replace("&amp;", "&"));
-                string EncodedURL = System.Convert.ToBase64String(toEncodeAsBytes);
-                string loginString = "login=" + appSet.UsernameSetting + "&password=" + appSet.PasswordSetting;
+                string loginString = "&login=" + appSet.UsernameSetting + "&password=" + appSet.PasswordSetting;
 
                 WebBrowserTask open = new WebBrowserTask()
                 {
-                    Uri = new Uri(Uri.EscapeUriString(appSet.DomainSetting + appSet.AuthPageSetting + "?" + loginString + "&sourceUrl=" + EncodedURL), UriKind.Absolute)
+                    Uri = new Uri("Http://" + (DocContent.SelectedItem as Documents).url.Replace("&amp;", "&") + loginString, UriKind.Absolute)
                 };
                 DocContent.SelectedIndex = -1;
                 open.Show();

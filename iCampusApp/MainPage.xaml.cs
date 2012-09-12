@@ -53,7 +53,9 @@ namespace ClarolineApp
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            this.Panorama.Title = (new AppSettings()).PlatformSetting;
+            this.Panorama.Title = set.PlatformSetting;
+            platformTextAnonymous.Text = set.PlatformTextAnonSetting;
+            platformTextAuthentified.Text = set.PlatformTextAuthSetting;
 
             if (set.UsernameSetting == "")
             {

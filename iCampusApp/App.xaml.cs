@@ -101,6 +101,8 @@ namespace ClarolineApp
         // Ce code ne s'exécute pas lorsque l'application est réactivée
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            App.Client.makeOperation(AllowedOperations.getUserData);
+            App.Client.makeOperation(AllowedOperations.getUpdates);
         }
 
         // Code à exécuter lorsque l'application est activée (affichée au premier plan)

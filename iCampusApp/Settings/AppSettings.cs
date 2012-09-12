@@ -16,8 +16,8 @@ namespace ClarolineApp.Settings
         // The isolated storage key names of our settings
 
         const string DomainSettingKeyName = "DomainSetting";
-        const string AuthPageSettingKeyName = "AuthPageSetting";
         const string WebServiceSettingKeyName = "WebServiceSetting";
+        const string AuthPageSettingKeyName = "AuthPageSetting";
         const string ListBoxSettingKeyName = "ListBoxSetting";
         const string AdvancedSwitchSettingKeyName = "AdvancedSwitchSetting";
         const string CellularDataEnabledSettingKeyName = "CellularDataEnabledSetting";
@@ -26,13 +26,15 @@ namespace ClarolineApp.Settings
         const string PasswordSettingKeyName = "PasswordSetting";
         const string InstituteSettingKeyName = "InstituteSetting";
         const string PlatformSettingKeyName = "PlatformSetting";
+        const string PlatformTextAuthSettingKeyName = "PlatformTextAuthSetting";
+        const string PlatformTextAnonSettingKeyName = "PlatformTextAnonSetting";
         const string UserSettingKeyName = "UserSetting";
 
         // The default value of our settings
 
         const string DomainSettingDefault = "http://localhost/devcampus";
-        const string AuthPageSettingDefault = "/claroline/auth/login.php";
         const string WebServiceSettingDefault = "/module/MOBILE/index.php";
+        const string AuthPageSettingDefault = "/claroline/auth/login.php";
         const int ListBoxSettingDefault = 0;
         const bool AdvancedSwitchSettingDefault = false;
         const bool CellularDataEnabledSettingDefault = true;
@@ -41,6 +43,8 @@ namespace ClarolineApp.Settings
         const string PasswordSettingDefault = "elegie24";
         const string InstituteSettingDefault = "";
         const string PlatformSettingDefault = "Claroline";
+        const string PlatformTextAuthSettingDefault = "";
+        const string PlatformTextAnonSettingDefault = "";
         const User UserSettingDefault = null;
 
         public AppSettings()
@@ -162,27 +166,6 @@ namespace ClarolineApp.Settings
             }
         }
 
-        /// <summary>
-
-        /// Property to get and set a AuthPage Setting Key.
-
-        /// </summary>
-
-        public string AuthPageSetting
-        {
-            get
-            {
-                return GetValueOrDefault<string>(AuthPageSettingKeyName, AuthPageSettingDefault);
-            }
-            set
-            {
-                if (AddOrUpdateValue(AuthPageSettingKeyName, value))
-                {
-                    Save();
-                }
-            }
-        }
-
 
         /// <summary>
 
@@ -199,6 +182,28 @@ namespace ClarolineApp.Settings
             set
             {
                 if (AddOrUpdateValue(WebServiceSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+
+        /// <summary>
+
+        /// Property to get and set a Auth Page Setting Key.
+
+        /// </summary>
+
+        public string AuthPageSetting
+        {
+            get
+            {
+                return GetValueOrDefault<string>(AuthPageSettingKeyName, AuthPageSettingDefault);
+            }
+            set
+            {
+                if (AddOrUpdateValue(AuthPageSettingKeyName, value))
                 {
                     Save();
                 }
@@ -357,6 +362,36 @@ namespace ClarolineApp.Settings
             set
             {
                 if (AddOrUpdateValue(PlatformSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        public string PlatformTextAuthSetting
+        {
+            get
+            {
+                return GetValueOrDefault<string>(PlatformTextAuthSettingKeyName, PlatformTextAuthSettingDefault);
+            }
+            set
+            {
+                if (AddOrUpdateValue(PlatformTextAuthSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        public string PlatformTextAnonSetting
+        {
+            get
+            {
+                return GetValueOrDefault<string>(PlatformTextAnonSettingKeyName, PlatformTextAnonSettingDefault);
+            }
+            set
+            {
+                if (AddOrUpdateValue(PlatformTextAnonSettingKeyName, value))
                 {
                     Save();
                 }

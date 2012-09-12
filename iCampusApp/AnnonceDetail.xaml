@@ -13,6 +13,7 @@
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
 	d:DataContext="{d:DesignData /SampleData/AnnonceSampleData.xaml}"
     shell:SystemTray.IsVisible="True"
+	shell:SystemTray.Opacity="0"
     Style="{StaticResource TransitionPageStyle}">
 
     <!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
@@ -32,7 +33,7 @@
         <!--ContentPanel - placez tout contenu supplémentaire ici-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <ScrollViewer>
-                <TextBlock x:Name="Content" Text="{Binding content, Mode=TwoWay}" TextWrapping="Wrap"/>
+                <TextBlock x:Name="AnnContent" Text="{Binding content, Mode=TwoWay}" TextWrapping="Wrap"/>
             </ScrollViewer>
         </Grid>
     </Grid>

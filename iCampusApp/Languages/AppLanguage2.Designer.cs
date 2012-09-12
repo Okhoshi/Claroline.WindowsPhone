@@ -334,15 +334,6 @@ namespace ClarolineApp.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Page de connexion.
-        /// </summary>
-        public static string SettingsPage_Platform_AuthPage {
-            get {
-                return ResourceManager.GetString("SettingsPage_Platform_AuthPage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à Établissement.
         /// </summary>
         public static string SettingsPage_Platform_Institute {
