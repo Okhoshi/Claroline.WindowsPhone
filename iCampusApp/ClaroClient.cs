@@ -233,6 +233,8 @@ namespace ClarolineApp
                         StringReader str = new StringReader(strContent);
                         String institution = "";
                         String platform = "";
+                        String ptAuth = "";
+                        String ptAnon = "";
                         JsonTextReader reader = new JsonTextReader(str);
                         while (reader.Read())
                         {
@@ -246,6 +248,12 @@ namespace ClarolineApp
                                     case "platformName":
                                         platform = reader.ReadAsString();
                                         break;
+                                    case "platformTextAuth":
+                                        ptAuth = reader.ReadAsString();
+                                        break;
+                                    case "platformTextAnonym":
+                                        ptAnon = reader.ReadAsString();
+                                        break;
                                     default:
                                         continue;
                                 }
@@ -258,6 +266,8 @@ namespace ClarolineApp
                             settings.UserSetting.setUser(connectedUser);
                             settings.IntituteSetting = institution;
                             settings.PlatformSetting = platform;
+                            settings.PlatformTextAuthSetting = ptAuth;
+                            settings.PlatformTextAnonSetting = ptAnon;
                         });
                         authNotify();
                         break;
@@ -320,8 +330,6 @@ namespace ClarolineApp
                                 foreach (Annonce annonce in Annonces)
                                 {
                                     annonce.Cours = args.cidReq;
-                                    if (annonce.content != null)
-                                        annonce.content = (new HtmlToText()).ConvertHtml(annonce.content);
                                     VM.AddAnnonce(annonce);
                                 }
                                 VM.ClearAnnsOfCours(args.cidReq);
@@ -336,8 +344,6 @@ namespace ClarolineApp
                         Deployment.Current.Dispatcher.BeginInvoke(() =>
                         {
                             singleAnnonce.Cours = args.cidReq;
-                            if (singleAnnonce.content != null)
-                                singleAnnonce.content = (new HtmlToText()).ConvertHtml(singleAnnonce.content);
                             VM.AddAnnonce(singleAnnonce);
                             pulse(Updating);
                         });

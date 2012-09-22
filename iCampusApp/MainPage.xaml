@@ -102,9 +102,13 @@
                 </ListBox>
             </controls:PanoramaItem>
             <controls:PanoramaItem x:Name="Infos_PI" Header="informations" Foreground="Black">
-    			<ScrollViewer Margin="0,-30,0,30">
-    				<TextBlock x:Name="output" TextWrapping="Wrap" Margin="0"/>
-    			</ScrollViewer>
+                <ScrollViewer Margin="0,-30,0,30">
+                    <StackPanel x:Name="platformText">
+                        <TextBlock x:Name="platformTextAnonymous" TextWrapping="Wrap" Margin="0"/>
+                        <Rectangle Height="2" Width="Auto" Fill="{StaticResource PhoneDisabledBrush}" />
+                        <TextBlock x:Name="platformTextAuthentified" TextWrapping="Wrap" Margin="0"/>
+                    </StackPanel>
+                </ScrollViewer>
     		</controls:PanoramaItem>
             <controls:PanoramaItem x:Name="About_PI" Header="{Binding LocalizedResources.MainPage_About_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Foreground="Black">
                 <ScrollViewer Margin="0,-30,0,30">

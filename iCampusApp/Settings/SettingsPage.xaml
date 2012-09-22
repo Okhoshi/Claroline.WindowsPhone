@@ -14,7 +14,8 @@
 	d:DataContext="{d:DesignData ../SampleData/AppSettingsSampleData.xaml}"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
 	
-    shell:SystemTray.IsVisible="True" xmlns:my="clr-namespace:ClarolineApp.Settings">
+    shell:SystemTray.IsVisible="True"
+	shell:SystemTray.Opacity="0" xmlns:my="clr-namespace:ClarolineApp.Settings">
     
     <phone:PhoneApplicationPage.Resources>
         <ControlTemplate x:Key="ConnectPageTemplate" TargetType="controls:PivotItem"/>
@@ -129,13 +130,6 @@
         			</DiscreteObjectKeyFrame.Value>
         		</DiscreteObjectKeyFrame>
         	</ObjectAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.IsEnabled)" Storyboard.TargetName="AuthPageTextBox">
-        		<DiscreteObjectKeyFrame KeyTime="0:0:1">
-        			<DiscreteObjectKeyFrame.Value>
-        				<System:Boolean>False</System:Boolean>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
         	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.IsEnabled)" Storyboard.TargetName="WebServiceTextBox">
         		<DiscreteObjectKeyFrame KeyTime="0:0:1">
         			<DiscreteObjectKeyFrame.Value>
@@ -212,13 +206,6 @@
         		</DiscreteObjectKeyFrame>
         	</ObjectAnimationUsingKeyFrames>
         	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.IsEnabled)" Storyboard.TargetName="toggleSwitch">
-        		<DiscreteObjectKeyFrame KeyTime="0">
-        			<DiscreteObjectKeyFrame.Value>
-        				<System:Boolean>True</System:Boolean>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.IsEnabled)" Storyboard.TargetName="AuthPageTextBox">
         		<DiscreteObjectKeyFrame KeyTime="0">
         			<DiscreteObjectKeyFrame.Value>
         				<System:Boolean>True</System:Boolean>
@@ -343,10 +330,8 @@
     					<TextBox Height="72" HorizontalAlignment="Center" x:Name="siteTextBox" Text="{Binding DomainSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
     					<toolkit:ToggleSwitch x:Name="toggleSwitch" Header="" Margin="22,-12,22,0" Content="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_Platform_AdvancedSwitch}" IsChecked="{Binding AdvancedSwitchSetting, Mode=TwoWay}" Checked="toggleSwitch_Checked" Unchecked="toggleSwitch_Unchecked"/>
     					<StackPanel x:Name="stackPanel2" Margin="22,0" Orientation="Vertical" Height="230">
-    						<TextBlock HorizontalAlignment="Center" x:Name="AuthPageLabel" Text="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_Platform_AuthPage, Converter={StaticResource ToLower}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
-    						<TextBox Height="72" HorizontalAlignment="Center" x:Name="AuthPageTextBox" Text="{Binding WebServiceSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
     						<TextBlock HorizontalAlignment="Center" x:Name="WebServiceLabel" Text="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_Platform_WebServicePath, Converter={StaticResource ToLower}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
-    						<TextBox Height="72" HorizontalAlignment="Center" x:Name="WebServiceTextBox" Text="{Binding AuthPageSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
+    						<TextBox Height="72" HorizontalAlignment="Center" x:Name="WebServiceTextBox" Text="{Binding WebServiceSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
     					</StackPanel>
     				</StackPanel>
     				<StackPanel x:Name="PlatformPage" Margin="0">

@@ -147,9 +147,6 @@
   <data name="SettingsPage_Platform_AdvancedSwitch" xml:space="preserve">
     <value>Paramètres avancés</value>
   </data>
-  <data name="SettingsPage_Platform_AuthPage" xml:space="preserve">
-    <value>Page de connexion</value>
-  </data>
   <data name="SettingsPage_Platform_Institute" xml:space="preserve">
     <value>Établissement</value>
   </data>
