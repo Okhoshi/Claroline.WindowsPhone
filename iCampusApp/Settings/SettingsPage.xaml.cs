@@ -37,8 +37,31 @@ namespace ClarolineApp.Settings
             Refresh = new PropertyChangedEventHandler(Client_PropertyChanged);
             ResetHandler = new PropertyChangedEventHandler(settings_PropertyChanged);
 
-#if !DEBUG
-            SettingsPivot.Items.Remove(DevPivot);
+#if DEBUG
+            PivotItem devPivot = new PivotItem()
+            {
+                Header = "[DEV]",
+                Margin = new Thickness(12, 28, 12, 0),
+                Content = new StackPanel()
+                {
+                    VerticalAlignment = System.Windows.VerticalAlignment.Bottom
+                }
+            };
+            
+            Button QAccBut = new Button(){ Content = "Charge QAcc"};
+            QAccBut.Click += new RoutedEventHandler(QAccBut_Click);
+            Button SAccBut = new Button(){ Content = "Charge SAcc"};
+            SAccBut.Click += new RoutedEventHandler(SAccBut_Click);
+            Button Button = new Button(){ Content = "Test Connect"};
+            Button.Click +=new RoutedEventHandler(Button_Click);
+            Button Button_1 = new Button(){ Content = "Test WebServ."};
+            Button_1.Click += new RoutedEventHandler(Button_Click_1);
+            
+            ((StackPanel)devPivot.Content).Children.Add(QAccBut);
+            ((StackPanel)devPivot.Content).Children.Add(SAccBut);
+            ((StackPanel)devPivot.Content).Children.Add(Button);
+            ((StackPanel)devPivot.Content).Children.Add(Button_1);
+            SettingsPivot.Items.Add(devPivot);
 #endif
         }
 

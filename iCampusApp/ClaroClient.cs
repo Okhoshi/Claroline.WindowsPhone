@@ -15,6 +15,10 @@ using HtmlAgilityPack;
 using ClarolineApp.Settings;
 using ClarolineApp.Languages;
 
+#if !DEBUG
+    using Microsoft.Phone.Net.NetworkInformation;
+#endif
+
 namespace ClarolineApp
 {
     public class ClaroClient : INotifyPropertyChanged

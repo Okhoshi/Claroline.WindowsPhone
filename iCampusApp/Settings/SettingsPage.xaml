@@ -350,14 +350,6 @@
     				<toolkit:ToggleSwitch  Margin="0" IsChecked="{Binding Path=CellularDataEnabledSetting, Mode=TwoWay}" Content="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_Config_CellularData}" />
     			</StackPanel>
     		</controls:PivotItem>
-    		<controls:PivotItem Header="[DEV]" Margin="12,28,12,0" x:Name="DevPivot" Visibility="Collapsed">
-    			<StackPanel VerticalAlignment="Bottom">
-    				<Button Click="QAccBut_Click" Content="Charge QAcc"/>
-    				<Button Click="SAccBut_Click" Content="Charge SAcc"/>
-    				<Button Click="Button_Click" Content="Test Connect"/>
-    				<Button Click="Button_Click_1" Content="Test WebServ."/>			
-				</StackPanel>
-    		</controls:PivotItem>
         </controls:Pivot>
     </Grid>
 
