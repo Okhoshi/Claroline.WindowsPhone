@@ -305,6 +305,20 @@ namespace ClarolineApp
 
     public class Helper
     {
+
+		public static String GetVersionNumber(bool full = false)
+		{
+			try
+			{
+				var app = XElement.Load("WMAppManifest.xml");
+				var version=app.Element("App").Attribute("Version").Value;
+				return full?version:version.Substring(0, version.IndexOf('.', version.IndexOf('.')+1));
+			}
+			catch {
+				return "";
+			}
+		}
+
         public static T FindFirstElementInVisualTree<T>(DependencyObject parentElement) where T : DependencyObject
         {
             var count = VisualTreeHelper.GetChildrenCount(parentElement);

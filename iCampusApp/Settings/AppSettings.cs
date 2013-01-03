@@ -32,15 +32,21 @@ namespace ClarolineApp.Settings
 
         // The default value of our settings
 
-        const string DomainSettingDefault = "http://localhost/devcampus";
-        const string WebServiceSettingDefault = "/module/MOBILE/index.php";
+#if DEBUG
+        const string UsernameSettingDefault = "qdevos";
+        const string PasswordSettingDefault = "elegie24";
+        const string DomainSettingDefault = "http://mesconsult.be/clarodev"; // Debug Platform
+#else
+        const string UsernameSettingDefault = "";
+        const string PasswordSettingDefault = "";
+        const string DomainSettingDefault = "http://"; // Debug Platform
+#endif
+        const string WebServiceSettingDefault = "/module/MOBILE/";
         const string AuthPageSettingDefault = "/claroline/auth/login.php";
         const int ListBoxSettingDefault = 0;
         const bool AdvancedSwitchSettingDefault = false;
         const bool CellularDataEnabledSettingDefault = true;
         const bool RadioButton3SettingDefault = false;
-        const string UsernameSettingDefault = "admin";
-        const string PasswordSettingDefault = "elegie24";
         const string InstituteSettingDefault = "";
         const string PlatformSettingDefault = "Claroline";
         const string PlatformTextAuthSettingDefault = "";

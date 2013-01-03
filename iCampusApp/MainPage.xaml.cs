@@ -54,8 +54,6 @@ namespace ClarolineApp
         {
             base.OnNavigatedTo(e);
             this.Panorama.Title = set.PlatformSetting;
-            platformTextAnonymous.Text = set.PlatformTextAnonSetting;
-            platformTextAuthentified.Text = set.PlatformTextAuthSetting;
 
             if (set.UsernameSetting == "")
             {
@@ -184,8 +182,9 @@ namespace ClarolineApp
         {
             EmailComposeTask mailToDev = new EmailComposeTask()
             {
-                To = String.Format("\"{0} Developpment Team\" <support.develop@live.be>", App.ApplicationName),
+                To = String.Format("\"{0} Development Team\" <support.develop@live.be>", App.ApplicationName),
                 Subject = String.Format("[{0}] {1}", App.ApplicationName, AppLanguage.MainPage_About_DevMailButton),
+				Body = String.Format("[V:{0} Campus:{1}]\n\n", Helper.GetVersionNumber(true), set.PlatformSetting)
             };
             mailToDev.Show();
         }
