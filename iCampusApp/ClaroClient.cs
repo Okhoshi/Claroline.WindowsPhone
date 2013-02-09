@@ -24,7 +24,7 @@ namespace ClarolineApp
     public class ClaroClient : INotifyPropertyChanged
     {
         AppSettings settings;
-        iCampusViewModel VM;
+        ClarolineViewModel VM;
 
         Mutex Requesting;
         Mutex Updating;
@@ -175,7 +175,7 @@ namespace ClarolineApp
                     wait();
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        ((CallbackArgs)e.Argument).cidReq.isLoaded = DateTime.Now;
+                        ((CallbackArgs)e.Argument).cidReq.loaded = DateTime.Now;
                     });
                     break;
                 default:

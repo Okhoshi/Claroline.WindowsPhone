@@ -13,8 +13,9 @@
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
 	shell:SystemTray.Opacity="0"
-    local:TiltEffect.IsTiltEnabled="True" Background="White"
+    Background="White"
     Style="{StaticResource TransitionPageStyle}">
+    <!--:TiltEffect.IsTiltEnabled="True"-->
 
     <!--Exemple de code illustrant l'utilisation d'ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>

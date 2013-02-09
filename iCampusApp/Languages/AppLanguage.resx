@@ -253,4 +253,7 @@ Pr. Kim Mens (UCL)
 Claroline Dev Team</value>
     <comment>DO NOT DUPLICATE IN OTHER LANGAGE</comment>
   </data>
+  <data name="CLDOC_Module_Name" xml:space="preserve">
+    <value>Documents &amp; Liens</value>
+  </data>
 </root>

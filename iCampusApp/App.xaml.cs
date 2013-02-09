@@ -26,8 +26,8 @@ namespace ClarolineApp
         public static ProgressIndicator currentProgressInd = null;
         public static ClaroClient Client;
 
-        private static iCampusViewModel viewModel;
-        public static iCampusViewModel ViewModel
+        private static ClarolineViewModel viewModel;
+        public static ClarolineViewModel ViewModel
         {
             get { return viewModel;  }
         }
@@ -75,7 +75,7 @@ namespace ClarolineApp
             string DBConnectionString = "Data Source=isostore:/iCampus.sdf";
 
             // Create database if not exists
-            using (iCampusDataContext db = new iCampusDataContext(DBConnectionString))
+            using (ClarolineDataContext db = new ClarolineDataContext(DBConnectionString))
             {
                 if (!db.DatabaseExists())
                 {
@@ -83,7 +83,7 @@ namespace ClarolineApp
                 }
             }
 
-            viewModel = new iCampusViewModel(DBConnectionString);
+            viewModel = new ClarolineViewModel(DBConnectionString);
             viewModel.LoadCollectionsFromDatabase();
 
             Client = new ClaroClient();

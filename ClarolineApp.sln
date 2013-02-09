@@ -1,9 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClarolineApp", "iCampusApp\ClarolineApp.csproj", "{BA1C19F3-38ED-4B7F-88FA-2AF3FC738E3F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{209CEE3B-2B39-4B3D-9216-525929143B42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
