@@ -3,4 +3,5 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:local="clr-namespace:ClarolineApp">
 	<!-- Resource dictionary entries should be defined here.-->
+  
 </ResourceDictionary>

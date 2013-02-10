@@ -24,6 +24,7 @@ namespace ClarolineApp.Model
         public Table<ResourceList> ResourceList_Table;
         public Table<CL_Document> Documents_Table;
         public Table<CL_Annonce> Annonces_Table;
+        //public Table<ResourceModel> model;
         public Table<CL_Notification> Notifications_Table;
     }
 }

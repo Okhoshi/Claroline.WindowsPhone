@@ -24,14 +24,11 @@ namespace ClarolineApp.Settings
         PropertyChangedEventHandler Refresh;
         PropertyChangedEventHandler ResetHandler;
 
-        AppSettings settings;
-
         public SettingsPage()
         {
             InitializeComponent();
 
-            settings = new AppSettings();
-            this.DataContext = settings;
+            this.DataContext = AppSettings.instance;
 
             Handler = new PropertyChangedEventHandler(Connecting_PropertyChanged);
             Refresh = new PropertyChangedEventHandler(Client_PropertyChanged);
@@ -69,8 +66,8 @@ namespace ClarolineApp.Settings
         {
             userTextBox.Text = "";
             passwordBox.Password = "";
-            App.ViewModel.ResetDatabase();
-            App.Client.invalidateClient();
+            .ResetDatabase();
+            ClaroClient.instance.invalidateClient();
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -90,7 +87,7 @@ namespace ClarolineApp.Settings
             {
                 stackPanel2.Height = 0;
             }
-            App.Client.PropertyChanged += Refresh;
+            ClaroClient.instance.PropertyChanged += Refresh;
         }
 
         protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
@@ -100,10 +97,10 @@ namespace ClarolineApp.Settings
 
         void Client_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (App.Client.isValidAccount())
+            if (ClaroClient.instance.isValidAccount())
             {
                 updatePanels(false);
-                App.Client.PropertyChanged -= Refresh;
+                ClaroClient.instance.PropertyChanged -= Refresh;
                 settings.PropertyChanged -= ResetHandler;
             }
             else
@@ -127,32 +124,32 @@ namespace ClarolineApp.Settings
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ((Button)e.OriginalSource).Content = App.Client.isValidAccount().ToString();
+            ((Button)e.OriginalSource).Content = ClaroClient.instance.isValidAccountWithoutWaiting().ToString();
         }
-#endif
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            App.Client.makeOperation(AllowedOperations.getCourseList);
+            ClaroClient.instance.makeOperationAsync(SupportedModules.USER, SupportedMethods.getCourseList);
         }
+#endif
 
         void Connecting_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "isExpired")
             {
-                if (App.Client.isValidAccount())
+                if (ClaroClient.instance.isValidAccountWithoutWaiting())
                 {
                     Connected.Begin();
                 	settings.PropertyChanged += ResetHandler;
-                	App.Client.PropertyChanged += Refresh;
+                	ClaroClient.instance.PropertyChanged += Refresh;
                 }
-                App.Client.PropertyChanged -= Handler;
+                ClaroClient.instance.PropertyChanged -= Handler;
             }
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            App.Client.PropertyChanged += Handler;
-            App.Client.makeOperation(AllowedOperations.getUserData);
+            ClaroClient.instance.PropertyChanged += Handler;
+            ClaroClient.instance.makeOperationAsync(SupportedModules.USER, SupportedMethods.getUserData);
         }
 
         private void settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -161,7 +158,7 @@ namespace ClarolineApp.Settings
             {
                 return;
             }
-            App.Client.invalidateClient();
+            ClaroClient.instance.invalidateClient();
 			Disconnected.Begin();
             updatePanels(true);
             settings.PropertyChanged -= ResetHandler;
@@ -221,7 +218,7 @@ namespace ClarolineApp.Settings
 
         private void Deco_Click(object sender, EventArgs e)
         {
-            App.Client.invalidateClient();
+            ClaroClient.instance.invalidateClient();
             Disconnected.Begin();
             updatePanels(true);
         }

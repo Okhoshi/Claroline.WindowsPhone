@@ -36,14 +36,14 @@ namespace ClarolineApp
         public MainPage()
         {
             InitializeComponent();
-            //MainPage_Handler = new PropertyChangedEventHandler(MainPage_PropertyChanged);
-            //Failure_Handler = new PropertyChangedEventHandler(FailureOccured);
+            MainPage_Handler = new PropertyChangedEventHandler(MainPage_PropertyChanged);
+            Failure_Handler = new PropertyChangedEventHandler(FailureOccured);
         }
         //--------------------------------------------------------------------
         // Event handler
         //--------------------------------------------------------------------
 
-/*
+
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -77,12 +77,12 @@ namespace ClarolineApp
             else
             {
                 ((Cours)CoursList.SelectedItem).PropertyChanged += MainPage_Handler;
-                App.Client.PropertyChanged += Failure_Handler;
+                ClaroClient.instance.PropertyChanged += Failure_Handler;
 
                 PerformanceProgressBar progress = Helper.FindFirstElementInVisualTree<PerformanceProgressBar>(this.CoursList.ItemContainerGenerator.ContainerFromIndex(CoursList.SelectedIndex) as ListBoxItem);
                 progress.Visibility = System.Windows.Visibility.Visible;
 
-                App.Client.makeOperation(AllowedOperations.updateCompleteCourse, CoursList.SelectedItem as Cours);
+                ClaroClient.instance.makeOperation(AllowedOperations.updateCompleteCourse, CoursList.SelectedItem as Cours);
                 App.selecteditem = CoursList.SelectedItem;
             }
             CoursList.SelectedIndex = -1;
@@ -95,7 +95,7 @@ namespace ClarolineApp
                 Cours _cours = App.selecteditem as Cours;
                 App.selecteditem = null;
                 _cours.PropertyChanged -= MainPage_Handler;
-                App.Client.PropertyChanged -= Failure_Handler;
+                ClaroClient.instance.PropertyChanged -= Failure_Handler;
 
                 PerformanceProgressBar progress = Helper.FindFirstElementInVisualTree<PerformanceProgressBar>(this.CoursList.ItemContainerGenerator.ContainerFromIndex(CoursList.Items.IndexOf(_cours)) as ListBoxItem);
                 progress.Visibility = System.Windows.Visibility.Collapsed;
@@ -132,17 +132,14 @@ namespace ClarolineApp
 
         private void Connect_Click(object sender, EventArgs e)
         {
-            App.Client.makeOperation(AllowedOperations.getCourseList);
         }
 
         private void Sync_Btn_Click(object sender, EventArgs e)
         {
-            App.Client.makeOperation(AllowedOperations.getUpdates);
         }
 
         private void DEV_clrDB_Click(object sender, EventArgs e)
         {
-            App.ViewModel.ResetDatabase();
         }
 
         private void IEButton_Click(object sender, RoutedEventArgs e)
@@ -225,7 +222,6 @@ namespace ClarolineApp
                     break;
             }
         }
-  */
 
         #region INotifyPropertyChanged Members
 

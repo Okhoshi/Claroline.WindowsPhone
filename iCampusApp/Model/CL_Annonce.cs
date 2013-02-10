@@ -11,30 +11,9 @@ namespace ClarolineApp.Model
     [Table]
     public class CL_Annonce : ResourceModel
     {
-
-        // Define ID: internal Notifications, public property and database column.
-
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
-        public int Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    NotifyPropertyChanging("Id");
-                    _Id = value;
-                    NotifyPropertyChanged("Id");
-                }
-            }
-        }
-
         private int _ressourceId;
 
-        [Column]
+        [Column(IsPrimaryKey = true)]
         public int ressourceId
         {
             get

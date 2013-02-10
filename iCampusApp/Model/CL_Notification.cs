@@ -187,7 +187,7 @@ namespace ClarolineApp.Model
 
                 if (value != null)
                 {
-                    _resourceId = value._Id;
+                    _resourceId = value.Id;
                 }
 
                 NotifyPropertyChanged("resource");

@@ -24,25 +24,6 @@ namespace ClarolineApp.Model
             _url = string.Empty;
             _path = string.Empty;
         }
-        // Define ID: internal Notifications, public property and database column.
-
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
-        public int Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    NotifyPropertyChanging("Id");
-                    _Id = value;
-                    NotifyPropertyChanged("Id");
-                }
-            }
-        }
 
         // Define item name: private Notifications, public property and database column.
 

@@ -8,6 +8,7 @@ using System.Text;
 
 namespace ClarolineApp.Model
 {
+    [Table]
     public abstract class ResourceModel : INotifyPropertyChanged, INotifyPropertyChanging
     {
 
@@ -19,9 +20,27 @@ namespace ClarolineApp.Model
                 );
         }
 
+        protected int _Id;
+
         // Define ID: internal Notifications, public property and database column.
 
-        internal int _Id;
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public int Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    NotifyPropertyChanging("Id");
+                    _Id = value;
+                    NotifyPropertyChanged("Id");
+                }
+            }
+        }
 
         protected string _Title;
 

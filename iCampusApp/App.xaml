@@ -12,8 +12,16 @@
     x:Class="ClarolineApp.App">
 
     <Application.Resources>
-    	<ResourceDictionary>
-    		<Style x:Key="TransitionPageStyle" TargetType="phone:PhoneApplicationPage">
+        <ResourceDictionary>
+            <local:LocalizedStrings x:Key="LocalizedStrings" />
+            <local:StatusConverter x:Key="StatusConverter"/>
+            <local:CoursPageTitleConverter x:Key="TitleConverter"/>
+            <local:SizeFileConverter x:Key="SizeConv"/>
+            <local:DateFormater x:Key="DateFormater"/>
+            <local:ToLower x:Key="ToLower"/>
+            <local:ToUpper x:Key="ToUpper"/>
+            <local:ExtSelector x:Key="ExtSelect"/>
+            <Style x:Key="TransitionPageStyle" TargetType="phone:PhoneApplicationPage">
     			<Setter Property="toolkit:TransitionService.NavigationInTransition">
     				<Setter.Value>
     					<toolkit:NavigationInTransition>
