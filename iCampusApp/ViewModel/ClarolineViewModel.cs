@@ -1,547 +1,338 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using ClarolineApp.Model;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-
-// Directive for the data model.
-using ClarolineApp.Model;
+using System.Data.Linq;
+using System.Windows;
+using System.Collections.ObjectModel;
 
 namespace ClarolineApp.ViewModel
 {
-    public class ClarolineViewModel : INotifyPropertyChanged
+    abstract class ClarolineViewModel : IClarolineViewModel
     {
-        // LINQ to SQL data context for the local database.
 
         private ClarolineDataContext ClarolineDB;
-
-        // Class constructor, create the data context object.
 
         public ClarolineViewModel(string DBConnectionString)
         {
             ClarolineDB = new ClarolineDataContext(DBConnectionString);
         }
 
-        private ObservableCollection<Cours> _allCours;
-        public ObservableCollection<Cours> AllCours
+        public void ResetDatabase()
         {
-            get { return _allCours; }
-            set
-            {
-                _allCours = value;
-                NotifyPropertyChanged("AllCours");
-            }
-        }
-        
-        private ObservableCollection<CL_Document> _allFiles;
-        public ObservableCollection<CL_Document> AllFiles
-        {
-            get { return _allFiles; }
-            set
-            {
-                _allFiles = value;
-                NotifyPropertyChanged("AllFiles");
-            }
-        }
+            List<CL_Document> AllDocuments = (from CL_Document d
+                                                in ClarolineDB.Documents_Table
+                                              select d).ToList();
+            List<CL_Annonce> AllAnnonces = (from CL_Annonce a
+                                            in ClarolineDB.Annonces_Table
+                                            select a).ToList();
+            List<CL_Notification> AllNotifications = (from CL_Notification n
+                                                      in ClarolineDB.Notifications_Table
+                                                      select n).ToList();
+            List<Cours> AllCours = (from Cours c
+                                    in ClarolineDB.Cours_Table
+                                    select c).ToList();
 
-        private ObservableCollection<CL_Document> _allFolders;
-        public ObservableCollection<CL_Document> AllFolders
-        {
-            get { return _allFolders; }
-            set
-            {
-                _allFolders = value;
-                NotifyPropertyChanged("AllFolders");
-            }
+            ClarolineDB.Documents_Table.DeleteAllOnSubmit(AllDocuments);
+            ClarolineDB.Annonces_Table.DeleteAllOnSubmit(AllAnnonces);
+            ClarolineDB.Notifications_Table.DeleteAllOnSubmit(AllNotifications);
+            ClarolineDB.Cours_Table.DeleteAllOnSubmit(AllCours);
+            SaveChangesToDB();
         }
-
-        private ObservableCollection<CL_Annonce> _allAnnonces;
-        public ObservableCollection<CL_Annonce> AllAnnonces
-        {
-            get { return _allAnnonces; }
-            set
-            {
-                _allAnnonces = value;
-                NotifyPropertyChanged("AllAnnonces");
-            }
-        }
-
-        private ObservableCollection<CL_Notification> _allNotifications;
-        public ObservableCollection<CL_Notification> AllNotifications
-        {
-            get { return _allNotifications; }
-            set
-            {
-                _allNotifications = value;
-                NotifyPropertyChanged("AllNotifications");
-            }
-        }
-
-        private Dictionary<string, ObservableCollection<CL_Notification>> _notifByCours;
-        public Dictionary<string, ObservableCollection<CL_Notification>> NotifByCours
-        {
-            get { return _notifByCours; }
-            set
-            {
-                _notifByCours = value;
-                NotifyPropertyChanged("NotifByCours");
-            }
-        }
-  
-        // Write changes in the data context to the database.
 
         public void SaveChangesToDB()
         {
             ClarolineDB.SubmitChanges();
         }
 
-        // Query database and load the collections and list used by the pivot pages.
-
-        public void LoadCollectionsFromDatabase()
+        public void AddCours(Cours newCours)
         {
+            bool alreadyInDB = ClarolineDB.Cours_Table.Contains(newCours);
 
-            // Specify the query for all courses in the database.
-
-            var coursInDB = from Cours cours in ClarolineDB.Cours_Table
-                            select cours;
-
-            // Query the database and load all to-do items.
-
-            AllCours = new ObservableCollection<Cours>(coursInDB);
-
-            // Specify the query for all section in the database.
-
-            var filesInDb = from CL_Document file in ClarolineDB.Documents_Table
-                            where !file.isFolder
-                            select file;
-
-            AllFiles = new ObservableCollection<CL_Document>(filesInDb);
-
-
-            var foldersInDb = from CL_Document fold in ClarolineDB.Documents_Table
-                              where fold.isFolder
-                              select fold;
-            AllFolders = new ObservableCollection<CL_Document>(foldersInDb);
-
-            var annsInDb = from CL_Annonce ann in ClarolineDB.Annonces_Table
-                              select ann;
-            AllAnnonces = new ObservableCollection<CL_Annonce>(annsInDb);
-
-            var notifsInDb = (from CL_Notification not in ClarolineDB.Notifications_Table
-                             orderby not.date descending
-                             select not).Take(100);
-            AllNotifications = new ObservableCollection<CL_Notification>(notifsInDb);
-
-            // Query the database and load all associated items to their respective collections.
-            NotifByCours = new Dictionary<string, ObservableCollection<CL_Notification>>();
-
-            foreach (Cours _cours in coursInDB)
+            if (!alreadyInDB)
             {
-                NotifByCours.Add(_cours.sysCode, new ObservableCollection<CL_Notification>());
-
-                foreach (CL_Notification not in _cours.Notifications)
-                    NotifByCours[_cours.sysCode].Add(not);
-            }
-        }
-
-        public void ResetDatabase()
-        {
-            ClarolineDB.Documents_Table.DeleteAllOnSubmit(AllFiles);
-            ClarolineDB.Documents_Table.DeleteAllOnSubmit(AllFolders);
-            ClarolineDB.Annonces_Table.DeleteAllOnSubmit(AllAnnonces);
-            ClarolineDB.Notifications_Table.DeleteAllOnSubmit(AllNotifications);
-            ClarolineDB.Cours_Table.DeleteAllOnSubmit(AllCours);
-            ClarolineDB.SubmitChanges();
-            _allFiles.Clear();
-            _allFolders.Clear();
-            _allAnnonces.Clear();
-            _allNotifications.Clear();
-            _allCours.Clear();
-            _notifByCours.Clear();
-        }
-
-        public void AddDocument(CL_Document newDoc)
-        {
-            newDoc.updated = true;
-
-            if (newDoc.isFolder)
-            {
-                if (!AllFolders.Contains(newDoc))
-                {
-                    // Add a to-do item to the data context.
-
-                    ClarolineDB.Documents_Table.InsertOnSubmit(newDoc);
-
-                    // Save changes to the database.
-
-                    ClarolineDB.SubmitChanges();
-
-                    // Add a to-do item to the "all" observable collection.
-
-                    AllFolders.Add(newDoc);
-                }
-                else
-                    UpdateFolder(newDoc);
+                newCours.updated = true;
+                newCours.loaded = DateTime.Now;
+                ClarolineDB.Cours_Table.InsertOnSubmit(newCours);
+                SaveChangesToDB();
             }
             else
             {
-                if (!AllFiles.Contains(newDoc))
-                {
-                    // Add a to-do item to the data context.
+                Cours coursInDb = (from Cours _cours in ClarolineDB.Cours_Table
+                                   where _cours.Equals(newCours)
+                                   select _cours).First();
 
-                    ClarolineDB.Documents_Table.InsertOnSubmit(newDoc);
-                    // Save changes to the database.
+                coursInDb.updated = true;
+                coursInDb.loaded = DateTime.Now;
+                SaveChangesToDB();
+            }
 
-                    ClarolineDB.SubmitChanges();
-
-                    // Add a to-do item to the "all" observable collection.
-
-                    AllFiles.Add(newDoc);
-
-                    AddNotification(CL_Notification.CreateNotification(newDoc, false));
-
-                }
-                else
-                    UpdateFile(newDoc);
+            foreach (ResourceList list in newCours.Resources)
+            {
+                AddResourceList(list);
             }
         }
 
-        private void UpdateFolder(CL_Document newDoc)
+        public void AddResourceList(ResourceList newList)
         {
-            CL_Document foldInDb = (from CL_Document _fold in ClarolineDB.Documents_Table
-                                  where _fold.Equals(AllFolders[AllFolders.IndexOf(newDoc)])
-                                  select _fold).First();
+            bool alreadyInDB = ClarolineDB.ResourceList_Table.Contains(newList);
 
-            foldInDb.notifiedDate = newDoc.notifiedDate;
-            foldInDb.date = newDoc.date;
-            foldInDb.updated = newDoc.updated;
-
-            ClarolineDB.SubmitChanges();
-
-            AllFolders[AllFolders.IndexOf(foldInDb)].notifiedDate = newDoc.notifiedDate;
-            AllFolders[AllFolders.IndexOf(foldInDb)].date = newDoc.date;
-            AllFolders[AllFolders.IndexOf(foldInDb)].updated = newDoc.updated;
-
-        }
-
-        private void UpdateFile(CL_Document newFile)
-        {
-            CL_Document fileInDb = (from CL_Document _file in ClarolineDB.Documents_Table
-                                  where _file.Equals(AllFiles[AllFiles.IndexOf(newFile)])
-                             select _file).First();
-
-            fileInDb.notifiedDate = newFile.notifiedDate;
-            fileInDb.date = newFile.date;
-            fileInDb.updated = newFile.updated;
-            fileInDb.date = newFile.date;
-
-            ClarolineDB.SubmitChanges();
-            
-            AllFiles[AllFiles.IndexOf(fileInDb)].notifiedDate = newFile.notifiedDate;
-            AllFiles[AllFiles.IndexOf(fileInDb)].date = newFile.date;
-            AllFiles[AllFiles.IndexOf(fileInDb)].updated = newFile.updated;
-            AllFiles[AllFiles.IndexOf(fileInDb)].date = newFile.date;
-
-            AddNotification(CL_Notification.CreateNotification(fileInDb, true));
-        }
-
-        public void DeleteFolder(CL_Document docForDelete)
-        {
-            if (docForDelete.isFolder)
+            if (!alreadyInDB)
             {
-                // Remove the section item from the "all" observable collection.
-
-                AllFolders.Remove(docForDelete);
-
-                foreach (CL_Document DocForDelete in docForDelete.getContent())
-                {
-                    DeleteFolder(DocForDelete);
-                }
-                // Remove the section item from the data context.
-
-                ClarolineDB.Documents_Table.DeleteOnSubmit(docForDelete);
+                newList.loaded = DateTime.Now;
+                newList.updated = true;
+                ClarolineDB.ResourceList_Table.InsertOnSubmit(newList);
+                SaveChangesToDB();
             }
             else
             {
-                // Remove the section item from the "all" observable collection.
-
-                AllFiles.Remove(docForDelete);
-                
-                // Remove the section item from the data context.
-
-                ClarolineDB.Documents_Table.DeleteOnSubmit(docForDelete);
+                ResourceList listFromDB = (from ResourceList rl
+                                           in ClarolineDB.ResourceList_Table
+                                           where rl.Equals(newList)
+                                           select rl).First();
+                listFromDB.updated = true;
+                listFromDB.loaded = DateTime.Now;
+                listFromDB.name = newList.name;
+                listFromDB.visibility = newList.visibility;
+                SaveChangesToDB();
             }
-            // Save changes to the database.
-
-            ClarolineDB.SubmitChanges();
         }
 
         public void AddAnnonce(CL_Annonce newAnn)
         {
-            newAnn.updated = true;
+            bool alreadyInDB = ClarolineDB.Annonces_Table.Contains(newAnn);
 
-            if (!AllAnnonces.Contains(newAnn))
+            if (!alreadyInDB)
             {
-                // Add a to-do item to the data context.
-
+                newAnn.updated = true;
+                newAnn.loaded = DateTime.Now;
                 ClarolineDB.Annonces_Table.InsertOnSubmit(newAnn);
-
-                // Save changes to the database.
-
-                ClarolineDB.SubmitChanges();
-
-                // Add a to-do item to the "all" observable collection.
-
-                AllAnnonces.Add(newAnn);
-
-                AddNotification(CL_Notification.CreateNotification(newAnn, false));
+                SaveChangesToDB();
             }
             else
-                UpdateAnn(newAnn);
-        }
-
-        private void UpdateAnn(CL_Annonce newAnn)
-        {
-            CL_Annonce annInDb = (from CL_Annonce _ann in ClarolineDB.Annonces_Table
-                               where _ann.Equals(AllAnnonces[AllAnnonces.IndexOf(newAnn)])
-                               select _ann).First();
-
-            annInDb.notifiedDate = newAnn.notifiedDate;
-            AllAnnonces[AllAnnonces.IndexOf(annInDb)].notifiedDate = newAnn.notifiedDate;
-            annInDb.updated = newAnn.updated;
-            AllAnnonces[AllAnnonces.IndexOf(annInDb)].updated = newAnn.updated;
-            if (annInDb.date.CompareTo(newAnn.date) < 0)
             {
-                annInDb.date = newAnn.date;
-                AllAnnonces[AllAnnonces.IndexOf(annInDb)].date = newAnn.date;
-            }
-            annInDb.content = newAnn.content;
-            AllAnnonces[AllAnnonces.IndexOf(annInDb)].content = newAnn.content;
-            annInDb.upToDateContent = newAnn.upToDateContent;
-            AllAnnonces[AllAnnonces.IndexOf(annInDb)].upToDateContent = newAnn.upToDateContent;
-            ClarolineDB.SubmitChanges();
+                CL_Annonce annFromDB = (from CL_Annonce a
+                                        in ClarolineDB.Annonces_Table
+                                        where a.Equals(newAnn)
+                                        select a).First();
 
-            AddNotification(CL_Notification.CreateNotification(annInDb, true));
+                annFromDB.notifiedDate = newAnn.notifiedDate;
+                annFromDB.updated = true;
+                annFromDB.loaded = DateTime.Now;
+                if (annFromDB.date.CompareTo(newAnn.date) < 0)
+                {
+                    annFromDB.date = newAnn.date;
+                }
+                annFromDB.content = newAnn.content;
+                SaveChangesToDB();
+            }
+
+            AddNotification(CL_Notification.CreateNotification(newAnn, alreadyInDB));
         }
 
-        public void DeleteAnnonce(CL_Annonce annForDelete)
+        public void AddDocument(CL_Document newDoc)
         {
+            bool alreadyInDB = ClarolineDB.Documents_Table.Contains(newDoc);
 
-            // Remove the cours item from the "all" observable collection.
+            if (!alreadyInDB)
+            {
+                newDoc.updated = true;
+                newDoc.loaded = DateTime.Now;
+                ClarolineDB.Documents_Table.InsertOnSubmit(newDoc);
+                SaveChangesToDB();
+            }
+            else
+            {
+                CL_Document docFromDB = (from CL_Document d
+                                         in ClarolineDB.Documents_Table
+                                         where d.Equals(newDoc)
+                                         select d).First();
 
-            AllAnnonces.Remove(annForDelete);
+                docFromDB.notifiedDate = newDoc.notifiedDate;
+                docFromDB.date = newDoc.date;
+                docFromDB.updated = true;
+                docFromDB.loaded = DateTime.Now;
 
-            AnnByCours[annForDelete.Cours.sysCode].Remove(annForDelete);
+                SaveChangesToDB();
+            }
 
-            // Remove the cours item from the data context.
-
-            ClarolineDB.Annonces_Table.DeleteOnSubmit(annForDelete);
-
-            // Save changes to the database.
-
-            ClarolineDB.SubmitChanges();
+            if (!newDoc.isFolder)
+            {
+                AddNotification(CL_Notification.CreateNotification(newDoc, alreadyInDB));
+            }
         }
 
         public void AddNotification(CL_Notification newNot)
         {
-            newNot.updated = true;
-            newNot.Cours.notifiedDate = true;
-            UpdateCours(newNot.Cours);
+            bool alreadyInDB = ClarolineDB.Notifications_Table.Contains(newNot);
 
-            if (AllNotifications.Contains(newNot))
+            if (alreadyInDB)
             {
-                CL_Notification not = (from CL_Notification not_ in AllNotifications
-                                    where not_.Equals(newNot)
-                                    orderby not_.date descending
-                                    select not_).First();
-                if (not.date.Date == newNot.date.Date)
+                CL_Notification lastNotificationFromDB = (from CL_Notification n
+                                                          in ClarolineDB.Notifications_Table
+                                                          where n.Equals(newNot)
+                                                          orderby n.date descending
+                                                          select n).First();
+                if (lastNotificationFromDB.date.Date.Equals(newNot.date.Date))
+                {
                     return;
+                }
             }
-                // Add a to-do item to the data context.
 
-                ClarolineDB.Notifications_Table.InsertOnSubmit(newNot);
-
-                // Save changes to the database.
-
-                ClarolineDB.SubmitChanges();
-
-                // Add a to-do item to the "all" observable collection.
-
-                AllNotifications.Add(newNot);
-
-                NotifByCours[newNot.Cours.sysCode].Add(newNot);
-            /*}
-            else
-                UpdateNot(newNot);*/
-        }
-
-        private void UpdateNot(CL_Notification newNot)
-        {
-            CL_Notification notInDb = (from CL_Notification _not in ClarolineDB.Notifications_Table
-                               where _not.Equals(newNot)
-                               select _not).First();
-
-            notInDb.notifiedDate = newNot.notifiedDate;
-            NotifByCours[notInDb.Cours.sysCode][NotifByCours[notInDb.Cours.sysCode].IndexOf(notInDb)].notifiedDate = newNot.notifiedDate;
-            AllNotifications[AllNotifications.IndexOf(notInDb)].notifiedDate = newNot.notifiedDate;
-            notInDb.updated = newNot.updated;
-            NotifByCours[notInDb.Cours.sysCode][NotifByCours[notInDb.Cours.sysCode].IndexOf(notInDb)].updated = newNot.updated;
-            AllNotifications[AllNotifications.IndexOf(notInDb)].updated = newNot.updated;
-            ClarolineDB.SubmitChanges();
-        }
-
-        public void DeleteNotification(CL_Notification notForDelete)
-        {
-
-            // Remove the cours item from the "all" observable collection.
-
-            AllNotifications.Remove(notForDelete);
-
-            NotifByCours[notForDelete.Cours.sysCode].Remove(notForDelete);
-
-            // Remove the cours item from the data context.
-
-            ClarolineDB.Notifications_Table.DeleteOnSubmit(notForDelete);
-
-            // Save changes to the database.
-
-            ClarolineDB.SubmitChanges();
-        }
-
-        public void AddCours(Cours newCours)
-        {
-            newCours.updated = true;
-
-            if (!AllCours.Contains(newCours))
-            {
-                // Add a to-do item to the data context.
-
-                ClarolineDB.Cours_Table.InsertOnSubmit(newCours);
-
-                // Save changes to the database.
-
-                ClarolineDB.SubmitChanges();
-
-                // Add a to-do item to the "all" observable collection.
-
-                AllCours.Add(newCours);
-
-                NotifByCours.Add(newCours.sysCode, new ObservableCollection<CL_Notification>());
-            }
-            else
-                UpdateCours(newCours);
-        }
-
-        private void UpdateCours(Cours newCours)
-        {
-            Cours coursInDb = (from Cours _cours in ClarolineDB.Cours_Table
-                               where _cours.Equals(AllCours[AllCours.IndexOf(newCours)])
-                               select _cours).First();
-
-            coursInDb.updated = newCours.updated;
-            ClarolineDB.SubmitChanges();
-
-            AllCours[AllCours.IndexOf(coursInDb)].updated = newCours.updated;
+            ClarolineDB.Notifications_Table.InsertOnSubmit(newNot);
+            SaveChangesToDB();
         }
 
         public void DeleteCours(Cours coursForDelete)
         {
             // Remove the cours item from the "all" observable collection.
-            var queryDoc = from CL_Document _doc in ClarolineDB.Documents_Table
-                           where _doc._coursId == coursForDelete.Id
-                           select _doc;
-            foreach (var Doc in queryDoc)
+            var queryList = from ResourceList rl
+                            in ClarolineDB.ResourceList_Table
+                            where rl._coursId == coursForDelete.Id
+                            select rl;
+            foreach (var rl in queryList)
             {
-                //System.Diagnostics.Debug.WriteLine("Deleting document : " + Doc.Name);
-                if (Doc.IsFolder)
-                    AllFolders.Remove(Doc);
-                else
-                    AllFiles.Remove(Doc);
-                ClarolineDB.Documents_Table.DeleteOnSubmit(Doc);
+                DeleteResourceList(rl);
             }
-            DocByCours.Remove(coursForDelete.sysCode);
 
-            var queryAnn = from CL_Annonce _ann in ClarolineDB.Annonces_Table
-                        where _ann._coursId == coursForDelete.Id
-                        select _ann;
-            foreach (var Ann in queryAnn)
-            {
-                //System.Diagnostics.Debug.WriteLine("Deleting document : " + Ann.title);
-                ClarolineDB.Annonces_Table.DeleteOnSubmit(Ann);
-                AllAnnonces.Remove(Ann);
-            }
-            AnnByCours.Remove(coursForDelete.sysCode);
-
-            var queryNot = from CL_Notification _not in ClarolineDB.Notifications_Table
-                           where _not._coursId == coursForDelete.Id
-                           select _not;
+            var queryNot = from CL_Notification n in ClarolineDB.Notifications_Table
+                           where n._coursId == coursForDelete.Id
+                           select n;
             foreach (var not in queryNot)
             {
-                ClarolineDB.Notifications_Table.DeleteOnSubmit(not);
-                AllNotifications.Remove(not);
+                DeleteNotification(not);
             }
-            NotifByCours.Remove(coursForDelete.sysCode);
-
-            // Remove the cours item from the data context.
 
             ClarolineDB.Cours_Table.DeleteOnSubmit(coursForDelete);
 
-            // Save changes to the database.
+            SaveChangesToDB();
+        }
 
-            ClarolineDB.SubmitChanges();
+        public void DeleteResourceList(ResourceList listForDelete)
+        {
+            Type resourceType = listForDelete.Resources.First().GetType();
+
+            foreach (ResourceModel item in listForDelete.Resources)
+            {
+                if (resourceType.Equals(typeof(CL_Annonce)))
+                {
+                    DeleteAnnonce(item as CL_Annonce);
+                }
+                else if (resourceType.Equals(typeof(CL_Document)))
+                {
+                    DeleteDocument(item as CL_Document);
+                }
+            }
+
+            ClarolineDB.ResourceList_Table.DeleteOnSubmit(listForDelete);
+            SaveChangesToDB();
+        }
+
+        public void DeleteAnnonce(CL_Annonce annForDelete)
+        {
+
+            var queryNot = from CL_Notification n in ClarolineDB.Notifications_Table
+                           where n.resource.Equals(annForDelete)
+                           select n;
+            foreach (var not in queryNot)
+            {
+                DeleteNotification(not);
+            }
+
+            ClarolineDB.Annonces_Table.DeleteOnSubmit(annForDelete);
+            SaveChangesToDB();
+        }
+
+        public void DeleteDocument(CL_Document docForDelete)
+        {
+            var queryNot = from CL_Notification n in ClarolineDB.Notifications_Table
+                           where n.resource.Equals(docForDelete)
+                           select n;
+            foreach (var not in queryNot)
+            {
+                DeleteNotification(not);
+            }
+
+            foreach (CL_Document inner in docForDelete.getContent())
+            {
+                DeleteDocument(inner);
+            }
+
+            ClarolineDB.Documents_Table.DeleteOnSubmit(docForDelete);
+            SaveChangesToDB();
+        }
+
+        public void DeleteNotification(CL_Notification notForDelete)
+        {
+            ClarolineDB.Notifications_Table.DeleteOnSubmit(notForDelete);
+            SaveChangesToDB();
         }
 
         public void ClearCoursList()
         {
-            ObservableCollection<Cours> toDel = new ObservableCollection<Cours>();
-
-            foreach (Cours currentCours in _allCours)
-            {
-                if (!currentCours.updated)
-                {
-                    DeleteCours(currentCours);
-                    toDel.Add(currentCours);
-                }
-                else
-                    currentCours.updated = false;
-            }
-
-            foreach (Cours item in toDel)
-            {
-                _allCours.Remove(item);
-            }
+            (from Cours c
+             in ClarolineDB.Cours_Table
+             select c).ToList()
+             .ForEach(c =>
+             {
+                 if (c.updated)
+                 {
+                     c.updated = false;
+                 }
+                 else
+                 {
+                     DeleteCours(c);
+                 }
+             });
         }
 
         public void ClearDocsOfCours(Cours coursToClear)
         {
-            foreach (CL_Document currentDoc in _docByCours[coursToClear.sysCode])
-            {
-                if (!currentDoc.updated)
-                    DeleteFolder(currentDoc);
-                else
-                    currentDoc.updated = false;
-            }
+            (from CL_Document d
+             in ClarolineDB.Documents_Table
+             where d.resourceList.Cours.Equals(coursToClear)
+             select d).ToList()
+             .ForEach(d =>
+             {
+                 if (d.updated)
+                 {
+                     d.updated = false;
+                 }
+                 else
+                 {
+                     DeleteDocument(d);
+                 }
+             });
         }
 
         public void ClearAnnsOfCours(Cours coursToClear)
         {
-            foreach (CL_Annonce currentAnn in _annByCours[coursToClear.sysCode])
-            {
-                if (!currentAnn.updated)
-                    DeleteAnnonce(currentAnn);
-                else
-                    currentAnn.updated = false;
-            }
+            (from CL_Annonce a
+             in ClarolineDB.Annonces_Table
+             where a.resourceList.Cours.Equals(coursToClear)
+             select a).ToList()
+             .ForEach(a =>
+             {
+                 if (a.updated)
+                 {
+                     a.updated = false;
+                 }
+                 else
+                 {
+                     DeleteAnnonce(a);
+                 }
+             });
         }
 
-        public void ClearNotifsOfCours(Cours coursToClear)
+        public void ClearNotifsOfCours(Cours coursToClear, int keeped)
         {
-            foreach (CL_Notification currentNot in _notifByCours[coursToClear.sysCode])
-            {
-                if (!currentNot.updated)
-                    DeleteNotification(currentNot);
-                else
-                    currentNot.updated = false;
-            }
+            (from CL_Notification n
+             in ClarolineDB.Notifications_Table
+             where n.Cours.Equals(coursToClear)
+             orderby n.date descending
+             select n).Skip(keeped).ToList()
+             .ForEach(n => DeleteNotification(n) );
         }
 
         #region INotifyPropertyChanged Members
@@ -554,10 +345,16 @@ namespace ClarolineApp.ViewModel
         {
             if (PropertyChanged != null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                });
             }
         }
         #endregion
-    }
 
+        public abstract void LoadCollectionsFromDatabase();
+
+        public abstract void RefreshAsync();
+    }
 }

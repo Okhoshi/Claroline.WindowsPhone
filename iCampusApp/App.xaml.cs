@@ -21,16 +21,7 @@ namespace ClarolineApp
 {
     public partial class App : Application
     {
-        public static object selecteditem = null;
-        public const string ApplicationName = "Claroline Mobile";
-        public static ProgressIndicator currentProgressInd = null;
-        public static ClaroClient Client;
-
-        private static ClarolineViewModel viewModel;
-        public static ClarolineViewModel ViewModel
-        {
-            get { return viewModel;  }
-        }
+        public const string ApplicationName = "ClaroMobile";
 
         /// <summary>
         /// Permet d'accéder facilement au frame racine de l'application téléphonique.
@@ -69,10 +60,12 @@ namespace ClarolineApp
                 // PhoneApplicationService de l'application sur Désactivé.
                 // Attention :- À utiliser uniquement en mode de débogage. Les applications qui désactivent la détection d'inactivité de l'utilisateur continueront de s'exécuter
                 // et seront alimentées par la batterie lorsque l'utilisateur ne se sert pas du téléphone.
+#if DEBUG
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
+#endif
             }
 
-            string DBConnectionString = "Data Source=isostore:/iCampus.sdf";
+            string DBConnectionString = "Data Source=isostore:/Claroline.sdf";
 
             // Create database if not exists
             using (ClarolineDataContext db = new ClarolineDataContext(DBConnectionString))
@@ -83,33 +76,23 @@ namespace ClarolineApp
                 }
             }
 
-            viewModel = new ClarolineViewModel(DBConnectionString);
-            viewModel.LoadCollectionsFromDatabase();
-
-            Client = new ClaroClient();
-
-            AppSettings setting = new AppSettings();
+            AppSettings setting = AppSettings.instance;
             if(setting.UserSetting == null)
             {
                 setting.UserSetting = new User();
             }
-
-            currentProgressInd = new ProgressIndicator() { IsIndeterminate = true, IsVisible = false };
         }
 
         // Code à exécuter lorsque l'application démarre (par exemple, à partir de Démarrer)
         // Ce code ne s'exécute pas lorsque l'application est réactivée
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            App.Client.makeOperation(AllowedOperations.getUserData);
-            App.Client.makeOperation(AllowedOperations.getUpdates);
         }
 
         // Code à exécuter lorsque l'application est activée (affichée au premier plan)
         // Ce code ne s'exécute pas lorsque l'application est démarrée pour la première fois
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
-            App.Client.makeOperation(AllowedOperations.getUpdates);
         }
 
         // Code à exécuter lorsque l'application est désactivée (envoyée à l'arrière-plan)

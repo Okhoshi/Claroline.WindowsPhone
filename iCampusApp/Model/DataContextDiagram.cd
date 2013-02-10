@@ -1,44 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="ClarolineApp.Model.Cours" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="5.25" Y="0.5" Width="1.5" />
+    <Position X="6" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Events" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAACUAKAaAAwIYABkAAAAQABgiAAAIAAAACAAEEMAQA=</HashCode>
+      <HashCode>AAACUAKAaAIwIYABkAAAAQABgiAAAIAAAACAAEEMAQA=</HashCode>
       <FileName>Model\Cours.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="ClarolineApp.Model.ResourceList" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="7" Y="0.5" Width="1.5" />
+    <Position X="7.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABACAAAAIgAAAJABAIIAIQABiAAEAEAAAAAAAAEEAQA=</HashCode>
+      <HashCode>ABACAAAAIgAAAJABgIIAMQIBiAAEAEAAAAAAAEFEAUA=</HashCode>
       <FileName>Model\ResourceList.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="ClarolineApp.Model.ResourceModel" BaseTypeListCollapsed="true">
-    <Position X="1.5" Y="0.5" Width="2" />
+    <Position X="1.25" Y="0.5" Width="3.75" />
     <TypeIdentifier>
-      <HashCode>AAAGkACAQAQAIIAhAAQAEQIBgIAAAIAABAAAAUFEAQA=</HashCode>
+      <HashCode>AAAGkSCAQAYAIIAhAAQAEQIBgIAQAIAABAAgAUFEAUA=</HashCode>
       <FileName>Model\ResourceModel.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="ClarolineApp.Model.CL_Document" Collapsed="true">
-    <Position X="0.5" Y="8" Width="1.5" />
+  <Class Name="ClarolineApp.Model.CL_Document">
+    <Position X="1.25" Y="9.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAACAAAACAMAAoKACAAABgAQIAIQAAAEAAAIgBQA=</HashCode>
+      <HashCode>AAAAAACAAAICAEAAoKACAAAAAAQIAAQAAAEAAAIgBAA=</HashCode>
       <FileName>Model\CL_Document.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="ClarolineApp.Model.CL_Annonce" Collapsed="true">
-    <Position X="2.75" Y="8" Width="1.5" />
+  <Class Name="ClarolineApp.Model.CL_Annonce">
+    <Position X="3.5" Y="9.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAECAAAAAAAAAAAAgAAAAAAAAAAAEAAAAAAAAIAAAAA=</HashCode>
+      <HashCode>AAECAAAAAAIAAAAAgAAAAAAAAAAAEAAAAAAAAIAAAAA=</HashCode>
       <FileName>Model\CL_Annonce.cs</FileName>
     </TypeIdentifier>
   </Class>

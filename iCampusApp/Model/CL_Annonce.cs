@@ -12,6 +12,26 @@ namespace ClarolineApp.Model
     public class CL_Annonce : ResourceModel
     {
 
+        // Define ID: internal Notifications, public property and database column.
+
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public int Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    NotifyPropertyChanging("Id");
+                    _Id = value;
+                    NotifyPropertyChanged("Id");
+                }
+            }
+        }
+
         private int _ressourceId;
 
         [Column]
@@ -54,7 +74,7 @@ namespace ClarolineApp.Model
 
         public override bool Equals(object obj)
         {
-            if (obj != null && obj.GetType() == typeof(CL_Annonce))
+            if (obj != null && obj.GetType().Equals(typeof(CL_Annonce)))
             {
                 CL_Annonce ann = obj as CL_Annonce;
                 return this._resourceListId == ann._resourceListId && this._ressourceId == ann._ressourceId;
@@ -65,6 +85,11 @@ namespace ClarolineApp.Model
         public override string getNotificationText()
         {
             return _Title;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

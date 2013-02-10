@@ -118,6 +118,46 @@ namespace ClarolineApp.Model
             }
         }
 
+        protected bool _Visibility;
+
+        [Column]
+        public bool visibility
+        {
+            get
+            {
+                return _Visibility;
+            }
+            set
+            {
+                if (_Visibility != value)
+                {
+                    NotifyPropertyChanging("visibility");
+                    _Visibility = value;
+                    NotifyPropertyChanged("visibility");
+                }
+            }
+        }
+
+        protected bool _Updated;
+
+        [Column]
+        public bool updated
+        {
+            get
+            {
+                return _Updated;
+            }
+            set
+            {
+                if (_Updated != value)
+                {
+                    NotifyPropertyChanging("updated");
+                    _Updated = value;
+                    NotifyPropertyChanged("updated");
+                }
+            }
+        }
+
         #region Collection Side for ResourceModel
 
         // Define the entity set for the collection side of the relationship.
@@ -191,6 +231,21 @@ namespace ClarolineApp.Model
         }
 
         #endregion
+
+        public override bool Equals(object obj)
+        {
+            if (obj != null && obj.GetType().Equals(typeof(ResourceList)))
+            {
+                ResourceList rl = obj as ResourceList;
+                return (rl.Cours.Equals(this.Cours) && rl.label.Equals(this.label));
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
         #region INotifyPropertyChanged Members
 

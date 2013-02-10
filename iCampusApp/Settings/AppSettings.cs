@@ -9,6 +9,20 @@ namespace ClarolineApp.Settings
 {
     public class AppSettings : INotifyPropertyChanged
     {
+        private static AppSettings _instance;
+
+        public static AppSettings instance
+        {
+            get {
+                if (_instance == null)
+                {
+                    _instance = new AppSettings();
+                }
+                return AppSettings._instance; 
+            }
+        }
+
+
         // Our isolated storage settings
 
         IsolatedStorageSettings settings;

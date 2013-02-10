@@ -1,13 +1,11 @@
-﻿using System;
-using System.Windows.Data;
-using System.Globalization;
-using System.Windows.Media;
-using System.Windows;
-using System.Linq;
+﻿using ClarolineApp.Languages;
 using ClarolineApp.Settings;
-using ClarolineApp.Model;
-using System.Collections.ObjectModel;
-using ClarolineApp.Languages;
+using System;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Media;
+using System.Xml.Linq;
 
 namespace ClarolineApp
 {
@@ -311,7 +309,7 @@ namespace ClarolineApp
 			try
 			{
 				var app = XElement.Load("WMAppManifest.xml");
-				var version=app.Element("App").Attribute("Version").Value;
+				var version = app.Element("App").Attribute("Version").Value;
 				return full?version:version.Substring(0, version.IndexOf('.', version.IndexOf('.')+1));
 			}
 			catch {

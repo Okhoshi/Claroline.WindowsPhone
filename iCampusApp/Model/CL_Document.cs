@@ -13,7 +13,8 @@ namespace ClarolineApp.Model
     {
         // Assign handlers for the add and remove operations, respectively.
 
-        public CL_Document() : base()
+        public CL_Document()
+            : base()
         {
             _Date = new DateTime(DateTime.Today.Year, 9, 20);
             _desc = string.Empty;
@@ -22,6 +23,25 @@ namespace ClarolineApp.Model
             _size = 0.0;
             _url = string.Empty;
             _path = string.Empty;
+        }
+        // Define ID: internal Notifications, public property and database column.
+
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public int Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    NotifyPropertyChanging("Id");
+                    _Id = value;
+                    NotifyPropertyChanged("Id");
+                }
+            }
         }
 
         // Define item name: private Notifications, public property and database column.
@@ -151,12 +171,17 @@ namespace ClarolineApp.Model
 
         public override bool Equals(object obj)
         {
-            if (obj != null && obj.GetType() == typeof(CL_Document))
+            if (obj != null && obj.GetType().Equals(typeof(CL_Document)))
             {
                 CL_Document fld = obj as CL_Document;
                 return (fld._resourceListId == this._resourceListId) && (fld.path == this.path);
             }
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         public CL_Document getRoot()
@@ -169,8 +194,11 @@ namespace ClarolineApp.Model
             }
             else
             {
+                string DBConnectionString = "Data Source=isostore:/Claroline.sdf";
+                ClarolineDataContext db = new ClarolineDataContext(DBConnectionString);
+
                 return (from CL_Document _doc
-                        in App.ViewModel.AllFolders
+                        in db.Documents_Table
                         where _doc._path == rootPath && _doc._resourceList.Entity.Cours.sysCode == this._resourceList.Entity.Cours.sysCode
                         select _doc).First();
             }
@@ -178,10 +206,25 @@ namespace ClarolineApp.Model
 
         public ObservableCollection<CL_Document> getContent()
         {
-            return new ObservableCollection<CL_Document>((from CL_Document _doc
-                        in App.ViewModel.DocByCours[this._cours.Entity.sysCode]
-                                                          where _doc._path == ((_doc._isFolder) ? (this._path + "/" + _doc._name) : (this._path + "/" + _doc._name + "." + _doc._ext))
-                                                          select _doc).ToList<CL_Document>());
+            if (isFolder)
+            {
+                string DBConnectionString = "Data Source=isostore:/Claroline.sdf";
+                ClarolineDataContext db = new ClarolineDataContext(DBConnectionString);
+
+                return new ObservableCollection<CL_Document>((from CL_Document d
+                                                              in db.Documents_Table
+                                                              where d._path == ((d._isFolder)
+                                                                                    ? (this._path + "/" + d._Title)
+                                                                                    : (this._path + "/" + d._Title + "." + d._ext)
+                                                                                    )
+                                                              && d.resourceList.Cours.Equals(this.resourceList.Cours)
+                                                              select d).ToList<CL_Document>()
+                                                              );
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public CL_Document getRootDocument()

@@ -23,25 +23,7 @@ namespace ClarolineApp.Model
 
         internal int _Id;
 
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
-        public int Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    NotifyPropertyChanging("Id");
-                    _Id = value;
-                    NotifyPropertyChanged("Id");
-                }
-            }
-        }
-
-        internal string _Title;
+        protected string _Title;
 
         [Column]
         public string title
@@ -61,7 +43,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        internal DateTime _NotifiedDate = DateTime.Parse("01/01/1753");
+        protected DateTime _NotifiedDate = DateTime.Parse("01/01/1753");
 
         [Column]
         public DateTime notifiedDate
@@ -89,7 +71,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        internal DateTime _SeenDate = DateTime.Parse("01/01/1753");
+        protected DateTime _SeenDate = DateTime.Parse("01/01/1753");
 
         [Column]
         public DateTime seenDate
@@ -109,7 +91,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        internal DateTime _Date = DateTime.Parse("01/01/1753");
+        protected DateTime _Date = DateTime.Parse("01/01/1753");
 
         [Column]
         public DateTime date
@@ -129,7 +111,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        internal bool _Visibility;
+        protected bool _Visibility;
 
         [Column]
         public bool visibility
@@ -151,7 +133,7 @@ namespace ClarolineApp.Model
 
         // Define updated value: internal Notifications, public property and database column.
 
-        internal bool _Updated;
+        protected bool _Updated;
 
         [Column]
         public bool updated
@@ -171,7 +153,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        internal DateTime _Loaded = DateTime.Parse("01/01/1753");
+        protected DateTime _Loaded = DateTime.Parse("01/01/1753");
 
         [Column]
         public DateTime loaded
@@ -225,9 +207,9 @@ namespace ClarolineApp.Model
         #region Entity Side for ResourceList
 
         [Column]
-        internal int _resourceListId;
+        protected int _resourceListId;
 
-        internal EntityRef<ResourceList> _resourceList;
+        protected EntityRef<ResourceList> _resourceList;
 
         // Association, to describe the relationship between this key and that "storage" table
 
@@ -254,7 +236,7 @@ namespace ClarolineApp.Model
         // Version column aids update performance.
 
         [Column(IsVersion = true)]
-        internal Binary _version;
+        protected Binary _version;
 
         public override int GetHashCode()
         {
@@ -267,7 +249,7 @@ namespace ClarolineApp.Model
 
         // Used to notify that a property changed
 
-        internal void NotifyPropertyChanged(string propertyName)
+        protected void NotifyPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
             {
@@ -283,7 +265,7 @@ namespace ClarolineApp.Model
 
         // Used to notify that a property is about to change
 
-        internal void NotifyPropertyChanging(string propertyName)
+        protected void NotifyPropertyChanging(string propertyName)
         {
             if (PropertyChanging != null)
             {
@@ -293,7 +275,7 @@ namespace ClarolineApp.Model
 
         #endregion
 
-        public string getNotificationText();
+        public abstract string getNotificationText();
 
         public void markAsRead()
         {

@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using HtmlAgilityPack;
 using ClarolineApp.Settings;
 using ClarolineApp.Languages;
+using System.Threading.Tasks;
 
 #if !DEBUG
     using Microsoft.Phone.Net.NetworkInformation;
@@ -23,104 +24,152 @@ namespace ClarolineApp
 {
     public class ClaroClient : INotifyPropertyChanged
     {
-        AppSettings settings;
-        ClarolineViewModel VM;
 
-        Mutex Requesting;
-        Mutex Updating;
-        BackgroundWorker bw;
-        private int Waiting = 0;
-        private int Waiting2 = 0;
+        private static ClaroClient _instance;
+        public static ClaroClient instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new ClaroClient();
+                }
+                return _instance;
+            }
+        }
+
+        AppSettings settings;
 
         CookieContainer cookies;
-        DateTime CookieCreation;
+        
+        private DateTime _cookieCreation;
+        
+        DateTime cookieCreation
+        {
+            get
+            {
+                return _cookieCreation;
+            }
+            set
+            {
+                if (!_cookieCreation.Equals(value))
+                {
+                    _cookieCreation = value;
+                    NotifyPropertyChanged("cookieCreation");
+                    NotifyPropertyChanged("isExpired");
+                }
+            }
+        }
+
         public Boolean isExpired
         {
             get
             {
-                return (CookieCreation.AddHours(1.0).CompareTo(DateTime.Now) < 0);
+                return (cookieCreation.AddHours(1.0).CompareTo(DateTime.Now) < 0);
             }
         }
+
+        private Exception _lastException;
+
+        public Exception lastException
+        {
+            get { return _lastException; }
+            set
+            {
+                if (!_lastException.Equals(value))
+                {
+                    _lastException = value;
+                    NotifyPropertyChanged("lastException");
+                }
+            }
+        }
+        
 
         public ClaroClient()
         {
             //Environment
-            VM = App.ViewModel;
             settings = new AppSettings();
 
-            //Threading stuff
-            Requesting = new Mutex(false, "Request");
-            Updating = new Mutex(false, "Update");
-            bw = new BackgroundWorker();
-            bw.WorkerReportsProgress = true;
-            bw.WorkerSupportsCancellation = true;
-            bw.DoWork += new DoWorkEventHandler(DoWork);
-
             //WebRequesting stuff
-            CookieCreation = DateTime.MinValue;
+            cookieCreation = DateTime.MinValue;
             cookies = new CookieContainer();
         }
 
-        private HttpWebRequest getClient(Boolean forAuth = false)
+        private async Task<HttpWebRequest> getClientAsync(PostDataWriter args)
         {
             //Data request
-            HttpWebRequest client = (HttpWebRequest)WebRequest.Create(settings.DomainSetting + ((forAuth) ? settings.AuthPageSetting : settings.WebServiceSetting));
+            HttpWebRequest client = (HttpWebRequest)WebRequest.Create(args.GetURL());
             client.Method = "POST";
             client.CookieContainer = cookies;
             client.ContentType = "application/x-www-form-urlencoded";
             client.AllowAutoRedirect = false;
+
+            Stream postStream = await client.GetRequestStreamAsync();
+            String postData = args.GetPostDataString();
+
+            // Convert the string into a byte array.
+            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+
+            // Write to the request stream.
+            postStream.Write(byteArray, 0, postData.Length);
+            postStream.Close();
+
             return client;
         }
 
-        public void makeOperation(AllowedOperations op, Cours reqCours = null, int resID = -1)
+        public async Task<string> makeOperationAsync(SupportedModules module, SupportedMethods method, Cours reqCours = null, int resID = -1)
         {
             if (IsNetworkAvailable())
             {
-                if (!bw.IsBusy)
+                PostDataWriter args = new PostDataWriter() { module = module, method = method, cidReq = reqCours, resId = resID };
+
+                String strContent = "";
+                HttpWebResponse response = null;
+                Stream responseStream = null;
+                try
                 {
-                    CallbackArgs args;
-                    switch (op)
-                    {
-                        case AllowedOperations.getSingleAnnounce:
-                            if (reqCours == null && resID < 0)
-                            {
-                                return;
-                            }
-                            args = new CallbackArgs() { Request = getClient(), cidReq = reqCours, resId = resID, operation = op };
-                            bw.RunWorkerAsync(args);
-                            break;
-                        case AllowedOperations.getCourseToolList:
-                        case AllowedOperations.getDocList:
-                        case AllowedOperations.getAnnounceList:
-                            if (reqCours == null)
-                            {
-                                return;
-                            }
-                            args = new CallbackArgs() { Request = getClient(), cidReq = reqCours, operation = op };
-                            bw.RunWorkerAsync(args);
-                            break;
-                        case AllowedOperations.getUserData:
-                        case AllowedOperations.getCourseList:
-                        case AllowedOperations.getUpdates:
-                            args = new CallbackArgs() { Request = getClient(), operation = op };
-                            bw.RunWorkerAsync(args);
-                            break;
-                        case AllowedOperations.updateCompleteCourse:
-                            if (reqCours == null)
-                            {
-                                return;
-                            }
-                            args = new CallbackArgs() { cidReq = reqCours, operation = op };
-                            bw.RunWorkerAsync(args);
-                            break;
-                    }
-                    Debug.WriteLine("Appel de la méthode " + op.ToString());
+                    HttpWebRequest client = await getClientAsync(args);
+                    response = (HttpWebResponse)await client.GetResponseAsync();
+                    responseStream = response.GetResponseStream();
+                    StreamReader sr = new StreamReader(responseStream, Encoding.UTF8);
+                    strContent = sr.ReadToEnd();
+                    responseStream.Close();
+                    response.Close();
                 }
+                catch (Exception ex)
+                {
+                    lastException = ex;
+
+                    if (responseStream != null)
+                    {
+                        responseStream.Close();
+                    }
+                    if (response != null)
+                    {
+                        response.Close();
+                    }
+                }
+                return strContent;
             }
             else
             {
-                MessageBox.Show(AppLanguage.ErrorMessage_NetworkUnavailable);
-                NotifyPropertyChanged("Failure");
+                lastException = new NetworkException("Network Unavailable");
+                return null;
+            }
+        }
+
+        private async Task<bool> GetSessionCookieAsync()
+        {
+            String result = await makeOperationAsync(SupportedModules.NOMOD, SupportedMethods.authenticate);
+            if (result.Equals(String.Empty))
+            {
+                cookieCreation = DateTime.Now;
+                return true;
+            }
+            else
+            {
+                lastException = new AuthenticationException("Authentication Fails");
+                return false;
             }
         }
 
@@ -133,89 +182,28 @@ namespace ClarolineApp
 #endif
         }
 
-        public Boolean isValidAccount()
+        public async Task<Boolean> isValidAccountAsync()
         {
-            if (isExpired && !bw.IsBusy && IsNetworkAvailable())
+            if (isExpired && IsNetworkAvailable())
             {
-                CallbackArgs args = new CallbackArgs() { operation = AllowedOperations.authenticate };
-                bw.RunWorkerAsync(args);
+                return await GetSessionCookieAsync();
             }
+            else
+            {
+                return true;
+            }
+        }
+
+        public Boolean isValidAccountWithoutWaiting()
+        {
             return !isExpired;
         }
 
-        private void DoWork(object sender, DoWorkEventArgs e)
-        {
-            CallbackArgs args;
-
-            switch (((CallbackArgs)e.Argument).operation)
-            {
-                case AllowedOperations.authenticate:
-                    getSessionCookie();
-                    break;
-                case AllowedOperations.updateCompleteCourse:
-                    if (isExpired)
-                    {
-                        getSessionCookie();
-                        wait();
-                        if (bw.CancellationPending) return;
-                    }
-                    setProgressIndicator(true, AppLanguage.ProgressBar_Connecting);
-                    args = new CallbackArgs() { Request = getClient(), operation = AllowedOperations.getCourseToolList, cidReq = ((CallbackArgs)e.Argument).cidReq };
-                    args.Request.BeginGetRequestStream(new AsyncCallback(RequestCallback), args);
-                    wait();
-                    if (bw.CancellationPending || !((CallbackArgs)e.Argument).cidReq.isDnL) return;
-                    setProgressIndicator(true, AppLanguage.ProgressBar_Connecting);
-                    args = new CallbackArgs() { Request = getClient(), operation = AllowedOperations.getDocList, cidReq = ((CallbackArgs)e.Argument).cidReq };
-                    args.Request.BeginGetRequestStream(new AsyncCallback(RequestCallback), args);
-                    if (bw.CancellationPending || !((CallbackArgs)e.Argument).cidReq.isAnn) return;
-                    setProgressIndicator(true, AppLanguage.ProgressBar_Connecting);
-                    args = new CallbackArgs() { Request = getClient(), operation = AllowedOperations.getAnnounceList, cidReq = ((CallbackArgs)e.Argument).cidReq };
-                    args.Request.BeginGetRequestStream(new AsyncCallback(RequestCallback), args);
-                    wait();
-                    wait();
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        ((CallbackArgs)e.Argument).cidReq.loaded = DateTime.Now;
-                    });
-                    break;
-                default:
-                    if (isExpired)
-                    {
-                        getSessionCookie();
-                        wait();
-                        if (bw.CancellationPending) return;
-                    }
-                    setProgressIndicator(true, AppLanguage.ProgressBar_Connecting);
-                    args = e.Argument as CallbackArgs;
-                    args.Request.BeginGetRequestStream(new AsyncCallback(RequestCallback), args);
-                    //wait();
-                    //authNotify();
-                    break;
-            }
-        }
-
-        private void RequestCallback(IAsyncResult ar)
-        {
-            HttpWebRequest request = ((CallbackArgs)ar.AsyncState).Request;
-            String postData = ((CallbackArgs)ar.AsyncState).ToString();
-            AllowedOperations op = ((CallbackArgs)ar.AsyncState).operation;
-            // End the operation
-            Stream postStream = request.EndGetRequestStream(ar);
-
-            // Convert the string into a byte array.
-            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-
-            // Write to the request stream.
-            postStream.Write(byteArray, 0, postData.Length);
-            postStream.Close();
-            // Start the asynchronous operation to get the response
-            request.BeginGetResponse(new AsyncCallback(ResponseCallback), ar.AsyncState);
-        }
-
+        [Obsolete]
         public void ResponseCallback(IAsyncResult ar)
-        {
+        {/*
             String strContent = "";
-            CallbackArgs args = (CallbackArgs)ar.AsyncState;
+            PostDataWriter args = (PostDataWriter)ar.AsyncState;
             //Récupération de la requete web (object HttpWebRequest)
             HttpWebRequest Request = args.Request;
             AllowedOperations op = args.operation;
@@ -457,7 +445,7 @@ namespace ClarolineApp
                     case AllowedOperations.authenticate:
                         if (!strContent.Contains(settings.AuthPageSetting))
                         {
-                            CookieCreation = DateTime.Now;
+                            cookieCreation = DateTime.Now;
                             authNotify();
                         }
                         else
@@ -503,80 +491,13 @@ namespace ClarolineApp
                 pulse();
             }
             return;
-        }
-
-        private void getSessionCookie()
-        {
-            CallbackArgs args = new CallbackArgs() { Request = getClient(true), login = settings.UsernameSetting, password = settings.PasswordSetting, operation = AllowedOperations.authenticate };
-            setProgressIndicator(true, AppLanguage.ProgressBar_Connecting);
-            args.Request.BeginGetRequestStream(new AsyncCallback(RequestCallback), args);
-        }
-
-        private void wait(Mutex mutex = null)
-        {
-            if (mutex == null) mutex = Requesting;
-            lock (mutex)
-            {
-                Debug.WriteLine("Wait Pulse " + mutex.Equals(Requesting));
-                if (mutex == Requesting)
-                {
-                    Waiting++;
-                }
-                else
-                {
-                    Waiting2++;
-                }
-                Monitor.Wait(mutex);
-            }
-        }
-
-        private void pulse(Mutex mutex = null)
-        {
-            if (mutex == null) mutex = Requesting;
-            if (((mutex == Requesting) ? Waiting : Waiting2) > 0)
-            {
-                lock (mutex)
-                {
-                    Monitor.PulseAll(mutex);
-                    if (mutex == Requesting)
-                    {
-                        Waiting--;
-                    }
-                    else
-                    {
-                        Waiting2--;
-                    }
-                    Debug.WriteLine("PULSING " + mutex.Equals(Requesting));
-                }
-            }
-        }
-
-        private void authNotify()
-        {
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
-            {
-                NotifyPropertyChanged("isExpired");
-            });
-        }
+        */}
 
         public void invalidateClient()
         {
-            CookieCreation = DateTime.MinValue;
+            cookieCreation = DateTime.MinValue;
             cookies = new CookieContainer();
             settings.UserSetting = new User();
-            authNotify();
-        }
-
-        private void setProgressIndicator(Boolean visible, String message = "")
-        {
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
-            {
-                if (App.currentProgressInd != null)
-                {
-                    App.currentProgressInd.Text = message;
-                    App.currentProgressInd.IsVisible = visible;
-                }
-            });
         }
 
         #region INotifyPropertyChanged Members
@@ -589,59 +510,25 @@ namespace ClarolineApp
         {
             if (PropertyChanged != null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                Deployment.Current.Dispatcher.BeginInvoke(() => {
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                });
             }
         }
 
         #endregion
 
-    }
-
-    public class CallbackArgs
-    {
-        public HttpWebRequest Request;
-        public AllowedOperations operation;
-        public Cours cidReq;
-        public String login;
-        public String password;
-        public int resId;
-
-        public override string ToString()
-        {
-            switch (operation)
-            {
-                case AllowedOperations.authenticate:
-                    return "login=" + login + "&password=" + password;
-                case AllowedOperations.getUserData:
-                    return "Method=getUserData";
-                case AllowedOperations.getCourseList:
-                    return "Method=getCourseList";
-                case AllowedOperations.getCourseToolList:
-                    return "Method=getCourseToolList&cidReq=" + cidReq.sysCode;
-                case AllowedOperations.getDocList:
-                    return "Method=getDocList&cidReq=" + cidReq.sysCode;
-                case AllowedOperations.getAnnounceList:
-                    return "Method=getAnnounceList&cidReq=" + cidReq.sysCode;
-                case AllowedOperations.getSingleAnnounce:
-                    return "Method=getSingleAnnounce&cidReq=" + cidReq.sysCode + "&resId=" + resId;
-                case AllowedOperations.getUpdates:
-                    return "Method=getUpdates";
-                default:
-                    return base.ToString();
-            }
+        class NetworkException : WebException {
+            public NetworkException(string message)
+                :base(message)
+            { }
         }
+        class AuthenticationException : WebException {
+            public AuthenticationException(string message)
+                :base(message)
+            { }
+        }
+
     }
 
-    public enum AllowedOperations
-    {
-        authenticate,
-        getUserData,
-        getCourseList,
-        getCourseToolList,
-        getDocList,
-        getAnnounceList,
-        getSingleAnnounce,
-        updateCompleteCourse,
-        getUpdates
-    }
 }

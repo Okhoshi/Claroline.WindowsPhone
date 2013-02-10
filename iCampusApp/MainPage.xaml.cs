@@ -31,25 +31,19 @@ namespace ClarolineApp
     {
         PropertyChangedEventHandler MainPage_Handler;
         PropertyChangedEventHandler Failure_Handler;
-        AppSettings set;
 
         // Constructeur
         public MainPage()
         {
             InitializeComponent();
-            this.DataContext = App.ViewModel;
-            SystemTray.SetProgressIndicator(this, App.currentProgressInd);
-            MainPage_Handler = new PropertyChangedEventHandler(MainPage_PropertyChanged);
-            Failure_Handler = new PropertyChangedEventHandler(FailureOccured);
-
-            (this.Resources["Notifications"] as CollectionViewSource).Source = App.ViewModel.AllNotifications;
-            set = new AppSettings();
+            //MainPage_Handler = new PropertyChangedEventHandler(MainPage_PropertyChanged);
+            //Failure_Handler = new PropertyChangedEventHandler(FailureOccured);
         }
         //--------------------------------------------------------------------
         // Event handler
         //--------------------------------------------------------------------
 
-
+/*
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -63,25 +57,7 @@ namespace ClarolineApp
                 }
             }
 
-            /*(from Notification _note in App.ViewModel.AllNotifications
-                                                                                orderby _note.date descending
-                                                                                select _note).Take(20);*/
         }
-
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // Used to notify Silverlight that a property has changed.
-
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-        #endregion
 
         private void CoursList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -249,5 +225,21 @@ namespace ClarolineApp
                     break;
             }
         }
+  */
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Used to notify Silverlight that a property has changed.
+
+        private void NotifyPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+        #endregion
     }
 }

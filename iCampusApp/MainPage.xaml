@@ -9,25 +9,18 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:local="clr-namespace:ClarolineApp"
     xmlns:UC="clr-namespace:ClarolineApp.Settings"
-    xmlns:scm="clr-namespace:System.ComponentModel;assembly=System.Windows"
     x:Class="ClarolineApp.MainPage"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
-	d:DataContext="{d:DesignData SampleData/iCampusViewModelSampleData.xaml}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
 	shell:SystemTray.Opacity="0"
     Style="{StaticResource TransitionPageStyle}">
     <!--:TiltEffect.IsTiltEnabled="True"-->
-    
+
     <phone:PhoneApplicationPage.Resources>
-        <Color x:Key="DarkBG">#C94B4B4B</Color>
-        <Color x:Key="LightBG">#DEB2B2B2</Color>
-        <CollectionViewSource x:Key="Notifications" Filter="CollectionViewSource_Filter">
-            <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="date"
-                           Direction="Descending" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
+    	<ResourceDictionary>
+    		<!--<CollectionViewSource x:Key="Notifications" Filter="CollectionViewSource_Filter"/>-->
+    	</ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
 	<phone:PhoneApplicationPage.FontFamily>
 		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
@@ -41,7 +34,7 @@
 
 
     <!--Exemple de code illustrant l'utilisation d'ApplicationBar-->
-    <phone:PhoneApplicationPage.ApplicationBar>
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Minimized">
             <shell:ApplicationBarIconButton x:Name="Connect_Btn" IconUri="/icons/appbar.download.rest.png" Text="Connect" Click="Connect_Click"/>
             <shell:ApplicationBarIconButton x:Name="Sync_Btn" IconUri="/icons/appbar.refresh.rest.png" Text="Sync" Click="Sync_Btn_Click"/>
@@ -50,14 +43,14 @@
                 <shell:ApplicationBarMenuItem x:Name="DEV_clrDB" Text="[DEV] Clear DB" Click="DEV_clrDB_Click"/>
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
 
     <!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
     	<Grid.RowDefinitions>
     		<RowDefinition Height="768"/>
     	</Grid.RowDefinitions>
-    	<controls:Panorama Title="Claroline" x:Name="Panorama" SelectionChanged="Panorama_SelectionChanged">
+    	<!--<controls:Panorama Title="Claroline" x:Name="Panorama" SelectionChanged="Panorama_SelectionChanged">
     		<controls:Panorama.Background>
     			<ImageBrush ImageSource="/BSTwp2.jpg" Stretch="None"/>
     		</controls:Panorama.Background>
@@ -139,7 +132,7 @@
                     </Grid>
                 </ScrollViewer>
             </controls:PanoramaItem>
-    	</controls:Panorama>
+    	</controls:Panorama>-->
     </Grid>
 
 </phone:PhoneApplicationPage>

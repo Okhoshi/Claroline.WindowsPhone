@@ -187,7 +187,7 @@ namespace ClarolineApp.Model
 
                 if (value != null)
                 {
-                    _resourceId = value.Id;
+                    _resourceId = value._Id;
                 }
 
                 NotifyPropertyChanged("resource");
@@ -257,11 +257,10 @@ namespace ClarolineApp.Model
 
         public override bool Equals(object obj)
         {
-            if (obj != null && obj.GetType() == typeof(CL_Notification))
+            if (obj != null && obj.GetType().Equals(typeof(CL_Notification)))
             {
                 CL_Notification notif = obj as CL_Notification;
-                return this.resource.Equals(notif.resource)
-                    && this._date.Equals(notif._date);
+                return this.resource.Equals(notif.resource);
             }
             return false;
         }

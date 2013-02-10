@@ -289,7 +289,7 @@ namespace ClarolineApp.Model
 
         public override bool Equals(object obj)
         {
-            if (obj != null && obj.GetType() == typeof(Cours))
+            if (obj != null && obj.GetType().Equals(typeof(Cours)))
             {
                 Cours Cou = obj as Cours;
                 return (Cou._CoursTag == this._CoursTag);
