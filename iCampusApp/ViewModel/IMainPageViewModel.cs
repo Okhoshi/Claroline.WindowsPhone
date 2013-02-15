@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ClarolineApp.ViewModel
 {
     interface IMainPageViewModel : IClarolineViewModel
     {
-        ObservableCollection<CL_Notification> GetTopNotifications(int limit = 0, int offset = 0);
-        void PrepareCoursForOpeningAsync(Cours coursToPrepare);
+        void SetTopNotifications(int limit = 0, int offset = 0);
     }
 }

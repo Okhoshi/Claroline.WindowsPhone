@@ -25,7 +25,27 @@ namespace ClarolineApp.Model
             _path = string.Empty;
         }
 
+        public const string LABEL = "CLDOC";
+
         // Define item name: private Notifications, public property and database column.
+
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public override int Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    NotifyPropertyChanging("Id");
+                    _Id = value;
+                    NotifyPropertyChanged("Id");
+                }
+            }
+        }
 
         private string _path;
 

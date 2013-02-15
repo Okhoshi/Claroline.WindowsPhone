@@ -11,22 +11,42 @@ namespace ClarolineApp.Model
     [Table]
     public class CL_Annonce : ResourceModel
     {
-        private int _ressourceId;
+        public const string LABEL = "CLANN";
 
-        [Column(IsPrimaryKey = true)]
-        public int ressourceId
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public virtual int Id
         {
             get
             {
-                return _ressourceId;
+                return _Id;
             }
             set
             {
-                if (_ressourceId != value)
+                if (_Id != value)
                 {
-                    NotifyPropertyChanging("ressourceId");
-                    _ressourceId = value;
-                    NotifyPropertyChanged("ressourceId");
+                    NotifyPropertyChanging("Id");
+                    _Id = value;
+                    NotifyPropertyChanged("Id");
+                }
+            }
+        }
+
+        private int _resourceId;
+
+        [Column]
+        public int resourceId
+        {
+            get
+            {
+                return _resourceId;
+            }
+            set
+            {
+                if (_resourceId != value)
+                {
+                    NotifyPropertyChanging("resourceId");
+                    _resourceId = value;
+                    NotifyPropertyChanged("resourceId");
                 }
             }
         }
@@ -56,7 +76,7 @@ namespace ClarolineApp.Model
             if (obj != null && obj.GetType().Equals(typeof(CL_Annonce)))
             {
                 CL_Annonce ann = obj as CL_Annonce;
-                return this._resourceListId == ann._resourceListId && this._ressourceId == ann._ressourceId;
+                return this._resourceListId == ann._resourceListId && this._resourceId == ann._resourceId;
             }
             return false;
         }

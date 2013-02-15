@@ -72,7 +72,15 @@ namespace ClarolineApp
             {
                 if (!db.DatabaseExists())
                 {
-                    db.CreateDatabase();
+                    try
+                    {
+                        db.CreateDatabase();
+                    }
+                    catch (Exception e)
+                    {
+                        db.DeleteDatabase();
+                        throw e;
+                    }
                 }
             }
 

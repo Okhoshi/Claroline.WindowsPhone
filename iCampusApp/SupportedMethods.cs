@@ -22,7 +22,7 @@ namespace ClarolineApp
         //USER
         getUserData,
         getCourseList,
-        getCourseToolList,
+        getToolList,
         getUpdates,
         //CLXXX
         getResourcesList,
@@ -36,7 +36,7 @@ namespace ClarolineApp
         public SupportedModules module;
         public SupportedMethods method;
         public Cours cidReq;
-        public int resId;
+        public string resStr;
 
         private static string GetEnumName(Enum enumeration)
         {
@@ -86,7 +86,7 @@ namespace ClarolineApp
                 case SupportedModules.USER:
                     switch (method)
                     {
-                        case SupportedMethods.getCourseToolList:
+                        case SupportedMethods.getToolList:
                             if (cidReq != null)
                             {
                                 postString = "cidReset&cidReq=" + cidReq.sysCode + "&module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
@@ -123,9 +123,9 @@ namespace ClarolineApp
                             }
                             break;
                         case SupportedMethods.getSingleResource:
-                            if (cidReq != null && resId >= 0)
+                            if (cidReq != null && resStr != null)
                             {
-                                postString = "cidReset&cidReq=" + cidReq.sysCode + "&resId=" + resId + "&module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
+                                postString = "cidReset&cidReq=" + cidReq.sysCode + "&resID=" + resStr + "&module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
                             }
                             else
                             {
@@ -133,9 +133,9 @@ namespace ClarolineApp
                                 {
                                     throw new ArgumentNullException("cidReq cannot be null");
                                 }
-                                else if (resId < 0)
+                                else if (resStr == null)
                                 {
-                                    throw new ArgumentOutOfRangeException("resId must be positive");
+                                    throw new ArgumentOutOfRangeException("resStr must be setted");
                                 }
                             }
                             break;

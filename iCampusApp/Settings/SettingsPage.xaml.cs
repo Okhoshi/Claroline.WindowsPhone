@@ -15,6 +15,7 @@ using System.Windows.Data;
 using System.Globalization;
 using System.ComponentModel;
 using Microsoft.Phone.Shell;
+using ClarolineApp.ViewModel;
 
 namespace ClarolineApp.Settings
 {
@@ -24,11 +25,21 @@ namespace ClarolineApp.Settings
         PropertyChangedEventHandler Refresh;
         PropertyChangedEventHandler ResetHandler;
 
+        ProgressIndicator indicator;
+
+        ClarolineViewModel _viewModel;
+
         public SettingsPage()
         {
             InitializeComponent();
 
+            _viewModel = new ClarolineViewModel();
             this.DataContext = AppSettings.instance;
+
+            indicator = new ProgressIndicator(){
+                IsIndeterminate = true,
+                IsVisible = false
+            };
 
             Handler = new PropertyChangedEventHandler(Connecting_PropertyChanged);
             Refresh = new PropertyChangedEventHandler(Client_PropertyChanged);
@@ -66,24 +77,23 @@ namespace ClarolineApp.Settings
         {
             userTextBox.Text = "";
             passwordBox.Password = "";
-            .ResetDatabase();
+            _viewModel.ResetViewModel();
             ClaroClient.instance.invalidateClient();
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            SystemTray.SetProgressIndicator(this, App.currentProgressInd);
-            if (settings.UserSetting.userID > 0)
+            if (AppSettings.instance.UserSetting.userID > 0)
             {
                 updatePanels(false);
-                settings.PropertyChanged += ResetHandler;
+                AppSettings.instance.PropertyChanged += ResetHandler;
             }
             else
             {
                 updatePanels(true);
             }
-            if (!settings.AdvancedSwitchSetting)
+            if (!AppSettings.instance.AdvancedSwitchSetting)
             {
                 stackPanel2.Height = 0;
             }
@@ -97,11 +107,11 @@ namespace ClarolineApp.Settings
 
         void Client_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (ClaroClient.instance.isValidAccount())
+            if (ClaroClient.instance.isValidAccountWithoutWaiting())
             {
                 updatePanels(false);
                 ClaroClient.instance.PropertyChanged -= Refresh;
-                settings.PropertyChanged -= ResetHandler;
+                AppSettings.instance.PropertyChanged -= ResetHandler;
             }
             else
             {
@@ -126,9 +136,11 @@ namespace ClarolineApp.Settings
         {
             ((Button)e.OriginalSource).Content = ClaroClient.instance.isValidAccountWithoutWaiting().ToString();
         }
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            ClaroClient.instance.makeOperationAsync(SupportedModules.USER, SupportedMethods.getCourseList);
+            indicator.IsVisible = true;
+            await ClaroClient.instance.makeOperationAsync(SupportedModules.USER, SupportedMethods.getCourseList);
+            indicator.IsVisible = false;
         }
 #endif
 
@@ -139,17 +151,19 @@ namespace ClarolineApp.Settings
                 if (ClaroClient.instance.isValidAccountWithoutWaiting())
                 {
                     Connected.Begin();
-                	settings.PropertyChanged += ResetHandler;
+                	AppSettings.instance.PropertyChanged += ResetHandler;
                 	ClaroClient.instance.PropertyChanged += Refresh;
                 }
                 ClaroClient.instance.PropertyChanged -= Handler;
             }
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private async void Button_Click_2(object sender, RoutedEventArgs e)
         {
+            indicator.IsVisible = true;
             ClaroClient.instance.PropertyChanged += Handler;
-            ClaroClient.instance.makeOperationAsync(SupportedModules.USER, SupportedMethods.getUserData);
+            await _viewModel.GetUserDataAsync();
+            indicator.IsVisible = false;
         }
 
         private void settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -161,7 +175,7 @@ namespace ClarolineApp.Settings
             ClaroClient.instance.invalidateClient();
 			Disconnected.Begin();
             updatePanels(true);
-            settings.PropertyChanged -= ResetHandler;
+            AppSettings.instance.PropertyChanged -= ResetHandler;
         }
 
         private void toggleSwitch_Checked(object sender, RoutedEventArgs e)

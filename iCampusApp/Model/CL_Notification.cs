@@ -20,7 +20,6 @@ namespace ClarolineApp.Model
             note.Cours = resource.resourceList.Cours;
             note.resource = resource;
             note.date = resource.date;
-            note.ressourceType = resource.GetType();
 
             resource.PropertyChanged += note.resource_PropertyChanged;
 
@@ -69,7 +68,7 @@ namespace ClarolineApp.Model
         {
             get
             {
-                return resource.seenDate.CompareTo(date) > 0;
+                return _resource.Entity.seenDate.CompareTo(date) > 0;
             }
         }
 
@@ -89,26 +88,6 @@ namespace ClarolineApp.Model
                     NotifyPropertyChanging("date");
                     _date = value;
                     NotifyPropertyChanged("date");
-                }
-            }
-        }
-
-        private Type _ressourceType;
-
-        [Column]
-        public Type ressourceType
-        {
-            get
-            {
-                return _ressourceType;
-            }
-            set
-            {
-                if (_ressourceType != value)
-                {
-                    NotifyPropertyChanging("ressourceType");
-                    _ressourceType = value;
-                    NotifyPropertyChanged("ressourceType");
                 }
             }
         }

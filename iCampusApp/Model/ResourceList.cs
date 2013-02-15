@@ -158,6 +158,51 @@ namespace ClarolineApp.Model
             }
         }
 
+        private string _ressourceType;
+
+        [Column]
+        public string ressourceTypeStr
+        {
+            get
+            {
+                return _ressourceType;
+            }
+            set
+            {
+                if (_ressourceType != value)
+                {
+                    NotifyPropertyChanging("ressourceType");
+                    _ressourceType = value;
+                    NotifyPropertyChanged("ressourceType");
+                }
+            }
+        }
+
+        public Type ressourceType
+        {
+            get
+            {
+                return Type.GetType(_ressourceType);
+            }
+            set
+            {
+                if (_ressourceType != value.FullName)
+                {
+                    NotifyPropertyChanging("ressourceType");
+                    _ressourceType = value.FullName;
+                    NotifyPropertyChanged("ressourceType");
+                }
+            }
+        }
+
+        public Type ressourceListType
+        {
+            get
+            {
+                return typeof(List<>).MakeGenericType(ressourceType);
+            }
+        }
+
         #region Collection Side for ResourceModel
 
         // Define the entity set for the collection side of the relationship.
@@ -245,6 +290,20 @@ namespace ClarolineApp.Model
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        public SupportedModules GetSupportedModule()
+        {
+            SupportedModules module;
+            try
+            {
+                module = (SupportedModules)Enum.Parse(typeof(SupportedModules), label, true);
+            }
+            catch (ArgumentException)
+            {
+                module = SupportedModules.NOMOD;
+            }
+            return module;
         }
 
         #region INotifyPropertyChanged Members

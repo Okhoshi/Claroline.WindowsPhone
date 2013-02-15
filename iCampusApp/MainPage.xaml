@@ -18,9 +18,6 @@
     Style="{StaticResource TransitionPageStyle}">
 
     <phone:PhoneApplicationPage.Resources>
-    	<ResourceDictionary>
-    		<CollectionViewSource x:Key="Notifications" Filter="CollectionViewSource_Filter"/>
-    	</ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
 	<phone:PhoneApplicationPage.FontFamily>
 		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
@@ -58,7 +55,7 @@
     			<SolidColorBrush Color="{StaticResource PhoneForegroundColor}"/>
     		</controls:Panorama.Foreground>
             <controls:PanoramaItem x:Name="Cours_PI" Header="{Binding LocalizedResources.MainPage_Cours_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Height="586" Width="432" Foreground="Black">
-            	<ListBox x:Name="CoursList" ItemsSource="{Binding AllCours, Mode=TwoWay}" Margin="0,-30,0,30" SelectionChanged="CoursList_SelectionChanged" FontSize="{StaticResource PhoneFontSizeLarge}">
+            	<ListBox x:Name="CoursList" ItemsSource="{Binding allCours, Mode=TwoWay}" Margin="0,-30,0,30" SelectionChanged="CoursList_SelectionChanged" FontSize="{StaticResource PhoneFontSizeLarge}">
             		<ListBox.ItemTemplate>
             			<DataTemplate>
                             <StackPanel Width="420">
@@ -69,7 +66,7 @@
                                 </toolkit:ContextMenuService.ContextMenu>
                                 <StackPanel>
                                     <TextBlock Text="{Binding title, Mode=TwoWay}" TextWrapping="Wrap" Foreground="{Binding notified, ConverterParameter=Black, Converter={StaticResource StatusConverter}}" Margin="12,0"/>
-            					    <TextBlock TextWrapping="Wrap" Text="{Binding sysCode}" d:LayoutOverrides="Width" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Foreground="#FF4B4B4B"/>
+            					    <TextBlock TextWrapping="Wrap" Text="{Binding officialCode}" d:LayoutOverrides="Width" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Foreground="#FF4B4B4B"/>
                                     <TextBlock TextWrapping="Wrap" Text="{Binding titular}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Foreground="#FF4B4B4B"/>
                                     <toolkit:PerformanceProgressBar Height="10" Margin="0,0,0,-10" Visibility="Collapsed" IsIndeterminate="True" Background="{StaticResource PhoneAccentBrush}" Foreground="{StaticResource PhoneAccentBrush}"/>
                                 </StackPanel>
@@ -79,7 +76,7 @@
             	</ListBox>
     		</controls:PanoramaItem>
             <controls:PanoramaItem x:Name="Notif_PI" Header="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.MainPage_Notif_PI, Converter={StaticResource ToLower}}" Foreground="Black">
-                <ListBox x:Name="NotifList" ItemsSource="{Binding Source={StaticResource Notifications}, Mode=OneWay}" Margin="0,-30,0,30" SelectionChanged="NotifList_SelectionChanged">
+                <ListBox x:Name="NotifList" ItemsSource="{Binding Source=topNotifications, Mode=OneWay}" Margin="0,-30,0,30" SelectionChanged="NotifList_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="12,0,0,0" Width="420">
@@ -120,7 +117,7 @@
                         <TextBlock TextWrapping="Wrap" Text="{Binding LocalizedResources.MainPage_About_Version, Converter={StaticResource ToUpper}, Source={StaticResource LocalizedStrings}}" Foreground="#FF4B4B4B" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="16"/>
                         <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{Binding LocalizedResources.MainPage_About_Author, Converter={StaticResource ToUpper}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="16" Foreground="#FF4B4B4B"/>
                         <TextBlock Grid.Row="2" TextWrapping="Wrap" Text="TWITTER" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="16" Foreground="#FF4B4B4B"/>
-                        <TextBlock Grid.Column="1" TextWrapping="Wrap" Text="LINK TO Helper.GetVersionNumber" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" FontSize="21.333"/>
+                        <TextBlock Grid.Column="1" TextWrapping="Wrap" x:Name="version_text"  VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" FontSize="21.333"/>
                         <TextBlock Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Text="Quentin Devos" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="21.333"/>
                         <TextBlock x:Name="TwitterTag" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Text="@Okhoshi" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="21.333" />
                         <TextBlock Grid.Column="0" Grid.Row="3" TextWrapping="Wrap" Text="{Binding LocalizedResources.MainPage_About_Thanks, Converter={StaticResource ToUpper}, Source={StaticResource LocalizedStrings}}" Foreground="#FF4B4B4B" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="16"/>

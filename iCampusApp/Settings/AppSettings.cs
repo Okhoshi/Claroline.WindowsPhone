@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using ClarolineApp.Model;
 using System.ComponentModel;
+using System.Windows;
 
 namespace ClarolineApp.Settings
 {
@@ -40,8 +41,6 @@ namespace ClarolineApp.Settings
         const string PasswordSettingKeyName = "PasswordSetting";
         const string InstituteSettingKeyName = "InstituteSetting";
         const string PlatformSettingKeyName = "PlatformSetting";
-        const string PlatformTextAuthSettingKeyName = "PlatformTextAuthSetting";
-        const string PlatformTextAnonSettingKeyName = "PlatformTextAnonSetting";
         const string UserSettingKeyName = "UserSetting";
 
         // The default value of our settings
@@ -63,8 +62,6 @@ namespace ClarolineApp.Settings
         const bool RadioButton3SettingDefault = false;
         const string InstituteSettingDefault = "";
         const string PlatformSettingDefault = "Claroline";
-        const string PlatformTextAuthSettingDefault = "";
-        const string PlatformTextAnonSettingDefault = "";
         const User UserSettingDefault = null;
 
         public AppSettings()
@@ -388,36 +385,6 @@ namespace ClarolineApp.Settings
             }
         }
 
-        public string PlatformTextAuthSetting
-        {
-            get
-            {
-                return GetValueOrDefault<string>(PlatformTextAuthSettingKeyName, PlatformTextAuthSettingDefault);
-            }
-            set
-            {
-                if (AddOrUpdateValue(PlatformTextAuthSettingKeyName, value))
-                {
-                    Save();
-                }
-            }
-        }
-
-        public string PlatformTextAnonSetting
-        {
-            get
-            {
-                return GetValueOrDefault<string>(PlatformTextAnonSettingKeyName, PlatformTextAnonSettingDefault);
-            }
-            set
-            {
-                if (AddOrUpdateValue(PlatformTextAnonSettingKeyName, value))
-                {
-                    Save();
-                }
-            }
-        }
-
         /// <summary>
 
         /// Property to get and set a User Setting Key.
@@ -449,7 +416,9 @@ namespace ClarolineApp.Settings
         {
             if (PropertyChanged != null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName))
+                );
             }
         }
 

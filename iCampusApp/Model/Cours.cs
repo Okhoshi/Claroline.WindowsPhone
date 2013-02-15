@@ -147,6 +147,26 @@ namespace ClarolineApp.Model
             }
         }
 
+        private string _officialCode;
+
+        [Column]
+        public string officialCode
+        {
+            get
+            {
+                return _officialCode;
+            }
+            set
+            {
+                if (_officialCode != value)
+                {
+                    NotifyPropertyChanging("officialCode");
+                    _officialCode = value;
+                    NotifyPropertyChanged("officialCode");
+                }
+            }
+        }
+
 
         #region Collections
 

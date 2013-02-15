@@ -20,12 +20,14 @@ namespace ClarolineApp.Model
                 );
         }
 
+        public const string LABEL = "NOMOD";
+
         protected int _Id;
 
         // Define ID: internal Notifications, public property and database column.
 
         [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
-        public int Id
+        public virtual int Id
         {
             get
             {

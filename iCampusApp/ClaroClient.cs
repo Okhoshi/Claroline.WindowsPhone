@@ -83,7 +83,6 @@ namespace ClarolineApp
                 }
             }
         }
-        
 
         public ClaroClient()
         {
@@ -117,11 +116,11 @@ namespace ClarolineApp
             return client;
         }
 
-        public async Task<string> makeOperationAsync(SupportedModules module, SupportedMethods method, Cours reqCours = null, int resID = -1)
+        public async Task<string> makeOperationAsync(SupportedModules module, SupportedMethods method, Cours reqCours = null, string resStr = "", bool forAuth = false)
         {
-            if (IsNetworkAvailable())
+            if (IsNetworkAvailable() && ( forAuth || await isValidAccountAsync()))
             {
-                PostDataWriter args = new PostDataWriter() { module = module, method = method, cidReq = reqCours, resId = resID };
+                PostDataWriter args = new PostDataWriter() { module = module, method = method, cidReq = reqCours, resStr = resStr };
 
                 String strContent = "";
                 HttpWebResponse response = null;
@@ -160,7 +159,7 @@ namespace ClarolineApp
 
         private async Task<bool> GetSessionCookieAsync()
         {
-            String result = await makeOperationAsync(SupportedModules.NOMOD, SupportedMethods.authenticate);
+            String result = await makeOperationAsync(SupportedModules.NOMOD, SupportedMethods.authenticate, forAuth:true);
             if (result.Equals(String.Empty))
             {
                 cookieCreation = DateTime.Now;
@@ -273,15 +272,15 @@ namespace ClarolineApp
                             {
                                 foreach (Cours cours in Courses)
                                 {
-                                    VM.AddCours(cours);
+                                    _viewModel.AddCours(cours);
                                 }
-                                VM.ClearCoursList();
+                                _viewModel.ClearCoursList();
                                 pulse(Updating);
                             });
                         }
                         break;
 
-                    case AllowedOperations.getCourseToolList:
+                    case AllowedOperations.getToolList:
                         setProgressIndicator(true, String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.MainPage_Cours_PI));
                         Cours result = JsonConvert.DeserializeObject<Cours>(strContent);
                         args.cidReq.annNotif = result.annNotif;
@@ -290,7 +289,7 @@ namespace ClarolineApp
                         args.cidReq.isDnL = result.isDnL;
                         Deployment.Current.Dispatcher.BeginInvoke(() =>
                         {
-                            VM.AddCours(args.cidReq);
+                            _viewModel.AddCours(args.cidReq);
                         });
                         break;
 
@@ -304,9 +303,9 @@ namespace ClarolineApp
                                 foreach (Documents doc in Documents)
                                 {
                                     doc.Cours = args.cidReq;
-                                    VM.AddDocument(doc);
+                                    _viewModel.AddDocument(doc);
                                 }
-                                VM.ClearDocsOfCours(args.cidReq);
+                                _viewModel.ClearDocsOfCours(args.cidReq);
                                 pulse(Updating);
                             });
                         }
@@ -322,9 +321,9 @@ namespace ClarolineApp
                                 foreach (Annonce annonce in Annonces)
                                 {
                                     annonce.Cours = args.cidReq;
-                                    VM.AddAnnonce(annonce);
+                                    _viewModel.AddAnnonce(annonce);
                                 }
-                                VM.ClearAnnsOfCours(args.cidReq);
+                                _viewModel.ClearAnnsOfCours(args.cidReq);
                                 pulse(Updating);
                             });
                         }
@@ -336,7 +335,7 @@ namespace ClarolineApp
                         Deployment.Current.Dispatcher.BeginInvoke(() =>
                         {
                             singleAnnonce.Cours = args.cidReq;
-                            VM.AddAnnonce(singleAnnonce);
+                            _viewModel.AddAnnonce(singleAnnonce);
                             pulse(Updating);
                         });
                         break;
@@ -350,12 +349,12 @@ namespace ClarolineApp
                             Updates = JsonConvert.DeserializeObject<Dictionary<String, Dictionary<String, Dictionary<String, Dictionary<String, String>>>>>(strContent);
                             foreach (KeyValuePair<String, Dictionary<String, Dictionary<String, Dictionary<String, String>>>> course in Updates)
                             {
-                                Cours upCours = VM.AllCours.FirstOrDefault(cours => cours.sysCode.Equals(course.Key));
+                                Cours upCours = _viewModel.AllCours.FirstOrDefault(cours => cours.sysCode.Equals(course.Key));
                                 if (upCours == null)
                                 {
                                     makeOperation(AllowedOperations.getCourseList);
                                     wait(Updating);
-                                    upCours = VM.AllCours.FirstOrDefault(cours => cours.sysCode.Equals(course.Key));
+                                    upCours = _viewModel.AllCours.FirstOrDefault(cours => cours.sysCode.Equals(course.Key));
                                     if (upCours != null)
                                     {
                                         makeOperation(AllowedOperations.updateCompleteCourse, upCours);
@@ -371,7 +370,7 @@ namespace ClarolineApp
                                             case "CLANN":
                                                 if (!upCours.isAnn)
                                                 {
-                                                    makeOperation(AllowedOperations.getCourseToolList, upCours);
+                                                    makeOperation(AllowedOperations.getToolList, upCours);
                                                     wait(Updating);
                                                     if (upCours.isAnn)
                                                     {
@@ -383,7 +382,7 @@ namespace ClarolineApp
                                                 {
                                                     foreach (KeyValuePair<String, Dictionary<String, String>> ressource in tool.Value)
                                                     {
-                                                        Annonce upAnn = VM.AnnByCours[course.Key].FirstOrDefault(announce => announce.ressourceId == int.Parse(ressource.Key));
+                                                        Annonce upAnn = _viewModel.AnnByCours[course.Key].FirstOrDefault(announce => announce.resourceId == int.Parse(ressource.Key));
                                                         if (upAnn == null)
                                                         {
                                                             makeOperation(AllowedOperations.getAnnounceList, upCours);
@@ -395,7 +394,7 @@ namespace ClarolineApp
                                                                 upAnn.date = DateTime.Parse(ressource.Value["date"]);
                                                                 upAnn.notified = true;
                                                                 upAnn.upToDateContent = false;
-                                                                VM.AddAnnonce(upAnn);
+                                                                _viewModel.AddAnnonce(upAnn);
                                                                 pulse(Updating);
                                                             });
                                                         }
@@ -405,7 +404,7 @@ namespace ClarolineApp
                                             case "CLDOC":
                                                 if (!upCours.isDnL)
                                                 {
-                                                    makeOperation(AllowedOperations.getCourseToolList, upCours);
+                                                    makeOperation(AllowedOperations.getToolList, upCours);
                                                     wait(Updating);
                                                     if (upCours.isDnL)
                                                     {
@@ -417,7 +416,7 @@ namespace ClarolineApp
                                                 {
                                                     foreach (KeyValuePair<String, Dictionary<String, String>> ressource in tool.Value)
                                                     {
-                                                        Documents upDoc = VM.DocByCours[course.Key].FirstOrDefault(doc => doc.path == ressource.Key);
+                                                        Documents upDoc = _viewModel.DocByCours[course.Key].FirstOrDefault(doc => doc.path == ressource.Key);
                                                         if (upDoc == null)
                                                         {
                                                             makeOperation(AllowedOperations.getDocList, upCours);
@@ -428,7 +427,7 @@ namespace ClarolineApp
                                                             {
                                                                 upDoc.date = DateTime.Parse(ressource.Value["date"]);
                                                                 upDoc.notified = true;
-                                                                VM.AddDocument(upDoc);
+                                                                _viewModel.AddDocument(upDoc);
                                                                 pulse(Updating);
                                                             });
                                                         }
