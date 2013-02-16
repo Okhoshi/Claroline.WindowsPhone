@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace ClarolineApp.ViewModel
 {
-    class MainPageViewModel : ClarolineViewModel, IMainPageViewModel
+    public class MainPageViewModel : ClarolineViewModel, IMainPageViewModel
     {
 
         private ObservableCollection<Cours> _allCours;
@@ -71,6 +71,18 @@ namespace ClarolineApp.ViewModel
             topNotifications = new ObservableCollection<CL_Notification>(list.Where(n => n.isNotified)
                                                                              .Skip(offset)
                                                                              .Take(limit));
+        }
+
+        public override async Task RefreshAsync()
+        {
+            if (allCours.Count == 0)
+            {
+                await GetCoursListAsync();
+            }
+            else
+            {
+                await base.RefreshAsync();
+            }
         }
 
         public override void AddCours(Cours newCours)

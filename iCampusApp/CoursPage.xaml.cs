@@ -17,39 +17,57 @@ using Microsoft.Phone.Tasks;
 using Microsoft.Phone.Shell;
 using ClarolineApp.Settings;
 using ClarolineApp.Languages;
+using System.Windows.Navigation;
 
 namespace ClarolineApp
 {
     public partial class CoursPage : PhoneApplicationPage
     {
 
-        private Documents rootDoc;
+        private CL_Document rootDoc;
         private Cours _cours;
+
+        private ICoursPageViewModel _viewModel;
+
+        ProgressIndicator _indicator;
+
+        ProgressIndicator indicator
+        {
+            get
+            {
+                if (_indicator == null)
+                {
+                    _indicator = new ProgressIndicator()
+                    {
+                        IsIndeterminate = true,
+                        IsVisible = false
+                    };
+                    SystemTray.SetProgressIndicator(this, _indicator);
+                }
+                return _indicator;
+            }
+        }
 
         public CoursPage()
         {
             InitializeComponent();
 
-            _cours = App.selecteditem as Cours;
-            SystemTray.SetProgressIndicator(this, App.currentProgressInd);
-
-            this.DataContext = _cours;
-            rootDoc = new Documents() { Cours = _cours, name = null, IsFolder = true, path = "" };
-            DocContent.ItemsSource = rootDoc.getContent();
-            AnnList.ItemsSource = App.ViewModel.AnnByCours[_cours.sysCode];
-
             //Supprime les PivotItems non inclus dans le cours
 
-            if (!_cours.isDnL || SectionsPivot.Items.Count(p => ((PivotItem)p).Name == "DnL") == 0)
+            if (!_cours.Resources.Any(rl => rl.ressourceType.Equals(typeof(CL_Document))) || SectionsPivot.Items.Any(p => ((PivotItem)p).Name == "CLDOC"))
             {
-                SectionsPivot.Items.Remove(SectionsPivot.Items.Single(p => ((PivotItem)p).Name == "DnL"));
-                ApplicationBar.IsVisible = false;
+                SectionsPivot.Items.Remove(SectionsPivot.Items.Single(p => ((PivotItem)p).Name == "CLDOC"));
+                rootButton.IsEnabled = false;
             }
             else
-                if (rootDoc.name == null)
-                    (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
+            {
+                if (rootDoc.title == null)
+                {
+                    rootButton.IsEnabled = false;
+                }
+            }
 
-            if (!_cours.isAnn || (SectionsPivot.Items.Count(p => ((PivotItem)p).Name == "Ann") == 0))
+            if (!_cours.Resources.Any(rl => rl.ressourceType.Equals(typeof(CL_Annonce))) || (SectionsPivot.Items.Any(p => ((PivotItem)p).Name == "Ann")))
             {
                 SectionsPivot.Items.Remove(SectionsPivot.Items.Single(p => ((PivotItem)p).Name == "Ann"));
             }
@@ -59,9 +77,27 @@ namespace ClarolineApp
         // Event handler
         //--------------------------------------------------------------------
 
-        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedTo(e);
+            IDictionary<string, string> parameters = this.NavigationContext.QueryString;
+
+            if (parameters.ContainsKey("cours"))
+            {
+                _viewModel = new CoursPageViewModel(parameters["cours"]);
+                this.DataContext = _viewModel;
+                _viewModel.PropertyChanged += _viewModel_PropertyChanged;
+
+                base.OnNavigatedTo(e);
+            }
+            else
+            {
+                NavigationService.GoBack();
+            }
+        }
+
+        void _viewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            
         }
 
         private void DocContent_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -70,71 +106,48 @@ namespace ClarolineApp
             {
                 return;
             }
-            if ((DocContent.SelectedItem as Documents).notified)
+
+            (DocContent.SelectedItem as CL_Document).seenDate = DateTime.Now;
+            
+            if ((DocContent.SelectedItem as CL_Document).isFolder)
             {
-                (DocContent.SelectedItem as Documents).checkNotified();
-            }
-            if ((DocContent.SelectedItem as Documents).IsFolder)
-            {
-                rootDoc = DocContent.SelectedItem as Documents;
-                PivotItem PI = (PivotItem)SectionsPivot.Items.Single(p => ((PivotItem)p).Name == "DnL");
-                PI.Header = rootDoc.name.ToLower();
-                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
+                rootDoc = DocContent.SelectedItem as CL_Document;
+                CLDOC.Header = rootDoc.title.ToLower();
+                rootButton.IsEnabled = true;
 
                 DocContent.ItemsSource = rootDoc.getContent();
                 DocContent.SelectedIndex = -1;
             }
             else
             {
-                rootDoc.checkNotified();
-                AppSettings appSet = new AppSettings();
-                string loginString = "&login=" + appSet.UsernameSetting + "&password=" + appSet.PasswordSetting;
-
-                WebBrowserTask open = new WebBrowserTask()
-                {
-                    Uri = new Uri("Http://" + (DocContent.SelectedItem as Documents).url.Replace("&amp;", "&") + loginString, UriKind.Absolute)
-                };
-                DocContent.SelectedIndex = -1;
-                open.Show();
+                //Dwl Doc
             }
         }
 
         private void rootButton_Click(object sender, EventArgs e)
         {
-            PivotItem PI = (PivotItem)SectionsPivot.Items.Single(p => ((PivotItem)p).Name == "DnL");
-            Documents _root = rootDoc.getRoot();
+            CL_Document _root = rootDoc.getRoot();
             DocContent.ItemsSource = _root.getContent();
 
-            if (_root.name == null)
+            if (_root.title == null)
             {
-                _cours.checkNotified();
-                PI.Header = AppLanguage.CoursPage_Doc_PI;
-                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
+                CLDOC.Header = AppLanguage.CoursPage_Doc_PI;
+                rootButton.IsEnabled = false;
             }
             else
             {
-                _root.checkNotified();
-                PI.Header = _root.name.ToLower();
-                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
+                CLDOC.Header = _root.title.ToLower();
+                rootButton.IsEnabled = true;
             }
             rootDoc = _root;
         }
 
-        private void refrButton_Click(object sender, EventArgs e)
+        private async void refrButton_Click(object sender, EventArgs e)
         {
-            App.Client.makeOperation(AllowedOperations.getUpdates, _cours);
-        }
-
-        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (SectionsPivot.SelectedItem.Equals(DnL) && rootDoc.name != null)
-            {
-                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = true;
-            }
-            else
-            {
-                (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = false;
-            }
+            _indicator.Text = AppLanguage.ProgressBar_Update;
+            _indicator.IsVisible = true;
+            await _viewModel.RefreshAsync();
+            _indicator.IsVisible = false;
         }
 
         private void AnnList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -144,9 +157,23 @@ namespace ClarolineApp
                 return;
             }
 
-            App.selecteditem = AnnList.SelectedItem;
+            (AnnList.SelectedItem as CL_Annonce).seenDate = DateTime.Now;
+            string destination = String.Format("/AnnonceDetail.xaml?resource={0}", (AnnList.SelectedItem as CL_Annonce).resourceId);
             AnnList.SelectedIndex = -1;
-            NavigationService.Navigate(new Uri("/AnnonceDetail.xaml", UriKind.Relative));
+
+            NavigationService.Navigate(new Uri(destination, UriKind.Relative));
+        }
+
+        private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SectionsPivot.SelectedItem.Equals(CLDOC) && rootDoc.title != null)
+            {
+                rootButton.IsEnabled = true;
+            }
+            else
+            {
+                rootButton.IsEnabled = false;
+            }
         }
     }
 }

@@ -25,7 +25,24 @@ namespace ClarolineApp.Settings
         PropertyChangedEventHandler Refresh;
         PropertyChangedEventHandler ResetHandler;
 
-        ProgressIndicator indicator;
+        ProgressIndicator _indicator;
+
+        ProgressIndicator indicator
+        {
+            get
+            {
+                if (_indicator == null)
+                {
+                    _indicator = new ProgressIndicator()
+                    {
+                        IsIndeterminate = true,
+                        IsVisible = false
+                    };
+                    SystemTray.SetProgressIndicator(this, _indicator);
+                }
+                return _indicator;
+            }
+        }
 
         ClarolineViewModel _viewModel;
 
@@ -36,10 +53,6 @@ namespace ClarolineApp.Settings
             _viewModel = new ClarolineViewModel();
             this.DataContext = AppSettings.instance;
 
-            indicator = new ProgressIndicator(){
-                IsIndeterminate = true,
-                IsVisible = false
-            };
 
             Handler = new PropertyChangedEventHandler(Connecting_PropertyChanged);
             Refresh = new PropertyChangedEventHandler(Client_PropertyChanged);
@@ -148,13 +161,13 @@ namespace ClarolineApp.Settings
         {
             if (e.PropertyName == "isExpired")
             {
+                ClaroClient.instance.PropertyChanged -= Handler;
                 if (ClaroClient.instance.isValidAccountWithoutWaiting())
                 {
                     Connected.Begin();
                 	AppSettings.instance.PropertyChanged += ResetHandler;
                 	ClaroClient.instance.PropertyChanged += Refresh;
                 }
-                ClaroClient.instance.PropertyChanged -= Handler;
             }
         }
 
@@ -168,14 +181,15 @@ namespace ClarolineApp.Settings
 
         private void settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "AdvancedSwitchSetting")
+            string[] _listened = new String[] { AppSettings.UsernameSettingKeyName, AppSettings.PasswordSettingKeyName, AppSettings.WebServiceSettingKeyName, AppSettings.DomainSettingKeyName };
+
+            if (_listened.Contains(e.PropertyName))
             {
-                return;
+                ClaroClient.instance.invalidateClient();
+                Disconnected.Begin();
+                updatePanels(true);
+                AppSettings.instance.PropertyChanged -= ResetHandler;
             }
-            ClaroClient.instance.invalidateClient();
-			Disconnected.Begin();
-            updatePanels(true);
-            AppSettings.instance.PropertyChanged -= ResetHandler;
         }
 
         private void toggleSwitch_Checked(object sender, RoutedEventArgs e)

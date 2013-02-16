@@ -8,28 +8,9 @@ using System.Text;
 namespace ClarolineApp.Model
 {
 
-    [Table]
     public class CL_Annonce : ResourceModel
     {
         public const string LABEL = "CLANN";
-
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
-        public virtual int Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    NotifyPropertyChanging("Id");
-                    _Id = value;
-                    NotifyPropertyChanged("Id");
-                }
-            }
-        }
 
         private int _resourceId;
 

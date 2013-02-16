@@ -9,7 +9,10 @@ using System.Text;
 namespace ClarolineApp.Model
 {
     [Table]
-    public abstract class ResourceModel : INotifyPropertyChanged, INotifyPropertyChanging
+    [InheritanceMapping(Code = "RL", Type = typeof(ResourceModel), IsDefault = true)]
+    [InheritanceMapping(Code = "CLANN", Type = typeof(CL_Annonce))]
+    [InheritanceMapping(Code = "CLDOC", Type = typeof(CL_Document))]
+    public class ResourceModel : INotifyPropertyChanged, INotifyPropertyChanging
     {
 
         public ResourceModel()
@@ -43,6 +46,9 @@ namespace ClarolineApp.Model
                 }
             }
         }
+
+        [Column(IsDiscriminator = true)]
+        public string DiscKey;
 
         protected string _Title;
 
@@ -296,7 +302,7 @@ namespace ClarolineApp.Model
 
         #endregion
 
-        public abstract string getNotificationText();
+        public virtual string getNotificationText() { return ""; }
 
         public void markAsRead()
         {

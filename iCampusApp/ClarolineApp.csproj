@@ -94,6 +94,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CoursPage.xaml.cs">
+      <DependentUpon>CoursPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CoursPageViewModel.cs" />
+    <Compile Include="ICoursPageViewModel.cs" />
     <Compile Include="Languages\AppLanguage.en-US.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -138,6 +143,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="CoursPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -157,6 +166,7 @@
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
+    <None Include="Settings\AppSettings.cd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">

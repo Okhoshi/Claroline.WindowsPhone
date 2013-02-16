@@ -312,7 +312,7 @@ namespace ClarolineApp.Model
             if (obj != null && obj.GetType().Equals(typeof(Cours)))
             {
                 Cours Cou = obj as Cours;
-                return (Cou._CoursTag == this._CoursTag);
+                return (Cou._CoursTag.Equals(this._CoursTag));
             }
             return false;
         }

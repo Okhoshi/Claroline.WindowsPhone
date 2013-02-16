@@ -78,6 +78,9 @@ namespace ClarolineApp
             {
                 if (!_lastException.Equals(value))
                 {
+#if DEBUG
+                    Debug.WriteLine("Exception occured :" + value.ToString());
+#endif
                     _lastException = value;
                     NotifyPropertyChanged("lastException");
                 }
@@ -134,6 +137,10 @@ namespace ClarolineApp
                     strContent = sr.ReadToEnd();
                     responseStream.Close();
                     response.Close();
+
+#if DEBUG
+                    Debug.WriteLine("Call for :" + module + "/" + method + "\nResponse :" + strContent);
+#endif
                 }
                 catch (Exception ex)
                 {

@@ -32,7 +32,24 @@ namespace ClarolineApp
     {
         PropertyChangedEventHandler Failure_Handler;
 
-        private ProgressIndicator indicator;
+        ProgressIndicator _indicator;
+
+        ProgressIndicator indicator
+        {
+            get
+            {
+                if (_indicator == null)
+                {
+                    _indicator = new ProgressIndicator()
+                    {
+                        IsIndeterminate = true,
+                        IsVisible = false
+                    };
+                    SystemTray.SetProgressIndicator(this, _indicator);
+                }
+                return _indicator;
+            }
+        }
 
         private IMainPageViewModel _viewModel;
 
@@ -43,14 +60,7 @@ namespace ClarolineApp
             Failure_Handler = new PropertyChangedEventHandler(FailureOccured);
 
             _viewModel = new MainPageViewModel();
-            _viewModel.LoadCollectionsFromDatabase();
             this.DataContext = _viewModel;
-
-            indicator = new ProgressIndicator()
-            {
-                IsIndeterminate = true,
-                IsVisible = false
-            };
 
             version_text.Text = Helper.GetVersionNumber();
         }
@@ -80,9 +90,12 @@ namespace ClarolineApp
                 return;
             }
 
-            if ((CoursList.SelectedItem as Cours).loadedToday())
+            Cours _cours = CoursList.SelectedItem as Cours;
+
+            if (_cours.loadedToday() && _cours.Resources.Count != 0)
             {
-                NavigationService.Navigate(new Uri("/CoursPage.xaml", UriKind.Relative));
+                string destination = String.Format("/CoursPage.xaml?cours={0}", _cours.sysCode);
+                NavigationService.Navigate(new Uri(destination, UriKind.Relative));
             }
             else
             {
@@ -93,7 +106,7 @@ namespace ClarolineApp
 
                 await _viewModel.PrepareCoursForOpeningAsync(CoursList.SelectedItem as Cours);
 
-
+                progress.Visibility = System.Windows.Visibility.Collapsed;
             }
 
             CoursList.SelectedIndex = -1;
@@ -104,9 +117,6 @@ namespace ClarolineApp
             if (e.PropertyName == "lastException")
             {
                 ClaroClient.instance.PropertyChanged -= Failure_Handler;
-
-                PerformanceProgressBar progress = Helper.FindFirstElementInVisualTree<PerformanceProgressBar>(this.CoursList.ItemContainerGenerator.ContainerFromIndex(CoursList.Items.IndexOf(sender)) as ListBoxItem);
-                progress.Visibility = System.Windows.Visibility.Collapsed;
 
                 MessageBox.Show("Exception occured! " + ClaroClient.instance.lastException.Message);
             }
@@ -150,7 +160,13 @@ namespace ClarolineApp
         {
             WebBrowserTask homepage = new WebBrowserTask()
             {
-                Uri = new Uri(AppSettings.instance.DomainSetting + AppSettings.instance.AuthPageSetting + "?login=" + AppSettings.instance.UsernameSetting + "&password=" + AppSettings.instance.PasswordSetting, UriKind.Absolute)
+                Uri = new Uri(AppSettings.instance.DomainSetting 
+                            + AppSettings.instance.AuthPageSetting 
+                            + "?login=" 
+                            + AppSettings.instance.UsernameSetting 
+                            + "&password=" 
+                            + AppSettings.instance.PasswordSetting
+                           , UriKind.Absolute)
             };
             homepage.Show();
         }

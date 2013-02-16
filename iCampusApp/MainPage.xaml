@@ -32,7 +32,7 @@
 
     <!--Exemple de code illustrant l'utilisation d'ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Minimized">
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton x:Name="Connect_Btn" IconUri="/icons/appbar.download.rest.png" Text="Connect" Click="Connect_Click"/>
             <shell:ApplicationBarIconButton x:Name="Sync_Btn" IconUri="/icons/appbar.refresh.rest.png" Text="Sync" Click="Sync_Btn_Click"/>
             <shell:ApplicationBar.MenuItems>
@@ -65,7 +65,7 @@
                                     </toolkit:ContextMenu>
                                 </toolkit:ContextMenuService.ContextMenu>
                                 <StackPanel>
-                                    <TextBlock Text="{Binding title, Mode=TwoWay}" TextWrapping="Wrap" Foreground="{Binding notified, ConverterParameter=Black, Converter={StaticResource StatusConverter}}" Margin="12,0"/>
+                                    <TextBlock Text="{Binding title, Mode=TwoWay}" TextWrapping="Wrap" Foreground="{Binding isNotified, ConverterParameter=Black, Converter={StaticResource StatusConverter}}" Margin="12,0"/>
             					    <TextBlock TextWrapping="Wrap" Text="{Binding officialCode}" d:LayoutOverrides="Width" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Foreground="#FF4B4B4B"/>
                                     <TextBlock TextWrapping="Wrap" Text="{Binding titular}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" Foreground="#FF4B4B4B"/>
                                     <toolkit:PerformanceProgressBar Height="10" Margin="0,0,0,-10" Visibility="Collapsed" IsIndeterminate="True" Background="{StaticResource PhoneAccentBrush}" Foreground="{StaticResource PhoneAccentBrush}"/>
@@ -76,7 +76,7 @@
             	</ListBox>
     		</controls:PanoramaItem>
             <controls:PanoramaItem x:Name="Notif_PI" Header="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.MainPage_Notif_PI, Converter={StaticResource ToLower}}" Foreground="Black">
-                <ListBox x:Name="NotifList" ItemsSource="{Binding Source=topNotifications, Mode=OneWay}" Margin="0,-30,0,30" SelectionChanged="NotifList_SelectionChanged">
+                <ListBox x:Name="NotifList" ItemsSource="{Binding topNotifications, Mode=OneWay}" Margin="0,-30,0,30" SelectionChanged="NotifList_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="12,0,0,0" Width="420">

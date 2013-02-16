@@ -30,18 +30,18 @@ namespace ClarolineApp.Settings
 
         // The isolated storage key names of our settings
 
-        const string DomainSettingKeyName = "DomainSetting";
-        const string WebServiceSettingKeyName = "WebServiceSetting";
-        const string AuthPageSettingKeyName = "AuthPageSetting";
-        const string ListBoxSettingKeyName = "ListBoxSetting";
-        const string AdvancedSwitchSettingKeyName = "AdvancedSwitchSetting";
-        const string CellularDataEnabledSettingKeyName = "CellularDataEnabledSetting";
-        const string RadioButton3SettingKeyName = "RadioButton3Setting";
-        const string UsernameSettingKeyName = "UsernameSetting";
-        const string PasswordSettingKeyName = "PasswordSetting";
-        const string InstituteSettingKeyName = "InstituteSetting";
-        const string PlatformSettingKeyName = "PlatformSetting";
-        const string UserSettingKeyName = "UserSetting";
+        internal const string DomainSettingKeyName = "DomainSetting";
+        internal const string WebServiceSettingKeyName = "WebServiceSetting";
+        internal const string AuthPageSettingKeyName = "AuthPageSetting";
+        internal const string ListBoxSettingKeyName = "ListBoxSetting";
+        internal const string AdvancedSwitchSettingKeyName = "AdvancedSwitchSetting";
+        internal const string CellularDataEnabledSettingKeyName = "CellularDataEnabledSetting";
+        internal const string RadioButton3SettingKeyName = "RadioButton3Setting";
+        internal const string UsernameSettingKeyName = "UsernameSetting";
+        internal const string PasswordSettingKeyName = "PasswordSetting";
+        internal const string InstituteSettingKeyName = "InstituteSetting";
+        internal const string PlatformSettingKeyName = "PlatformSetting";
+        internal const string UserSettingKeyName = "UserSetting";
 
         // The default value of our settings
 

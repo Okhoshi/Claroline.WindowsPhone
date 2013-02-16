@@ -282,7 +282,7 @@ namespace ClarolineApp.Model
             if (obj != null && obj.GetType().Equals(typeof(ResourceList)))
             {
                 ResourceList rl = obj as ResourceList;
-                return (rl.Cours.Equals(this.Cours) && rl.label.Equals(this.label));
+                return (rl._coursId == this._coursId && rl.label.Equals(this.label));
             }
             return false;
         }

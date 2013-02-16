@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace ClarolineApp.ViewModel
 {
-    class ClarolineViewModel : IClarolineViewModel
+    public class ClarolineViewModel : IClarolineViewModel
     {
 
         protected ClarolineDataContext ClarolineDB;
@@ -19,25 +19,29 @@ namespace ClarolineApp.ViewModel
         public ClarolineViewModel(string DBConnectionString = ClarolineDataContext.DBConnectionString)
         {
             ClarolineDB = new ClarolineDataContext(DBConnectionString);
+            LoadCollectionsFromDatabase();
         }
 
         public virtual void ResetViewModel()
         {
-            List<CL_Document> AllDocuments = (from CL_Document d
-                                                in ClarolineDB.Documents_Table
-                                              select d).ToList();
-            List<CL_Annonce> AllAnnonces = (from CL_Annonce a
-                                            in ClarolineDB.Annonces_Table
-                                            select a).ToList();
+            List<ResourceModel> AllResources = (from ResourceModel d
+                                                in ClarolineDB.Resources_Table
+                                                select d).ToList();
+
             List<CL_Notification> AllNotifications = (from CL_Notification n
                                                       in ClarolineDB.Notifications_Table
                                                       select n).ToList();
+
+            List<ResourceList> AllLists = (from ResourceList l
+                                           in ClarolineDB.ResourceList_Table
+                                           select l).ToList();
+
             List<Cours> AllCours = (from Cours c
                                     in ClarolineDB.Cours_Table
                                     select c).ToList();
 
-            ClarolineDB.Documents_Table.DeleteAllOnSubmit(AllDocuments);
-            ClarolineDB.Annonces_Table.DeleteAllOnSubmit(AllAnnonces);
+            ClarolineDB.Resources_Table.DeleteAllOnSubmit(AllResources);
+            ClarolineDB.ResourceList_Table.DeleteAllOnSubmit(AllLists);
             ClarolineDB.Notifications_Table.DeleteAllOnSubmit(AllNotifications);
             ClarolineDB.Cours_Table.DeleteAllOnSubmit(AllCours);
             SaveChangesToDB();
@@ -50,9 +54,11 @@ namespace ClarolineApp.ViewModel
 
         public virtual void AddCours(Cours newCours)
         {
-            bool alreadyInDB = ClarolineDB.Cours_Table.Contains(newCours);
+            List<Cours> Clist = (from c in ClarolineDB.Cours_Table select c).ToList();
 
-            if (!alreadyInDB)
+            Cours coursInDb = Clist.FirstOrDefault(c => c.Equals(newCours));
+
+            if (coursInDb == null)
             {
                 newCours.updated = true;
                 newCours.loaded = DateTime.Now;
@@ -61,10 +67,6 @@ namespace ClarolineApp.ViewModel
             }
             else
             {
-                Cours coursInDb = (from Cours _cours in ClarolineDB.Cours_Table
-                                   where _cours.Equals(newCours)
-                                   select _cours).First();
-
                 coursInDb.updated = true;
                 coursInDb.loaded = DateTime.Now;
                 SaveChangesToDB();
@@ -109,7 +111,7 @@ namespace ClarolineApp.ViewModel
             {
                 newAnn.updated = true;
                 newAnn.loaded = DateTime.Now;
-                ClarolineDB.Annonces_Table.InsertOnSubmit(newAnn);
+                ClarolineDB.Resources_Table.InsertOnSubmit(newAnn);
                 SaveChangesToDB();
             }
             else
@@ -141,7 +143,7 @@ namespace ClarolineApp.ViewModel
             {
                 newDoc.updated = true;
                 newDoc.loaded = DateTime.Now;
-                ClarolineDB.Documents_Table.InsertOnSubmit(newDoc);
+                ClarolineDB.Resources_Table.InsertOnSubmit(newDoc);
                 SaveChangesToDB();
             }
             else
@@ -190,7 +192,7 @@ namespace ClarolineApp.ViewModel
         {
             if (newRes.GetType().Equals(typeof(CL_Annonce)))
             {
-                AddAnnonce((CL_Annonce) newRes);
+                AddAnnonce((CL_Annonce)newRes);
             }
             else if (newRes.GetType().Equals(typeof(CL_Document)))
             {
@@ -203,7 +205,7 @@ namespace ClarolineApp.ViewModel
             // Remove the cours item from the "all" observable collection.
             var queryList = from ResourceList rl
                             in ClarolineDB.ResourceList_Table
-                            where rl._coursId == coursForDelete.Id
+                            where rl.Cours.Equals(coursForDelete)
                             select rl;
             foreach (var rl in queryList)
             {
@@ -254,7 +256,7 @@ namespace ClarolineApp.ViewModel
                 DeleteNotification(not);
             }
 
-            ClarolineDB.Annonces_Table.DeleteOnSubmit(annForDelete);
+            ClarolineDB.Resources_Table.DeleteOnSubmit(annForDelete);
             SaveChangesToDB();
         }
 
@@ -273,7 +275,7 @@ namespace ClarolineApp.ViewModel
                 DeleteDocument(inner);
             }
 
-            ClarolineDB.Documents_Table.DeleteOnSubmit(docForDelete);
+            ClarolineDB.Resources_Table.DeleteOnSubmit(docForDelete);
             SaveChangesToDB();
         }
 
@@ -422,7 +424,7 @@ namespace ClarolineApp.ViewModel
                                 {
                                     foreach (KeyValuePair<String, Dictionary<String, String>> ressource in tool.Value)
                                     {
-                                    ResourceList rlist = upCours.Resources.First(rl => rl.label.Equals(tool.Key));
+                                        ResourceList rlist = upCours.Resources.First(rl => rl.label.Equals(tool.Key));
 
                                         switch (tool.Key)
                                         {
@@ -475,9 +477,15 @@ namespace ClarolineApp.ViewModel
         {
             await GetResourcesListForThisCoursAsync(coursToPrepare);
 
-            foreach (ResourceList rl in coursToPrepare.Resources)
+            foreach (ResourceList rl in (from ResourceList l 
+                                         in ClarolineDB.ResourceList_Table 
+                                         where l.Cours.Equals(coursToPrepare)
+                                         select l))
             {
-                await GetResourcesForThisListAsync(rl);
+                if (Enum.IsDefined(typeof(SupportedModules), rl.label))
+                {
+                    await GetResourcesForThisListAsync(rl);
+                }
             }
         }
 

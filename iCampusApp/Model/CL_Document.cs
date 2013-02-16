@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ClarolineApp.Model
 {
-    [Table]
+
     public class CL_Document : ResourceModel
     {
         // Assign handlers for the add and remove operations, respectively.
@@ -26,26 +26,6 @@ namespace ClarolineApp.Model
         }
 
         public const string LABEL = "CLDOC";
-
-        // Define item name: private Notifications, public property and database column.
-
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
-        public override int Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    NotifyPropertyChanging("Id");
-                    _Id = value;
-                    NotifyPropertyChanged("Id");
-                }
-            }
-        }
 
         private string _path;
 
@@ -235,6 +215,16 @@ namespace ClarolineApp.Model
                 _isFolder = true,
                 _path = "",
                 resourceList = this._resourceList.Entity
+            };
+        }
+
+        public static CL_Document GetRootDocument(Cours cours)
+        {
+            return new CL_Document()
+            {
+                _isFolder = true,
+                _path = "",
+                resourceList = cours.Resources.First(rl => rl.ressourceType.Equals(typeof(CL_Document)))
             };
         }
 

@@ -23,8 +23,27 @@ namespace ClarolineApp.Model
         public Table<Cours> Cours_Table;
         public Table<ResourceList> ResourceList_Table;
         public Table<ResourceModel> Resources_Table;
-        public Table<CL_Document> Documents_Table;
-        public Table<CL_Annonce> Annonces_Table;
         public Table<CL_Notification> Notifications_Table;
+
+        public IQueryable<CL_Annonce> Annonces_Table
+        {
+            get{
+                return from CL_Annonce a
+                       in Resources_Table
+                       where a is CL_Annonce
+                       select a;
+                   }
+        }
+
+        public IQueryable<CL_Document> Documents_Table
+        {
+            get
+            {
+                return from CL_Document d
+                       in Resources_Table
+                       where d is CL_Document
+                       select d;
+            }
+        }
     }
 }
