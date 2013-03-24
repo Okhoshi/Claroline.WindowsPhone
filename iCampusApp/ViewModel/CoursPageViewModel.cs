@@ -1,9 +1,8 @@
 ﻿using ClarolineApp.Model;
-using ClarolineApp.ViewModel;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace ClarolineApp
+namespace ClarolineApp.ViewModel
 {
     public class CoursPageViewModel : ClarolineViewModel, ICoursPageViewModel
     {

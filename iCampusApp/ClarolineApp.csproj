@@ -94,11 +94,36 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CoursPage.xaml.cs">
+    <Compile Include="Model\ClarolineDataContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\CL_Annonce.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\CL_Document.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\CL_Notification.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\Cours.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\ResourceList.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\ResourceModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Model\User.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TemplateSelector\ResourceListTemplateSelector.cs" />
+    <Compile Include="View\CoursPage.xaml.cs">
       <DependentUpon>CoursPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CoursPageViewModel.cs" />
-    <Compile Include="ICoursPageViewModel.cs" />
+    <Compile Include="ViewModel\CoursPageViewModel.cs" />
+    <Compile Include="ViewModel\ICoursPageViewModel.cs" />
     <Compile Include="Languages\AppLanguage.en-US.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -110,14 +135,7 @@
       <DependentUpon>AppLanguage.resx</DependentUpon>
     </Compile>
     <Compile Include="LocalizedStrings.cs" />
-    <Compile Include="Model\ClarolineDataContext.cs" />
-    <Compile Include="Model\CL_Annonce.cs" />
-    <Compile Include="Model\CL_Document.cs" />
-    <Compile Include="Model\Cours.cs" />
-    <Compile Include="Model\CL_Notification.cs" />
-    <Compile Include="Model\ResourceModel.cs" />
-    <Compile Include="Model\ResourceList.cs" />
-    <Compile Include="Model\User.cs" />
+    <Compile Include="TemplateSelector\DataTemplateSelector.cs" />
     <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="Settings\LoginPrompt.xaml.cs">
       <DependentUpon>LoginPrompt.xaml</DependentUpon>
@@ -128,7 +146,7 @@
     <Compile Include="SupportedMethods.cs" />
     <Compile Include="TiltEffect.cs" />
     <Compile Include="ViewModel\ClarolineViewModel.cs" />
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -143,11 +161,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="CoursPage.xaml">
+    <Page Include="TemplateSelector\ResourceListPivotItemTemplates.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\CoursPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="View\MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -190,7 +212,6 @@
     <Content Include="icons\appbar.back.rest.dark.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />

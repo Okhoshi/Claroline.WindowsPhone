@@ -18,6 +18,7 @@ using Microsoft.Phone.Shell;
 using ClarolineApp.Settings;
 using ClarolineApp.Languages;
 using System.Windows.Navigation;
+using ClarolineApp.ViewModel;
 
 namespace ClarolineApp
 {
@@ -101,7 +102,7 @@ namespace ClarolineApp
         }
 
         private void DocContent_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+        {/*
             if (DocContent.SelectedIndex == -1)
             {
                 return;
@@ -122,10 +123,10 @@ namespace ClarolineApp
             {
                 //Dwl Doc
             }
-        }
+        */}
 
         private void rootButton_Click(object sender, EventArgs e)
-        {
+        {/*
             CL_Document _root = rootDoc.getRoot();
             DocContent.ItemsSource = _root.getContent();
 
@@ -140,19 +141,19 @@ namespace ClarolineApp
                 rootButton.IsEnabled = true;
             }
             rootDoc = _root;
-        }
+        */}
 
         private async void refrButton_Click(object sender, EventArgs e)
-        {
+        {/*
             _indicator.Text = AppLanguage.ProgressBar_Update;
             _indicator.IsVisible = true;
             await _viewModel.RefreshAsync();
             _indicator.IsVisible = false;
-        }
+        */}
 
-        private void AnnList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (AnnList.SelectedIndex == -1)
+        private void CLANNList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {/*
+            if (CLANNList.SelectedIndex == -1)
             {
                 return;
             }
@@ -162,18 +163,18 @@ namespace ClarolineApp
             AnnList.SelectedIndex = -1;
 
             NavigationService.Navigate(new Uri(destination, UriKind.Relative));
-        }
+        */}
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SectionsPivot.SelectedItem.Equals(CLDOC) && rootDoc.title != null)
+            /*if (SectionsPivot.SelectedItem.Equals(CLDOC) && rootDoc.title != null)
             {
                 rootButton.IsEnabled = true;
             }
             else
             {
                 rootButton.IsEnabled = false;
-            }
+            }*/
         }
     }
 }

@@ -94,7 +94,7 @@ namespace ClarolineApp
 
             if (_cours.loadedToday() && _cours.Resources.Count != 0)
             {
-                string destination = String.Format("/CoursPage.xaml?cours={0}", _cours.sysCode);
+                string destination = String.Format("/View/CoursPage.xaml?cours={0}", _cours.sysCode);
                 NavigationService.Navigate(new Uri(destination, UriKind.Relative));
             }
             else
