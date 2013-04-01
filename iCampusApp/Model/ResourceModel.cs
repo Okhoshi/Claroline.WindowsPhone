@@ -10,14 +10,15 @@ using System.Text;
 namespace ClarolineApp.Model
 {
     [Table]
-    [InheritanceMapping(Code = "RL", Type = typeof(ResourceModel), IsDefault = true)]
-    [InheritanceMapping(Code = "CLANN", Type = typeof(CL_Annonce))]
-    [InheritanceMapping(Code = "CLDOC", Type = typeof(CL_Document))]
+    [InheritanceMapping(Code = SupportedModules.NOMOD, Type = typeof(ResourceModel), IsDefault = true)]
+    [InheritanceMapping(Code = SupportedModules.CLANN, Type = typeof(CL_Annonce))]
+    [InheritanceMapping(Code = SupportedModules.CLDOC, Type = typeof(CL_Document))]
     public class ResourceModel : INotifyPropertyChanged, INotifyPropertyChanging
     {
 
         public ResourceModel()
         {
+            DiscKey = SupportedModules.NOMOD;
             _notifications = new EntitySet<CL_Notification>(
                 new Action<CL_Notification>(attach_Notification),
                 new Action<CL_Notification>(detach_Notification)
@@ -49,7 +50,7 @@ namespace ClarolineApp.Model
         }
 
         [Column(IsDiscriminator = true)]
-        public string DiscKey;
+        public SupportedModules DiscKey;
 
         protected string _Title;
 

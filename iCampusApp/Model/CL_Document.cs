@@ -24,6 +24,7 @@ namespace ClarolineApp.Model
             _size = 0.0;
             _url = string.Empty;
             _path = string.Empty;
+            DiscKey = SupportedModules.CLDOC;
         }
 
         public const string LABEL = "CLDOC";

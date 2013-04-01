@@ -16,6 +16,7 @@ namespace ClarolineApp.Model
         public CL_Annonce()
             : base()
         {
+            DiscKey = SupportedModules.CLANN;
         }
 
         private int _resourceId;
