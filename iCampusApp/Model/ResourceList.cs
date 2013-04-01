@@ -188,9 +188,7 @@ namespace ClarolineApp.Model
             {
                 if (_ressourceType != value.FullName)
                 {
-                    NotifyPropertyChanging("ressourceType");
-                    _ressourceType = value.FullName;
-                    NotifyPropertyChanged("ressourceType");
+                    ressourceTypeStr = value.FullName;
                 }
             }
         }

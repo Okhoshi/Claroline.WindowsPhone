@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Linq.Mapping;
@@ -11,6 +12,11 @@ namespace ClarolineApp.Model
     public class CL_Annonce : ResourceModel
     {
         public const string LABEL = "CLANN";
+
+        public CL_Annonce()
+            : base()
+        {
+        }
 
         private int _resourceId;
 
@@ -70,6 +76,11 @@ namespace ClarolineApp.Model
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        public static List<CL_Annonce> ConvertFromJson(string json)
+        {
+            return JsonConvert.DeserializeObject<List<CL_Annonce>>(json);
         }
     }
 }

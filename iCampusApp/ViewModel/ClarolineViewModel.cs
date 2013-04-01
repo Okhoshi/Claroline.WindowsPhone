@@ -2,6 +2,7 @@
 using ClarolineApp.Settings;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -494,11 +495,22 @@ namespace ClarolineApp.ViewModel
             String strContent = await ClaroClient.instance.makeOperationAsync(container.GetSupportedModule(),
                                                                               SupportedMethods.getResourcesList,
                                                                               container.Cours);
-
-            List<ResourceModel> resources = (List<ResourceModel>)JsonConvert.DeserializeObject(strContent, container.ressourceListType);
-            foreach (ResourceModel item in resources)
+           IList resources;
+            switch (container.label)
             {
-                AddResource(item);
+                case CL_Annonce.LABEL:
+                    resources = (IList) JsonConvert.DeserializeObject(strContent, typeof(List<CL_Annonce>));
+                    break;
+                case CL_Document.LABEL:
+                    resources = (IList) JsonConvert.DeserializeObject(strContent, typeof(List<CL_Document>));
+                    break;
+                default:
+                    resources = (IList) JsonConvert.DeserializeObject(strContent, typeof(List<ResourceModel>));
+                    break;
+            }
+            foreach (var item in resources)
+            {
+                AddResource((ResourceModel) item);
             }
         }
 

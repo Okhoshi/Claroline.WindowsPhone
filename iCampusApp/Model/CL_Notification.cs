@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Linq;
@@ -255,6 +256,11 @@ namespace ClarolineApp.Model
             {
                 return resource.getNotificationText();
             }
+        }
+
+        public static List<CL_Notification> ConvertFromJson(string json)
+        {
+            return JsonConvert.DeserializeObject<List<CL_Notification>>(json);
         }
     }
 }

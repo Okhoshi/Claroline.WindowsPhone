@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Linq;
@@ -309,6 +310,11 @@ namespace ClarolineApp.Model
             NotifyPropertyChanging("isNotified");
             seenDate = DateTime.Now;
             NotifyPropertyChanged("isNotified");
+        }
+
+        public static List<ResourceModel> ConvertFromJson(string json)
+        {
+            return JsonConvert.DeserializeObject<List<ResourceModel>>(json);
         }
     }
 }

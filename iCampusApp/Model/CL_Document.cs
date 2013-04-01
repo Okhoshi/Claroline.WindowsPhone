@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -231,6 +232,11 @@ namespace ClarolineApp.Model
         public override string getNotificationText()
         {
             return _Title;
+        }
+
+        public static List<CL_Document> ConvertFromJson(string json)
+        {
+            return JsonConvert.DeserializeObject<List<CL_Document>>(json);
         }
     }
 }
