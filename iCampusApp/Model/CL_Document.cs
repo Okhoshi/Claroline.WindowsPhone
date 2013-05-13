@@ -27,11 +27,11 @@ namespace ClarolineApp.Model
             DiscKey = SupportedModules.CLDOC;
         }
 
-        public const string LABEL = "CLDOC";
+        public new const string LABEL = "CLDOC";
 
         private string _path;
 
-        [Column]
+        [Column(CanBeNull = true)]
         public string path
         {
             get
@@ -53,7 +53,7 @@ namespace ClarolineApp.Model
 
         private string _url;
 
-        [Column]
+        [Column(CanBeNull=true)]
         public string url
         {
             get
@@ -73,7 +73,7 @@ namespace ClarolineApp.Model
 
         private string _desc;
 
-        [Column]
+        [Column(CanBeNull = true)]
         public string description
         {
             get
@@ -93,7 +93,7 @@ namespace ClarolineApp.Model
 
         private string _ext;
 
-        [Column]
+        [Column(CanBeNull = true)]
         public string extension
         {
             get
@@ -113,7 +113,7 @@ namespace ClarolineApp.Model
 
         private bool _isFolder;
 
-        [Column]
+        [Column(CanBeNull = true)]
         public bool isFolder
         {
             get
@@ -134,7 +134,7 @@ namespace ClarolineApp.Model
 
         private double _size;
 
-        [Column]
+        [Column(CanBeNull = true)]
         public double size
         {
             get
@@ -235,7 +235,7 @@ namespace ClarolineApp.Model
             return _Title;
         }
 
-        public static List<CL_Document> ConvertFromJson(string json)
+        public new static List<CL_Document> ConvertFromJson(string json)
         {
             return JsonConvert.DeserializeObject<List<CL_Document>>(json);
         }

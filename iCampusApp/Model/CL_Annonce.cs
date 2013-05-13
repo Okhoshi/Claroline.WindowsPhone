@@ -11,7 +11,7 @@ namespace ClarolineApp.Model
 
     public class CL_Annonce : ResourceModel
     {
-        public const string LABEL = "CLANN";
+        public new const string LABEL = "CLANN";
 
         public CL_Annonce()
             : base()
@@ -21,7 +21,7 @@ namespace ClarolineApp.Model
 
         private int _resourceId;
 
-        [Column]
+        [Column(CanBeNull = true)]
         public int resourceId
         {
             get
@@ -41,7 +41,7 @@ namespace ClarolineApp.Model
 
         private string _Content;
 
-        [Column]
+        [Column(CanBeNull = true)]
         public string content
         {
             get
@@ -79,7 +79,7 @@ namespace ClarolineApp.Model
             return base.GetHashCode();
         }
 
-        public static List<CL_Annonce> ConvertFromJson(string json)
+        public new static List<CL_Annonce> ConvertFromJson(string json)
         {
             return JsonConvert.DeserializeObject<List<CL_Annonce>>(json);
         }

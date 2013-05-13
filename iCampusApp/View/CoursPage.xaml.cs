@@ -52,26 +52,6 @@ namespace ClarolineApp
         public CoursPage()
         {
             InitializeComponent();
-
-            //Supprime les PivotItems non inclus dans le cours
-
-            if (!_cours.Resources.Any(rl => rl.ressourceType.Equals(typeof(CL_Document))) || SectionsPivot.Items.Any(p => ((PivotItem)p).Name == "CLDOC"))
-            {
-                SectionsPivot.Items.Remove(SectionsPivot.Items.Single(p => ((PivotItem)p).Name == "CLDOC"));
-                rootButton.IsEnabled = false;
-            }
-            else
-            {
-                if (rootDoc.title == null)
-                {
-                    rootButton.IsEnabled = false;
-                }
-            }
-
-            if (!_cours.Resources.Any(rl => rl.ressourceType.Equals(typeof(CL_Annonce))) || (SectionsPivot.Items.Any(p => ((PivotItem)p).Name == "Ann")))
-            {
-                SectionsPivot.Items.Remove(SectionsPivot.Items.Single(p => ((PivotItem)p).Name == "Ann"));
-            }
         }
 
         //--------------------------------------------------------------------

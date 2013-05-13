@@ -488,6 +488,10 @@ namespace ClarolineApp.ViewModel
                     await GetResourcesForThisListAsync(rl);
                 }
             }
+
+            coursToPrepare.Resources.AddRange(from ResourceList l in ClarolineDB.ResourceList_Table
+                                              where l.Cours.Equals(coursToPrepare)
+                                              select l);
         }
 
         public async Task GetResourcesForThisListAsync(ResourceList container)
@@ -508,9 +512,10 @@ namespace ClarolineApp.ViewModel
                     resources = (IList) JsonConvert.DeserializeObject(strContent, typeof(List<ResourceModel>));
                     break;
             }
-            foreach (var item in resources)
+            foreach (ResourceModel item in resources)
             {
-                AddResource((ResourceModel) item);
+                item.resourceList = container;
+                AddResource(item);
             }
         }
 
@@ -592,6 +597,9 @@ namespace ClarolineApp.ViewModel
                         break;
                     case CL_Document.LABEL:
                         item.ressourceType = typeof(CL_Document);
+                        break;
+                    default:
+                        item.ressourceType = typeof(ResourceModel);
                         break;
                 }
 

@@ -43,13 +43,20 @@
     <!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
     <Grid x:Name="LayoutRoot">
         <!--Contrôle Pivot-->
-        <controls:Pivot Title="{Binding Converter={StaticResource TitleConverter}, Path=currentCours.sysCode, Mode=TwoWay}" x:Name="SectionsPivot" SelectionChanged="Pivot_SelectionChanged">
+        <controls:Pivot Title="{Binding Converter={StaticResource TitleConverter}, Path=currentCours.officialCode, Mode=TwoWay}" x:Name="SectionsPivot" SelectionChanged="Pivot_SelectionChanged" ItemsSource="{Binding currentCours.Resources}">
+            <controls:Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding name, Converter={StaticResource ToLower}, Mode=OneWay}"
+                                   Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}, Mode=OneWay}" />
+                    </Grid>
+                </DataTemplate>
+            </controls:Pivot.HeaderTemplate>
             <controls:Pivot.ItemTemplate>
                 <DataTemplate>
-                    <customSelector:ResourceListTemplateSelector Content="{Binding currentCours.Resources}">
+                    <customSelector:ResourceListTemplateSelector Content="{Binding}" IsTabStop="True" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                         <customSelector:ResourceListTemplateSelector.Document>
                             <DataTemplate>
-                                <controls:PivotItem x:Name="{Binding label}"  Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}, Mode=OneWay}" Header="{Binding name, Converter={StaticResource ToLower}, Mode=OneWay}" Margin="12,28,12,0" IsTabStop="True">
                                     <ListBox x:Name="CLDOCList" ItemsSource="{Binding Resources}">
                                         <!--<i:Interaction.Triggers>
                                             <i:EventTrigger EventName="SelectionChanged">
@@ -79,12 +86,10 @@
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
-                                </controls:PivotItem>
                             </DataTemplate>
                         </customSelector:ResourceListTemplateSelector.Document>
                         <customSelector:ResourceListTemplateSelector.Annonce>
                             <DataTemplate>
-                                <controls:PivotItem x:Name="{Binding label}" Header="{Binding name, Converter={StaticResource ToLower}, Mode=OneWay}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}, Mode=OneWay}" BorderThickness="0" Margin="12,28,12,0" IsHitTestVisible="True">
                                     <ListBox x:Name="CLANNList" ItemsSource="{Binding Resources}">
                                         <!--<i:Interaction.Triggers>
                                             <i:EventTrigger EventName="SelectionChanged">
@@ -94,16 +99,20 @@
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Width="460">
-                                                    <TextBlock Text="{Binding Path=title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding Path=notified,Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
+                                                    <TextBlock Text="{Binding Path=title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding Path=isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
                                                     <TextBlock Text="{Binding Path=date, Converter={StaticResource DateFormater}, Mode=OneWay}" HorizontalAlignment="Right"/>
                                                     <Rectangle Height="2" Width="Auto" Fill="{Binding Path=isNotified, Converter={StaticResource StatusConverter}, Mode=OneWay}"/>
                                                 </StackPanel>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
-                                </controls:PivotItem>
                             </DataTemplate>
                         </customSelector:ResourceListTemplateSelector.Annonce>
+                        <customSelector:ResourceListTemplateSelector.Generic>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding name}" />
+                            </DataTemplate>
+                        </customSelector:ResourceListTemplateSelector.Generic>
                     </customSelector:ResourceListTemplateSelector>
                 </DataTemplate>
             </controls:Pivot.ItemTemplate>

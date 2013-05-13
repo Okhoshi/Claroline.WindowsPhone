@@ -70,19 +70,25 @@ namespace ClarolineApp.ViewModel
         }
 
         public CoursPageViewModel(string sysCode, string DBConnectionString = ClarolineDataContext.DBConnectionString)
-            : base(DBConnectionString)
         {
+            ClarolineDB = new ClarolineDataContext(DBConnectionString);
+
             currentCours = (from Cours c
                             in ClarolineDB.Cours_Table
                             where c.sysCode.Equals(sysCode)
                             select c).FirstOrDefault();
+            
+            LoadCollectionsFromDatabase();
         }
 
         public override void LoadCollectionsFromDatabase()
         {
             base.LoadCollectionsFromDatabase();
 
-            root = CL_Document.GetRootDocument(currentCours);
+            if (currentCours != null)
+            {
+                root = CL_Document.GetRootDocument(currentCours);
+            }
         }
     }
 }

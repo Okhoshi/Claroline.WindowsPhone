@@ -92,21 +92,27 @@ namespace ClarolineApp
 
             Cours _cours = CoursList.SelectedItem as Cours;
 
-            if (_cours.loadedToday() && _cours.Resources.Count != 0)
-            {
-                string destination = String.Format("/View/CoursPage.xaml?cours={0}", _cours.sysCode);
-                NavigationService.Navigate(new Uri(destination, UriKind.Relative));
-            }
-            else
+            if (!_cours.loadedToday() || _cours.Resources.Count == 0)
             {
                 ClaroClient.instance.PropertyChanged += Failure_Handler;
 
                 PerformanceProgressBar progress = Helper.FindFirstElementInVisualTree<PerformanceProgressBar>(this.CoursList.ItemContainerGenerator.ContainerFromIndex(CoursList.SelectedIndex) as ListBoxItem);
                 progress.Visibility = System.Windows.Visibility.Visible;
 
-                await _viewModel.PrepareCoursForOpeningAsync(CoursList.SelectedItem as Cours);
+                await _viewModel.PrepareCoursForOpeningAsync(_cours);
+
+                if (_cours.Resources.Count > 0)
+                {
+                    _cours.loaded = DateTime.Now;
+                }
 
                 progress.Visibility = System.Windows.Visibility.Collapsed;
+            }
+
+            if (_cours.loadedToday() && _cours.Resources.Count != 0)
+            {
+                string destination = String.Format("/View/CoursPage.xaml?cours={0}", _cours.sysCode);
+                NavigationService.Navigate(new Uri(destination, UriKind.Relative));
             }
 
             CoursList.SelectedIndex = -1;
