@@ -47,7 +47,7 @@
     	<Grid.RowDefinitions>
     		<RowDefinition Height="768"/>
     	</Grid.RowDefinitions>
-    	<controls:Panorama Title="Claroline" x:Name="Panorama" SelectionChanged="Panorama_SelectionChanged">
+    	<controls:Panorama Title="{Binding ApplicationName}" x:Name="Panorama" SelectionChanged="Panorama_SelectionChanged">
     		<controls:Panorama.Background>
     			<ImageBrush ImageSource="/BSTwp2.jpg" Stretch="None"/>
     		</controls:Panorama.Background>
@@ -82,10 +82,10 @@
                             <StackPanel Margin="12,0,0,0" Width="420">
                             	<TextBlock TextWrapping="Wrap" Text="{Binding Text, Mode=OneWay}" Foreground="{Binding notified, ConverterParameter=Black, Converter={StaticResource StatusConverter}, Mode=TwoWay}"/>
                             	<Grid>
-                            		<TextBlock TextWrapping="Wrap" Text="{Binding Cours.sysCode}" HorizontalAlignment="Left" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0,0,12,0" Foreground="#FF4B4B4B"/>
+                            		<TextBlock TextWrapping="Wrap" Text="{Binding Cours.officialCode}" HorizontalAlignment="Left" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0,0,12,0" Foreground="#FF4B4B4B"/>
                             		<TextBlock TextWrapping="Wrap" Text="{Binding date, Converter={StaticResource DateFormater}}" HorizontalAlignment="Right" Margin="83,0,12,0" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="#FF4B4B4B"/>
                             	</Grid>
-                            	<Rectangle Height="2" Width="Auto" Fill="{Binding notified, ConverterParameter=Black, Converter={StaticResource StatusConverter}}" Margin="0,0,-36,0"/>
+                            	<Rectangle Height="2" Width="Auto" Fill="{Binding isNotified, ConverterParameter=Black, Converter={StaticResource StatusConverter}}" Margin="0,0,-36,0"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

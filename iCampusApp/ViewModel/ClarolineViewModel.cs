@@ -1,5 +1,6 @@
 ﻿using ClarolineApp.Model;
 using ClarolineApp.Settings;
+using GalaSoft.MvvmLight.Command;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -9,11 +10,19 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace ClarolineApp.ViewModel
 {
     public class ClarolineViewModel : IClarolineViewModel
     {
+        public string ApplicationName
+        {
+            get
+            {
+                return AppSettings.instance.PlatformSetting;
+            }
+        }
 
         protected ClarolineDataContext ClarolineDB;
 
@@ -21,6 +30,32 @@ namespace ClarolineApp.ViewModel
         {
             ClarolineDB = new ClarolineDataContext(DBConnectionString);
             LoadCollectionsFromDatabase();
+        }
+
+        private Uri _navigationTarget;
+
+        public Uri navigationTarget
+        {
+            get
+            {
+                return _navigationTarget;
+            }
+            set
+            {
+                if (!value.Equals(_navigationTarget))
+                {
+                    _navigationTarget = value;
+                    if (_navigationTarget != null)
+                    {
+                        NotifyPropertyChanged("navigationTarget");
+                    }
+                }
+            }
+        }
+
+        public Uri GetNavigationTarget()
+        {
+            return navigationTarget;
         }
 
         public virtual void ResetViewModel()

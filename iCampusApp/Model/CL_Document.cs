@@ -1,9 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using ClarolineApp.Settings;
+using Microsoft.Phone.Tasks;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Linq.Mapping;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -53,7 +56,7 @@ namespace ClarolineApp.Model
 
         private string _url;
 
-        [Column(CanBeNull=true)]
+        [Column(CanBeNull = true)]
         public string url
         {
             get
@@ -173,7 +176,7 @@ namespace ClarolineApp.Model
             string rootPath = _path.Remove(_path.LastIndexOf(Find, StringComparison.OrdinalIgnoreCase), Find.Length);
             if (rootPath == "")
             {
-                return getRootDocument();
+                return GetRootDocument();
             }
             else
             {
@@ -182,7 +185,7 @@ namespace ClarolineApp.Model
 
                 return (from CL_Document _doc
                         in db.Documents_Table
-                        where _doc._path == rootPath && _doc._resourceList.Entity.Cours.sysCode == this._resourceList.Entity.Cours.sysCode
+                        where _doc.path == rootPath && _doc.resourceList.Cours.sysCode == this._resourceList.Entity.Cours.sysCode
                         select _doc).First();
             }
         }
@@ -196,9 +199,9 @@ namespace ClarolineApp.Model
 
                 return new ObservableCollection<CL_Document>((from CL_Document d
                                                               in db.Documents_Table
-                                                              where d._path == ((d._isFolder)
-                                                                                    ? (this._path + "/" + d._Title)
-                                                                                    : (this._path + "/" + d._Title + "." + d._ext)
+                                                              where d.path == ((d.isFolder)
+                                                                                    ? (this._path + "/" + d.title)
+                                                                                    : (this._path + "/" + d.title + "." + d.extension)
                                                                                     )
                                                               && d.resourceList.Cours.Equals(this.resourceList.Cours)
                                                               select d).ToList<CL_Document>()
@@ -210,23 +213,19 @@ namespace ClarolineApp.Model
             }
         }
 
-        public CL_Document getRootDocument()
+        public CL_Document GetRootDocument()
         {
-            return new CL_Document()
-            {
-                _isFolder = true,
-                _path = "",
-                resourceList = this._resourceList.Entity
-            };
+            return GetRootDocument(this.resourceList.Cours);
         }
 
         public static CL_Document GetRootDocument(Cours cours)
         {
+            ResourceList list = cours.Resources.First(rl => rl.ressourceType.Equals(typeof(CL_Document)));
             return new CL_Document()
             {
                 _isFolder = true,
                 _path = "",
-                resourceList = cours.Resources.First(rl => rl.ressourceType.Equals(typeof(CL_Document)))
+                resourceList = list
             };
         }
 
@@ -238,6 +237,37 @@ namespace ClarolineApp.Model
         public new static List<CL_Document> ConvertFromJson(string json)
         {
             return JsonConvert.DeserializeObject<List<CL_Document>>(json);
+        }
+
+        public async void OpenDocumentAsync()
+        {
+            if (!isFolder)
+            {
+                String token = await ClaroClient.instance.makeOperationAsync(SupportedModules.CLDOC, SupportedMethods.getSingleResource, resourceList.Cours, path);
+
+                using (JsonTextReader reader = new JsonTextReader(new StringReader(token)))
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.TokenType == JsonToken.PropertyName && reader.Value as string == "token")
+                        { 
+                            reader.Read();
+                            token = (string) reader.Value;
+                            break;
+                        }
+                    }
+                }
+
+                WebBrowserTask open = new WebBrowserTask()
+                {
+                    Uri = new Uri(Uri.EscapeUriString(AppSettings.instance.DomainSetting + AppSettings.instance.WebServiceSetting + "download.php?token=" + token), UriKind.Absolute)
+                };
+                open.Show();
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

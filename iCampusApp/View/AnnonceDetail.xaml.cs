@@ -12,43 +12,71 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using ClarolineApp.Model;
 using Microsoft.Phone.Shell;
+using ClarolineApp.ViewModel;
+using System.ComponentModel;
+using System.Windows.Navigation;
 
 namespace ClarolineApp
 {
     public partial class AnnonceDetail : PhoneApplicationPage
     {
-        private Annonce _annonce;
+        IAnnoncePageViewModel _viewModel;
+
+        ProgressIndicator _indicator;
+
+        ProgressIndicator indicator
+        {
+            get
+            {
+                if (_indicator == null)
+                {
+                    _indicator = new ProgressIndicator()
+                    {
+                        IsIndeterminate = true,
+                        IsVisible = false
+                    };
+                    SystemTray.SetProgressIndicator(this, _indicator);
+                }
+                return _indicator;
+            }
+        }
 
         public AnnonceDetail()
         {
             InitializeComponent();
-
-            this.DataContext = App.selecteditem;
-            _annonce = App.selecteditem as Annonce;
-
-            SystemTray.SetProgressIndicator(this, App.currentProgressInd);
+            ClaroClient.instance.PropertyChanged += ClaroClient_propertyChanged;
         }
 
-        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        private void ClaroClient_propertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            base.OnNavigatedTo(e);
-
-            if (_annonce.notified)
+            switch (e.PropertyName)
             {
-                App.currentProgressInd.Text = "";
-                App.currentProgressInd.IsVisible = true;
+                case "IsInSync":
+                    indicator.IsVisible = (sender as ClaroClient).IsInSync;
+                    break;
+                default:
+                    break;
+            }
+        }
 
-                _annonce.notified = false;
-                App.ViewModel.AddAnnonce(_annonce);
-                _annonce.Cours.checkNotified();
-                App.ViewModel.AllNotifications.Where(not => not.notified && not.ressourceId == _annonce.ressourceId && not.ressourceType == ValidTypes.Annonce).ToList().ForEach(not =>
-                {
-                    not.notified = false;
-                    App.ViewModel.AddNotification(not);
-                });
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            IDictionary<string, string> parameters = this.NavigationContext.QueryString;
+            int resid;
 
-                if(!_annonce.upToDateContent)
-                    App.Client.makeOperation(AllowedOperations.getSingleAnnounce, _annonce.Cours, _annonce.ressourceId);
+            if (parameters.ContainsKey("resource") && int.TryParse(parameters["resource"], out resid))
+            {
+                
+                _viewModel = new AnnoncePageViewModel(resid);
+                this.DataContext = _viewModel;
+
+                _viewModel.RefreshAsync();
+
+                base.OnNavigatedTo(e);
+            }
+            else
+            {
+                NavigationService.GoBack();
             }
         }
     }

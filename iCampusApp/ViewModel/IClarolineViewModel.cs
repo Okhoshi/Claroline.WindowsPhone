@@ -1,4 +1,5 @@
 ﻿using ClarolineApp.Model;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
@@ -20,7 +21,6 @@ namespace ClarolineApp.ViewModel
         Task GetCoursListAsync();
         Task GetResourcesListForThisCoursAsync(Cours cours);
 
-
         void AddCours(Cours newCours);
         void AddResourceList(ResourceList newList);
         void AddAnnonce(CL_Annonce newAnn);
@@ -37,5 +37,7 @@ namespace ClarolineApp.ViewModel
         void ClearDocsOfCours(Cours coursToClear);
         void ClearAnnsOfCours(Cours coursToClear);
         void ClearNotifsOfCours(Cours coursToClear, int keeped);
+
+        Uri GetNavigationTarget();
     }
 }

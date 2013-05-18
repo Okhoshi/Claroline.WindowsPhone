@@ -61,7 +61,25 @@ namespace ClarolineApp
             }
         }
 
-        public Boolean isExpired
+        private bool _inSync;
+
+        public bool IsInSync
+        {
+            get
+            {
+                return _inSync;
+            }
+            private set
+            {
+                if (!_inSync == value)
+                {
+                    _inSync = value;
+                    NotifyPropertyChanged("IsInSync");
+                }
+            }
+        }
+
+        public bool isExpired
         {
             get
             {
@@ -76,13 +94,13 @@ namespace ClarolineApp
             get { return _lastException; }
             set
             {
-                if (!_lastException.Equals(value))
+                if (!value.Equals(_lastException))
                 {
-#if DEBUG
-                    Debug.WriteLine("Exception occured :" + value.ToString());
-#endif
                     _lastException = value;
-                    NotifyPropertyChanged("lastException");
+#if DEBUG
+                        Debug.WriteLine("Exception occured :" + value.ToString());
+#endif
+                        NotifyPropertyChanged("lastException");
                 }
             }
         }
@@ -121,6 +139,8 @@ namespace ClarolineApp
 
         public async Task<string> makeOperationAsync(SupportedModules module, SupportedMethods method, Cours reqCours = null, string resStr = "", bool forAuth = false)
         {
+            _lastException = null;
+
             if (IsNetworkAvailable() && ( forAuth || await isValidAccountAsync()))
             {
                 PostDataWriter args = new PostDataWriter() { module = module, method = method, cidReq = reqCours, resStr = resStr };
@@ -130,6 +150,7 @@ namespace ClarolineApp
                 Stream responseStream = null;
                 try
                 {
+                    IsInSync = true;
                     HttpWebRequest client = await getClientAsync(args);
                     response = (HttpWebResponse)await client.GetResponseAsync();
                     responseStream = response.GetResponseStream();
@@ -155,6 +176,9 @@ namespace ClarolineApp
                         response.Close();
                     }
                 }
+
+                IsInSync = false;
+
                 return strContent;
             }
             else
@@ -204,300 +228,6 @@ namespace ClarolineApp
         {
             return !isExpired;
         }
-
-        [Obsolete]
-        public void ResponseCallback(IAsyncResult ar)
-        {/*
-            String strContent = "";
-            PostDataWriter args = (PostDataWriter)ar.AsyncState;
-            //Récupération de la requete web (object HttpWebRequest)
-            HttpWebRequest Request = args.Request;
-            AllowedOperations op = args.operation;
-            //Récupération de la réponse Web
-            try
-            {
-                HttpWebResponse Response = (HttpWebResponse)Request.EndGetResponse(ar);
-                Stream responseStream = Response.GetResponseStream();
-                StreamReader sr = new StreamReader(responseStream, Encoding.UTF8);
-                strContent = sr.ReadToEnd();
-                responseStream.Close();
-                Response.Close();
-
-                switch (op)
-                {
-                    case AllowedOperations.getUserData:
-                        setProgressIndicator(true, String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.SettingsPage_User_PI));
-                        User connectedUser = JsonConvert.DeserializeObject<User>(strContent);
-                        StringReader str = new StringReader(strContent);
-                        String institution = "";
-                        String platform = "";
-                        String ptAuth = "";
-                        String ptAnon = "";
-                        JsonTextReader reader = new JsonTextReader(str);
-                        while (reader.Read())
-                        {
-                            if (reader.Value != null)
-                            {
-                                switch (reader.Value.ToString())
-                                {
-                                    case "institutionName":
-                                        institution = reader.ReadAsString();
-                                        break;
-                                    case "platformName":
-                                        platform = reader.ReadAsString();
-                                        break;
-                                    case "platformTextAuth":
-                                        ptAuth = reader.ReadAsString();
-                                        break;
-                                    case "platformTextAnonym":
-                                        ptAnon = reader.ReadAsString();
-                                        break;
-                                    default:
-                                        continue;
-                                }
-                            }
-                        }
-                        reader.Close();
-                        str.Close();
-                        Deployment.Current.Dispatcher.BeginInvoke(() =>
-                        {
-                            settings.UserSetting.setUser(connectedUser);
-                            settings.IntituteSetting = institution;
-                            settings.PlatformSetting = platform;
-                            settings.PlatformTextAuthSetting = ptAuth;
-                            settings.PlatformTextAnonSetting = ptAnon;
-                        });
-                        authNotify();
-                        break;
-
-                    case AllowedOperations.getCourseList:
-                        setProgressIndicator(true, String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.MainPage_Cours_PI));
-                        List<Cours> Courses = JsonConvert.DeserializeObject<List<Cours>>(strContent);
-                        if (Courses.Count > 0)
-                        {
-                            Deployment.Current.Dispatcher.BeginInvoke(() =>
-                            {
-                                foreach (Cours cours in Courses)
-                                {
-                                    _viewModel.AddCours(cours);
-                                }
-                                _viewModel.ClearCoursList();
-                                pulse(Updating);
-                            });
-                        }
-                        break;
-
-                    case AllowedOperations.getToolList:
-                        setProgressIndicator(true, String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.MainPage_Cours_PI));
-                        Cours result = JsonConvert.DeserializeObject<Cours>(strContent);
-                        args.cidReq.annNotif = result.annNotif;
-                        args.cidReq.dnlNotif = result.dnlNotif;
-                        args.cidReq.isAnn = result.isAnn;
-                        args.cidReq.isDnL = result.isDnL;
-                        Deployment.Current.Dispatcher.BeginInvoke(() =>
-                        {
-                            _viewModel.AddCours(args.cidReq);
-                        });
-                        break;
-
-                    case AllowedOperations.getDocList:
-                        setProgressIndicator(true, String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.CoursPage_Doc_PI));
-                        List<Documents> Documents = JsonConvert.DeserializeObject<List<Documents>>(strContent);
-                        if (Documents.Count > 0 && Documents.First().Cours.Equals(args.cidReq))
-                        {
-                            Deployment.Current.Dispatcher.BeginInvoke(() =>
-                            {
-                                foreach (Documents doc in Documents)
-                                {
-                                    doc.Cours = args.cidReq;
-                                    _viewModel.AddDocument(doc);
-                                }
-                                _viewModel.ClearDocsOfCours(args.cidReq);
-                                pulse(Updating);
-                            });
-                        }
-                        break;
-
-                    case AllowedOperations.getAnnounceList:
-                        setProgressIndicator(true, String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.CoursPage_Ann_PI));
-                        List<Annonce> Annonces = JsonConvert.DeserializeObject<List<Annonce>>(strContent);
-                        if (Annonces.Count > 0 && Annonces.First().Cours.Equals(args.cidReq))
-                        {
-                            Deployment.Current.Dispatcher.BeginInvoke(() =>
-                            {
-                                foreach (Annonce annonce in Annonces)
-                                {
-                                    annonce.Cours = args.cidReq;
-                                    _viewModel.AddAnnonce(annonce);
-                                }
-                                _viewModel.ClearAnnsOfCours(args.cidReq);
-                                pulse(Updating);
-                            });
-                        }
-                        break;
-
-                    case AllowedOperations.getSingleAnnounce:
-                        setProgressIndicator(true, String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.CoursPage_Ann_PI));
-                        Annonce singleAnnonce = JsonConvert.DeserializeObject<Annonce>(strContent);
-                        Deployment.Current.Dispatcher.BeginInvoke(() =>
-                        {
-                            singleAnnonce.Cours = args.cidReq;
-                            _viewModel.AddAnnonce(singleAnnonce);
-                            pulse(Updating);
-                        });
-                        break;
-
-                    case AllowedOperations.getUpdates:
-                        setProgressIndicator(true, AppLanguage.ProgressBar_Update);
-                        Debug.WriteLine(strContent);
-                        if (strContent != "[]")
-                        {
-                            Dictionary<String, Dictionary<String, Dictionary<String, Dictionary<String, String>>>> Updates;
-                            Updates = JsonConvert.DeserializeObject<Dictionary<String, Dictionary<String, Dictionary<String, Dictionary<String, String>>>>>(strContent);
-                            foreach (KeyValuePair<String, Dictionary<String, Dictionary<String, Dictionary<String, String>>>> course in Updates)
-                            {
-                                Cours upCours = _viewModel.AllCours.FirstOrDefault(cours => cours.sysCode.Equals(course.Key));
-                                if (upCours == null)
-                                {
-                                    makeOperation(AllowedOperations.getCourseList);
-                                    wait(Updating);
-                                    upCours = _viewModel.AllCours.FirstOrDefault(cours => cours.sysCode.Equals(course.Key));
-                                    if (upCours != null)
-                                    {
-                                        makeOperation(AllowedOperations.updateCompleteCourse, upCours);
-                                    }
-                                    continue;
-                                }
-                                else
-                                {
-                                    foreach (KeyValuePair<String, Dictionary<String, Dictionary<String, String>>> tool in course.Value)
-                                    {
-                                        switch (tool.Key)
-                                        {
-                                            case "CLANN":
-                                                if (!upCours.isAnn)
-                                                {
-                                                    makeOperation(AllowedOperations.getToolList, upCours);
-                                                    wait(Updating);
-                                                    if (upCours.isAnn)
-                                                    {
-                                                        makeOperation(AllowedOperations.getAnnounceList, upCours);
-                                                    }
-                                                    continue;
-                                                }
-                                                else
-                                                {
-                                                    foreach (KeyValuePair<String, Dictionary<String, String>> ressource in tool.Value)
-                                                    {
-                                                        Annonce upAnn = _viewModel.AnnByCours[course.Key].FirstOrDefault(announce => announce.resourceId == int.Parse(ressource.Key));
-                                                        if (upAnn == null)
-                                                        {
-                                                            makeOperation(AllowedOperations.getAnnounceList, upCours);
-                                                        }
-                                                        else
-                                                        {
-                                                            Deployment.Current.Dispatcher.BeginInvoke(() =>
-                                                            {
-                                                                upAnn.date = DateTime.Parse(ressource.Value["date"]);
-                                                                upAnn.notified = true;
-                                                                upAnn.upToDateContent = false;
-                                                                _viewModel.AddAnnonce(upAnn);
-                                                                pulse(Updating);
-                                                            });
-                                                        }
-                                                    }
-                                                }
-                                                break;
-                                            case "CLDOC":
-                                                if (!upCours.isDnL)
-                                                {
-                                                    makeOperation(AllowedOperations.getToolList, upCours);
-                                                    wait(Updating);
-                                                    if (upCours.isDnL)
-                                                    {
-                                                        makeOperation(AllowedOperations.getDocList, upCours);
-                                                    }
-                                                    continue;
-                                                }
-                                                else
-                                                {
-                                                    foreach (KeyValuePair<String, Dictionary<String, String>> ressource in tool.Value)
-                                                    {
-                                                        Documents upDoc = _viewModel.DocByCours[course.Key].FirstOrDefault(doc => doc.path == ressource.Key);
-                                                        if (upDoc == null)
-                                                        {
-                                                            makeOperation(AllowedOperations.getDocList, upCours);
-                                                        }
-                                                        else
-                                                        {
-                                                            Deployment.Current.Dispatcher.BeginInvoke(() =>
-                                                            {
-                                                                upDoc.date = DateTime.Parse(ressource.Value["date"]);
-                                                                upDoc.notified = true;
-                                                                _viewModel.AddDocument(upDoc);
-                                                                pulse(Updating);
-                                                            });
-                                                        }
-                                                    }
-                                                }
-                                                break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        break;
-
-                    case AllowedOperations.authenticate:
-                        if (!strContent.Contains(settings.AuthPageSetting))
-                        {
-                            cookieCreation = DateTime.Now;
-                            authNotify();
-                        }
-                        else
-                        {
-                            Deployment.Current.Dispatcher.BeginInvoke(() =>
-                            {
-                                MessageBox.Show(AppLanguage.ErrorMessage_AuthFailed);
-                            });
-                            bw.CancelAsync();
-                        }
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-            catch (WebException ex)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    NotifyPropertyChanged("Failure");
-                    MessageBox.Show(String.Format(AppLanguage.ErrorMessage_ServerReturnCode,
-                                                    (int)((HttpWebResponse)ex.Response).StatusCode,
-                                                    ((HttpWebResponse)ex.Response).StatusDescription));
-                });
-                bw.CancelAsync();
-                authNotify();
-                Request.Abort();
-            }
-            catch (JsonReaderException ex)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    NotifyPropertyChanged("Failure");
-                    MessageBox.Show(AppLanguage.ErrorMessage_UnreadableJson);
-                });
-                Debug.WriteLine(ex.Message);
-                Debug.WriteLine(strContent);
-            }
-            finally
-            {
-                setProgressIndicator(false);
-                pulse();
-            }
-            return;
-        */}
 
         public void invalidateClient()
         {

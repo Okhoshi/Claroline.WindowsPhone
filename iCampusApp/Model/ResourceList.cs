@@ -7,6 +7,7 @@ using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
 
 namespace ClarolineApp.Model
 {

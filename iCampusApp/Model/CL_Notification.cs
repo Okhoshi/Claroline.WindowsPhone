@@ -17,7 +17,7 @@ namespace ClarolineApp.Model
         public static CL_Notification CreateNotification(ResourceModel resource, bool isOld)
         {
             CL_Notification note = new CL_Notification();
-            note.isOldRessource = isOld;
+            note.isOldResource = isOld;
             note.Cours = resource.resourceList.Cours;
             note.resource = resource;
             note.date = resource.date;
@@ -96,7 +96,7 @@ namespace ClarolineApp.Model
         private bool _isOldRessource;
 
         [Column]
-        public bool isOldRessource
+        public bool isOldResource
         {
             get
             {
@@ -106,9 +106,9 @@ namespace ClarolineApp.Model
             {
                 if (_isOldRessource != value)
                 {
-                    NotifyPropertyChanging("isOldRessource");
+                    NotifyPropertyChanging("isOldResource");
                     _isOldRessource = value;
-                    NotifyPropertyChanged("isOldRessource");
+                    NotifyPropertyChanged("isOldResource");
                 }
             }
         }

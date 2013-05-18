@@ -11,7 +11,6 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
-	d:DataContext="{d:DesignData /SampleData/AnnonceSampleData.xaml}"
     shell:SystemTray.IsVisible="True"
 	shell:SystemTray.Opacity="0"
     Style="{StaticResource TransitionPageStyle}">
@@ -25,13 +24,13 @@
 
         <!--TitlePanel contient le nom de l'application et le titre de la page-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="CLAROLINE MOBILE" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="{Binding title, Mode=OneWay}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-            <TextBlock x:Name="Date" TextWrapping="Wrap" Text="{Binding date, ConverterParameter=2, Converter={StaticResource DateFormater}, Mode=TwoWay}" Style="{StaticResource PhoneTextSubtleStyle}" />
+            <TextBlock x:Name="ApplicationTitle" Text="{Binding ApplicationName, Converter={StaticResource ToUpper}}" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="{Binding title, Mode=OneWay}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" DataContext="{Binding currentAnnonce}"/>
+            <TextBlock x:Name="Date" TextWrapping="Wrap" Text="{Binding date, ConverterParameter=2, Converter={StaticResource DateFormater}, Mode=TwoWay}" Style="{StaticResource PhoneTextSubtleStyle}" DataContext="{Binding currentAnnonce}" />
         </StackPanel>
 
         <!--ContentPanel - placez tout contenu supplémentaire ici-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" DataContext="{Binding currentAnnonce}">
             <ScrollViewer>
                 <TextBlock x:Name="AnnContent" Text="{Binding content, Mode=TwoWay}" TextWrapping="Wrap"/>
             </ScrollViewer>

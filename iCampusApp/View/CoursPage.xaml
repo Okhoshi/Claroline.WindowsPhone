@@ -9,6 +9,7 @@
     xmlns:iCampusApp_Model="clr-namespace:ClarolineApp.Model"
     xmlns:local="clr-namespace:ClarolineApp"
 	xmlns:customSelector="clr-namespace:ClarolineApp.TemplateSelector"
+    xmlns:ipt="clr-namespace:System.Windows.Input;assembly=System.Windows"
 	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     x:Class="ClarolineApp.CoursPage"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
@@ -28,7 +29,10 @@
     </phone:PhoneApplicationPage.ApplicationBar>
 
     <phone:PhoneApplicationPage.Resources>
-        
+        <local:BindingProxy x:Key="AnnonceSelectedItemCommand" Data="{Binding annonceSelectedItem}" />
+        <local:BindingProxy x:Key="DocumentSelectedItemCommand" Data="{Binding documentSelectedItem}" />
+        <local:BindingProxy x:Key="GenericSelectedItemCommand" Data="{Binding genericSelectedItem}" />
+        <local:BindingProxy x:Key="Content" Data="{Binding content}" />
     </phone:PhoneApplicationPage.Resources>
     <phone:PhoneApplicationPage.FontFamily>
         <StaticResource ResourceKey="PhoneFontFamilyNormal"/>
@@ -57,60 +61,61 @@
                     <customSelector:ResourceListTemplateSelector Content="{Binding}" IsTabStop="True" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                         <customSelector:ResourceListTemplateSelector.Document>
                             <DataTemplate>
-                                    <ListBox x:Name="CLDOCList" ItemsSource="{Binding Resources}">
-                                        <!--<i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="SelectionChanged">
-                                                <i:InvokeCommandAction CommandParameter="{Binding SelectedItem, ElementName=CLDOCList}"/>
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>-->
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate x:Name="Doc">
-                                                <Grid x:Name="lvl0" Width="460">
-                                                    <StackPanel Orientation="Vertical" d:LayoutOverrides="Height">
-                                                        <StackPanel Orientation="Horizontal" d:LayoutOverrides="Width">
-                                                            <Image Source="{Binding extension, Converter={StaticResource ExtSelect}}" Width="60"/>
-                                                            <StackPanel HorizontalAlignment="Left" Orientation="Vertical" Width="400" >
-                                                                <TextBlock x:Name="Name" Text="{Binding Path=title, Mode=OneWay}" Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" Margin="0" Height="40"/>
-                                                                <TextBlock x:Name="Desc" Text="{Binding description, Mode=OneWay}" Style="{StaticResource ResourceKey=PhoneTextSubtleStyle}" Margin="0" Height="30" TextTrimming="WordEllipsis"/>
-                                                            </StackPanel>
-                                                        </StackPanel>
-                                                        <StackPanel d:LayoutOverrides="Width">
-                                                            <Grid Margin="10,0,0,0">
-                                                                <TextBlock x:Name="Ext" TextWrapping="Wrap" Text="{Binding extension, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0"/>
-                                                                <TextBlock x:Name="Date" TextWrapping="Wrap" Text="{Binding date, Converter={StaticResource DateFormater}, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" d:LayoutOverrides="VerticalAlignment" Margin="50,0,0,0"/>
-                                                                <TextBlock x:Name="Size" TextWrapping="Wrap" Text="{Binding size, Converter={StaticResource SizeConv}, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0,0,10,0" HorizontalAlignment="Right"/>
-                                                            </Grid>
+                                <ListBox x:Name="CLDOCList" ItemsSource="{Binding Data, Source={StaticResource Content}}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction Command="{Binding Data, Source={StaticResource DocumentSelectedItemCommand}}" CommandParameter="{Binding SelectedItem, ElementName=CLDOCList}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate x:Name="Doc">
+                                            <Grid x:Name="lvl0" Width="460" Margin="0,5">
+                                                <StackPanel Orientation="Vertical" d:LayoutOverrides="Height">
+                                                    <StackPanel Orientation="Horizontal" d:LayoutOverrides="Width">
+                                                        <Image Source="{Binding Path=extension, Converter={StaticResource ExtSelect}}" Width="60"/>
+                                                        <StackPanel HorizontalAlignment="Left" Orientation="Vertical" Width="400" >
+                                                            <TextBlock x:Name="Name" Text="{Binding Path=title, Mode=OneWay}" Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" Margin="0" Height="40"/>
+                                                            <TextBlock x:Name="Desc" Text="{Binding description, Mode=OneWay}" Style="{StaticResource ResourceKey=PhoneTextSubtleStyle}" Margin="0" Height="30" TextTrimming="WordEllipsis"/>
                                                         </StackPanel>
                                                     </StackPanel>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
+                                                    <StackPanel d:LayoutOverrides="Width">
+                                                        <Grid Margin="10,0,0,0">
+                                                            <TextBlock x:Name="Ext" TextWrapping="Wrap" Text="{Binding extension, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0"/>
+                                                            <TextBlock x:Name="Date" TextWrapping="Wrap" Text="{Binding date, Converter={StaticResource DateFormater}, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" d:LayoutOverrides="VerticalAlignment" Margin="50,0,0,0"/>
+                                                            <TextBlock x:Name="Size" TextWrapping="Wrap" Text="{Binding size, Converter={StaticResource SizeConv}, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0,0,10,0" HorizontalAlignment="Right"/>
+                                                        </Grid>
+                                                    </StackPanel>
+                                                </StackPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </DataTemplate>
                         </customSelector:ResourceListTemplateSelector.Document>
                         <customSelector:ResourceListTemplateSelector.Annonce>
                             <DataTemplate>
-                                    <ListBox x:Name="CLANNList" ItemsSource="{Binding Resources}">
-                                        <!--<i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="SelectionChanged">
-                                                <i:InvokeCommandAction Command="{Binding }"  CommandParameter="{Binding CLANNList}"/>
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>-->
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Width="460">
-                                                    <TextBlock Text="{Binding Path=title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding Path=isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
-                                                    <TextBlock Text="{Binding Path=date, Converter={StaticResource DateFormater}, Mode=OneWay}" HorizontalAlignment="Right"/>
-                                                    <Rectangle Height="2" Width="Auto" Fill="{Binding Path=isNotified, Converter={StaticResource StatusConverter}, Mode=OneWay}"/>
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
+                                <ListBox x:Name="CLANNList" ItemsSource="{Binding Resources}">
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="SelectionChanged">
+                                            <i:InvokeCommandAction Command="{Binding Data, Source={StaticResource AnnonceSelectedItemCommand}}"  CommandParameter="{Binding SelectedItem, ElementName=CLANNList}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Width="460" Margin="0,5">
+                                                <TextBlock Text="{Binding Path=title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding Path=isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
+                                                <TextBlock Text="{Binding Path=date, Converter={StaticResource DateFormater}, Mode=OneWay}" HorizontalAlignment="Right" Foreground="{StaticResource PhoneSubtleBrush}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </DataTemplate>
                         </customSelector:ResourceListTemplateSelector.Annonce>
                         <customSelector:ResourceListTemplateSelector.Generic>
                             <DataTemplate>
-                                <TextBlock Text="{Binding name}" />
+                                <StackPanel>
+                                    <TextBlock Text="{Binding name}" />
+                                </StackPanel>
                             </DataTemplate>
                         </customSelector:ResourceListTemplateSelector.Generic>
                     </customSelector:ResourceListTemplateSelector>

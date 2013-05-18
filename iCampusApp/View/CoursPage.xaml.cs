@@ -25,9 +25,6 @@ namespace ClarolineApp
     public partial class CoursPage : PhoneApplicationPage
     {
 
-        private CL_Document rootDoc;
-        private Cours _cours;
-
         private ICoursPageViewModel _viewModel;
 
         ProgressIndicator _indicator;
@@ -52,6 +49,20 @@ namespace ClarolineApp
         public CoursPage()
         {
             InitializeComponent();
+            rootButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+            ClaroClient.instance.PropertyChanged += ClaroClient_PropertyChanged;
+        }
+
+        private void ClaroClient_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "IsInSync":
+                    indicator.IsVisible = (sender as ClaroClient).IsInSync;
+                    break;
+                default:
+                    break;
+            }
         }
 
         //--------------------------------------------------------------------
@@ -78,83 +89,50 @@ namespace ClarolineApp
 
         void _viewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            
+            switch (e.PropertyName)
+            {
+                case "root":
+                    rootButton.IsEnabled = !_viewModel.IsOnRoot();
+                    //Update the path somewhere
+                    break;
+                case "navigationTarget":
+                    NavigationService.Navigate(_viewModel.GetNavigationTarget());
+                    break;
+                default:
+                    break;
+            }
         }
 
-        private void DocContent_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {/*
-            if (DocContent.SelectedIndex == -1)
-            {
-                return;
-            }
-
-            (DocContent.SelectedItem as CL_Document).seenDate = DateTime.Now;
-            
-            if ((DocContent.SelectedItem as CL_Document).isFolder)
-            {
-                rootDoc = DocContent.SelectedItem as CL_Document;
-                CLDOC.Header = rootDoc.title.ToLower();
-                rootButton.IsEnabled = true;
-
-                DocContent.ItemsSource = rootDoc.getContent();
-                DocContent.SelectedIndex = -1;
-            }
-            else
-            {
-                //Dwl Doc
-            }
-        */}
-
         private void rootButton_Click(object sender, EventArgs e)
-        {/*
-            CL_Document _root = rootDoc.getRoot();
-            DocContent.ItemsSource = _root.getContent();
-
-            if (_root.title == null)
+        {
+            if (_viewModel.IsDocumentPivotSelected(SectionsPivot.SelectedItem))
             {
-                CLDOC.Header = AppLanguage.CoursPage_Doc_PI;
-                rootButton.IsEnabled = false;
+                _viewModel.GoUp();
             }
-            else
-            {
-                CLDOC.Header = _root.title.ToLower();
-                rootButton.IsEnabled = true;
-            }
-            rootDoc = _root;
-        */}
+        }
 
         private async void refrButton_Click(object sender, EventArgs e)
-        {/*
+        {
             _indicator.Text = AppLanguage.ProgressBar_Update;
             _indicator.IsVisible = true;
             await _viewModel.RefreshAsync();
             _indicator.IsVisible = false;
-        */}
-
-        private void CLANNList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {/*
-            if (CLANNList.SelectedIndex == -1)
-            {
-                return;
-            }
-
-            (AnnList.SelectedItem as CL_Annonce).seenDate = DateTime.Now;
-            string destination = String.Format("/AnnonceDetail.xaml?resource={0}", (AnnList.SelectedItem as CL_Annonce).resourceId);
-            AnnList.SelectedIndex = -1;
-
-            NavigationService.Navigate(new Uri(destination, UriKind.Relative));
-        */}
+        }
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            /*if (SectionsPivot.SelectedItem.Equals(CLDOC) && rootDoc.title != null)
+            if (rootButton != null)
             {
-                rootButton.IsEnabled = true;
+                if (_viewModel.IsDocumentPivotSelected(SectionsPivot.SelectedItem)
+                    && !_viewModel.IsOnRoot())
+                {
+                    rootButton.IsEnabled = true;
+                }
+                else
+                {
+                    rootButton.IsEnabled = false;
+                }
             }
-            else
-            {
-                rootButton.IsEnabled = false;
-            }*/
         }
     }
 }

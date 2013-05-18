@@ -1,34 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
-using System.Data.Linq;
+﻿using ClarolineApp.Languages;
 using ClarolineApp.Model;
 using ClarolineApp.Settings;
+using ClarolineApp.ViewModel;
+using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
-using System.Diagnostics;
-using ClarolineApp.Languages;
-using System.Windows.Data;
-using ClarolineApp.ViewModel;
+using System;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace ClarolineApp
 {
-    public partial class MainPage : PhoneApplicationPage, INotifyPropertyChanged
+    public partial class MainPage : PhoneApplicationPage
     {
         PropertyChangedEventHandler Failure_Handler;
 
@@ -141,11 +125,10 @@ namespace ClarolineApp
             {
                 await _viewModel.GetUserDataAsync();
             }
-            else
-            {
-                indicator.Text = String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.MainPage_Cours_PI);
-                await _viewModel.GetCoursListAsync();
-            }
+
+            indicator.Text = String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.MainPage_Cours_PI);
+            await _viewModel.GetCoursListAsync();
+
             indicator.IsVisible = false;
         }
 
@@ -221,26 +204,11 @@ namespace ClarolineApp
                 return;
             }
 
-            CL_Notification selectedNotification = (CL_Notification)sender;
+            CL_Notification selectedNotification = (sender as ListBox).SelectedItem as CL_Notification;
             
             MessageBox.Show("Selected :" + selectedNotification.ToString());
 
             NotifList.SelectedIndex = -1;
         }
-        
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // Used to notify Silverlight that a property has changed.
-
-        private void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-        #endregion
     }
 }

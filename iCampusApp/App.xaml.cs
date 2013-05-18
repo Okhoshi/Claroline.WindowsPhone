@@ -131,7 +131,7 @@ namespace ClarolineApp
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // Une exception non gérée s'est produite ; arrêt dans le débogueur
-                System.Diagnostics.Debugger.Break();
+                 System.Diagnostics.Debugger.Break();
             }
         }
 
