@@ -9,14 +9,14 @@ using System.Text;
 namespace ClarolineApp.Model
 {
 
-    public class CL_Annonce : ResourceModel
+    public class CL_Description : ResourceModel
     {
-        public new const string LABEL = "CLANN";
+        public new const string LABEL = "CLDSC";
 
-        public CL_Annonce()
+        public CL_Description()
             : base()
         {
-            DiscKey = SupportedModules.CLANN;
+            DiscKey = SupportedModules.CLDSC;
         }
 
         private int _resourceId;
@@ -61,10 +61,10 @@ namespace ClarolineApp.Model
 
         public override bool Equals(object obj)
         {
-            if (obj != null && obj.GetType().Equals(typeof(CL_Annonce)))
+            if (obj != null && obj.GetType().Equals(typeof(CL_Description)))
             {
-                CL_Annonce ann = obj as CL_Annonce;
-                return this._resourceListId == ann._resourceListId && this._resourceId == ann._resourceId;
+                CL_Description dsc = obj as CL_Description;
+                return this._resourceListId == dsc._resourceListId && this._resourceId == dsc._resourceId;
             }
             return false;
         }
@@ -79,9 +79,9 @@ namespace ClarolineApp.Model
             return base.GetHashCode();
         }
 
-        public new static List<CL_Annonce> ConvertFromJson(string json)
+        public new static List<CL_Description> ConvertFromJson(string json)
         {
-            return JsonConvert.DeserializeObject<List<CL_Annonce>>(json);
+            return JsonConvert.DeserializeObject<List<CL_Description>>(json);
         }
 
         public override bool IsResIdMatching(string resource)

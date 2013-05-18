@@ -11,7 +11,7 @@ namespace ClarolineApp.ViewModel
         void ResetViewModel();
         void SaveChangesToDB();
 
-        Task RefreshAsync();
+        Task RefreshAsync(bool force = false);
 
         Task PrepareCoursForOpeningAsync(Cours coursToPrepare);
         Task GetResourcesForThisListAsync(ResourceList container);
@@ -23,19 +23,15 @@ namespace ClarolineApp.ViewModel
 
         void AddCours(Cours newCours);
         void AddResourceList(ResourceList newList);
-        void AddAnnonce(CL_Annonce newAnn);
-        void AddDocument(CL_Document newDoc);
         void AddNotification(CL_Notification newNot);
 
         void DeleteCours(Cours coursForDelete);
         void DeleteResourceList(ResourceList listForDelete);
-        void DeleteAnnonce(CL_Annonce annForDelete);
-        void DeleteDocument(CL_Document docForDelete);
+        void DeleteResource(ResourceModel resForDelete);
         void DeleteNotification(CL_Notification notForDelete);
 
         void ClearCoursList();
-        void ClearDocsOfCours(Cours coursToClear);
-        void ClearAnnsOfCours(Cours coursToClear);
+        void ClearResOfCours(Cours coursToClear);
         void ClearNotifsOfCours(Cours coursToClear, int keeped);
 
         Uri GetNavigationTarget();

@@ -12,6 +12,7 @@ namespace ClarolineApp.Model
     [Table]
     [InheritanceMapping(Code = SupportedModules.NOMOD, Type = typeof(ResourceModel), IsDefault = true)]
     [InheritanceMapping(Code = SupportedModules.CLANN, Type = typeof(CL_Annonce))]
+    [InheritanceMapping(Code = SupportedModules.CLDSC, Type = typeof(CL_Description))]
     [InheritanceMapping(Code = SupportedModules.CLDOC, Type = typeof(CL_Document))]
     public class ResourceModel : INotifyPropertyChanged, INotifyPropertyChanging
     {
@@ -316,6 +317,17 @@ namespace ClarolineApp.Model
         public static List<ResourceModel> ConvertFromJson(string json)
         {
             return JsonConvert.DeserializeObject<List<ResourceModel>>(json);
+        }
+
+        public virtual bool IsResIdMatching(string resource)
+        {
+            int val;
+            return int.TryParse(resource, out val) && Id == val;
+        }
+
+        public virtual List<ResourceModel> GetSubRes()
+        {
+            return new List<ResourceModel>();
         }
     }
 }

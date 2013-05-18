@@ -119,6 +119,9 @@
     <Compile Include="Model\CL_Notification.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\CL_Description.cs" >
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Model\Cours.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -257,7 +260,7 @@
     <Resource Include="Mime\image-x-generic.png" />
     <Resource Include="Mime\link.png" />
     <Resource Include="Mime\package-x-generic.png" />
-    <EmbeddedResource Include="Mime\pdf.png" />
+    <Resource Include="Mime\pdf.png" />
     <Resource Include="Mime\text-x-code.png" />
     <Resource Include="Mime\text-x-generic.png" />
     <Resource Include="Mime\text-x-pgp.png" />

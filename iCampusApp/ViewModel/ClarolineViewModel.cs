@@ -139,70 +139,6 @@ namespace ClarolineApp.ViewModel
             }
         }
 
-        public virtual void AddAnnonce(CL_Annonce newAnn)
-        {
-            bool alreadyInDB = ClarolineDB.Annonces_Table.Contains(newAnn);
-
-            if (!alreadyInDB)
-            {
-                newAnn.updated = true;
-                newAnn.loaded = DateTime.Now;
-                ClarolineDB.Resources_Table.InsertOnSubmit(newAnn);
-                SaveChangesToDB();
-            }
-            else
-            {
-                CL_Annonce annFromDB = (from CL_Annonce a
-                                        in ClarolineDB.Annonces_Table
-                                        where a.Equals(newAnn)
-                                        select a).First();
-
-                annFromDB.notifiedDate = newAnn.notifiedDate;
-                annFromDB.updated = true;
-                annFromDB.loaded = DateTime.Now;
-                if (annFromDB.date.CompareTo(newAnn.date) < 0)
-                {
-                    annFromDB.date = newAnn.date;
-                }
-                annFromDB.content = newAnn.content;
-                SaveChangesToDB();
-            }
-
-            AddNotification(CL_Notification.CreateNotification(newAnn, alreadyInDB));
-        }
-
-        public virtual void AddDocument(CL_Document newDoc)
-        {
-            bool alreadyInDB = ClarolineDB.Documents_Table.Contains(newDoc);
-
-            if (!alreadyInDB)
-            {
-                newDoc.updated = true;
-                newDoc.loaded = DateTime.Now;
-                ClarolineDB.Resources_Table.InsertOnSubmit(newDoc);
-                SaveChangesToDB();
-            }
-            else
-            {
-                CL_Document docFromDB = (from CL_Document d
-                                         in ClarolineDB.Documents_Table
-                                         where d.Equals(newDoc)
-                                         select d).First();
-
-                docFromDB.notifiedDate = newDoc.notifiedDate;
-                docFromDB.date = newDoc.date;
-                docFromDB.updated = true;
-                docFromDB.loaded = DateTime.Now;
-
-                SaveChangesToDB();
-            }
-
-            if (!newDoc.isFolder)
-            {
-                AddNotification(CL_Notification.CreateNotification(newDoc, alreadyInDB));
-            }
-        }
-
         public virtual void AddNotification(CL_Notification newNot)
         {
             bool alreadyInDB = ClarolineDB.Notifications_Table.Contains(newNot);
@@ -226,13 +162,26 @@ namespace ClarolineApp.ViewModel
 
         public virtual void AddResource(ResourceModel newRes)
         {
-            if (newRes.GetType().Equals(typeof(CL_Annonce)))
+            bool alreadyInDB = ClarolineDB.Resources_Table.Contains(newRes);
+
+            if (!alreadyInDB)
             {
-                AddAnnonce((CL_Annonce)newRes);
+                newRes.updated = true;
+                newRes.loaded = DateTime.Now;
+                ClarolineDB.Resources_Table.InsertOnSubmit(newRes);
+                SaveChangesToDB();
             }
-            else if (newRes.GetType().Equals(typeof(CL_Document)))
+            else
             {
-                AddDocument((CL_Document)newRes);
+                newRes.updated = true;
+                newRes.loaded = DateTime.Now;
+                
+                SaveChangesToDB();
+            }
+
+            if (!(newRes is CL_Document) || !(newRes as CL_Document).isFolder)
+            {
+                AddNotification(CL_Notification.CreateNotification(newRes, alreadyInDB));
             }
         }
 
@@ -267,51 +216,30 @@ namespace ClarolineApp.ViewModel
 
             foreach (ResourceModel item in listForDelete.Resources)
             {
-                if (resourceType.Equals(typeof(CL_Annonce)))
-                {
-                    DeleteAnnonce(item as CL_Annonce);
-                }
-                else if (resourceType.Equals(typeof(CL_Document)))
-                {
-                    DeleteDocument(item as CL_Document);
-                }
+                DeleteResource(item);
             }
 
             ClarolineDB.ResourceList_Table.DeleteOnSubmit(listForDelete);
             SaveChangesToDB();
         }
 
-        public virtual void DeleteAnnonce(CL_Annonce annForDelete)
+        public virtual void DeleteResource(ResourceModel resForDelete)
         {
 
             var queryNot = from CL_Notification n in ClarolineDB.Notifications_Table
-                           where n.resource.Equals(annForDelete)
+                           where n.resource.Equals(resForDelete)
                            select n;
             foreach (var not in queryNot)
             {
                 DeleteNotification(not);
             }
 
-            ClarolineDB.Resources_Table.DeleteOnSubmit(annForDelete);
-            SaveChangesToDB();
-        }
-
-        public virtual void DeleteDocument(CL_Document docForDelete)
-        {
-            var queryNot = from CL_Notification n in ClarolineDB.Notifications_Table
-                           where n.resource.Equals(docForDelete)
-                           select n;
-            foreach (var not in queryNot)
+            foreach (var subres in resForDelete.GetSubRes())
             {
-                DeleteNotification(not);
+                DeleteResource(subres);
             }
 
-            foreach (CL_Document inner in docForDelete.getContent())
-            {
-                DeleteDocument(inner);
-            }
-
-            ClarolineDB.Resources_Table.DeleteOnSubmit(docForDelete);
+            ClarolineDB.Resources_Table.DeleteOnSubmit(resForDelete);
             SaveChangesToDB();
         }
 
@@ -339,40 +267,21 @@ namespace ClarolineApp.ViewModel
              });
         }
 
-        public void ClearDocsOfCours(Cours coursToClear)
+        public void ClearResOfCours(Cours coursToClear)
         {
-            (from CL_Document d
-             in ClarolineDB.Documents_Table
-             where d.resourceList.Cours.Equals(coursToClear)
-             select d).ToList()
-             .ForEach(d =>
+            (from ResourceModel rm
+             in ClarolineDB.Resources_Table
+             where rm.resourceList.Cours.Equals(coursToClear)
+             select rm).ToList()
+             .ForEach(rm =>
              {
-                 if (d.updated)
+                 if (rm.updated)
                  {
-                     d.updated = false;
+                     rm.updated = false;
                  }
                  else
                  {
-                     DeleteDocument(d);
-                 }
-             });
-        }
-
-        public void ClearAnnsOfCours(Cours coursToClear)
-        {
-            (from CL_Annonce a
-             in ClarolineDB.Annonces_Table
-             where a.resourceList.Cours.Equals(coursToClear)
-             select a).ToList()
-             .ForEach(a =>
-             {
-                 if (a.updated)
-                 {
-                     a.updated = false;
-                 }
-                 else
-                 {
-                     DeleteAnnonce(a);
+                     DeleteResource(rm);
                  }
              });
         }
@@ -412,9 +321,9 @@ namespace ClarolineApp.ViewModel
         //Delay between two updates in hours
         protected const double UPDATE_DELAY = 1.0;
 
-        public virtual async Task RefreshAsync()
+        public virtual async Task RefreshAsync(bool force = false)
         {
-            if (_lastClientCall.AddHours(UPDATE_DELAY).CompareTo(DateTime.Now) < 0)
+            if (force || _lastClientCall.AddHours(UPDATE_DELAY).CompareTo(DateTime.Now) < 0)
             {
                 String updates = await ClaroClient.instance.makeOperationAsync(SupportedModules.USER, SupportedMethods.getUpdates);
                 if (!updates.Equals("[]"))
@@ -458,45 +367,20 @@ namespace ClarolineApp.ViewModel
                                 }
                                 else
                                 {
-                                    foreach (KeyValuePair<String, Dictionary<String, String>> ressource in tool.Value)
+                                    foreach (KeyValuePair<String, Dictionary<String, String>> resource in tool.Value)
                                     {
                                         ResourceList rlist = upCours.Resources.First(rl => rl.label.Equals(tool.Key));
+                                        ResourceModel upRes = rlist.GetResourceByResId(resource.Key);
 
-                                        switch (tool.Key)
+                                        if (upRes == null)
                                         {
-                                            case "CLANN":
-                                                CL_Annonce upAnn = (from CL_Annonce a
-                                                                    in ClarolineDB.Annonces_Table
-                                                                    where a.resourceId == int.Parse(ressource.Key)
-                                                                    select a).FirstOrDefault();
-                                                if (upAnn == null)
-                                                {
-                                                    await GetSingleResourceAsync(rlist, ressource.Key);
-                                                }
-                                                else
-                                                {
-                                                    upAnn.date = DateTime.Parse(ressource.Value["date"]);
-                                                    upAnn.notifiedDate = DateTime.Now;
-                                                    AddAnnonce(upAnn);
-                                                }
-                                                break;
-                                            case "CLDOC":
-                                                CL_Document upDoc = (from CL_Document d
-                                                                     in ClarolineDB.Documents_Table
-                                                                     where d.path.Equals(ressource.Key)
-                                                                     select d).FirstOrDefault();
-
-                                                if (upDoc == null)
-                                                {
-                                                    await GetSingleResourceAsync(rlist, ressource.Key);
-                                                }
-                                                else
-                                                {
-                                                    upDoc.date = DateTime.Parse(ressource.Value["date"]);
-                                                    upDoc.notifiedDate = DateTime.Now;
-                                                    AddDocument(upDoc);
-                                                }
-                                                break;
+                                            await GetSingleResourceAsync(rlist, resource.Key);
+                                        }
+                                        else
+                                        {
+                                            upRes.date = DateTime.Parse(resource.Value["date"]);
+                                            upRes.notifiedDate = DateTime.Now;
+                                            SaveChangesToDB();
                                         }
                                     }
                                 }
@@ -632,6 +516,9 @@ namespace ClarolineApp.ViewModel
                         break;
                     case CL_Document.LABEL:
                         item.ressourceType = typeof(CL_Document);
+                        break;
+                    case CL_Description.LABEL:
+                        item.ressourceType = typeof(CL_Description);
                         break;
                     default:
                         item.ressourceType = typeof(ResourceModel);

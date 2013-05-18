@@ -269,5 +269,15 @@ namespace ClarolineApp.Model
                 return;
             }
         }
+
+        public override bool IsResIdMatching(string resource)
+        {
+            return path == resource;
+        }
+
+        public override List<ResourceModel> GetSubRes()
+        {
+            return getContent().Cast<ResourceModel>().ToList();
+        }
     }
 }

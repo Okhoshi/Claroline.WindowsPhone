@@ -12,7 +12,8 @@ namespace ClarolineApp
         NOMOD,
         USER,
         CLDOC,
-        CLANN
+        CLANN,
+        CLDSC
     }
 
     public enum SupportedMethods
@@ -52,13 +53,16 @@ namespace ClarolineApp
                 case SupportedModules.NOMOD:
                     URL = AppSettings.instance.DomainSetting + AppSettings.instance.AuthPageSetting;
                     break;
-                case SupportedModules.USER:
-                case SupportedModules.CLANN:
-                case SupportedModules.CLDOC:
-                    URL = AppSettings.instance.DomainSetting + AppSettings.instance.WebServiceSetting;
-                    break;
                 default:
-                    throw new NotSupportedException(GetEnumName(module) + " is not supported");
+                    if (Enum.IsDefined(typeof(SupportedModules), module))
+                    {
+                        URL = AppSettings.instance.DomainSetting + AppSettings.instance.WebServiceSetting;
+                        break;
+                    }
+                    else
+                    {
+                        throw new NotSupportedException(GetEnumName(module) + " is not supported");
+                    }
             }
 
             return URL;
@@ -108,46 +112,50 @@ namespace ClarolineApp
                                         + GetEnumName(module));
                     }
                     break;
-                case SupportedModules.CLANN:
-                case SupportedModules.CLDOC:
-                    switch (method)
+                default:
+                    if (Enum.IsDefined(typeof(SupportedModules), module))
                     {
-                        case SupportedMethods.getResourcesList:
-                            if (cidReq != null)
-                            {
-                                postString = "cidReset&cidReq=" + cidReq.sysCode + "&module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
-                            }
-                            else
-                            {
-                                throw new ArgumentNullException("cidReq cannot be null");
-                            }
-                            break;
-                        case SupportedMethods.getSingleResource:
-                            if (cidReq != null && resStr != null)
-                            {
-                                postString = "cidReset&cidReq=" + cidReq.sysCode + "&resID=" + resStr + "&module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
-                            }
-                            else
-                            {
-                                if (cidReq == null)
+                        switch (method)
+                        {
+                            case SupportedMethods.getResourcesList:
+                                if (cidReq != null)
+                                {
+                                    postString = "cidReset&cidReq=" + cidReq.sysCode + "&module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
+                                }
+                                else
                                 {
                                     throw new ArgumentNullException("cidReq cannot be null");
                                 }
-                                else if (resStr == null)
+                                break;
+                            case SupportedMethods.getSingleResource:
+                                if (cidReq != null && resStr != null)
                                 {
-                                    throw new ArgumentOutOfRangeException("resStr must be setted");
+                                    postString = "cidReset&cidReq=" + cidReq.sysCode + "&resID=" + resStr + "&module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
                                 }
-                            }
-                            break;
-                        default:
-                            throw new NotSupportedException(
-                                        GetEnumName(method)
-                                        + " is not supported in "
-                                        + GetEnumName(module));
+                                else
+                                {
+                                    if (cidReq == null)
+                                    {
+                                        throw new ArgumentNullException("cidReq cannot be null");
+                                    }
+                                    else if (resStr == null)
+                                    {
+                                        throw new ArgumentOutOfRangeException("resStr must be setted");
+                                    }
+                                }
+                                break;
+                            default:
+                                throw new NotSupportedException(
+                                            GetEnumName(method)
+                                            + " is not supported in "
+                                            + GetEnumName(module));
+                        }
+                        break;
                     }
-                    break;
-                default:
-                    throw new NotSupportedException(GetEnumName(module) + " is not supported");
+                    else
+                    {
+                        throw new NotSupportedException(GetEnumName(module) + " is not supported");
+                    }
             }
 
             return postString;

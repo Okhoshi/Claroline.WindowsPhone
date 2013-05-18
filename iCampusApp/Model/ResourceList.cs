@@ -336,5 +336,10 @@ namespace ClarolineApp.Model
         }
 
         #endregion
+
+        internal ResourceModel GetResourceByResId(string resource)
+        {
+            return Resources.FirstOrDefault(r => r.IsResIdMatching(resource));
+        }
     }
 }

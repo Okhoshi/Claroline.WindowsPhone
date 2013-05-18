@@ -73,7 +73,7 @@ namespace ClarolineApp.ViewModel
                                                                              .Take(limit));
         }
 
-        public override async Task RefreshAsync()
+        public override async Task RefreshAsync(bool force = false)
         {
             if (allCours.Count == 0)
             {
@@ -81,7 +81,7 @@ namespace ClarolineApp.ViewModel
             }
             else
             {
-                await base.RefreshAsync();
+                await base.RefreshAsync(force);
             }
         }
 
