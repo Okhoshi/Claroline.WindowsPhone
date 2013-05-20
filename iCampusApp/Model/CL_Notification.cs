@@ -240,7 +240,7 @@ namespace ClarolineApp.Model
             if (obj != null && obj.GetType().Equals(typeof(CL_Notification)))
             {
                 CL_Notification notif = obj as CL_Notification;
-                return this.resource.Equals(notif.resource);
+                return this._resourceId == notif._resourceId;
             }
             return false;
         }

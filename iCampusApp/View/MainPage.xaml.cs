@@ -171,7 +171,7 @@ namespace ClarolineApp
             mailToDev.Show();
         }
 
-        private void sendMail_Click(object sender, RoutedEventArgs e)
+        private void SendMail_Click(object sender, RoutedEventArgs e)
         {
             Cours _item = (sender as MenuItem).Tag as Cours;
             if (_item != null)

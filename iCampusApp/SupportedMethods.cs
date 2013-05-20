@@ -13,7 +13,8 @@ namespace ClarolineApp
         USER,
         CLDOC,
         CLANN,
-        CLDSC
+        CLDSC,
+        CLCAL
     }
 
     public enum SupportedMethods

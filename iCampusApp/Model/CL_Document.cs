@@ -52,8 +52,21 @@ namespace ClarolineApp.Model
             }
         }
 
-        // Define url value: private Notifications, public property and database column.
-
+        public bool isNotified
+        {
+            get
+            {
+                if (isFolder)
+                {
+                    return getContent().Any(f => f.isNotified);
+                }
+                else
+                {
+                    return base.isNotified;
+                }
+            }
+        }
+       
         private string _url;
 
         [Column(CanBeNull = true)]
@@ -209,7 +222,7 @@ namespace ClarolineApp.Model
             }
             else
             {
-                return null;
+                return new ObservableCollection<CL_Document>();
             }
         }
 
@@ -220,23 +233,18 @@ namespace ClarolineApp.Model
 
         public static CL_Document GetRootDocument(Cours cours)
         {
-            ResourceList list = cours.Resources.First(rl => rl.ressourceType.Equals(typeof(CL_Document)));
+            ResourceList list = cours.Resources.FirstOrDefault(rl => rl.ressourceType.Equals(typeof(CL_Document)));
             return new CL_Document()
             {
                 _isFolder = true,
                 _path = "",
-                resourceList = list
+                resourceList = list == null ? new ResourceList() { ressourceType = typeof(CL_Document), Cours = cours } : list
             };
         }
 
         public override string getNotificationText()
         {
             return _Title;
-        }
-
-        public new static List<CL_Document> ConvertFromJson(string json)
-        {
-            return JsonConvert.DeserializeObject<List<CL_Document>>(json);
         }
 
         public async void OpenDocumentAsync()

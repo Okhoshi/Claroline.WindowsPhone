@@ -28,6 +28,12 @@ namespace ClarolineApp.ViewModel
             private set;
         }
 
+        public ICommand eventSelectedItem
+        {
+            get;
+            private set;
+        }
+
         private Cours _currentCours;
 
         public Cours currentCours
@@ -73,36 +79,44 @@ namespace ClarolineApp.ViewModel
             }
         }
 
+        private ObservableCollection<Group<CL_Event>> _events;
+
+        public ObservableCollection<Group<CL_Event>> events
+        {
+            get
+            {
+                return _events;
+            }
+            set
+            {
+                if (_events != value)
+                {
+                    _events = value;
+                    NotifyPropertyChanged("events");
+                }
+            }
+        }
+
+        private ObservableCollection<Group<CL_Description>> _descriptions;
+
+        public ObservableCollection<Group<CL_Description>> descriptions
+        {
+            get
+            {
+                if (_descriptions == null)
+                {
+                    _descriptions = new ObservableCollection<Group<CL_Description>>(from CL_Description d
+                                                                                    in ClarolineDB.Descriptions_Table
+                                                                                    group d by d.category into g
+                                                                                    orderby g.Key
+                                                                                    select new Group<CL_Description>(g.Key != -1 ? g.First().title : "Autres", g));
+                }
+                return _descriptions;
+            }
+        }
+
         public CoursPageViewModel(string sysCode, string DBConnectionString = ClarolineDataContext.DBConnectionString)
         {
-            if (System.ComponentModel.DesignerProperties.IsInDesignTool)
-            {
-                currentCours = new Cours()
-                {
-                    officialCode = "DESIGN",
-                    sysCode = "DESIGN",
-                    title = "Design test"
-                };
-
-                ResourceList l1 = new ResourceList() { Cours = currentCours, name = "Resource L1", label = "L1", ressourceType = typeof(CL_Annonce) };
-                ResourceList l2 = new ResourceList() { Cours = currentCours, name = "Resource L2", label = "L2", ressourceType = typeof(CL_Document) };
-                currentCours.Resources.Add(l1);
-                currentCours.Resources.Add(l2);
-                currentCours.Resources.Add(new ResourceList() { Cours = currentCours, name = "Resource L4", label = "L4" });
-
-                l1.Resources.Add(new CL_Annonce() { title = "Annonce 1", content = "Contenu 1", date = DateTime.Now });
-                l1.Resources.Add(new CL_Annonce() { title = "Annonce 2 Annonce 2 Annonce 2", content = "Contenu 2", date = DateTime.Now });
-                l1.Resources.Add(new CL_Annonce() { title = "Annonce 3", content = "Contenu 3", date = DateTime.Now });
-                l1.Resources.Add(new CL_Annonce() { title = "Annonce 4", content = "Contenu 4", date = DateTime.Now });
-
-                l2.Resources.Add(new CL_Document() { title = "Document 1", size = 15653614, date = DateTime.Now, extension = "ext1", isFolder = false });
-                l2.Resources.Add(new CL_Document() { title = "Document 2 Document 2 Document 2", size = 165, date = DateTime.Now, extension = "et2", isFolder = false });
-                l2.Resources.Add(new CL_Document() { title = "Document 3", size = 184351861, date = DateTime.Now, extension = "et3", isFolder = false });
-                l2.Resources.Add(new CL_Document() { title = "Document 4", date = DateTime.Now, isFolder = true });
-      
-            }
-            else
-            {
                 ClarolineDB = new ClarolineDataContext(DBConnectionString);
 
                 currentCours = (from Cours c
@@ -111,11 +125,11 @@ namespace ClarolineApp.ViewModel
                                 select c).FirstOrDefault();
 
                 LoadCollectionsFromDatabase();
-            }
-
+            
             genericSelectedItem = new RelayCommand<ResourceModel>(this.OnGenericItemSelected);
             documentSelectedItem = new RelayCommand<CL_Document>(this.OnDocumentItemSelected);
             annonceSelectedItem = new RelayCommand<CL_Annonce>(this.OnAnnonceItemSelected);
+            eventSelectedItem = new RelayCommand<CL_Event>(this.OnGenericItemSelected);
         }
 
         public override void LoadCollectionsFromDatabase()
@@ -125,6 +139,29 @@ namespace ClarolineApp.ViewModel
             if (currentCours != null)
             {
                 root = CL_Document.GetRootDocument(currentCours);
+
+                events = new ObservableCollection<Group<CL_Event>>();
+                events.Add(new Group<CL_Event>("Passés", from CL_Event e in ClarolineDB.Events_Table
+                                                         where e.date.CompareTo(DateTime.Now) < 0
+                                                         select e));
+
+                events.Add(new Group<CL_Event>("Aujourd'hui", from CL_Event e in ClarolineDB.Events_Table
+                                                              where e.date.CompareTo(DateTime.Now) > 0
+                                                              && e.date.Date.CompareTo(DateTime.Now.Date) == 0
+                                                              select e));
+
+                events.Add(new Group<CL_Event>("Demain", from CL_Event e in ClarolineDB.Events_Table
+                                                         where e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) == 0
+                                                         select e));
+
+                events.Add(new Group<CL_Event>("Cette semaine", from CL_Event e in ClarolineDB.Events_Table
+                                                                where e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) >= 0
+                                                                && e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) < 0
+                                                                select e));
+
+                events.Add(new Group<CL_Event>("Plus tard", from CL_Event e in ClarolineDB.Events_Table
+                                                            where e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) >= 0
+                                                            select e));
             }
         }
 
@@ -144,21 +181,24 @@ namespace ClarolineApp.ViewModel
 
         public void OnDocumentItemSelected(CL_Document item)
         {
-            if (item != null)
+            var dbItem = (from CL_Document d
+                            in ClarolineDB.Documents_Table
+                          select d).FirstOrDefault(d => d.Equals(item));
+            if (dbItem != null)
             {
-                item.seenDate = DateTime.Now;
+                dbItem.seenDate = DateTime.Now;
                 SaveChangesToDB();
 
-                if (item.isFolder)
+                if (dbItem.isFolder)
                 {
-                    root = item;
+                    root = dbItem;
                 }
                 else
                 {
-                    item.OpenDocumentAsync();
+                    dbItem.OpenDocumentAsync();
                 }
-                item = null;
             }
+            item = null;
         }
 
         public void GoUp()

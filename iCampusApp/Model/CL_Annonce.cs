@@ -19,7 +19,7 @@ namespace ClarolineApp.Model
             DiscKey = SupportedModules.CLANN;
         }
 
-        private int _resourceId;
+        protected int _resourceId;
 
         [Column(CanBeNull = true)]
         public int resourceId
@@ -39,7 +39,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        private string _Content;
+        protected string _Content;
 
         [Column(CanBeNull = true)]
         public string content
@@ -77,11 +77,6 @@ namespace ClarolineApp.Model
         public override int GetHashCode()
         {
             return base.GetHashCode();
-        }
-
-        public new static List<CL_Annonce> ConvertFromJson(string json)
-        {
-            return JsonConvert.DeserializeObject<List<CL_Annonce>>(json);
         }
 
         public override bool IsResIdMatching(string resource)

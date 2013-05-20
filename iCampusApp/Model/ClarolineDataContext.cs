@@ -30,7 +30,9 @@ namespace ClarolineApp.Model
             get{
                 return from CL_Annonce a
                        in Resources_Table
-                       where a is CL_Annonce
+                       where a is CL_Annonce 
+                       && !(a is CL_Description)
+                       && !(a is CL_Event)
                        select a;
                    }
         }
@@ -43,6 +45,28 @@ namespace ClarolineApp.Model
                        in Resources_Table
                        where d is CL_Document
                        select d;
+            }
+        }
+
+        public IQueryable<CL_Description> Descriptions_Table
+        {
+            get
+            {
+                return from CL_Description d
+                       in Resources_Table
+                       where d is CL_Description
+                       select d;
+            }
+        }
+
+        public IQueryable<CL_Event> Events_Table
+        {
+            get
+            {
+                return from CL_Event e
+                       in Resources_Table
+                       where e is CL_Event
+                       select e;
             }
         }
     }

@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ClarolineApp.Model;
+using ClarolineApp.Settings;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading;
-using System.Windows;
-using ClarolineApp.Model;
-using ClarolineApp.ViewModel;
-using Newtonsoft.Json;
-using HtmlAgilityPack;
-using ClarolineApp.Settings;
-using ClarolineApp.Languages;
 using System.Threading.Tasks;
+using System.Windows;
 
 #if !DEBUG
     using Microsoft.Phone.Net.NetworkInformation;

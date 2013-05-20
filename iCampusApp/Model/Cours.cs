@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
@@ -114,14 +115,7 @@ namespace ClarolineApp.Model
         {
             get
             {
-                foreach (ResourceList list in _Resources)
-                {
-                    if (list.isNotified)
-                    {
-                        return true;
-                    }
-                }
-                return false;
+                return Resources.Any(rl => rl.isNotified);
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using ClarolineApp.Languages;
 using ClarolineApp.Settings;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
@@ -141,15 +142,29 @@ namespace ClarolineApp
             return Double.Parse(partialSize[0] + partialSize[1]);
         }
     }
+
+    public class DescVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return String.IsNullOrEmpty(value as string) ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return "";
+        }
+    }
+
     public class ExtSelector : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string img = "Mime/";
+            string img = "/Mime/";
             switch ((string)value)
             {
                 case "":
-                    img = "icons/appbar.folder.rest" + ((Visibility)App.Current.Resources["PhoneDarkThemeVisibility"] == Visibility.Visible?".dark":".light") ;
+                    img = "/icons/appbar.folder.rest" + ((Visibility)App.Current.Resources["PhoneDarkThemeVisibility"] == Visibility.Visible ? ".dark" : ".light");
                     break;
 
                 case "gz":
@@ -341,5 +356,51 @@ namespace ClarolineApp
             }
             return null;
         }
+    }
+
+    public class Group<T> : IEnumerable<T>
+    {
+        public Group(string name, IEnumerable<T> items)
+        {
+            this.Title = name;
+            this.Items = new List<T>(items);
+        }
+
+        public override bool Equals(object obj)
+        {
+            Group<T> that = obj as Group<T>;
+
+            return (that != null) && (this.Title.Equals(that.Title));
+        }
+
+        public string Title
+        {
+            get;
+            set;
+        }
+
+        public IList<T> Items
+        {
+            get;
+            set;
+        }
+
+        #region IEnumerable<T> Members
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return this.Items.GetEnumerator();
+        }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.Items.GetEnumerator();
+        }
+
+        #endregion
     }
 }

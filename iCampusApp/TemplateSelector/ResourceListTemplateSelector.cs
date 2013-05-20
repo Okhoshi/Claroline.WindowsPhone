@@ -20,8 +20,20 @@ namespace ClarolineApp.TemplateSelector
             get;
             set;
         }
-        
+
+        public DataTemplate Description
+        {
+            get;
+            set;
+        }
+
         public DataTemplate Notification
+        {
+            get;
+            set;
+        }
+
+        public DataTemplate Event
         {
             get;
             set;
@@ -39,21 +51,18 @@ namespace ClarolineApp.TemplateSelector
 
             if (list != null)
             {
-                if (list.ressourceType == typeof(CL_Annonce))
+                switch (list.label)
                 {
-                    return Annonce;
-                }
-                else if (list.ressourceType == typeof(CL_Document))
-                {
-                    return Document;
-                }
-                else if (list.ressourceType == typeof(CL_Notification))
-                {
-                    return Notification;
-                }
-                else
-                {
-                    return Generic;
+                    case CL_Document.LABEL:
+                        return Document;
+                    case CL_Annonce.LABEL:
+                        return Annonce;
+                    case CL_Description.LABEL:
+                        return Description;
+                    case CL_Event.LABEL:
+                        return Event;
+                    default:
+                        return Generic;
                 }
             }
 

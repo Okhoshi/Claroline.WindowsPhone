@@ -61,7 +61,7 @@
                             <StackPanel Width="420">
                                 <toolkit:ContextMenuService.ContextMenu>
                                     <toolkit:ContextMenu IsZoomEnabled="False">
-                                        <toolkit:MenuItem Tag="{Binding}" x:Name="sendMail" Header="{Binding LocalizedResources.MainPage_Cours_ContextMenuItem_Mail, Source={StaticResource LocalizedStrings}}" Click="sendMail_Click" />
+                                        <toolkit:MenuItem Tag="{Binding}" x:Name="sendMail" Header="{Binding LocalizedResources.MainPage_Cours_ContextMenuItem_Mail, Source={StaticResource LocalizedStrings}}" Click="SendMail_Click" />
                                     </toolkit:ContextMenu>
                                 </toolkit:ContextMenuService.ContextMenu>
                                 <StackPanel>

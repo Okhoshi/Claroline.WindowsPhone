@@ -1,6 +1,8 @@
 <MarketplaceDetails>
-  <SmallAppTile>BackgroundforMP.png</SmallAppTile>
+  <SmallAppTile>ApplicationIconWP.png</SmallAppTile>
   <LargeAppTile>Background.png</LargeAppTile>
   <PCAppTile>MosaMP.png</PCAppTile>
   <ScreenShots>listeCours.png;listeDocuments.png;;;;;;;</ScreenShots>
+  <ScreenShotsWXGA>;;;;;;;;</ScreenShotsWXGA>
+  <ScreenShots720P>;;;;;;;;</ScreenShots720P>
 </MarketplaceDetails>

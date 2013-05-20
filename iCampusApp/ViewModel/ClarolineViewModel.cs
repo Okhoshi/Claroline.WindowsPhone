@@ -92,7 +92,7 @@ namespace ClarolineApp.ViewModel
         {
             List<Cours> Clist = (from c in ClarolineDB.Cours_Table select c).ToList();
 
-            Cours coursInDb = Clist.FirstOrDefault(c => c.Equals(newCours));
+            Cours coursInDb = Clist.FirstOrDefault(c => c.sysCode == newCours.sysCode);
 
             if (coursInDb == null)
             {
@@ -162,7 +162,7 @@ namespace ClarolineApp.ViewModel
 
         public virtual void AddResource(ResourceModel newRes)
         {
-            bool alreadyInDB = ClarolineDB.Resources_Table.Contains(newRes);
+            bool alreadyInDB = ClarolineDB.Resources_Table.Any(r => newRes.Equals(r));
 
             if (!alreadyInDB)
             {
@@ -175,7 +175,7 @@ namespace ClarolineApp.ViewModel
             {
                 newRes.updated = true;
                 newRes.loaded = DateTime.Now;
-                
+
                 SaveChangesToDB();
             }
 
@@ -212,9 +212,9 @@ namespace ClarolineApp.ViewModel
 
         public virtual void DeleteResourceList(ResourceList listForDelete)
         {
-            Type resourceType = listForDelete.Resources.First().GetType();
+            var list = listForDelete.Resources.ToList();
 
-            foreach (ResourceModel item in listForDelete.Resources)
+            foreach (ResourceModel item in list)
             {
                 DeleteResource(item);
             }
@@ -275,15 +275,19 @@ namespace ClarolineApp.ViewModel
              select rm).ToList()
              .ForEach(rm =>
              {
-                 if (rm.updated)
+                 if (rm.GetSubRes().Count == 0)
                  {
-                     rm.updated = false;
-                 }
-                 else
-                 {
-                     DeleteResource(rm);
+                     if (rm.updated)
+                     {
+                         rm.updated = false;
+                     }
+                     else
+                     {
+                         DeleteResource(rm);
+                     }
                  }
              });
+            SaveChangesToDB();
         }
 
         public void ClearNotifsOfCours(Cours coursToClear, int keeped)
@@ -397,8 +401,8 @@ namespace ClarolineApp.ViewModel
         {
             await GetResourcesListForThisCoursAsync(coursToPrepare);
 
-            foreach (ResourceList rl in (from ResourceList l 
-                                         in ClarolineDB.ResourceList_Table 
+            foreach (ResourceList rl in (from ResourceList l
+                                         in ClarolineDB.ResourceList_Table
                                          where l.Cours.Equals(coursToPrepare)
                                          select l))
             {
@@ -407,6 +411,7 @@ namespace ClarolineApp.ViewModel
                     await GetResourcesForThisListAsync(rl);
                 }
             }
+            ClearResOfCours(coursToPrepare);
 
             coursToPrepare.Resources.AddRange(from ResourceList l in ClarolineDB.ResourceList_Table
                                               where l.Cours.Equals(coursToPrepare)
@@ -418,19 +423,9 @@ namespace ClarolineApp.ViewModel
             String strContent = await ClaroClient.instance.makeOperationAsync(container.GetSupportedModule(),
                                                                               SupportedMethods.getResourcesList,
                                                                               container.Cours);
-           IList resources;
-            switch (container.label)
-            {
-                case CL_Annonce.LABEL:
-                    resources = (IList) JsonConvert.DeserializeObject(strContent, typeof(List<CL_Annonce>));
-                    break;
-                case CL_Document.LABEL:
-                    resources = (IList) JsonConvert.DeserializeObject(strContent, typeof(List<CL_Document>));
-                    break;
-                default:
-                    resources = (IList) JsonConvert.DeserializeObject(strContent, typeof(List<ResourceModel>));
-                    break;
-            }
+
+            IList resources = (IList)JsonConvert.DeserializeObject(strContent, container.ressourceListType);
+
             foreach (ResourceModel item in resources)
             {
                 item.resourceList = container;
@@ -519,6 +514,9 @@ namespace ClarolineApp.ViewModel
                         break;
                     case CL_Description.LABEL:
                         item.ressourceType = typeof(CL_Description);
+                        break;
+                    case CL_Event.LABEL:
+                        item.ressourceType = typeof(CL_Event);
                         break;
                     default:
                         item.ressourceType = typeof(ResourceModel);

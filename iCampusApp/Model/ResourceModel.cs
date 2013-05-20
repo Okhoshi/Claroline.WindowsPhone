@@ -14,6 +14,7 @@ namespace ClarolineApp.Model
     [InheritanceMapping(Code = SupportedModules.CLANN, Type = typeof(CL_Annonce))]
     [InheritanceMapping(Code = SupportedModules.CLDSC, Type = typeof(CL_Description))]
     [InheritanceMapping(Code = SupportedModules.CLDOC, Type = typeof(CL_Document))]
+    [InheritanceMapping(Code = SupportedModules.CLCAL, Type = typeof(CL_Event))]
     public class ResourceModel : INotifyPropertyChanged, INotifyPropertyChanging
     {
 
@@ -89,6 +90,7 @@ namespace ClarolineApp.Model
                     NotifyPropertyChanging("notifiedDate");
                     _NotifiedDate = value;
                     NotifyPropertyChanged("notifiedDate");
+                    NotifyPropertyChanged("isNotified");
                 }
             }
         }
@@ -117,6 +119,7 @@ namespace ClarolineApp.Model
                     NotifyPropertyChanging("seenDate");
                     _SeenDate = value;
                     NotifyPropertyChanged("seenDate");
+                    NotifyPropertyChanged("isNotified");
                 }
             }
         }
@@ -160,8 +163,6 @@ namespace ClarolineApp.Model
                 }
             }
         }
-
-        // Define updated value: internal Notifications, public property and database column.
 
         protected bool _Updated;
 
@@ -273,6 +274,16 @@ namespace ClarolineApp.Model
             return base.GetHashCode();
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj != null && obj.GetType().Equals(typeof(ResourceModel)))
+            {
+                ResourceModel res = obj as ResourceModel;
+                return (res._resourceListId == this._resourceListId) && (res._Title == this._Title);
+            }
+            return false;
+        }
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -312,11 +323,6 @@ namespace ClarolineApp.Model
             NotifyPropertyChanging("isNotified");
             seenDate = DateTime.Now;
             NotifyPropertyChanged("isNotified");
-        }
-
-        public static List<ResourceModel> ConvertFromJson(string json)
-        {
-            return JsonConvert.DeserializeObject<List<ResourceModel>>(json);
         }
 
         public virtual bool IsResIdMatching(string resource)

@@ -4,6 +4,7 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:iCampusApp_Model="clr-namespace:ClarolineApp.Model"
@@ -13,7 +14,7 @@
 	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     x:Class="ClarolineApp.CoursPage"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
-    SupportedOrientations="Portrait"  Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
 	shell:SystemTray.Opacity="0"
     Background="White"
@@ -32,7 +33,133 @@
         <local:BindingProxy x:Key="AnnonceSelectedItemCommand" Data="{Binding annonceSelectedItem}" />
         <local:BindingProxy x:Key="DocumentSelectedItemCommand" Data="{Binding documentSelectedItem}" />
         <local:BindingProxy x:Key="GenericSelectedItemCommand" Data="{Binding genericSelectedItem}" />
+        <local:BindingProxy x:Key="EventSelectedItemCommand" Data="{Binding genericSelectedItem}" />
         <local:BindingProxy x:Key="Content" Data="{Binding content}" />
+        <local:BindingProxy x:Key="Events" Data="{Binding events}" />
+        <local:BindingProxy x:Key="Descriptions" Data="{Binding descriptions}" />
+        <DataTemplate x:Key="AnnoncePivotTemplate">
+            <ListBox x:Name="CLANNList" ItemsSource="{Binding Resources}" ItemContainerStyle="{StaticResource StretchStyle}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding Data, Source={StaticResource AnnonceSelectedItemCommand}}"  CommandParameter="{Binding SelectedItem, ElementName=CLANNList}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0,5">
+                            <TextBlock Text="{Binding title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
+                            <TextBlock Text="{Binding date, Converter={StaticResource DateFormater}, Mode=OneWay}" HorizontalAlignment="Right" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DataTemplate>
+        <DataTemplate x:Key="EventPivotTemplate">
+            <toolkit:LongListSelector x:Name="CLCALList" ItemsSource="{Binding Data, Source={StaticResource Events}}" IsFlatList="False" HorizontalContentAlignment="Stretch" ShowListFooter="False" ShowListHeader="False" VerticalContentAlignment="Stretch">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding Data, Source={StaticResource EventSelectedItemCommand}}"  CommandParameter="{Binding SelectedItem, ElementName=CLCALList}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <toolkit:LongListSelector.GroupItemsPanel>
+                    <ItemsPanelTemplate>
+                        <toolkit:WrapPanel HorizontalAlignment="Stretch" Margin="0,10" />
+                    </ItemsPanelTemplate>
+                </toolkit:LongListSelector.GroupItemsPanel>
+                <toolkit:LongListSelector.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <Border Background="{StaticResource PhoneAccentBrush}" 
+                                    Padding="{StaticResource PhoneTouchTargetOverhang}">
+                            <TextBlock Text="{Binding Title}" Style="{StaticResource PhoneTextGroupHeaderStyle}"/>
+                        </Border>
+                    </DataTemplate>
+                </toolkit:LongListSelector.GroupHeaderTemplate>
+                <toolkit:LongListSelector.GroupItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{StaticResource PhoneAccentBrush}" 
+                                    Padding="{StaticResource PhoneTouchTargetOverhang}">
+                            <TextBlock Text="{Binding Title}" Style="{StaticResource PhoneTextGroupHeaderStyle}"/>
+                        </Border>
+                    </DataTemplate>
+                </toolkit:LongListSelector.GroupItemTemplate>
+                <toolkit:LongListSelector.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0,5">
+                            <TextBlock Text="{Binding title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
+                        </Border>
+                    </DataTemplate>
+                </toolkit:LongListSelector.ItemTemplate>
+            </toolkit:LongListSelector>
+        </DataTemplate>
+        <DataTemplate x:Key="DescriptionPivotTemplate">
+            <toolkit:LongListSelector x:Name="CLCALList" ItemsSource="{Binding Data, Source={StaticResource Descriptions}}" IsFlatList="False" HorizontalContentAlignment="Stretch" ShowListFooter="False" ShowListHeader="False" VerticalContentAlignment="Stretch" >
+                <toolkit:LongListSelector.Style>
+                    <Style TargetType="toolkit:LongListSelector">
+                        <Setter Property="local:TiltEffect.SuppressTilt" Value="True"/>
+                    </Style>
+                </toolkit:LongListSelector.Style>
+                <toolkit:LongListSelector.GroupItemsPanel>
+                    <ItemsPanelTemplate>
+                        <toolkit:WrapPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="0,10" />
+                    </ItemsPanelTemplate>
+                </toolkit:LongListSelector.GroupItemsPanel>
+                <toolkit:LongListSelector.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <Border Background="{StaticResource PhoneAccentBrush}" 
+                                    Padding="{StaticResource PhoneTouchTargetOverhang}">
+                            <TextBlock Text="{Binding Title}" Style="{StaticResource PhoneTextGroupHeaderStyle}"/>
+                        </Border>
+                    </DataTemplate>
+                </toolkit:LongListSelector.GroupHeaderTemplate>
+                <toolkit:LongListSelector.GroupItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{StaticResource PhoneAccentBrush}" 
+                                    Padding="{StaticResource PhoneTouchTargetOverhang}">
+                            <TextBlock Text="{Binding Title}" Style="{StaticResource PhoneTextGroupHeaderStyle}"/>
+                        </Border>
+                    </DataTemplate>
+                </toolkit:LongListSelector.GroupItemTemplate>
+                <toolkit:LongListSelector.ItemTemplate>
+                    <DataTemplate>
+                            <StackPanel Margin="0,5,0,10">
+                                <!--<Border Background="{StaticResource PhoneAccentBrush}" Margin="0,0,0,5" >
+                                <TextBlock Text="{Binding title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
+                            </Border>-->
+                                <TextBlock Text="{Binding content, Mode=OneWay}" Style="{StaticResource PhoneTextNormalStyle}" HorizontalAlignment="Stretch" TextWrapping="Wrap"  />
+                            </StackPanel>
+                    </DataTemplate>
+                </toolkit:LongListSelector.ItemTemplate>
+            </toolkit:LongListSelector>
+        </DataTemplate>
+        <DataTemplate x:Key="DocumentPivotTemplate">
+            <ListBox x:Name="CLDOCList" ItemsSource="{Binding Data, Source={StaticResource Content}}" ItemContainerStyle="{StaticResource StretchStyle}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding Data, Source={StaticResource DocumentSelectedItemCommand}}" CommandParameter="{Binding SelectedItem, ElementName=CLDOCList}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:Name="Doc">
+                        <Grid x:Name="lvl0" Margin="0,5,5,10" d:DataContext="{d:DesignData /SampleData/CL_DocumentSampleData.xaml}" HorizontalAlignment="Stretch">
+                            <Image Source="{Binding extension, Converter={StaticResource ExtSelect}}" Width="60" Margin="5" Grid.Column="0" />
+                            <StackPanel Orientation="Vertical" Grid.Column="1">
+                                <TextBlock x:Name="Name" Text="{Binding title, Mode=OneWay}" Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" Margin="0" />
+                                <TextBlock x:Name="Desc" Text="{Binding description, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" TextWrapping="Wrap" Visibility="{Binding description, Converter={StaticResource DescVisibilityConverter}}"/>
+                                <Grid>
+                                    <TextBlock x:Name="Ext" TextWrapping="Wrap" Text="{Binding extension, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0"/>
+                                    <TextBlock x:Name="Date" TextWrapping="Wrap" Text="{Binding date, Converter={StaticResource DateFormater}, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" Margin="0" />
+                                    <TextBlock x:Name="Size" TextWrapping="Wrap" Text="{Binding size, Converter={StaticResource SizeConv}, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Right" Margin="0"/>
+                                </Grid>
+                            </StackPanel>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
     <phone:PhoneApplicationPage.FontFamily>
         <StaticResource ResourceKey="PhoneFontFamilyNormal"/>
@@ -46,81 +173,27 @@
 
     <!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
     <Grid x:Name="LayoutRoot">
-        <!--Contrôle Pivot-->
-        <controls:Pivot Title="{Binding Converter={StaticResource TitleConverter}, Path=currentCours.officialCode, Mode=TwoWay}" x:Name="SectionsPivot" SelectionChanged="Pivot_SelectionChanged" ItemsSource="{Binding currentCours.Resources}">
+        <controls:Pivot Title="{Binding currentCours.officialCode, Converter={StaticResource TitleConverter}, Mode=TwoWay}" x:Name="SectionsPivot" SelectionChanged="Pivot_SelectionChanged" ItemsSource="{Binding currentCours.Resources}" DataContext="{Binding}" >
             <controls:Pivot.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
                         <TextBlock TextWrapping="Wrap" Text="{Binding name, Converter={StaticResource ToLower}, Mode=OneWay}"
-                                   Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}, Mode=OneWay}" />
+                			Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}, Mode=OneWay}" />
                     </Grid>
                 </DataTemplate>
             </controls:Pivot.HeaderTemplate>
             <controls:Pivot.ItemTemplate>
                 <DataTemplate>
-                    <customSelector:ResourceListTemplateSelector Content="{Binding}" IsTabStop="True" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                        <customSelector:ResourceListTemplateSelector.Document>
-                            <DataTemplate>
-                                <ListBox x:Name="CLDOCList" ItemsSource="{Binding Data, Source={StaticResource Content}}">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="SelectionChanged">
-                                            <i:InvokeCommandAction Command="{Binding Data, Source={StaticResource DocumentSelectedItemCommand}}" CommandParameter="{Binding SelectedItem, ElementName=CLDOCList}"/>
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate x:Name="Doc">
-                                            <Grid x:Name="lvl0" Width="460" Margin="0,5">
-                                                <StackPanel Orientation="Vertical" d:LayoutOverrides="Height">
-                                                    <StackPanel Orientation="Horizontal" d:LayoutOverrides="Width">
-                                                        <Image Source="{Binding Path=extension, Converter={StaticResource ExtSelect}}" Width="60"/>
-                                                        <StackPanel HorizontalAlignment="Left" Orientation="Vertical" Width="400" >
-                                                            <TextBlock x:Name="Name" Text="{Binding Path=title, Mode=OneWay}" Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" Margin="0" Height="40"/>
-                                                            <TextBlock x:Name="Desc" Text="{Binding description, Mode=OneWay}" Style="{StaticResource ResourceKey=PhoneTextSubtleStyle}" Margin="0" Height="30" TextTrimming="WordEllipsis"/>
-                                                        </StackPanel>
-                                                    </StackPanel>
-                                                    <StackPanel d:LayoutOverrides="Width">
-                                                        <Grid Margin="10,0,0,0">
-                                                            <TextBlock x:Name="Ext" TextWrapping="Wrap" Text="{Binding extension, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0"/>
-                                                            <TextBlock x:Name="Date" TextWrapping="Wrap" Text="{Binding date, Converter={StaticResource DateFormater}, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Left" d:LayoutOverrides="VerticalAlignment" Margin="50,0,0,0"/>
-                                                            <TextBlock x:Name="Size" TextWrapping="Wrap" Text="{Binding size, Converter={StaticResource SizeConv}, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0,0,10,0" HorizontalAlignment="Right"/>
-                                                        </Grid>
-                                                    </StackPanel>
-                                                </StackPanel>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </DataTemplate>
-                        </customSelector:ResourceListTemplateSelector.Document>
-                        <customSelector:ResourceListTemplateSelector.Annonce>
-                            <DataTemplate>
-                                <ListBox x:Name="CLANNList" ItemsSource="{Binding Resources}">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="SelectionChanged">
-                                            <i:InvokeCommandAction Command="{Binding Data, Source={StaticResource AnnonceSelectedItemCommand}}"  CommandParameter="{Binding SelectedItem, ElementName=CLANNList}"/>
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Width="460" Margin="0,5">
-                                                <TextBlock Text="{Binding Path=title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding Path=isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
-                                                <TextBlock Text="{Binding Path=date, Converter={StaticResource DateFormater}, Mode=OneWay}" HorizontalAlignment="Right" Foreground="{StaticResource PhoneSubtleBrush}"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </DataTemplate>
-                        </customSelector:ResourceListTemplateSelector.Annonce>
-                        <customSelector:ResourceListTemplateSelector.Generic>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding name}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </customSelector:ResourceListTemplateSelector.Generic>
-                    </customSelector:ResourceListTemplateSelector>
+                    <customSelector:ResourceListTemplateSelector Content="{Binding}" IsTabStop="True" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" 
+					    Annonce="{StaticResource AnnoncePivotTemplate}" 
+					    Description="{StaticResource DescriptionPivotTemplate}" 
+					    Document="{StaticResource DocumentPivotTemplate}"
+					    Generic="{StaticResource GenericPivotTemplate}"
+                        Event="{StaticResource EventPivotTemplate}"
+					    Notification="{StaticResource NotificationPivotTemplate}"/>
                 </DataTemplate>
             </controls:Pivot.ItemTemplate>
         </controls:Pivot>
+        <!--Contrôle Pivot-->
     </Grid>
 </phone:PhoneApplicationPage>

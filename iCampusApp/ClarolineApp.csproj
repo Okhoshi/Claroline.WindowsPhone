@@ -28,7 +28,7 @@
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <Utf8Output>true</Utf8Output>
-    <ExpressionBlendVersion>5.0.31017.0</ExpressionBlendVersion>
+    <ExpressionBlendVersion>5.0.40218.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,9 +57,6 @@
     </Reference>
     <Reference Include="GalaSoft.MvvmLight.WP71">
       <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\sl4-wp71\GalaSoft.MvvmLight.WP71.dll</HintPath>
-    </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>lib\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls" />
@@ -119,9 +116,10 @@
     <Compile Include="Model\CL_Notification.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\CL_Description.cs" >
+    <Compile Include="Model\CL_Description.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\CL_Event.cs" />
     <Compile Include="Model\Cours.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -251,27 +249,69 @@
     <Content Include="icons\appbar.refresh.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Mime\application-x-php.png" />
-    <Resource Include="Mime\application-x-ruby.png" />
-    <Resource Include="Mime\applications-system.png" />
-    <Resource Include="Mime\audio-x-generic.png" />
-    <Resource Include="Mime\default.png" />
-    <Resource Include="Mime\font-x-generic.png" />
-    <Resource Include="Mime\image-x-generic.png" />
-    <Resource Include="Mime\link.png" />
-    <Resource Include="Mime\package-x-generic.png" />
-    <Resource Include="Mime\pdf.png" />
-    <Resource Include="Mime\text-x-code.png" />
-    <Resource Include="Mime\text-x-generic.png" />
-    <Resource Include="Mime\text-x-pgp.png" />
-    <Resource Include="Mime\text-x-python.png" />
-    <Resource Include="Mime\text-x-script.png" />
-    <Resource Include="Mime\video-x-generic.png" />
-    <Resource Include="Mime\x-office-document.png" />
-    <Resource Include="Mime\x-office-drawing.png" />
-    <Resource Include="Mime\x-office-formula.png" />
-    <Resource Include="Mime\x-office-presentation.png" />
-    <Resource Include="Mime\x-office-spreadsheet.png" />
+    <Content Include="Mime\application-x-php.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\application-x-ruby.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\applications-system.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\audio-x-generic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\default.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\font-x-generic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\image-x-generic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\link.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\package-x-generic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\pdf.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\text-x-code.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\text-x-generic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\text-x-pgp.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\text-x-python.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\text-x-script.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\video-x-generic.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\x-office-document.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\x-office-drawing.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\x-office-formula.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\x-office-presentation.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mime\x-office-spreadsheet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -279,6 +319,15 @@
   </ItemGroup>
   <ItemGroup>
     <DesignData Include="SampleData\AppSettingsSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </DesignData>
+    <DesignData Include="SampleData\CL_DescriptionSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </DesignData>
+    <DesignData Include="SampleData\CL_DocumentSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </DesignData>
+    <DesignData Include="SampleData\CoursPageViewModelSampleData.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </DesignData>
   </ItemGroup>
