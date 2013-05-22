@@ -7,12 +7,6 @@ namespace ClarolineApp.VM
 {
     interface IClarolineVM : INotifyPropertyChanged
     {
-        bool loadedInView
-        {
-            get;
-            set;
-        }
-
         void LoadCollectionsFromDatabase();
         void ResetViewModel();
         void SaveChangesToDB();

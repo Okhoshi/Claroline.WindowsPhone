@@ -31,12 +31,6 @@ namespace ClarolineApp.VM
             }
         }
 
-        public bool loadedInView
-        {
-            get;
-            set;
-        }
-
         protected ClarolineDataContext ClarolineDB;
 
         public ClarolineVM(string DBConnectionString = ClarolineDataContext.DBConnectionString)

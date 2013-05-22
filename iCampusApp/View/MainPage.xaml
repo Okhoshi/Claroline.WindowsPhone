@@ -11,7 +11,7 @@
     xmlns:UC="clr-namespace:ClarolineApp.Settings"
     x:Class="ClarolineApp.MainPage"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
 	shell:SystemTray.Opacity="0"
     local:TiltEffect.IsTiltEnabled="true"
@@ -80,7 +80,7 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Margin="12,0,0,0" Width="420">
-                            	<TextBlock TextWrapping="Wrap" Text="{Binding Text, Mode=OneWay}" Foreground="{Binding notified, ConverterParameter=Black, Converter={StaticResource StatusConverter}, Mode=TwoWay}"/>
+                            	<TextBlock TextWrapping="Wrap" Text="{Binding Text, Mode=OneWay}" Foreground="{Binding isNotified, ConverterParameter=Black, Converter={StaticResource StatusConverter}, Mode=TwoWay}"/>
                             	<Grid>
                             		<TextBlock TextWrapping="Wrap" Text="{Binding Cours.officialCode}" HorizontalAlignment="Left" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0,0,12,0" Foreground="#FF4B4B4B"/>
                             		<TextBlock TextWrapping="Wrap" Text="{Binding date, StringFormat=\{0:D\}}" HorizontalAlignment="Right" Margin="83,0,12,0" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="#FF4B4B4B"/>

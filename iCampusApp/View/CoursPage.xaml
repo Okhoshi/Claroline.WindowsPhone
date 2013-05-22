@@ -108,13 +108,8 @@
             </toolkit:LongListSelector>
         </DataTemplate>
         <DataTemplate x:Key="DocumentPivotTemplate">
-            <ListBox x:Name="CLDOCList" ItemContainerStyle="{StaticResource StretchStyle}" ItemsSource="{Binding Source={StaticResource Content}}" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding Data, Source={StaticResource DocumentSelectedItemCommand}}" CommandParameter="{Binding SelectedItem, ElementName=CLDOCList}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <ListBox.ItemTemplate>
+            <toolkit:LongListSelector x:Name="CLDOCList" IsFlatList="True" SelectionChanged="CLDOCList_SelectionChanged" ItemsSource="{Binding Source={StaticResource Content}}" >
+                <toolkit:LongListSelector.ItemTemplate>
                     <DataTemplate x:Name="Doc">
                         <Grid x:Name="lvl0" Margin="0,5,5,10" HorizontalAlignment="Stretch">
                             <Image Source="{Binding extension, Converter={StaticResource ExtSelect}}" Width="60" Margin="5" Grid.Column="0" />
@@ -133,8 +128,8 @@
                             </Grid.ColumnDefinitions>
                         </Grid>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </toolkit:LongListSelector.ItemTemplate>
+            </toolkit:LongListSelector>
         </DataTemplate>
         <DataTemplate x:Key="DescriptionPivotTemplate">
             <toolkit:LongListSelector x:Name="CLCALList" ItemsSource="{Binding Source={StaticResource Descriptions}}" IsFlatList="False" HorizontalContentAlignment="Stretch" ShowListFooter="False" ShowListHeader="False" VerticalContentAlignment="Stretch" >
@@ -175,9 +170,6 @@
                     </DataTemplate>
                 </toolkit:LongListSelector.ItemTemplate>
             </toolkit:LongListSelector>
-        </DataTemplate>
-        <DataTemplate x:Key="DocumentPivotTemplate2">
-            <TextBlock Text="Hello" Foreground="AliceBlue"></TextBlock>
         </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
     <phone:PhoneApplicationPage.FontFamily>

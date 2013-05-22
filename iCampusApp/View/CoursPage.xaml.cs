@@ -1,4 +1,5 @@
 ﻿using ClarolineApp.Languages;
+using ClarolineApp.Model;
 using ClarolineApp.VM;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Navigation;
 
@@ -39,8 +41,11 @@ namespace ClarolineApp
         public CoursPage()
         {
             InitializeComponent();
+
             this.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name);
             rootButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+            SectionsPivot.LoadedPivotItem += SectionsPivot_LoadedPivotItem;
+
             ClaroClient.instance.PropertyChanged += ClaroClient_PropertyChanged;
         }
 
@@ -66,10 +71,12 @@ namespace ClarolineApp
 
             if (parameters.ContainsKey("cours"))
             {
-                _viewModel = new CoursPageVM(parameters["cours"]);
-                this.DataContext = _viewModel;
-                _viewModel.loadedInView = true;
-                _viewModel.PropertyChanged += _viewModel_PropertyChanged;
+                if (_viewModel == null)
+                {
+                    _viewModel = new CoursPageVM(parameters["cours"]);
+                    this.DataContext = _viewModel;
+                    _viewModel.PropertyChanged += _viewModel_PropertyChanged;
+                }
 
                 base.OnNavigatedTo(e);
             }
@@ -113,6 +120,7 @@ namespace ClarolineApp
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            //Enabling root button routine
             if (rootButton != null)
             {
                 if (_viewModel.IsDocumentPivotSelected(SectionsPivot.SelectedItem)
@@ -125,6 +133,31 @@ namespace ClarolineApp
                     rootButton.IsEnabled = false;
                 }
             }
+        }
+
+        void SectionsPivot_LoadedPivotItem(object sender, PivotItemEventArgs e)
+        {
+            if (_viewModel.IsDocumentPivotSelected(e.Item.DataContext))
+            {
+                Helper.FindFirstElementInVisualTree<ListBox>(e.Item).SelectedIndex = -1;
+            }
+        }
+
+        private void CLDOCList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LongListSelector list = sender as LongListSelector;
+
+            if (list == null || list.SelectedItem == null)
+            {
+                return;
+            }
+
+            if (_viewModel.IsDocumentPivotSelected(SectionsPivot.SelectedItem))
+            {
+                _viewModel.OnDocumentItemSelected(list.SelectedItem as CL_Document);
+            }
+
+            list.SelectedItem = null;
         }
     }
 }
