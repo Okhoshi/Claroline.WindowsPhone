@@ -1,14 +1,16 @@
 ﻿using ClarolineApp.Languages;
 using ClarolineApp.Model;
 using ClarolineApp.Settings;
-using ClarolineApp.ViewModel;
+using ClarolineApp.VM;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
 using System;
 using System.ComponentModel;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace ClarolineApp
 {
@@ -35,15 +37,16 @@ namespace ClarolineApp
             }
         }
 
-        private IMainPageViewModel _viewModel;
+        private IMainPageVM _viewModel;
 
         // Constructeur
         public MainPage()
         {
             InitializeComponent();
+            this.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name);
             Failure_Handler = new PropertyChangedEventHandler(FailureOccured);
 
-            _viewModel = new MainPageViewModel();
+            _viewModel = new MainPageVM();
             this.DataContext = _viewModel;
 
             version_text.Text = Helper.GetVersionNumber();

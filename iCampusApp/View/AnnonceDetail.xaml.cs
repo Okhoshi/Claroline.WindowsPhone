@@ -12,7 +12,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using ClarolineApp.Model;
 using Microsoft.Phone.Shell;
-using ClarolineApp.ViewModel;
+using ClarolineApp.VM;
 using System.ComponentModel;
 using System.Windows.Navigation;
 
@@ -20,7 +20,7 @@ namespace ClarolineApp
 {
     public partial class AnnonceDetail : PhoneApplicationPage
     {
-        IAnnoncePageViewModel _viewModel;
+        IAnnoncePageVM _viewModel;
 
         ProgressIndicator _indicator;
 
@@ -67,7 +67,7 @@ namespace ClarolineApp
             if (parameters.ContainsKey("resource") && int.TryParse(parameters["resource"], out resid))
             {
                 
-                _viewModel = new AnnoncePageViewModel(resid);
+                _viewModel = new AnnoncePageVM(resid);
                 this.DataContext = _viewModel;
 
                 _viewModel.RefreshAsync();

@@ -16,7 +16,7 @@
     Style="{StaticResource TransitionPageStyle}">
 
     <!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="Transparent" d:DataContext="{d:DesignData /SampleData/AnnoncePageVMSampleData.xaml}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -26,7 +26,7 @@
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle" Text="{Binding ApplicationName, Converter={StaticResource ToUpper}}" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock x:Name="PageTitle" Text="{Binding title, Mode=OneWay}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" DataContext="{Binding currentAnnonce}"/>
-            <TextBlock x:Name="Date" TextWrapping="Wrap" Text="{Binding date, ConverterParameter=2, Converter={StaticResource DateFormater}, Mode=TwoWay}" Style="{StaticResource PhoneTextSubtleStyle}" DataContext="{Binding currentAnnonce}" />
+            <TextBlock x:Name="Date" TextWrapping="Wrap" Text="{Binding date, StringFormat=\{0:D\}}" Style="{StaticResource PhoneTextSubtleStyle}" DataContext="{Binding currentAnnonce}" />
         </StackPanel>
 
         <!--ContentPanel - placez tout contenu supplémentaire ici-->

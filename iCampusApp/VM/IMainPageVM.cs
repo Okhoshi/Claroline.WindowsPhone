@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClarolineApp.ViewModel
+namespace ClarolineApp.VM
 {
-    interface IMainPageViewModel : IClarolineViewModel
+    interface IMainPageVM : IClarolineVM
     {
         void SetTopNotifications(int limit = 0, int offset = 0);
     }

@@ -17,7 +17,6 @@
             <local:StatusConverter x:Key="StatusConverter" />
             <local:CoursPageTitleConverter x:Key="TitleConverter"  />
             <local:SizeFileConverter x:Key="SizeConv" />
-            <local:DateFormater x:Key="DateFormater" />
             <local:ToLower x:Key="ToLower" />
             <local:ToUpper x:Key="ToUpper" />
             <local:ExtSelector x:Key="ExtSelect" />
@@ -51,6 +50,7 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <Thickness x:Key="GroupHeaderTemplate">5</Thickness>
         </ResourceDictionary>
     </Application.Resources>
 

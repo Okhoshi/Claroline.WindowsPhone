@@ -12,21 +12,34 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace ClarolineApp.ViewModel
+namespace ClarolineApp.VM
 {
-    public class ClarolineViewModel : IClarolineViewModel
+    public class ClarolineVM : IClarolineVM
     {
         public string ApplicationName
         {
             get
             {
-                return AppSettings.instance.PlatformSetting;
+                if (DesignerProperties.IsInDesignTool)
+                {
+                    return "Claromobile";
+                }
+                else
+                {
+                    return AppSettings.instance.PlatformSetting;
+                }
             }
+        }
+
+        public bool loadedInView
+        {
+            get;
+            set;
         }
 
         protected ClarolineDataContext ClarolineDB;
 
-        public ClarolineViewModel(string DBConnectionString = ClarolineDataContext.DBConnectionString)
+        public ClarolineVM(string DBConnectionString = ClarolineDataContext.DBConnectionString)
         {
             ClarolineDB = new ClarolineDataContext(DBConnectionString);
             LoadCollectionsFromDatabase();

@@ -133,16 +133,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TemplateSelector\ResourceListTemplateSelector.cs" />
-    <Compile Include="ViewModel\AnnoncePageViewModel.cs" />
-    <Compile Include="ViewModel\IAnnoncePageViewModel.cs" />
+    <Compile Include="VM\AnnoncePageVM.cs" />
+    <Compile Include="VM\IAnnoncePageVM.cs" />
     <Compile Include="View\AnnonceDetail.xaml.cs">
       <DependentUpon>AnnonceDetail.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\CoursPage.xaml.cs">
       <DependentUpon>CoursPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\CoursPageViewModel.cs" />
-    <Compile Include="ViewModel\ICoursPageViewModel.cs" />
+    <Compile Include="VM\CoursPageVM.cs" />
+    <Compile Include="VM\ICoursPageVM.cs" />
     <Compile Include="Languages\AppLanguage.en-US.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -164,16 +164,16 @@
     </Compile>
     <Compile Include="SupportedMethods.cs" />
     <Compile Include="TiltEffect.cs" />
-    <Compile Include="ViewModel\ClarolineViewModel.cs" />
+    <Compile Include="VM\ClarolineVM.cs" />
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="ClaroClient.cs" />
-    <Compile Include="ViewModel\IClarolineViewModel.cs" />
-    <Compile Include="ViewModel\IMainPageViewModel.cs" />
-    <Compile Include="ViewModel\MainPageViewModel.cs" />
+    <Compile Include="VM\IClarolineVM.cs" />
+    <Compile Include="VM\IMainPageVM.cs" />
+    <Compile Include="VM\MainPageVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -210,6 +210,7 @@
     <None Include="Model\DataContextDiagram.cd" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\DataSources\ClarolineApp.VM.CoursPageVM.datasource" />
     <None Include="Properties\WMAppManifest.xml" />
     <None Include="Settings\AppSettings.cd" />
   </ItemGroup>
@@ -315,19 +316,7 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\DataSources\" />
-  </ItemGroup>
-  <ItemGroup>
-    <DesignData Include="SampleData\AppSettingsSampleData.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-    </DesignData>
-    <DesignData Include="SampleData\CL_DescriptionSampleData.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-    </DesignData>
-    <DesignData Include="SampleData\CL_DocumentSampleData.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-    </DesignData>
-    <DesignData Include="SampleData\CoursPageViewModelSampleData.xaml">
+    <DesignData Include="SampleData\AnnoncePageVMSampleData.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </DesignData>
   </ItemGroup>

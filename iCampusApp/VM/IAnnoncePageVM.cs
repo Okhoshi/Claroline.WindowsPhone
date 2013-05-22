@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ClarolineApp.ViewModel
+namespace ClarolineApp.VM
 {
-    interface IAnnoncePageViewModel : IClarolineViewModel
+    interface IAnnoncePageVM : IClarolineVM
     {
 
     }

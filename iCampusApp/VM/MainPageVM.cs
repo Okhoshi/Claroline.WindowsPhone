@@ -5,9 +5,9 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace ClarolineApp.ViewModel
+namespace ClarolineApp.VM
 {
-    public class MainPageViewModel : ClarolineViewModel, IMainPageViewModel
+    public class MainPageVM : ClarolineVM, IMainPageVM
     {
 
         private ObservableCollection<Cours> _allCours;

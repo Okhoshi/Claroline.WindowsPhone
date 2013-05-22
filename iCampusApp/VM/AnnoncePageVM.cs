@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ClarolineApp.ViewModel
+namespace ClarolineApp.VM
 {
-    public class AnnoncePageViewModel : ClarolineViewModel, IAnnoncePageViewModel
+    public class AnnoncePageVM : ClarolineVM, IAnnoncePageVM
     {
         private CL_Annonce _currentAnnonce;
 
@@ -26,7 +26,7 @@ namespace ClarolineApp.ViewModel
             }
         }
 
-        public AnnoncePageViewModel(int resid, string DBConnectionString = ClarolineDataContext.DBConnectionString)
+        public AnnoncePageVM(int resid, string DBConnectionString = ClarolineDataContext.DBConnectionString)
         {
             ClarolineDB = new ClarolineDataContext(DBConnectionString);
 

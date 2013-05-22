@@ -1,5 +1,0 @@
-<ClarolineApp:AppSettings xmlns:ClarolineApp="clr-namespace:ClarolineApp.Settings" xmlns:ClarolineApp_Model="clr-namespace:ClarolineApp.Model" AuthPageSetting="Cras nam" AdvancedSwitchSetting="True" DomainSetting="Duis vestibulum" IntituteSetting="Aliquam class" ListBoxSetting="71" PlatformSetting="Donec aptent etiam maecenas" PasswordSetting="Curae aenean mauris adipiscing nullam" RadioButton3Setting="True" CellularDataEnabledSetting="False" UsernameSetting="Auctor congue aliquam dis morbi" WebServiceSetting="Nulla phasellus arcu">
-	<ClarolineApp:AppSettings.UserSetting>
-		<ClarolineApp_Model:User firstName="Fusce integer curabitur" isPlatformAdmin="True" isCourseCreator="False" language="Sed praesent nunc" lastName="Amet quisque accumsan" officialCode="Ante vivamus lorem" userID="79"/>
-	</ClarolineApp:AppSettings.UserSetting>
-</ClarolineApp:AppSettings>

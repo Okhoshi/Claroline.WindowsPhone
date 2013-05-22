@@ -1,31 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿using ClarolineApp.Languages;
+using ClarolineApp.VM;
 using Microsoft.Phone.Controls;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using ClarolineApp.Model;
-using Microsoft.Phone.Tasks;
 using Microsoft.Phone.Shell;
-using ClarolineApp.Settings;
-using ClarolineApp.Languages;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Threading;
+using System.Windows.Controls;
+using System.Windows.Markup;
 using System.Windows.Navigation;
-using ClarolineApp.ViewModel;
 
 namespace ClarolineApp
 {
     public partial class CoursPage : PhoneApplicationPage
     {
 
-        private ICoursPageViewModel _viewModel;
+        private ICoursPageVM _viewModel;
 
         ProgressIndicator _indicator;
 
@@ -49,6 +39,7 @@ namespace ClarolineApp
         public CoursPage()
         {
             InitializeComponent();
+            this.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name);
             rootButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
             ClaroClient.instance.PropertyChanged += ClaroClient_PropertyChanged;
         }
@@ -75,8 +66,9 @@ namespace ClarolineApp
 
             if (parameters.ContainsKey("cours"))
             {
-                _viewModel = new CoursPageViewModel(parameters["cours"]);
+                _viewModel = new CoursPageVM(parameters["cours"]);
                 this.DataContext = _viewModel;
+                _viewModel.loadedInView = true;
                 _viewModel.PropertyChanged += _viewModel_PropertyChanged;
 
                 base.OnNavigatedTo(e);

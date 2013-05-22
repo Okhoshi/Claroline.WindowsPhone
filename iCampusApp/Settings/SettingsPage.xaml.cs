@@ -15,7 +15,7 @@ using System.Windows.Data;
 using System.Globalization;
 using System.ComponentModel;
 using Microsoft.Phone.Shell;
-using ClarolineApp.ViewModel;
+using ClarolineApp.VM;
 
 namespace ClarolineApp.Settings
 {
@@ -44,13 +44,13 @@ namespace ClarolineApp.Settings
             }
         }
 
-        ClarolineViewModel _viewModel;
+        ClarolineVM _viewModel;
 
         public SettingsPage()
         {
             InitializeComponent();
 
-            _viewModel = new ClarolineViewModel();
+            _viewModel = new ClarolineVM();
             this.DataContext = AppSettings.instance;
 
 

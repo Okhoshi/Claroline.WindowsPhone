@@ -1,9 +1,0 @@
-﻿<Model:CL_Document xmlns:Model="clr-namespace:ClarolineApp.Model" Id="59" date="05/19/2013 21:59:03" description="Class nam aliquam maecenas praesent sed curae aenean mauris donec accumsan nullam etiam bibendum aptent auctor congue integer fusce dis cras duis dictumst cursus eleifend est quisque lorem hac facilisi dictum faucibus nunc amet leo lectus libero morbi vivamus" extension="pdf" isNotified="False" isFolder="True" loaded="05/19/2013 21:59:03" notifiedDate="05/19/2013 21:59:03" path="Vivamus sed curabitur" seenDate="05/19/2013 21:59:03" size="631.79" title="Eleifend convallis" updated="False" url="Dis maecenas" visibility="True">
-	<Model:CL_Document.resourceList>
-		<Model:ResourceList Id="18" isNotified="True" loaded="05/19/2013 21:59:03" label="Aliquet aptent adipiscing dictumst lorem" name="Morbi parturient" ressourceTypeStr="Vestibulum mus blandit duis" updated="False" visibility="True">
-			<Model:ResourceList.Cours>
-				<Model:Cours Id="70" isNotified="True" loaded="05/19/2013 21:59:03" officialCode="Est aliquam hac vestibulum" officialEmail="Praesent curae phasellus accumsan" sysCode="Mauris donec" titular="Bibendum consequat" title="Leo etiam fusce nullam" updated="False"/>
-			</Model:ResourceList.Cours>
-		</Model:ResourceList>
-	</Model:CL_Document.resourceList>
-</Model:CL_Document>

@@ -2,6 +2,7 @@
 using ClarolineApp.Settings;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
@@ -67,32 +68,19 @@ namespace ClarolineApp
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (new AppSettings()).PlatformSetting.ToUpperInvariant() + " - " + (string)value;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return ((string)value).Replace(App.ApplicationName.ToUpperInvariant() + " - ", String.Empty);
-        }
-    }
-
-    public class DateFormater : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            DateTime Date = (DateTime) value;
-            switch ((string)parameter)
+            if (DesignerProperties.IsInDesignTool)
             {
-                case "2":
-                    return String.Format(AppLanguage.AnnoncePage_DateFormater_Published, Date.ToLongDateString());
-                default:
-                    return Date.ToShortDateString();
+                return ("Claromobile").ToUpperInvariant() + " - " + (string)value;
+            }
+            else
+            {
+                return AppSettings.instance.PlatformSetting.ToUpperInvariant() + " - " + (string)value;
             }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return DateTime.Parse((string)value);
+            return ((string)value).Replace(AppSettings.instance.PlatformSetting.ToUpperInvariant() + " - ", String.Empty);
         }
     }
 

@@ -66,8 +66,11 @@ namespace ClarolineApp.Settings
 
         public AppSettings()
         {
-            // Get the settings for this application.
-            settings = IsolatedStorageSettings.ApplicationSettings;
+            if (!DesignerProperties.IsInDesignTool)
+            {
+                // Get the settings for this application.
+                settings = IsolatedStorageSettings.ApplicationSettings;
+            }
         }
 
         /// <summary>

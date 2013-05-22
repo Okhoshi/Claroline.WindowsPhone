@@ -3,10 +3,16 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace ClarolineApp.ViewModel
+namespace ClarolineApp.VM
 {
-    interface IClarolineViewModel : INotifyPropertyChanged
+    interface IClarolineVM : INotifyPropertyChanged
     {
+        bool loadedInView
+        {
+            get;
+            set;
+        }
+
         void LoadCollectionsFromDatabase();
         void ResetViewModel();
         void SaveChangesToDB();

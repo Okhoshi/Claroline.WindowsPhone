@@ -54,7 +54,7 @@
     		<controls:Panorama.Foreground>
     			<SolidColorBrush Color="{StaticResource PhoneForegroundColor}"/>
     		</controls:Panorama.Foreground>
-            <controls:PanoramaItem x:Name="Cours_PI" Header="{Binding LocalizedResources.MainPage_Cours_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Height="586" Width="432" Foreground="Black">
+            <controls:PanoramaItem x:Name="Cours_PI" Header="{Binding LocalizedResources.MainPage_Cours_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Foreground="Black">
             	<ListBox x:Name="CoursList" ItemsSource="{Binding allCours, Mode=TwoWay}" Margin="0,-30,0,30" SelectionChanged="CoursList_SelectionChanged" FontSize="{StaticResource PhoneFontSizeLarge}">
             		<ListBox.ItemTemplate>
             			<DataTemplate>
@@ -83,7 +83,7 @@
                             	<TextBlock TextWrapping="Wrap" Text="{Binding Text, Mode=OneWay}" Foreground="{Binding notified, ConverterParameter=Black, Converter={StaticResource StatusConverter}, Mode=TwoWay}"/>
                             	<Grid>
                             		<TextBlock TextWrapping="Wrap" Text="{Binding Cours.officialCode}" HorizontalAlignment="Left" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0,0,12,0" Foreground="#FF4B4B4B"/>
-                            		<TextBlock TextWrapping="Wrap" Text="{Binding date, Converter={StaticResource DateFormater}}" HorizontalAlignment="Right" Margin="83,0,12,0" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="#FF4B4B4B"/>
+                            		<TextBlock TextWrapping="Wrap" Text="{Binding date, StringFormat=\{0:D\}}" HorizontalAlignment="Right" Margin="83,0,12,0" d:LayoutOverrides="Height" Style="{StaticResource PhoneTextSubtleStyle}" Foreground="#FF4B4B4B"/>
                             	</Grid>
                             	<Rectangle Height="2" Width="Auto" Fill="{Binding isNotified, ConverterParameter=Black, Converter={StaticResource StatusConverter}}" Margin="0,0,-36,0"/>
                             </StackPanel>

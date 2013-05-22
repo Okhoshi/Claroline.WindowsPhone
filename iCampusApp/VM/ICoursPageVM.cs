@@ -1,13 +1,13 @@
 ﻿using ClarolineApp.Model;
-using ClarolineApp.ViewModel;
+using ClarolineApp.VM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ClarolineApp.ViewModel
+namespace ClarolineApp.VM
 {
-    interface ICoursPageViewModel : IClarolineViewModel
+    interface ICoursPageVM : IClarolineVM
     {
         void OnAnnonceItemSelected(CL_Annonce item);
         void OnDocumentItemSelected(CL_Document item);

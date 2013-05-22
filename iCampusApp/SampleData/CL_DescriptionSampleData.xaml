@@ -1,9 +1,0 @@
-﻿<Model:CL_Description xmlns:Model="clr-namespace:ClarolineApp.Model" Id="15" category="29" content="Cras maecenas nam class aliquam praesent integer quisque accumsan curae vivamus donec aliquam aenean etiam duis fusce mauris nullam bibendum aptent dictumst auctor lorem morbi nunc sed aliquet amet eleifend congue blandit cursus commodo facilisi faucibus ante nulla conubia proin cubilia dis arcu augue dictum diam lectus habitant dolor fames libero est dapibus eget" date="05/19/2013 22:59:40" isNotified="True" loaded="05/19/2013 22:59:40" notifiedDate="05/19/2013 22:59:40" resourceId="53" seenDate="05/19/2013 22:59:40" title="Adipiscing vivamus fusce hac lorem" updated="True" visibility="False">
-	<Model:CL_Description.resourceList>
-		<Model:ResourceList Id="32" isNotified="False" loaded="05/19/2013 22:59:40" label="Quisque donec etiam" name="Bibendum est consequat amet" ressourceTypeStr="Dictumst nullam aptent convallis eleifend" updated="True" visibility="False">
-			<Model:ResourceList.Cours>
-				<Model:Cours Id="23" isNotified="False" loaded="05/19/2013 22:59:40" officialCode="Aliquam cras" officialEmail="Maecenas mauris integer" sysCode="Curabitur vestibulum duis sed" titular="Dis accumsan curae phasellus" title="Praesent nunc" updated="True"/>
-			</Model:ResourceList.Cours>
-		</Model:ResourceList>
-	</Model:CL_Description.resourceList>
-</Model:CL_Description>

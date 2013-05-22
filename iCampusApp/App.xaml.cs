@@ -13,9 +13,11 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using ClarolineApp.Model;
-using ClarolineApp.ViewModel;
+using ClarolineApp.VM;
 using ClarolineApp.Settings;
 using ClarolineApp.Languages;
+using System.Windows.Markup;
+using System.Globalization;
 
 namespace ClarolineApp
 {
