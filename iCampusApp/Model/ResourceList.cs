@@ -294,7 +294,7 @@ namespace ClarolineApp.Model
             }
             catch (ArgumentException)
             {
-                module = SupportedModules.NOMOD;
+                module = SupportedModules.GENERIC;
             }
             return module;
         }

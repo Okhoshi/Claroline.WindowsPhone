@@ -11,6 +11,7 @@ namespace ClarolineApp
     {
         NOMOD,
         USER,
+        GENERIC,
         CLDOC,
         CLANN,
         CLDSC,
@@ -37,6 +38,7 @@ namespace ClarolineApp
         public static String password = AppSettings.instance.PasswordSetting;
         public SupportedModules module;
         public SupportedMethods method;
+        public string GenMod;
         public Cours cidReq;
         public string resStr;
 
@@ -105,6 +107,33 @@ namespace ClarolineApp
                         case SupportedMethods.getCourseList:
                         case SupportedMethods.getUserData:
                             postString += "module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
+                            break;
+                        default:
+                            throw new NotSupportedException(
+                                        GetEnumName(method)
+                                        + " is not supported in "
+                                        + GetEnumName(module));
+                    }
+                    break;
+                case SupportedModules.GENERIC:
+                    switch (method)
+                    {
+                        case SupportedMethods.getResourcesList:
+                            if (cidReq != null && GenMod != null)
+                            {
+                                postString = "cidReset&cidReq=" + cidReq.sysCode + "&module=" + GenMod + "&method=" + GetEnumName(method);
+                            }
+                            else
+                            {
+                                if (cidReq == null)
+                                {
+                                    throw new ArgumentNullException("cidReq cannot be null");
+                                }
+                                else if (GenMod == null)
+                                {
+                                    throw new ArgumentOutOfRangeException("GenMod must be setted");
+                                }
+                            }
                             break;
                         default:
                             throw new NotSupportedException(

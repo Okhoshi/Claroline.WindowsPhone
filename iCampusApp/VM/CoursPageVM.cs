@@ -174,8 +174,6 @@ namespace ClarolineApp.VM
 
                 _descriptions = new ObservableCollection<Group<CL_Description>>();
                 _descriptions.Add(new Group<CL_Description>("First", l3.Resources.Cast<CL_Description>()));
-
-
             }
             else
             {
@@ -197,39 +195,42 @@ namespace ClarolineApp.VM
 
         public override void LoadCollectionsFromDatabase()
         {
-            base.LoadCollectionsFromDatabase();
-
-            if (currentCours != null)
+            if (!DesignerProperties.IsInDesignTool)
             {
-                root = CL_Document.GetRootDocument(currentCours);
+                base.LoadCollectionsFromDatabase();
 
-                events = new ObservableCollection<Group<CL_Event>>();
+                if (currentCours != null)
+                {
+                    root = CL_Document.GetRootDocument(currentCours);
 
-                events.Add(new Group<CL_Event>("Aujourd'hui", from CL_Event e in ClarolineDB.Events_Table
-                                                              where e.date.CompareTo(DateTime.Now) > 0
-                                                              && e.date.Date.CompareTo(DateTime.Now.Date) == 0
-                                                              && e.resourceList.Cours == currentCours
-                                                              select e));
+                    events = new ObservableCollection<Group<CL_Event>>();
 
-                events.Add(new Group<CL_Event>("Demain", from CL_Event e in ClarolineDB.Events_Table
-                                                         where e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) == 0
-                                                              && e.resourceList.Cours == currentCours
-                                                         select e));
+                    events.Add(new Group<CL_Event>("Aujourd'hui", from CL_Event e in ClarolineDB.Events_Table
+                                                                  where e.date.CompareTo(DateTime.Now) > 0
+                                                                  && e.date.Date.CompareTo(DateTime.Now.Date) == 0
+                                                                  && e.resourceList.Cours == currentCours
+                                                                  select e));
 
-                events.Add(new Group<CL_Event>("Cette semaine", from CL_Event e in ClarolineDB.Events_Table
-                                                                where e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) >= 0
-                                                                && e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) < 0
-                                                              && e.resourceList.Cours == currentCours
+                    events.Add(new Group<CL_Event>("Demain", from CL_Event e in ClarolineDB.Events_Table
+                                                             where e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) == 0
+                                                                  && e.resourceList.Cours == currentCours
+                                                             select e));
+
+                    events.Add(new Group<CL_Event>("Cette semaine", from CL_Event e in ClarolineDB.Events_Table
+                                                                    where e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) >= 0
+                                                                    && e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) < 0
+                                                                  && e.resourceList.Cours == currentCours
+                                                                    select e));
+
+                    events.Add(new Group<CL_Event>("Plus tard", from CL_Event e in ClarolineDB.Events_Table
+                                                                where e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) >= 0
+                                                                  && e.resourceList.Cours == currentCours
                                                                 select e));
-
-                events.Add(new Group<CL_Event>("Plus tard", from CL_Event e in ClarolineDB.Events_Table
-                                                            where e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) >= 0
-                                                              && e.resourceList.Cours == currentCours
-                                                            select e));
-                events.Add(new Group<CL_Event>("Passés", from CL_Event e in ClarolineDB.Events_Table
-                                                         where e.date.CompareTo(DateTime.Now) < 0
-                                                              && e.resourceList.Cours == currentCours
-                                                         select e));
+                    events.Add(new Group<CL_Event>("Passés", from CL_Event e in ClarolineDB.Events_Table
+                                                             where e.date.CompareTo(DateTime.Now) < 0
+                                                                  && e.resourceList.Cours == currentCours
+                                                             select e));
+                }
             }
         }
 

@@ -74,6 +74,26 @@ namespace ClarolineApp.Model
             }
         }
 
+        protected int _resourceId;
+
+        [Column(CanBeNull = true)]
+        public int resourceId
+        {
+            get
+            {
+                return _resourceId;
+            }
+            set
+            {
+                if (_resourceId != value)
+                {
+                    NotifyPropertyChanging("resourceId");
+                    _resourceId = value;
+                    NotifyPropertyChanged("resourceId");
+                }
+            }
+        }
+
         protected DateTime _NotifiedDate = DateTime.Parse("01/01/1753");
 
         [Column]
@@ -328,7 +348,7 @@ namespace ClarolineApp.Model
         public virtual bool IsResIdMatching(string resource)
         {
             int val;
-            return int.TryParse(resource, out val) && Id == val;
+            return int.TryParse(resource, out val) && resourceId == val;
         }
 
         public virtual List<ResourceModel> GetSubRes()

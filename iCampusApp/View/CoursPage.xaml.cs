@@ -44,7 +44,6 @@ namespace ClarolineApp
 
             this.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name);
             rootButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
-            SectionsPivot.LoadedPivotItem += SectionsPivot_LoadedPivotItem;
 
             ClaroClient.instance.PropertyChanged += ClaroClient_PropertyChanged;
         }
@@ -132,14 +131,6 @@ namespace ClarolineApp
                 {
                     rootButton.IsEnabled = false;
                 }
-            }
-        }
-
-        void SectionsPivot_LoadedPivotItem(object sender, PivotItemEventArgs e)
-        {
-            if (_viewModel.IsDocumentPivotSelected(e.Item.DataContext))
-            {
-                Helper.FindFirstElementInVisualTree<ListBox>(e.Item).SelectedIndex = -1;
             }
         }
 

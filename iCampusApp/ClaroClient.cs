@@ -130,13 +130,13 @@ namespace ClarolineApp
             return client;
         }
 
-        public async Task<string> makeOperationAsync(SupportedModules module, SupportedMethods method, Cours reqCours = null, string resStr = "", bool forAuth = false)
+        public async Task<string> makeOperationAsync(SupportedModules module, SupportedMethods method, Cours reqCours = null, string resStr = "", string GenMod = "", bool forAuth = false)
         {
             _lastException = null;
 
             if (IsNetworkAvailable() && ( forAuth || await isValidAccountAsync()))
             {
-                PostDataWriter args = new PostDataWriter() { module = module, method = method, cidReq = reqCours, resStr = resStr };
+                PostDataWriter args = new PostDataWriter() { module = module, method = method, cidReq = reqCours, resStr = resStr, GenMod = GenMod };
 
                 String strContent = "";
                 HttpWebResponse response = null;

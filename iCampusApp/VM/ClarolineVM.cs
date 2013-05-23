@@ -413,7 +413,7 @@ namespace ClarolineApp.VM
                                          where l.Cours.Equals(coursToPrepare)
                                          select l))
             {
-                if (Enum.IsDefined(typeof(SupportedModules), rl.label))
+                if (Enum.IsDefined(typeof(SupportedModules), rl.GetSupportedModule()))
                 {
                     await GetResourcesForThisListAsync(rl);
                 }
@@ -429,7 +429,8 @@ namespace ClarolineApp.VM
         {
             String strContent = await ClaroClient.instance.makeOperationAsync(container.GetSupportedModule(),
                                                                               SupportedMethods.getResourcesList,
-                                                                              container.Cours);
+                                                                              reqCours:container.Cours,
+                                                                              GenMod:container.label);
 
             IList resources = (IList)JsonConvert.DeserializeObject(strContent, container.ressourceListType);
 

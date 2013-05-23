@@ -19,26 +19,6 @@ namespace ClarolineApp.Model
             DiscKey = SupportedModules.CLANN;
         }
 
-        protected int _resourceId;
-
-        [Column(CanBeNull = true)]
-        public int resourceId
-        {
-            get
-            {
-                return _resourceId;
-            }
-            set
-            {
-                if (_resourceId != value)
-                {
-                    NotifyPropertyChanging("resourceId");
-                    _resourceId = value;
-                    NotifyPropertyChanged("resourceId");
-                }
-            }
-        }
-
         protected string _Content;
 
         [Column(CanBeNull = true)]
@@ -77,12 +57,6 @@ namespace ClarolineApp.Model
         public override int GetHashCode()
         {
             return base.GetHashCode();
-        }
-
-        public override bool IsResIdMatching(string resource)
-        {
-            int val;
-            return int.TryParse(resource, out val) && resourceId == val;
         }
     }
 }
