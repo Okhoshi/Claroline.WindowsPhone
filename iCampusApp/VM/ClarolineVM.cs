@@ -31,11 +31,28 @@ namespace ClarolineApp.VM
             }
         }
 
-        protected ClarolineDataContext ClarolineDB;
-
-        public ClarolineVM(string DBConnectionString = ClarolineDataContext.DBConnectionString)
+        private static ClarolineDataContext _db;
+        protected static ClarolineDataContext ClarolineDB
         {
-            ClarolineDB = new ClarolineDataContext(DBConnectionString);
+            get
+            {
+                if (_db == null)
+                {
+                    _db = new ClarolineDataContext(ClarolineDataContext.DBConnectionString);
+                }
+                return _db;
+            }
+            set
+            {
+                if (value != _db)
+                {
+                    _db = value;
+                }
+            }
+        }
+
+        public ClarolineVM()
+        {
             LoadCollectionsFromDatabase();
         }
 
@@ -97,9 +114,7 @@ namespace ClarolineApp.VM
 
         public virtual void AddCours(Cours newCours)
         {
-            List<Cours> Clist = (from c in ClarolineDB.Cours_Table select c).ToList();
-
-            Cours coursInDb = Clist.FirstOrDefault(c => c.sysCode == newCours.sysCode);
+            Cours coursInDb = ClarolineDB.Cours_Table.FirstOrDefault(c => c.sysCode == newCours.sysCode);
 
             if (coursInDb == null)
             {
@@ -107,6 +122,8 @@ namespace ClarolineApp.VM
                 newCours.loaded = DateTime.Now;
                 ClarolineDB.Cours_Table.InsertOnSubmit(newCours);
                 SaveChangesToDB();
+
+                newCours.Id = ClarolineDB.Cours_Table.FirstOrDefault(c => c.sysCode == newCours.sysCode).Id;
             }
             else
             {
@@ -123,7 +140,8 @@ namespace ClarolineApp.VM
 
         public virtual void AddResourceList(ResourceList newList)
         {
-            bool alreadyInDB = ClarolineDB.ResourceList_Table.Contains(newList);
+            bool alreadyInDB = ClarolineDB.ResourceList_Table.Any(l => l._coursId == newList._coursId
+                                                                    && l.label == newList.label);
 
             if (!alreadyInDB)
             {
@@ -136,7 +154,7 @@ namespace ClarolineApp.VM
             {
                 ResourceList listFromDB = (from ResourceList rl
                                            in ClarolineDB.ResourceList_Table
-                                           where rl.Equals(newList)
+                                           where rl.Id == newList.Id
                                            select rl).First();
                 listFromDB.updated = true;
                 listFromDB.loaded = DateTime.Now;
@@ -148,16 +166,17 @@ namespace ClarolineApp.VM
 
         public virtual void AddNotification(CL_Notification newNot)
         {
-            bool alreadyInDB = ClarolineDB.Notifications_Table.Contains(newNot);
+            bool alreadyInDB = ClarolineDB.Notifications_Table.Any(n => n._coursId == newNot._coursId
+                                                                     && n._resourceId == newNot._resourceId);
 
             if (alreadyInDB)
             {
                 CL_Notification lastNotificationFromDB = (from CL_Notification n
                                                           in ClarolineDB.Notifications_Table
-                                                          where n.Equals(newNot)
+                                                          where n._resourceId == newNot._resourceId
                                                           orderby n.date descending
                                                           select n).First();
-                if (lastNotificationFromDB.date.Date.Equals(newNot.date.Date))
+                if (lastNotificationFromDB.date.CompareTo(newNot.date) >= 0)
                 {
                     return;
                 }
@@ -169,7 +188,9 @@ namespace ClarolineApp.VM
 
         public virtual void AddResource(ResourceModel newRes)
         {
-            bool alreadyInDB = ClarolineDB.Resources_Table.Any(r => newRes.Equals(r));
+            bool alreadyInDB = ClarolineDB.Resources_Table.Any(r => r.DiscKey == newRes.DiscKey
+                                                                 && r.resourceId == newRes.resourceId
+                                                                 && r.resourceList.Id == newRes.resourceList.Id);
 
             if (!alreadyInDB)
             {

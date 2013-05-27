@@ -119,7 +119,7 @@ namespace ClarolineApp.Model
         {
             get
             {
-                return _SeenDate.CompareTo(notifiedDate) < 0;
+                return seenDate.CompareTo(notifiedDate) < 0;
             }
         }
 
@@ -272,10 +272,21 @@ namespace ClarolineApp.Model
             {
                 NotifyPropertyChanging("resourceList");
 
-                _resourceList.Entity = value;
                 if (value != null)
                 {
-                    _resourceListId = value.Id;
+                    ResourceList previousValue = this._resourceList.Entity;
+                    if (((previousValue != value) || (this._resourceList.HasLoadedOrAssignedValue == false)))
+                    {
+                        if ((previousValue != null))
+                        {
+                            this._resourceList.Entity = null;
+                            previousValue.Resources.Remove(this);
+                        }
+                        this._resourceList.Entity = value;
+
+                        value.Resources.Add(this);
+                        this._resourceListId = value.Id;
+                    }
                 }
 
                 NotifyPropertyChanged("resourceList");

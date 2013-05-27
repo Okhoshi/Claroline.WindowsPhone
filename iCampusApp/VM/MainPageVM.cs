@@ -89,12 +89,10 @@ namespace ClarolineApp.VM
         {
             base.AddCours(newCours);
 
-            if (allCours.Contains(newCours))
+            if (!allCours.Contains(newCours))
             {
-                allCours.Remove(newCours);
+                allCours.Add(newCours);
             }
-
-            allCours.Add(newCours);
 
             SetTopNotifications();
         }

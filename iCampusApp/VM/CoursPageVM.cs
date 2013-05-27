@@ -1,10 +1,11 @@
 ﻿using ClarolineApp.Model;
 using GalaSoft.MvvmLight.Command;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 
 namespace ClarolineApp.VM
@@ -29,12 +30,6 @@ namespace ClarolineApp.VM
             private set;
         }
 
-        public ICommand eventSelectedItem
-        {
-            get;
-            private set;
-        }
-
         private Cours _currentCours;
 
         public Cours currentCours
@@ -50,6 +45,7 @@ namespace ClarolineApp.VM
                     _currentCours = value;
                     LoadCollectionsFromDatabase();
                     NotifyPropertyChanged("currentCours");
+                    NotifyPropertyChanged("events");
                 }
             }
         }
@@ -99,6 +95,42 @@ namespace ClarolineApp.VM
         {
             get
             {
+                if (_events == null)
+                {
+                    _events = new ObservableCollection<Group<CL_Event>>();
+
+                    if (currentCours != null)
+                    {
+                        IEnumerable<CL_Event> list = currentCours.Resources.FirstOrDefault(l => l.ressourceType == typeof(CL_Event)).Resources.Cast<CL_Event>();
+
+                        _events.Add(new Group<CL_Event>("Aujourd'hui", list.Where(e =>
+                        {
+                            return e.date.CompareTo(DateTime.Now) > 0
+                            && e.date.Date.CompareTo(DateTime.Now.Date) == 0;
+                        })));
+
+                        _events.Add(new Group<CL_Event>("Demain", list.Where(e =>
+                        {
+                            return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) == 0;
+                        })));
+
+                        _events.Add(new Group<CL_Event>("Cette semaine", list.Where(e =>
+                        {
+                            return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) >= 0
+                            && e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) < 0;
+                        })));
+
+                        _events.Add(new Group<CL_Event>("Plus tard", list.Where(e =>
+                        {
+                            return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) >= 0;
+                        })));
+
+                        _events.Add(new Group<CL_Event>("Passés", list.Where(e =>
+                        {
+                            return e.date.CompareTo(DateTime.Now) < 0;
+                        })));
+                    }
+                }
                 return _events;
             }
             set
@@ -119,14 +151,49 @@ namespace ClarolineApp.VM
             {
                 if (_descriptions == null)
                 {
-                    _descriptions = new ObservableCollection<Group<CL_Description>>(from CL_Description d
-                                                                                    in ClarolineDB.Descriptions_Table
-                                                                                    where d.resourceList.Cours.Equals(currentCours)
-                                                                                    group d by d.category into g
-                                                                                    orderby g.Key
-                                                                                    select new Group<CL_Description>(g.Key != -1 ? g.First().title : "Autres", g));
+                    IEnumerable<CL_Description> list = currentCours.Resources
+                                                                   .First(r => r.ressourceType == typeof(CL_Description)).Resources.Cast<CL_Description>();
+                    if (list.Count() == 0)
+                    {
+                        _descriptions = new ObservableCollection<Group<CL_Description>>();
+                    }
+                    else
+                    {
+                        int otherCat = list.Max(d => d.category) + 1;
+
+                        _descriptions = new ObservableCollection<Group<CL_Description>>(
+                                                list.Select(d =>
+                                                {
+                                                    if (d.category == -1)
+                                                    {
+                                                        d.title = "Autres";
+                                                        d.category = otherCat;
+                                                    }
+                                                    return d;
+                                                })
+                                                .GroupBy(d => d.category)
+                                                .OrderBy(g => g.Key)
+                                                .Select(g => new Group<CL_Description>(g.First().title, g))
+                                            );
+                    }
                 }
                 return _descriptions;
+            }
+        }
+
+        public ResourceList PivotMenu = new ResourceList() { label = "MENU", name = "Menu", ressourceType = typeof(Object), visibility = true };
+
+        private ObservableCollection<ResourceList> _resources;
+        public ObservableCollection<ResourceList> resources
+        {
+            get
+            {
+                if (_resources == null)
+                {
+                    _resources = new ObservableCollection<ResourceList>(currentCours.Resources.Where(l => l.visibility));
+                    _resources.Insert(0, PivotMenu);
+                }
+                return _resources;
             }
         }
 
@@ -137,7 +204,7 @@ namespace ClarolineApp.VM
         }
 #endif
 
-        public CoursPageVM(string sysCode, string DBConnectionString = ClarolineDataContext.DBConnectionString)
+        public CoursPageVM(string sysCode)
         {
             if (DesignerProperties.IsInDesignTool)
             {
@@ -153,7 +220,8 @@ namespace ClarolineApp.VM
                 ResourceList l3 = new ResourceList() { Cours = currentCours, name = "Resource L3", label = "CLDSC", ressourceType = typeof(CL_Description) };
                 ResourceList l4 = new ResourceList() { Cours = currentCours, name = "Resource L4", label = "CLCAL", ressourceType = typeof(CL_Event) };
 
-                currentCours.Resources.Add(l2);
+                _resources = new ObservableCollection<ResourceList>();
+                _resources.Add(PivotMenu);
                 currentCours.Resources.Add(new ResourceList() { Cours = currentCours, name = "L4", label = "L4" });
 
                 l1.Resources.Add(new CL_Annonce() { title = "Annonce 1", content = "Contenu 1 Contenu 1 v Contenu 1 Contenu 1 Contenu 1 v Contenu 1", date = DateTime.Now });
@@ -177,8 +245,6 @@ namespace ClarolineApp.VM
             }
             else
             {
-                ClarolineDB = new ClarolineDataContext(DBConnectionString);
-
                 currentCours = (from Cours c
                                 in ClarolineDB.Cours_Table
                                 where c.sysCode.Equals(sysCode)
@@ -189,8 +255,7 @@ namespace ClarolineApp.VM
 
             genericSelectedItem = new RelayCommand<ResourceModel>(this.OnGenericItemSelected);
             documentSelectedItem = new RelayCommand<CL_Document>(this.OnDocumentItemSelected);
-            annonceSelectedItem = new RelayCommand<CL_Annonce>(this.OnAnnonceItemSelected);
-            eventSelectedItem = new RelayCommand<CL_Event>(this.OnGenericItemSelected);
+            annonceSelectedItem = new RelayCommand<CL_Annonce>(this.OnItemWithDetailsSelected);
         }
 
         public override void LoadCollectionsFromDatabase()
@@ -203,33 +268,7 @@ namespace ClarolineApp.VM
                 {
                     root = CL_Document.GetRootDocument(currentCours);
 
-                    events = new ObservableCollection<Group<CL_Event>>();
-
-                    events.Add(new Group<CL_Event>("Aujourd'hui", from CL_Event e in ClarolineDB.Events_Table
-                                                                  where e.date.CompareTo(DateTime.Now) > 0
-                                                                  && e.date.Date.CompareTo(DateTime.Now.Date) == 0
-                                                                  && e.resourceList.Cours == currentCours
-                                                                  select e));
-
-                    events.Add(new Group<CL_Event>("Demain", from CL_Event e in ClarolineDB.Events_Table
-                                                             where e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) == 0
-                                                                  && e.resourceList.Cours == currentCours
-                                                             select e));
-
-                    events.Add(new Group<CL_Event>("Cette semaine", from CL_Event e in ClarolineDB.Events_Table
-                                                                    where e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) >= 0
-                                                                    && e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) < 0
-                                                                  && e.resourceList.Cours == currentCours
-                                                                    select e));
-
-                    events.Add(new Group<CL_Event>("Plus tard", from CL_Event e in ClarolineDB.Events_Table
-                                                                where e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) >= 0
-                                                                  && e.resourceList.Cours == currentCours
-                                                                select e));
-                    events.Add(new Group<CL_Event>("Passés", from CL_Event e in ClarolineDB.Events_Table
-                                                             where e.date.CompareTo(DateTime.Now) < 0
-                                                                  && e.resourceList.Cours == currentCours
-                                                             select e));
+                    currentCours.ReloadPropertyChangedHandler();
                 }
             }
         }
@@ -243,31 +282,28 @@ namespace ClarolineApp.VM
             }
         }
 
-        public void OnAnnonceItemSelected(CL_Annonce item)
+        public void OnItemWithDetailsSelected(CL_Annonce item)
         {
             item.seenDate = DateTime.Now;
             SaveChangesToDB();
 
-            navigationTarget = new Uri(String.Format("/View/AnnonceDetail.xaml?resource={0}", item.resourceId), UriKind.Relative);
+            navigationTarget = new Uri(String.Format("/View/DetailPage.xaml?resource={0}&list={1}", item.resourceId, item.resourceList.Id), UriKind.Relative);
         }
 
         public void OnDocumentItemSelected(CL_Document item)
         {
-            var dbItem = (from CL_Document d
-                            in ClarolineDB.Documents_Table
-                          select d).FirstOrDefault(d => d.Equals(item));
-            if (dbItem != null)
+            if (item != null)
             {
-                dbItem.seenDate = DateTime.Now;
+                item.seenDate = DateTime.Now;
                 SaveChangesToDB();
 
-                if (dbItem.isFolder)
+                if (item.isFolder)
                 {
-                    root = dbItem;
+                    root = item;
                 }
                 else
                 {
-                    dbItem.OpenDocumentAsync();
+                    //dbItem.OpenDocumentAsync();
                 }
             }
         }
@@ -282,9 +318,18 @@ namespace ClarolineApp.VM
             return root.Equals(CL_Document.GetRootDocument(currentCours));
         }
 
-        public bool IsDocumentPivotSelected(object SelectedItem)
+        public bool IsPivotSelectedOfType(object SelectedItem, Type type)
         {
-            return (SelectedItem as ResourceList).ressourceType.Equals(typeof(CL_Document));
+            return (SelectedItem as ResourceList).ressourceType.Equals(type);
+        }
+
+        public bool IsModuleVisible(object module)
+        {
+            if (module != null && module is ResourceList)
+            {
+                return (module as ResourceList).visibility;
+            }
+            return false;
         }
     }
 }

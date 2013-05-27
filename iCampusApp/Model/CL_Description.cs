@@ -39,30 +39,9 @@ namespace ClarolineApp.Model
             }
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj != null && obj.GetType().Equals(typeof(CL_Description)))
-            {
-                CL_Description dsc = obj as CL_Description;
-                return this._resourceListId == dsc._resourceListId && this._resourceId == dsc._resourceId;
-            }
-            return false;
-        }
-
         public override string getNotificationText()
         {
             return _Title;
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        public override bool IsResIdMatching(string resource)
-        {
-            int val;
-            return int.TryParse(resource, out val) && resourceId == val;
         }
     }
 }

@@ -74,6 +74,7 @@ namespace ClarolineApp
                 {
                     _viewModel = new CoursPageVM(parameters["cours"]);
                     this.DataContext = _viewModel;
+
                     _viewModel.PropertyChanged += _viewModel_PropertyChanged;
                 }
 
@@ -103,7 +104,7 @@ namespace ClarolineApp
 
         private void rootButton_Click(object sender, EventArgs e)
         {
-            if (_viewModel.IsDocumentPivotSelected(SectionsPivot.SelectedItem))
+            if (_viewModel.IsPivotSelectedOfType(SectionsPivot.SelectedItem, typeof(CL_Document)))
             {
                 _viewModel.GoUp();
             }
@@ -122,7 +123,7 @@ namespace ClarolineApp
             //Enabling root button routine
             if (rootButton != null)
             {
-                if (_viewModel.IsDocumentPivotSelected(SectionsPivot.SelectedItem)
+                if (_viewModel.IsPivotSelectedOfType(SectionsPivot.SelectedItem, typeof(CL_Document))
                     && !_viewModel.IsOnRoot())
                 {
                     rootButton.IsEnabled = true;
@@ -143,12 +144,48 @@ namespace ClarolineApp
                 return;
             }
 
-            if (_viewModel.IsDocumentPivotSelected(SectionsPivot.SelectedItem))
+            if (_viewModel.IsPivotSelectedOfType(SectionsPivot.SelectedItem, typeof(CL_Document)))
             {
                 _viewModel.OnDocumentItemSelected(list.SelectedItem as CL_Document);
             }
 
             list.SelectedItem = null;
+        }
+
+        private void CLCALList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LongListSelector list = sender as LongListSelector;
+
+            if (list == null || list.SelectedItem == null)
+            {
+                return;
+            }
+
+            if (_viewModel.IsPivotSelectedOfType(SectionsPivot.SelectedItem, typeof(CL_Event)))
+            {
+                _viewModel.OnItemWithDetailsSelected(list.SelectedItem as CL_Event);
+            }
+
+            list.SelectedItem = null;
+        }
+
+        private void Menu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListBox l = sender as ListBox;
+
+            if (l.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            SectionsPivot.SelectedItem = l.SelectedItem;
+
+            l.SelectedIndex = -1;
+        }
+
+        private void menuButton_Click(object sender, EventArgs e)
+        {
+            SectionsPivot.SelectedIndex = 0;
         }
     }
 }

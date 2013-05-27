@@ -41,6 +41,12 @@ namespace ClarolineApp.TemplateSelector
             set;
         }
 
+        public DataTemplate Menu
+        {
+            get;
+            set;
+        }
+
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             ResourceList list = item as ResourceList;
@@ -57,6 +63,8 @@ namespace ClarolineApp.TemplateSelector
                         return Description;
                     case CL_Event.LABEL:
                         return Event;
+                    case "MENU":
+                        return Menu;
                     default:
                         return Generic;
                 }

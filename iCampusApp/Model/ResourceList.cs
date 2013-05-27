@@ -6,6 +6,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
@@ -22,6 +23,26 @@ namespace ClarolineApp.Model
                 new Action<ResourceModel>(this.attach_Resource),
                 new Action<ResourceModel>(this.detach_Resource)
                 );
+            _resources.CollectionChanged += _resources_CollectionChanged;
+        }
+
+        void _resources_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            Debug.WriteLine(sender + " : " + e.Action);
+            if (e.OldItems != null)
+            {
+                foreach (ResourceModel item in e.OldItems)
+                {
+                    item.PropertyChanged -= resource_PropertyChanged;
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach (ResourceModel item in e.NewItems)
+                {
+                    item.PropertyChanged += resource_PropertyChanged;
+                }
+            }
         }
 
         private int _Id;
@@ -120,7 +141,7 @@ namespace ClarolineApp.Model
         {
             get
             {
-                return _Visibility;
+                return _Visibility && Resources.Count > 0;
             }
             set
             {
@@ -215,7 +236,8 @@ namespace ClarolineApp.Model
         {
             NotifyPropertyChanging("Resources");
             _resource.resourceList = this;
-            _resource.PropertyChanged += resource_PropertyChanged;
+            //_resource.PropertyChanged += resource_PropertyChanged;
+            NotifyPropertyChanged("Resources");
         }
 
         // Called during a remove operation
@@ -224,13 +246,16 @@ namespace ClarolineApp.Model
         {
             NotifyPropertyChanging("Resources");
             _resource.resourceList = null;
-            _resource.PropertyChanged -= resource_PropertyChanged;
+            //_resource.PropertyChanged -= resource_PropertyChanged;
+            NotifyPropertyChanged("Resources");
         }
 
-        void resource_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        public void resource_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            Debug.WriteLine(e.PropertyName + " " + sender);
             switch (e.PropertyName)
             {
+                case "seenDate":
                 case "isNotified":
                     NotifyPropertyChanged("isNotified");
                     break;
@@ -258,10 +283,21 @@ namespace ClarolineApp.Model
             {
                 NotifyPropertyChanging("Cours");
 
-                _cours.Entity = value;
                 if (value != null)
                 {
-                    _coursId = value.Id;
+                    Cours previousValue = this._cours.Entity;
+                    if (((previousValue != value) || (this._cours.HasLoadedOrAssignedValue == false)))
+                    {
+                        if ((previousValue != null))
+                        {
+                            this._cours.Entity = null;
+                            previousValue.Resources.Remove(this);
+                        }
+                        this._cours.Entity = value;
+
+                        value.Resources.Add(this);
+                        this._coursId = value.Id;
+                    }
                 }
 
                 NotifyPropertyChanged("Cours");
@@ -307,6 +343,7 @@ namespace ClarolineApp.Model
 
         private void NotifyPropertyChanged(string propertyName)
         {
+            Debug.WriteLine(propertyName + " has changed");
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
@@ -334,6 +371,14 @@ namespace ClarolineApp.Model
         internal ResourceModel GetResourceByResId(string resource)
         {
             return Resources.FirstOrDefault(r => r.IsResIdMatching(resource));
+        }
+
+        internal void ReloadPropertyChangedHandler()
+        {
+            foreach (ResourceModel item in Resources)
+            {
+                item.PropertyChanged += resource_PropertyChanged;
+            }
         }
     }
 }

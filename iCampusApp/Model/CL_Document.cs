@@ -47,12 +47,13 @@ namespace ClarolineApp.Model
                 {
                     NotifyPropertyChanging("path");
                     _path = value;
+                    _resourceId = value.GetHashCode();
                     NotifyPropertyChanged("path");
                 }
             }
         }
 
-        public bool isNotified
+        public new bool isNotified
         {
             get
             {
@@ -66,7 +67,7 @@ namespace ClarolineApp.Model
                 }
             }
         }
-       
+
         private string _url;
 
         [Column(CanBeNull = true)]
@@ -193,32 +194,35 @@ namespace ClarolineApp.Model
             }
             else
             {
-                string DBConnectionString = "Data Source=isostore:/Claroline.sdf";
-                ClarolineDataContext db = new ClarolineDataContext(DBConnectionString);
+                IEnumerable<CL_Document> list = resourceList.Resources.Cast<CL_Document>();
 
-                return (from CL_Document _doc
-                        in db.Documents_Table
-                        where _doc.path == rootPath && _doc.resourceList.Cours.sysCode == this._resourceList.Entity.Cours.sysCode
-                        select _doc).First();
+                return list.First(d => d.path == rootPath);
             }
         }
+
+        private Cours rootCours;
 
         public ObservableCollection<CL_Document> getContent()
         {
             if (isFolder)
             {
-                string DBConnectionString = "Data Source=isostore:/Claroline.sdf";
-                ClarolineDataContext db = new ClarolineDataContext(DBConnectionString);
+                ResourceList rl = this.title == "/"
+                                ? rootCours.Resources.FirstOrDefault(l => l.ressourceType == typeof(CL_Document))
+                                : resourceList;
 
-                return new ObservableCollection<CL_Document>((from CL_Document d
-                                                              in db.Documents_Table
-                                                              where d.path == ((d.isFolder)
-                                                                                    ? (this._path + "/" + d.title)
-                                                                                    : (this._path + "/" + d.title + "." + d.extension)
-                                                                                    )
-                                                              && d.resourceList.Cours.Equals(this.resourceList.Cours)
-                                                              select d).ToList<CL_Document>()
-                                                              );
+                if (rl == null)
+                {
+                    return new ObservableCollection<CL_Document>();
+                }
+
+                IEnumerable<CL_Document> list = rl.Resources.Cast<CL_Document>();
+
+                return new ObservableCollection<CL_Document>(
+                                list.Where(d => d.path == ((d.isFolder)
+                                                         ? (this._path + "/" + d.title)
+                                                         : (this._path + "/" + d.title + "." + d.extension)
+                                                          )
+                                           ));
             }
             else
             {
@@ -236,9 +240,11 @@ namespace ClarolineApp.Model
             ResourceList list = cours.Resources.FirstOrDefault(rl => rl.ressourceType.Equals(typeof(CL_Document)));
             return new CL_Document()
             {
-                _isFolder = true,
-                _path = "",
-                resourceList = list == null ? new ResourceList() { ressourceType = typeof(CL_Document), Cours = cours } : list
+                path = "",
+                isFolder = true,
+                _resourceListId = list != null ? list.Id : -1,
+                title = "/",
+                rootCours = cours
             };
         }
 
@@ -258,9 +264,9 @@ namespace ClarolineApp.Model
                     while (reader.Read())
                     {
                         if (reader.TokenType == JsonToken.PropertyName && reader.Value as string == "token")
-                        { 
+                        {
                             reader.Read();
-                            token = (string) reader.Value;
+                            token = (string)reader.Value;
                             break;
                         }
                     }

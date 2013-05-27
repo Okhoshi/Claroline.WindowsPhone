@@ -15,6 +15,7 @@
             </ResourceDictionary.MergedDictionaries>
             <local:LocalizedStrings x:Key="LocalizedStrings" />
             <local:StatusConverter x:Key="StatusConverter" />
+            <local:VisibilityConverter x:Key="VisibilityConverter"/>
             <local:CoursPageTitleConverter x:Key="TitleConverter"  />
             <local:SizeFileConverter x:Key="SizeConv" />
             <local:ToLower x:Key="ToLower" />
