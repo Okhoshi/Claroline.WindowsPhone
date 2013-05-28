@@ -74,9 +74,9 @@ namespace ClarolineApp.Model
             }
         }
 
-        protected int _resourceId = -1;
+        protected int _resourceId;
 
-        [Column]
+        [Column(CanBeNull = true)]
         public int resourceId
         {
             get

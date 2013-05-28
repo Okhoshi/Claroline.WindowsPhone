@@ -3,10 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClarolineApp", "iCampusApp\ClarolineApp.csproj", "{BA1C19F3-38ED-4B7F-88FA-2AF3FC738E3F}"
 EndProject
-
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IconControl", "IconControl\IconControl.csproj", "{F23CC81F-42C6-4DF4-878F-57D77B35F655}"
 EndProject
-
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5282AF07-B855-42D3-8076-9048B2A840FE}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config

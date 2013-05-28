@@ -43,7 +43,7 @@ namespace ClarolineApp
             InitializeComponent();
 
             this.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name);
-            rootButton = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+            rootButton = ApplicationBar.Buttons[1] as ApplicationBarIconButton;
 
             ClaroClient.instance.PropertyChanged += ClaroClient_PropertyChanged;
         }

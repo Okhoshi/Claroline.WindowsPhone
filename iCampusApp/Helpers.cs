@@ -3,7 +3,10 @@ using ClarolineApp.Settings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -157,166 +160,6 @@ namespace ClarolineApp
         }
     }
 
-    public class ExtSelector : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            string img = "/Mime/";
-            switch ((string)value)
-            {
-                case "":
-                    img = "/icons/appbar.folder.rest" + ((Visibility)App.Current.Resources["PhoneDarkThemeVisibility"] == Visibility.Visible ? ".dark" : ".light");
-                    break;
-
-                case "gz":
-                case "bz2":
-                case "zip":
-                case "tar":
-                case "rar":
-                    img += "package-x-generic";
-                    break;
-
-                case "pgp":
-                    img += "text-x-pgp";
-                    break;
-
-                case "url":
-                case "htm":
-                case "html":
-                case "htx":
-                case "swf":
-                    img += "link";
-                    break;
-
-                case "sh":
-                case "exe":
-                    img += "applications-system";
-                    break;
-
-                case "js":
-                case "css":
-                case "xsl":
-                case "pl":
-                case "plm":
-                case "ml":
-                case "lsp":
-                case "cls":
-                    img += "text-x-script";
-                    break;
-
-                case "php":
-                    img += "application-x-php";
-                    break;
-
-                case "py":
-                    img += "text-x-python";
-                    break;
-
-                case "rb":
-                    img += "application-x-ruby";
-                    break;
-
-                case "c":
-                case "h":
-                case "cpp":
-                case "java":
-                    img += "text-x-code";
-                    break;
-
-                case "xml":
-                case "tex":
-                case "txt":
-                case "rtf":
-                    img += "text-x-generic";
-                    break;
-
-                case "pdf":
-                    img += "pdf";
-                    break;
-
-                case "ps":
-                    img += "x-office-document";
-                    break;
-
-                case "ogg":
-                case "wav":
-                case "midi":
-                case "mp2":
-                case "mp3":
-                case "mp4":
-                case "vqf":
-                    img += "audio-x-generic";
-                    break;
-
-                case "avi":
-                case "mpg":
-                case "mpeg":
-                case "mov":
-                case "wmv":
-                    img += "video-x-generic";
-                    break;
-
-                case "png":
-                case "jpeg":
-                case "jpg":
-                case "xcf":
-                case "gif":
-                case "bmp":
-                    img += "image-x-generic";
-                    break;
-
-                case "svg":
-                case "odg":
-                    img += "x-office-drawing";
-                    break;
-
-                case "odt":
-                case "doc":
-                case "docx":
-                case "dot":
-                case "mcw":
-                case "wps":
-                    img += "x-office-document";
-                    break;
-
-                case "ods":
-                case "xls":
-                case "xlsx":
-                case "xlt":
-                    img += "x-office-spreadsheet";
-                    break;
-
-                case "odp":
-                case "ppt":
-                case "pptx":
-                case "pps":
-                    img += "x-office-presentation";
-                    break;
-
-                case "odf":
-                    img += "x-office-formula";
-                    break;
-
-                case "ttf":
-                    img += "font-x-generic";
-                    break;
-                default:
-                    img += "default";
-                    break;
-            }
-
-            img += ".png";
-            return img;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if ((bool)parameter)
-                return "";
-            return "ext";
-        }
-    }
-
     public class Helper
     {
 
@@ -410,6 +253,65 @@ namespace ClarolineApp
             return this.Items.GetEnumerator();
         }
 
+        #endregion
+    }
+
+    public class DebugStreamWriter : TextWriter
+    {
+        private const int DefaultBufferSize = 256;
+        private StringBuilder _buffer;
+
+        public DebugStreamWriter()
+        {
+            BufferSize = 256;
+            _buffer = new StringBuilder(BufferSize);
+        }
+
+        public int BufferSize
+        {
+            get;
+            private set;
+        }
+
+        public override System.Text.Encoding Encoding
+        {
+            get { return Encoding.UTF8; }
+        }
+
+        #region StreamWriter Overrides
+        public override void Write(char value)
+        {
+            _buffer.Append(value);
+            if (_buffer.Length >= BufferSize)
+                Flush();
+        }
+
+        public override void WriteLine(string value)
+        {
+            Flush();
+
+            using (var reader = new StringReader(value))
+            {
+                string line;
+                while (null != (line = reader.ReadLine()))
+                    Debug.WriteLine(line);
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+                Flush();
+        }
+
+        public override void Flush()
+        {
+            if (_buffer.Length > 0)
+            {
+                Debug.WriteLine(_buffer);
+                _buffer.Clear();
+            }
+        }
         #endregion
     }
 }

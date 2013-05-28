@@ -190,7 +190,7 @@ namespace ClarolineApp.VM
             {
                 if (_resources == null)
                 {
-                    _resources = new ObservableCollection<ResourceList>(currentCours.Resources.Where(l => l.visibility));
+                    _resources = new ObservableCollection<ResourceList>(currentCours.Resources.Where(l => l.visibility && l.Resources.Count > 0));
                     _resources.Insert(0, PivotMenu);
                 }
                 return _resources;
@@ -327,7 +327,8 @@ namespace ClarolineApp.VM
         {
             if (module != null && module is ResourceList)
             {
-                return (module as ResourceList).visibility;
+                ResourceList mod = module as ResourceList;
+                return mod.visibility && mod.Resources.Count > 0;
             }
             return false;
         }

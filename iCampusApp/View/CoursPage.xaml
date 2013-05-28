@@ -205,7 +205,7 @@
                                 <ListBox DataContext="{Binding DataContext.currentCours, ElementName=LayoutRoot}" ItemsSource="{Binding Resources}" SelectionChanged="Menu_SelectionChanged">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding name}" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="12,5" Visibility="{Binding visibility, Converter={StaticResource VisibilityConverter}}"/>
+                                            <TextBlock Text="{Binding name}" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="12,5" Visibility="{Binding listVisibility, Converter={StaticResource VisibilityConverter}}"/>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>

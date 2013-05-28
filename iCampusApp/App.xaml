@@ -20,7 +20,6 @@
             <local:SizeFileConverter x:Key="SizeConv" />
             <local:ToLower x:Key="ToLower" />
             <local:ToUpper x:Key="ToUpper" />
-            <local:ExtSelector x:Key="ExtSelect" />
 			<local:DescVisibilityConverter x:Key="DescVisibilityConverter" />
 			<Style x:Key="StretchStyle" TargetType="ListBoxItem">
         		<Setter Property="HorizontalContentAlignment" Value="Stretch"/>

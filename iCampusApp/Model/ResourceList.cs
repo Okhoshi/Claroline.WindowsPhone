@@ -28,7 +28,6 @@ namespace ClarolineApp.Model
 
         void _resources_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            Debug.WriteLine(sender + " : " + e.Action);
             if (e.OldItems != null)
             {
                 foreach (ResourceModel item in e.OldItems)
@@ -141,7 +140,7 @@ namespace ClarolineApp.Model
         {
             get
             {
-                return _Visibility && Resources.Count > 0;
+                return _Visibility;
             }
             set
             {
@@ -151,6 +150,14 @@ namespace ClarolineApp.Model
                     _Visibility = value;
                     NotifyPropertyChanged("visibility");
                 }
+            }
+        }
+
+        public bool listVisibility
+        {
+            get
+            {
+                return visibility && Resources.Count > 0;
             }
         }
 
@@ -252,7 +259,6 @@ namespace ClarolineApp.Model
 
         public void resource_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Debug.WriteLine(e.PropertyName + " " + sender);
             switch (e.PropertyName)
             {
                 case "seenDate":
@@ -343,7 +349,6 @@ namespace ClarolineApp.Model
 
         private void NotifyPropertyChanged(string propertyName)
         {
-            Debug.WriteLine(propertyName + " has changed");
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));

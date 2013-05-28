@@ -188,7 +188,8 @@ namespace ClarolineApp.VM
 
         public virtual void AddResource(ResourceModel newRes)
         {
-            bool alreadyInDB = ClarolineDB.Resources_Table.Any(r => r.resourceId == newRes.resourceId
+            bool alreadyInDB = ClarolineDB.Resources_Table.Any(r => r.DiscKey == newRes.DiscKey
+                                                                 && r.resourceId == newRes.resourceId
                                                                  && r.resourceList.Id == newRes.resourceList.Id);
 
             if (!alreadyInDB)
