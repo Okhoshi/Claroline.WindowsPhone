@@ -19,9 +19,9 @@ namespace ClarolineApp.Model
             DiscKey = SupportedModules.CLDSC;
         }
 
-        private int _category;
+        private int _category = -1;
 
-        [Column(CanBeNull = true)]
+        [Column]
         public int category
         {
             get
