@@ -7,6 +7,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:my="clr-namespace:IconControl;assembly=IconControl"
     xmlns:iCampusApp_Model="clr-namespace:ClarolineApp.Model"
     xmlns:vm="clr-namespace:ClarolineApp.VM"
     xmlns:local="clr-namespace:ClarolineApp"
@@ -112,7 +113,7 @@
                 <toolkit:LongListSelector.ItemTemplate>
                     <DataTemplate x:Name="Doc">
                         <Grid x:Name="lvl0" Margin="0,5,5,10" HorizontalAlignment="Stretch">
-                            <Image Source="{Binding extension, Converter={StaticResource ExtSelect}}" Width="60" Margin="5" Grid.Column="0" />
+                            <my:FileIcon Height="60" Width="60"  ExtensionLabel="{Binding extension, Converter={StaticResource ToUpper}}" LabelForeground="{StaticResource PhoneAccentBrush}" PathColor="{StaticResource PhoneForegroundBrush}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             <StackPanel Orientation="Vertical" Grid.Column="1">
                                 <TextBlock x:Name="Name" Text="{Binding title, Mode=OneWay}" Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" Margin="0" />
                                 <TextBlock x:Name="Desc" Text="{Binding description, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" TextWrapping="Wrap" Visibility="{Binding description, Converter={StaticResource DescVisibilityConverter}}"/>
@@ -162,7 +163,7 @@
                 <toolkit:LongListSelector.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="0,5,0,10">
-                            <TextBlock Text="{Binding content, Mode=OneWay}" Style="{StaticResource PhoneTextNormalStyle}" HorizontalAlignment="Stretch" TextWrapping="Wrap"  />
+                            <TextBlock Text="{Binding content, Mode=OneWay}" Style="{StaticResource PhoneTextNormalStyle}" HorizontalAlignment="Stretch" TextWrapping="Wrap" local:TiltEffect.SuppressTilt="True"  />
                         </StackPanel>
                     </DataTemplate>
                 </toolkit:LongListSelector.ItemTemplate>

@@ -80,10 +80,10 @@ namespace ClarolineApp.VM
                 if (DesignerProperties.IsInDesignTool)
                 {
                     ObservableCollection<CL_Document> ret = new ObservableCollection<CL_Document>();
+                    ret.Add(new CL_Document() { title = "Hello Folder", description = "WTF", date = DateTime.Now, isFolder = false });
                     ret.Add(new CL_Document() { title = "Document 1", size = 15653614, date = DateTime.Now, extension = "pdf", isFolder = false });
                     ret.Add(new CL_Document() { title = "Document 2 Document 2 Document 2", size = 165, date = DateTime.Now, extension = "et2", isFolder = false });
                     ret.Add(new CL_Document() { title = "Document 3", size = 184351861, date = DateTime.Now, extension = "ppt", isFolder = false });
-                    ret.Add(new CL_Document() { title = "Hello Folder", description = "WTF", date = DateTime.Now, isFolder = false });
                     return ret;
                 }
                 else
@@ -153,7 +153,7 @@ namespace ClarolineApp.VM
                 ResourceList l3 = new ResourceList() { Cours = currentCours, name = "Resource L3", label = "CLDSC", ressourceType = typeof(CL_Description) };
                 ResourceList l4 = new ResourceList() { Cours = currentCours, name = "Resource L4", label = "CLCAL", ressourceType = typeof(CL_Event) };
 
-                currentCours.Resources.Add(l2);
+                currentCours.Resources.Add(l3);
                 currentCours.Resources.Add(new ResourceList() { Cours = currentCours, name = "L4", label = "L4" });
 
                 l1.Resources.Add(new CL_Annonce() { title = "Annonce 1", content = "Contenu 1 Contenu 1 v Contenu 1 Contenu 1 Contenu 1 v Contenu 1", date = DateTime.Now });
