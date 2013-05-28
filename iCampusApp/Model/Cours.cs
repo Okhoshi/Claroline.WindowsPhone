@@ -23,6 +23,25 @@ namespace ClarolineApp.Model
                 new Action<ResourceList>(this.attach_Resources),
                 new Action<ResourceList>(this.detach_Resources)
                 );
+            _Resources.CollectionChanged += _resources_CollectionChanged;
+        }
+
+        void _resources_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (ResourceList item in e.OldItems)
+                {
+                    item.PropertyChanged -= resources_PropertyChanged;
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach (ResourceList item in e.NewItems)
+                {
+                    item.PropertyChanged += resources_PropertyChanged;
+                }
+            }
         }
 
         // Define ID: private Notifications, public property and database column.
@@ -183,7 +202,7 @@ namespace ClarolineApp.Model
         {
             NotifyPropertyChanging("Resources");
             _resources.Cours = this;
-            _resources.PropertyChanged += resources_PropertyChanged;
+            //_resources.PropertyChanged += resources_PropertyChanged;
         }
 
         // Called during a remove operation
@@ -192,7 +211,7 @@ namespace ClarolineApp.Model
         {
             NotifyPropertyChanging("Resources");
             _resources.Cours = null;
-            _resources.PropertyChanged -= this.resources_PropertyChanged;
+            //_resources.PropertyChanged -= this.resources_PropertyChanged;
         }
 
         void resources_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -339,6 +358,15 @@ namespace ClarolineApp.Model
         internal bool loadedToday()
         {
             return _Loaded.AddDays(1).CompareTo(DateTime.Now) >= 0;
+        }
+
+        internal void ReloadPropertyChangedHandler()
+        {
+            foreach (ResourceList item in Resources)
+            {
+                item.PropertyChanged += resources_PropertyChanged;
+                item.ReloadPropertyChangedHandler();
+            }
         }
     }
 }

@@ -9,12 +9,13 @@ namespace ClarolineApp.VM
 {
     interface ICoursPageVM : IClarolineVM
     {
-        void OnAnnonceItemSelected(CL_Annonce item);
+        void OnItemWithDetailsSelected(CL_Annonce item);
         void OnDocumentItemSelected(CL_Document item);
         void OnGenericItemSelected(ResourceModel item);
 
         bool IsOnRoot();
         void GoUp();
-        bool IsDocumentPivotSelected(object SelectedItem);
+        bool IsPivotSelectedOfType(object selectedItem, Type type);
+        bool IsModuleVisible(object module);
     }
 }

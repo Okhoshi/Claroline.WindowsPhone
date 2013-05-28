@@ -61,7 +61,7 @@ namespace ClarolineApp.Languages {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Publiée le {0}.
+        ///   Recherche une chaîne localisée semblable à Publiée le.
         /// </summary>
         public static string AnnoncePage_DateFormater_Published {
             get {

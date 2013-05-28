@@ -27,14 +27,15 @@ namespace ClarolineApp.Model
 
         public IQueryable<CL_Annonce> Annonces_Table
         {
-            get{
+            get
+            {
                 return from CL_Annonce a
                        in Resources_Table
-                       where a is CL_Annonce 
+                       where a is CL_Annonce
                        && !(a is CL_Description)
                        && !(a is CL_Event)
                        select a;
-                   }
+            }
         }
 
         public IQueryable<CL_Document> Documents_Table

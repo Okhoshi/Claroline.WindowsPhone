@@ -242,7 +242,7 @@ network</value>
     <value>You did not set up a profile yet. You need to configure your username and password in order to use the application. Do it now ?</value>
   </data>
   <data name="AnnoncePage_DateFormater_Published" xml:space="preserve">
-    <value>Published on {0}</value>
+    <value>Published on</value>
   </data>
   <data name="MainPage_About_Thanks" xml:space="preserve">
     <value>Special thanks</value>

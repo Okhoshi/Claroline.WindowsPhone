@@ -59,7 +59,6 @@ namespace ClarolineApp
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            this.Panorama.Title = AppSettings.instance.PlatformSetting;
 
             if (AppSettings.instance.UsernameSetting == "")
             {
@@ -68,6 +67,8 @@ namespace ClarolineApp
                     NavigationService.Navigate(new Uri("/Settings/SettingsPage.xaml", UriKind.Relative));
                 }
             }
+
+            _viewModel.LoadCollectionsFromDatabase();
         }
         
         private async void CoursList_SelectionChanged(object sender, SelectionChangedEventArgs e)

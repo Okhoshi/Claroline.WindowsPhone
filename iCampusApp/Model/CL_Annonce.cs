@@ -41,7 +41,7 @@ namespace ClarolineApp.Model
 
         public override bool Equals(object obj)
         {
-            if (obj != null && obj.GetType().Equals(typeof(CL_Annonce)))
+            if (obj != null && obj.GetType().Equals(this.GetType()))
             {
                 CL_Annonce ann = obj as CL_Annonce;
                 return this._resourceListId == ann._resourceListId && this._resourceId == ann._resourceId;
