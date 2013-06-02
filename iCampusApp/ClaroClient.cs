@@ -19,7 +19,7 @@ namespace ClarolineApp
     {
 
         private static ClaroClient _instance;
-        public static ClaroClient instance
+        public static ClaroClient Instance
         {
             get
             {
@@ -31,13 +31,19 @@ namespace ClarolineApp
             }
         }
 
-        AppSettings settings;
+        public static AppSettings Settings
+        {
+            get
+            {
+                return AppSettings.Instance;
+            }
+        }
 
-        CookieContainer cookies;
+        CookieContainer Cookies;
         
         private DateTime _cookieCreation;
         
-        DateTime cookieCreation
+        DateTime CookieCreation
         {
             get
             {
@@ -48,8 +54,8 @@ namespace ClarolineApp
                 if (!_cookieCreation.Equals(value))
                 {
                     _cookieCreation = value;
-                    NotifyPropertyChanged("cookieCreation");
-                    NotifyPropertyChanged("isExpired");
+                    NotifyPropertyChanged("CookieCreation");
+                    NotifyPropertyChanged("IsExpired");
                 }
             }
         }
@@ -72,48 +78,45 @@ namespace ClarolineApp
             }
         }
 
-        public bool isExpired
+        public bool IsExpired
         {
             get
             {
-                return (cookieCreation.AddHours(1.0).CompareTo(DateTime.Now) < 0);
+                return (CookieCreation.AddHours(1.0).CompareTo(DateTime.Now) < 0);
             }
         }
 
         private Exception _lastException;
 
-        public Exception lastException
+        public Exception LastException
         {
             get { return _lastException; }
             set
             {
-                if (!value.Equals(_lastException))
+                if (value != null && !value.Equals(_lastException))
                 {
                     _lastException = value;
 #if DEBUG
-                        Debug.WriteLine("Exception occured :" + value.ToString());
+                    Debug.WriteLine("Exception occured :" + value.ToString());
 #endif
-                        NotifyPropertyChanged("lastException");
+                    NotifyPropertyChanged("LastException");
                 }
             }
         }
 
         public ClaroClient()
         {
-            //Environment
-            settings = new AppSettings();
-
             //WebRequesting stuff
-            cookieCreation = DateTime.MinValue;
-            cookies = new CookieContainer();
+            CookieCreation = DateTime.MinValue;
+            Cookies = new CookieContainer();
         }
 
-        private async Task<HttpWebRequest> getClientAsync(PostDataWriter args)
+        private async Task<HttpWebRequest> GetClientAsync(PostDataWriter args)
         {
             //Data request
-            HttpWebRequest client = (HttpWebRequest)WebRequest.Create(args.GetURL());
+            HttpWebRequest client = (HttpWebRequest)WebRequest.Create(args.GetUrl());
             client.Method = "POST";
-            client.CookieContainer = cookies;
+            client.CookieContainer = Cookies;
             client.ContentType = "application/x-www-form-urlencoded";
             client.AllowAutoRedirect = false;
 
@@ -130,13 +133,13 @@ namespace ClarolineApp
             return client;
         }
 
-        public async Task<string> makeOperationAsync(SupportedModules module, SupportedMethods method, Cours reqCours = null, string resStr = "", string GenMod = "", bool forAuth = false)
+        public async Task<string> MakeOperationAsync(SupportedModules module, SupportedMethods method, Cours reqCours = null, string resStr = "", string genMod = "", bool forAuth = false)
         {
             _lastException = null;
 
-            if (IsNetworkAvailable() && ( forAuth || await isValidAccountAsync()))
+            if (IsNetworkAvailable() && ( forAuth || await IsValidAccountAsync()))
             {
-                PostDataWriter args = new PostDataWriter() { module = module, method = method, cidReq = reqCours, resStr = resStr, GenMod = GenMod };
+                PostDataWriter args = new PostDataWriter() { module = module, method = method, cidReq = reqCours, resStr = resStr, GenMod = genMod };
 
                 String strContent = "";
                 HttpWebResponse response = null;
@@ -144,7 +147,7 @@ namespace ClarolineApp
                 try
                 {
                     IsInSync = true;
-                    HttpWebRequest client = await getClientAsync(args);
+                    HttpWebRequest client = await GetClientAsync(args);
                     response = (HttpWebResponse)await client.GetResponseAsync();
                     responseStream = response.GetResponseStream();
                     StreamReader sr = new StreamReader(responseStream, Encoding.UTF8);
@@ -158,7 +161,7 @@ namespace ClarolineApp
                 }
                 catch (Exception ex)
                 {
-                    lastException = ex;
+                    LastException = ex;
 
                     if (responseStream != null)
                     {
@@ -176,38 +179,38 @@ namespace ClarolineApp
             }
             else
             {
-                lastException = new NetworkException("Network Unavailable");
+                LastException = new NetworkException("Network Unavailable");
                 return null;
             }
         }
 
         private async Task<bool> GetSessionCookieAsync()
         {
-            String result = await makeOperationAsync(SupportedModules.NOMOD, SupportedMethods.authenticate, forAuth:true);
+            String result = await MakeOperationAsync(SupportedModules.NOMOD, SupportedMethods.Authenticate, forAuth:true);
             if (result.Equals(String.Empty))
             {
-                cookieCreation = DateTime.Now;
+                CookieCreation = DateTime.Now;
                 return true;
             }
             else
             {
-                lastException = new AuthenticationException("Authentication Fails");
+                LastException = new AuthenticationException("Authentication Fails");
                 return false;
             }
         }
 
-        public bool IsNetworkAvailable()
+        public static bool IsNetworkAvailable()
         {
 #if !DEBUG
-            return (DeviceNetworkInformation.IsNetworkAvailable && (DeviceNetworkInformation.IsWiFiEnabled || (DeviceNetworkInformation.IsCellularDataEnabled && settings.CellularDataEnabledSetting)));
+            return (DeviceNetworkInformation.IsNetworkAvailable && (DeviceNetworkInformation.IsWiFiEnabled || (DeviceNetworkInformation.IsCellularDataEnabled && Settings.CellularDataEnabledSetting)));
 #else
-            return settings.CellularDataEnabledSetting;
+            return Settings.CellularDataEnabledSetting;
 #endif
         }
 
-        public async Task<Boolean> isValidAccountAsync()
+        public async Task<Boolean> IsValidAccountAsync()
         {
-            if (isExpired && IsNetworkAvailable())
+            if (IsExpired && IsNetworkAvailable())
             {
                 return await GetSessionCookieAsync();
             }
@@ -217,16 +220,15 @@ namespace ClarolineApp
             }
         }
 
-        public Boolean isValidAccountWithoutWaiting()
+        public Boolean IsValidAccountSync()
         {
-            return !isExpired;
+            return !IsExpired;
         }
 
-        public void invalidateClient()
+        public void InvalidateClient()
         {
-            cookieCreation = DateTime.MinValue;
-            cookies = new CookieContainer();
-            settings.UserSetting = new User();
+            CookieCreation = DateTime.MinValue;
+            Cookies = new CookieContainer();
         }
 
         #region INotifyPropertyChanged Members

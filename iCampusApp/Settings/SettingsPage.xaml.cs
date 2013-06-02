@@ -21,12 +21,7 @@ namespace ClarolineApp.Settings
 {
     public partial class SettingsPage : PhoneApplicationPage
     {
-        PropertyChangedEventHandler Handler;
-        PropertyChangedEventHandler Refresh;
-        PropertyChangedEventHandler ResetHandler;
-
         ProgressIndicator _indicator;
-
         ProgressIndicator indicator
         {
             get
@@ -51,12 +46,31 @@ namespace ClarolineApp.Settings
             InitializeComponent();
 
             _viewModel = new ClarolineVM();
-            this.DataContext = AppSettings.instance;
+            this.DataContext = _viewModel;
 
+            _viewModel.Settings.PropertyChanged += (sender, e) =>
+            {
+                string[] _listened = new String[] { AppSettings.UsernameSettingKeyName, 
+                                                    AppSettings.PasswordSettingKeyName, 
+                                                    AppSettings.WebServiceSettingKeyName, 
+                                                    AppSettings.DomainSettingKeyName };
 
-            Handler = new PropertyChangedEventHandler(Connecting_PropertyChanged);
-            Refresh = new PropertyChangedEventHandler(Client_PropertyChanged);
-            ResetHandler = new PropertyChangedEventHandler(settings_PropertyChanged);
+                if ( _viewModel.IsConnected && _listened.Contains(e.PropertyName))
+                {
+                    _viewModel.ResetViewModel();
+                }
+            };
+
+            Deco = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+            Deco.IsEnabled = _viewModel.IsConnected;
+
+            _viewModel.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == "IsConnected")
+                {
+                    Deco.IsEnabled = _viewModel.IsConnected;
+                }
+            };
 
 #if DEBUG
             PivotItem devPivot = new PivotItem()
@@ -68,68 +82,24 @@ namespace ClarolineApp.Settings
                     VerticalAlignment = System.Windows.VerticalAlignment.Bottom
                 }
             };
-            
-            Button QAccBut = new Button(){ Content = "Charge QAcc"};
+
+            Button QAccBut = new Button() { Content = "Charge QAcc" };
             QAccBut.Click += new RoutedEventHandler(QAccBut_Click);
-            Button SAccBut = new Button(){ Content = "Charge SAcc"};
+            Button SAccBut = new Button() { Content = "Charge SAcc" };
             SAccBut.Click += new RoutedEventHandler(SAccBut_Click);
-            Button Button = new Button(){ Content = "Test Connect"};
-            Button.Click +=new RoutedEventHandler(Button_Click);
-            Button Button_1 = new Button(){ Content = "Test WebServ."};
-            Button_1.Click += new RoutedEventHandler(Button_Click_1);
-            
+            Button Button = new Button() { Content = "Test Connect" };
+            Button.Click += new RoutedEventHandler(Button_Click);
+
             ((StackPanel)devPivot.Content).Children.Add(QAccBut);
             ((StackPanel)devPivot.Content).Children.Add(SAccBut);
             ((StackPanel)devPivot.Content).Children.Add(Button);
-            ((StackPanel)devPivot.Content).Children.Add(Button_1);
             SettingsPivot.Items.Add(devPivot);
 #endif
         }
 
         private void Reset_Click(object sender, EventArgs e)
         {
-            userTextBox.Text = "";
-            passwordBox.Password = "";
             _viewModel.ResetViewModel();
-            ClaroClient.instance.invalidateClient();
-        }
-
-        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            if (AppSettings.instance.UserSetting.userID > 0)
-            {
-                updatePanels(false);
-                AppSettings.instance.PropertyChanged += ResetHandler;
-            }
-            else
-            {
-                updatePanels(true);
-            }
-            if (!AppSettings.instance.AdvancedSwitchSetting)
-            {
-                stackPanel2.Height = 0;
-            }
-            ClaroClient.instance.PropertyChanged += Refresh;
-        }
-
-        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
-        {
-            base.OnNavigatedFrom(e);
-        }
-
-        void Client_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (ClaroClient.instance.isValidAccountWithoutWaiting())
-            {
-                updatePanels(false);
-                ClaroClient.instance.PropertyChanged -= Refresh;
-                AppSettings.instance.PropertyChanged -= ResetHandler;
-            }
-            else
-            {
-                updatePanels(true);
-            }
         }
 
 #if DEBUG
@@ -147,108 +117,30 @@ namespace ClarolineApp.Settings
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ((Button)e.OriginalSource).Content = ClaroClient.instance.isValidAccountWithoutWaiting().ToString();
-        }
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            indicator.IsVisible = true;
-            await ClaroClient.instance.makeOperationAsync(SupportedModules.USER, SupportedMethods.getCourseList);
-            indicator.IsVisible = false;
+            ((Button)e.OriginalSource).Content = ClaroClient.Instance.IsValidAccountSync().ToString();
         }
 #endif
 
-        void Connecting_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "isExpired")
-            {
-                ClaroClient.instance.PropertyChanged -= Handler;
-                if (ClaroClient.instance.isValidAccountWithoutWaiting())
-                {
-                    Connected.Begin();
-                	AppSettings.instance.PropertyChanged += ResetHandler;
-                	ClaroClient.instance.PropertyChanged += Refresh;
-                }
-            }
-        }
-
-        private async void Button_Click_2(object sender, RoutedEventArgs e)
+        private async void Connect_Button(object sender, RoutedEventArgs e)
         {
             indicator.IsVisible = true;
-            ClaroClient.instance.PropertyChanged += Handler;
             await _viewModel.GetUserDataAsync();
             indicator.IsVisible = false;
         }
 
-        private void settings_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            string[] _listened = new String[] { AppSettings.UsernameSettingKeyName, AppSettings.PasswordSettingKeyName, AppSettings.WebServiceSettingKeyName, AppSettings.DomainSettingKeyName };
-
-            if (_listened.Contains(e.PropertyName))
-            {
-                ClaroClient.instance.invalidateClient();
-                Disconnected.Begin();
-                updatePanels(true);
-                AppSettings.instance.PropertyChanged -= ResetHandler;
-            }
-        }
-
-        private void toggleSwitch_Checked(object sender, RoutedEventArgs e)
-        {
-            ActivateAdvanced.Begin();
-        }
-
-        private void toggleSwitch_Unchecked(object sender, RoutedEventArgs e)
-        {
-            DeactivateAdvanced.Begin();
-        }
-
-        private void updatePanels(Boolean status)
-        {
-            if (status)
-            {
-                //Display Connect Page & Address Page
-                ConnectPage.Opacity = 100;
-                ConnectPage.Visibility = System.Windows.Visibility.Visible;
-                userTextBox.IsEnabled = true;
-                passwordBox.IsEnabled = true;
-                Connect.IsEnabled = true;
-
-                AddressPage.Opacity = 100;
-                AddressPage.Visibility = System.Windows.Visibility.Visible;
-
-                UserPage.Opacity = 0;
-                UserPage.Visibility = System.Windows.Visibility.Collapsed;
-
-                PlatformPage.Opacity = 0;
-                PlatformPage.Visibility = System.Windows.Visibility.Collapsed;
-            }
-            else
-            {
-                //Display User Page & Platform Page
-                ConnectPage.Opacity = 0;
-                ConnectPage.Visibility = System.Windows.Visibility.Collapsed;
-                userTextBox.IsEnabled = false;
-                passwordBox.IsEnabled = false;
-                Connect.IsEnabled = false;
-
-                AddressPage.Opacity = 0;
-                AddressPage.Visibility = System.Windows.Visibility.Collapsed;
-
-                UserPage.Opacity = 100;
-                UserPage.Visibility = System.Windows.Visibility.Visible;
-
-                PlatformPage.Opacity = 100;
-                PlatformPage.Visibility = System.Windows.Visibility.Visible;
-                
-            }
-
-        }
-
         private void Deco_Click(object sender, EventArgs e)
         {
-            ClaroClient.instance.invalidateClient();
-            Disconnected.Begin();
-            updatePanels(true);
+            string url = _viewModel.Settings.DomainSetting;
+            _viewModel.ResetViewModel();
+            _viewModel.Settings.DomainSetting = url;
+        }
+
+        private void passwordBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Connect_Button(sender, null);
+            }
         }
     }
 }

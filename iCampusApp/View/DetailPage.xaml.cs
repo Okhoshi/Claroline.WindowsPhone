@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
-using ClarolineApp.Model;
+using ClarolineApp.Settings;
 using Microsoft.Phone.Shell;
 using ClarolineApp.VM;
 using System.ComponentModel;
@@ -44,7 +44,7 @@ namespace ClarolineApp
         public DetailPage()
         {
             InitializeComponent();
-            ClaroClient.instance.PropertyChanged += ClaroClient_propertyChanged;
+            ClaroClient.Instance.PropertyChanged += ClaroClient_propertyChanged;
         }
 
         private void ClaroClient_propertyChanged(object sender, PropertyChangedEventArgs e)

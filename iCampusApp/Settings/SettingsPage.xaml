@@ -9,256 +9,14 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls" 
     xmlns:System="clr-namespace:System;assembly=mscorlib" 
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
+    xmlns:my="clr-namespace:ClarolineApp.Settings" xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions" 
     x:Class="ClarolineApp.Settings.SettingsPage"
     SupportedOrientations="Portrait" Orientation="Portrait"
-	d:DataContext="{d:DesignData ../SampleData/AppSettingsSampleData.xaml}"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
-	
     shell:SystemTray.IsVisible="True"
-	shell:SystemTray.Opacity="0" xmlns:my="clr-namespace:ClarolineApp.Settings">
-    
-    <phone:PhoneApplicationPage.Resources>
-        <ControlTemplate x:Key="ConnectPageTemplate" TargetType="controls:PivotItem"/>
-        <Storyboard x:Name="Connected">
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="UserPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="180"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="UserPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="1"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="ConnectPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="-180"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ConnectPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ConnectPage">
-        		<DiscreteObjectKeyFrame KeyTime="0">
-        			<DiscreteObjectKeyFrame.Value>
-        				<Visibility>Visible</Visibility>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        		<DiscreteObjectKeyFrame KeyTime="0:0:1">
-        			<DiscreteObjectKeyFrame.Value>
-        				<Visibility>Collapsed</Visibility>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.IsEnabled)" Storyboard.TargetName="passwordBox">
-        		<DiscreteObjectKeyFrame KeyTime="0:0:1">
-        			<DiscreteObjectKeyFrame.Value>
-        				<System:Boolean>False</System:Boolean>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.IsEnabled)" Storyboard.TargetName="Connect">
-        		<DiscreteObjectKeyFrame KeyTime="0:0:1">
-        			<DiscreteObjectKeyFrame.Value>
-        				<System:Boolean>False</System:Boolean>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.IsEnabled)" Storyboard.TargetName="userTextBox">
-        		<DiscreteObjectKeyFrame KeyTime="0:0:1">
-        			<DiscreteObjectKeyFrame.Value>
-        				<System:Boolean>False</System:Boolean>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="UserPage">
-        		<DiscreteObjectKeyFrame KeyTime="0">
-        			<DiscreteObjectKeyFrame.Value>
-        				<Visibility>Visible</Visibility>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        		<DiscreteObjectKeyFrame KeyTime="0:0:1">
-        			<DiscreteObjectKeyFrame.Value>
-        				<Visibility>Visible</Visibility>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="PlatformPage">
-        		<DiscreteObjectKeyFrame KeyTime="0">
-        			<DiscreteObjectKeyFrame.Value>
-        				<Visibility>Visible</Visibility>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="PlatformPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="1"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="AddressPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="-180"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)" Storyboard.TargetName="AddressPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="1"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="AddressPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="AddressPage">
-        		<DiscreteObjectKeyFrame KeyTime="0">
-        			<DiscreteObjectKeyFrame.Value>
-        				<Visibility>Visible</Visibility>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        		<DiscreteObjectKeyFrame KeyTime="0:0:1">
-        			<DiscreteObjectKeyFrame.Value>
-        				<Visibility>Collapsed</Visibility>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.IsEnabled)" Storyboard.TargetName="siteTextBox">
-        		<DiscreteObjectKeyFrame KeyTime="0:0:1">
-        			<DiscreteObjectKeyFrame.Value>
-        				<System:Boolean>False</System:Boolean>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.IsEnabled)" Storyboard.TargetName="toggleSwitch">
-        		<DiscreteObjectKeyFrame KeyTime="0:0:1">
-        			<DiscreteObjectKeyFrame.Value>
-        				<System:Boolean>False</System:Boolean>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.IsEnabled)" Storyboard.TargetName="WebServiceTextBox">
-        		<DiscreteObjectKeyFrame KeyTime="0:0:1">
-        			<DiscreteObjectKeyFrame.Value>
-        				<System:Boolean>False</System:Boolean>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="PlatformPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="180"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
-        	</DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-    	<Storyboard x:Name="Disconnected">
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="ConnectPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="180"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ConnectPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="1"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ConnectPage">
-        		<DiscreteObjectKeyFrame KeyTime="0">
-        			<DiscreteObjectKeyFrame.Value>
-        				<Visibility>Visible</Visibility>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        		<DiscreteObjectKeyFrame KeyTime="0:0:1">
-        			<DiscreteObjectKeyFrame.Value>
-        				<Visibility>Visible</Visibility>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="UserPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="-180"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="UserPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="UserPage">
-        		<DiscreteObjectKeyFrame KeyTime="0">
-        			<DiscreteObjectKeyFrame.Value>
-        				<Visibility>Visible</Visibility>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        		<DiscreteObjectKeyFrame KeyTime="0:0:1">
-        			<DiscreteObjectKeyFrame.Value>
-        				<Visibility>Collapsed</Visibility>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="AddressPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="180"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="AddressPage">
-        		<DiscreteObjectKeyFrame KeyTime="0">
-        			<DiscreteObjectKeyFrame.Value>
-        				<Visibility>Visible</Visibility>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="AddressPage">
-        		<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-        		<EasingDoubleKeyFrame KeyTime="0:0:1" Value="1"/>
-        	</DoubleAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.IsEnabled)" Storyboard.TargetName="siteTextBox">
-        		<DiscreteObjectKeyFrame KeyTime="0">
-        			<DiscreteObjectKeyFrame.Value>
-        				<System:Boolean>True</System:Boolean>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.IsEnabled)" Storyboard.TargetName="toggleSwitch">
-        		<DiscreteObjectKeyFrame KeyTime="0">
-        			<DiscreteObjectKeyFrame.Value>
-        				<System:Boolean>True</System:Boolean>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        	<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Control.IsEnabled)" Storyboard.TargetName="WebServiceTextBox">
-        		<DiscreteObjectKeyFrame KeyTime="0">
-        			<DiscreteObjectKeyFrame.Value>
-        				<System:Boolean>True</System:Boolean>
-        			</DiscreteObjectKeyFrame.Value>
-        		</DiscreteObjectKeyFrame>
-        	</ObjectAnimationUsingKeyFrames>
-        </Storyboard>
-    	<Storyboard x:Name="DeactivateAdvanced">
-    		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.VerticalAlignment)" Storyboard.TargetName="stackPanel2">
-    			<DiscreteObjectKeyFrame KeyTime="0">
-    				<DiscreteObjectKeyFrame.Value>
-    					<VerticalAlignment>Top</VerticalAlignment>
-    				</DiscreteObjectKeyFrame.Value>
-    			</DiscreteObjectKeyFrame>
-    			<DiscreteObjectKeyFrame KeyTime="0:0:0.4">
-    				<DiscreteObjectKeyFrame.Value>
-    					<VerticalAlignment>Stretch</VerticalAlignment>
-    				</DiscreteObjectKeyFrame.Value>
-    			</DiscreteObjectKeyFrame>
-    		</ObjectAnimationUsingKeyFrames>
-    		<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="stackPanel2">
-    			<EasingDoubleKeyFrame KeyTime="0" Value="230"/>
-    			<EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
-    		</DoubleAnimationUsingKeyFrames>
-    	</Storyboard>
-    	<Storyboard x:Name="ActivateAdvanced">
-    		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.VerticalAlignment)" Storyboard.TargetName="stackPanel2">
-    			<DiscreteObjectKeyFrame KeyTime="0">
-    				<DiscreteObjectKeyFrame.Value>
-    					<VerticalAlignment>Top</VerticalAlignment>
-    				</DiscreteObjectKeyFrame.Value>
-    			</DiscreteObjectKeyFrame>
-    			<DiscreteObjectKeyFrame KeyTime="0:0:0.5">
-    				<DiscreteObjectKeyFrame.Value>
-    					<VerticalAlignment>Stretch</VerticalAlignment>
-    				</DiscreteObjectKeyFrame.Value>
-    			</DiscreteObjectKeyFrame>
-    		</ObjectAnimationUsingKeyFrames>
-    		<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="stackPanel2">
-    			<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-    			<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="230"/>
-    		</DoubleAnimationUsingKeyFrames>
-    	</Storyboard>
-    </phone:PhoneApplicationPage.Resources>
-
-	<phone:PhoneApplicationPage.Style>
+	shell:SystemTray.Opacity="0" d:DataContext="{d:DesignData /SampleData/ClarolineVMSampleData.xaml}">
+  
+  <phone:PhoneApplicationPage.Style>
 		<StaticResource ResourceKey="TransitionPageStyle"/>
 	</phone:PhoneApplicationPage.Style>
 
@@ -275,82 +33,153 @@
     <!--Exemple de code illustrant l'utilisation de l'ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton x:Name="Deco" Text="Déconnexion" Click="Deco_Click" IconUri="/icons/appbar.cancel.rest.png"/>
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem x:Name="Reset" Text="Réinitialiser" Click="Reset_Click"/>
+            	<shell:ApplicationBarMenuItem x:Name="Reset" Text="Réinitialiser" Click="Reset_Click"/>
             </shell:ApplicationBar.MenuItems>
+            <shell:ApplicationBarIconButton x:Name="Deco" Text="Déconnexion" Click="Deco_Click" IconUri="/icons/appbar.cancel.rest.png"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
-    <!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+	<!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
+	<Grid x:Name="LayoutRoot" Background="Transparent" >
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="AdvancedSettings">
+				<VisualStateGroup.Transitions>
+					<VisualTransition GeneratedDuration="0:0:0.3">
+						<VisualTransition.GeneratedEasingFunction>
+							<CircleEase EasingMode="EaseOut"/>
+						</VisualTransition.GeneratedEasingFunction>
+					</VisualTransition>
+				</VisualStateGroup.Transitions>
+				<VisualState x:Name="Enabled"/>
+				<VisualState x:Name="Disabled">
+					<Storyboard>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="stackPanel2">
+							<DiscreteObjectKeyFrame KeyTime="0">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Collapsed</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="stackPanel2" d:IsOptimized="True"/>
+					</Storyboard>
+				</VisualState>
+			</VisualStateGroup>
+			<VisualStateGroup x:Name="ConnectionStatus">
+				<VisualStateGroup.Transitions>
+					<VisualTransition GeneratedDuration="0:0:0.3"/>
+				</VisualStateGroup.Transitions>
+				<VisualState x:Name="Connected">
+					<Storyboard>
+						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ConnectPage" d:IsOptimized="True"/>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="ConnectPage">
+							<DiscreteObjectKeyFrame KeyTime="0">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Collapsed</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						<DoubleAnimation Duration="0" To="-180" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="ConnectPage" d:IsOptimized="True"/>
+						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="AddressPage" d:IsOptimized="True"/>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="AddressPage">
+							<DiscreteObjectKeyFrame KeyTime="0">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Collapsed</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						<DoubleAnimation Duration="0" To="-180" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="AddressPage" d:IsOptimized="True"/>
+					</Storyboard>
+				</VisualState>
+				<VisualState x:Name="Disconnected">
+					<Storyboard>
+						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="UserPage" d:IsOptimized="True"/>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="UserPage">
+							<DiscreteObjectKeyFrame KeyTime="0">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Collapsed</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						<DoubleAnimation Duration="0" To="180" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="UserPage" d:IsOptimized="True"/>
+						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="PlatformPage" d:IsOptimized="True"/>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="PlatformPage">
+							<DiscreteObjectKeyFrame KeyTime="0">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Collapsed</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						<DoubleAnimation Duration="0" To="180" Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="PlatformPage" d:IsOptimized="True"/>
+					</Storyboard>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
 
-        <!--TitlePanel contient le nom de l'application et le titre de la page-->
-    	<controls:Pivot x:Name="SettingsPivot" Title="Claroline Explorer" d:LayoutOverrides="GridBox">
-    		<controls:PivotItem x:Name="pivotItem" Header="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_User_PI, Converter={StaticResource ToLower}}" Margin="12,28,12,0">
-    			<controls:PivotItem.Projection>
-    				<PlaneProjection/>
-    			</controls:PivotItem.Projection>
+		<i:Interaction.Behaviors>
+			<ec:DataStateBehavior Binding="{Binding settings.AdvancedSwitchSetting}" TrueState="Enabled" FalseState="Disabled" Value="True"/>
+			<ec:DataStateBehavior Binding="{Binding isConnected}" Value="True" TrueState="Connected" FalseState="Disconnected"/>
+		</i:Interaction.Behaviors>
+<!--TitlePanel contient le nom de l'application et le titre de la page-->
+		<controls:Pivot x:Name="SettingsPivot" Title="{Binding PlatformSetting}" d:LayoutOverrides="GridBox" DataContext="{Binding settings}">
+			<controls:PivotItem x:Name="pivotItem" Header="{Binding LocalizedResources.SettingsPage_User_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Margin="12,28,12,0">
 
-                <Grid>
+				<Grid>
 
-    				<StackPanel x:Name="ConnectPage" Margin="0">
-    					<StackPanel.Projection>
-    						<PlaneProjection/>
-    					</StackPanel.Projection>
-    					<TextBlock HorizontalAlignment="Center" x:Name="userLabel" Text="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_User_Username, Converter={StaticResource ToLower}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
-    					<TextBox Height="72" HorizontalAlignment="Center" x:Name="userTextBox" Text="{Binding UsernameSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
-    					<TextBlock HorizontalAlignment="Center" x:Name="passLabel" Text="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_User_Password, Converter={StaticResource ToLower}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}"/>
-    					<PasswordBox Height="72" HorizontalAlignment="Center" x:Name="passwordBox" VerticalAlignment="Top" Width="412" Password="{Binding PasswordSetting, Mode=TwoWay}"/>
-    					<Button x:Name="Connect" Content="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_User_ConnectButton}" Margin="24,40,24,0" Click="Button_Click_2"/>
-    				</StackPanel>
-    				<StackPanel x:Name="UserPage" Margin="0">
-    					<StackPanel.Projection>
-    						<PlaneProjection/>
-    					</StackPanel.Projection>
-    					<TextBlock HorizontalAlignment="Left" x:Name="FNlabel" Text="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_User_FirstName, Converter={StaticResource ToLower}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}" Width="Auto" />
-                        <TextBlock HorizontalAlignment="Left" x:Name="FNvalue" Text="{Binding UserSetting.firstName, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
-    					<TextBlock HorizontalAlignment="Left" x:Name="LNlabel" Text="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_User_LastName, Converter={StaticResource ToLower}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
-                        <TextBlock HorizontalAlignment="Left" x:Name="LNvalue" Text="{Binding UserSetting.lastName, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
-    					<TextBlock HorizontalAlignment="Left" x:Name="NOMAlabel" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="12,0,0,0" Text="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_User_NOMA, Converter={StaticResource ToLower}}" />
-                        <TextBlock HorizontalAlignment="Left" x:Name="NOMAvalue" Text="{Binding UserSetting.officialCode, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
-    				</StackPanel>
-    			</Grid>
-            </controls:PivotItem>
-    		<controls:PivotItem Header="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_Platform_PI, Converter={StaticResource ToLower}}" Margin="12,28,12,0">
-    			<Grid Margin="0">
-    				<StackPanel x:Name="AddressPage" Orientation="Vertical" Margin="0" RenderTransformOrigin="0.5,0.5">
-    					<StackPanel.RenderTransform>
-    						<CompositeTransform/>
-    					</StackPanel.RenderTransform>
-    					<StackPanel.Projection>
-    						<PlaneProjection/>
-    					</StackPanel.Projection>
-    					<TextBlock HorizontalAlignment="Center" x:Name="SiteLabel" Text="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_Platform_URL, Converter={StaticResource ToLower}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
-    					<TextBox Height="72" HorizontalAlignment="Center" x:Name="siteTextBox" Text="{Binding DomainSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
-    					<toolkit:ToggleSwitch x:Name="toggleSwitch" Header="" Margin="22,-12,22,0" Content="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_Platform_AdvancedSwitch}" IsChecked="{Binding AdvancedSwitchSetting, Mode=TwoWay}" Checked="toggleSwitch_Checked" Unchecked="toggleSwitch_Unchecked"/>
-    					<StackPanel x:Name="stackPanel2" Margin="22,0" Orientation="Vertical" Height="230">
-    						<TextBlock HorizontalAlignment="Center" x:Name="WebServiceLabel" Text="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_Platform_WebServicePath, Converter={StaticResource ToLower}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
-    						<TextBox Height="72" HorizontalAlignment="Center" x:Name="WebServiceTextBox" Text="{Binding WebServiceSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
-    					</StackPanel>
-    				</StackPanel>
-    				<StackPanel x:Name="PlatformPage" Margin="0">
-    					<StackPanel.Projection>
-    						<PlaneProjection/>
-    					</StackPanel.Projection>
-    					<TextBlock HorizontalAlignment="Left" x:Name="NameLabel" Text="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_Platform_Name, Converter={StaticResource ToLower}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}" Width="Auto" Margin="12,0,0,0" />
-                        <TextBlock HorizontalAlignment="Left" x:Name="NameValue" Text="{Binding PlatformSetting, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
-    					<TextBlock HorizontalAlignment="Left" x:Name="InstLabel" Text="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_Platform_Institute, Converter={StaticResource ToLower}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="12,0,0,0"/>
-                        <TextBlock HorizontalAlignment="Left" x:Name="InstValue" Text="{Binding IntituteSetting, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
-    				</StackPanel>
-    			</Grid>
-    		</controls:PivotItem>
-    		<controls:PivotItem Header="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_Config_PI, Converter={StaticResource ToLower}}">
-    			<StackPanel Orientation="Vertical" d:LayoutOverrides="Height">
-    				<toolkit:ToggleSwitch  Margin="0" IsChecked="{Binding Path=CellularDataEnabledSetting, Mode=TwoWay}" Content="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.SettingsPage_Config_CellularData}" />
-    			</StackPanel>
-    		</controls:PivotItem>
-        </controls:Pivot>
-    </Grid>
+					<StackPanel x:Name="ConnectPage" Margin="0">
+						<StackPanel.Projection>
+							<PlaneProjection/>
+						</StackPanel.Projection>
+						<TextBlock HorizontalAlignment="Center" x:Name="userLabel" Text="{Binding LocalizedResources.SettingsPage_User_Username, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
+						<TextBox Height="72" HorizontalAlignment="Center" x:Name="userTextBox" Text="{Binding UsernameSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
+						<TextBlock HorizontalAlignment="Center" x:Name="passLabel" Text="{Binding LocalizedResources.SettingsPage_User_Password, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}"/>
+						<PasswordBox Height="72" HorizontalAlignment="Center" x:Name="passwordBox" VerticalAlignment="Top" Width="412" Password="{Binding PasswordSetting, Mode=TwoWay}" Margin="22,0" KeyDown="passwordBox_KeyDown"/>
+						<Button x:Name="Connect" Content="{Binding LocalizedResources.SettingsPage_User_ConnectButton, Source={StaticResource LocalizedStrings}}" Margin="24,40,24,0" Click="Connect_Button"/>
+					</StackPanel>
+					<StackPanel x:Name="UserPage" Margin="0">
+						<StackPanel.Projection>
+							<PlaneProjection/>
+						</StackPanel.Projection>
+						<TextBlock HorizontalAlignment="Left" x:Name="FNlabel" Text="{Binding LocalizedResources.SettingsPage_User_FirstName, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}" Width="Auto" />
+						<TextBlock HorizontalAlignment="Left" x:Name="FNvalue" Text="{Binding UserSetting.firstName, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
+						<TextBlock HorizontalAlignment="Left" x:Name="LNlabel" Text="{Binding LocalizedResources.SettingsPage_User_LastName, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+						<TextBlock HorizontalAlignment="Left" x:Name="LNvalue" Text="{Binding UserSetting.lastName, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
+						<TextBlock HorizontalAlignment="Left" x:Name="NOMAlabel" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="12,0,0,0" Text="{Binding LocalizedResources.SettingsPage_User_NOMA, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" />
+						<TextBlock HorizontalAlignment="Left" x:Name="NOMAvalue" Text="{Binding UserSetting.officialCode, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
+					</StackPanel>
+				</Grid>
+			</controls:PivotItem>
+			<controls:PivotItem Header="{Binding LocalizedResources.SettingsPage_Platform_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Margin="12,28,12,0">
+				<Grid Margin="0">
+					<StackPanel x:Name="AddressPage" Orientation="Vertical" Margin="0" RenderTransformOrigin="0,0">
+						<StackPanel.Projection>
+							<PlaneProjection/>
+						</StackPanel.Projection>
+						<TextBlock HorizontalAlignment="Center" x:Name="SiteLabel" Text="{Binding LocalizedResources.SettingsPage_Platform_URL, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
+						<TextBox Height="72" HorizontalAlignment="Center" x:Name="siteTextBox" Text="{Binding DomainSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
+						<toolkit:ToggleSwitch x:Name="toggleSwitch" Header="" Margin="22,-12,22,0" Content="{Binding LocalizedResources.SettingsPage_Platform_AdvancedSwitch, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding AdvancedSwitchSetting, Mode=TwoWay}"/>
+						<StackPanel x:Name="stackPanel2" Margin="22,0" Orientation="Vertical" Height="230">
+							<TextBlock HorizontalAlignment="Center" x:Name="WebServiceLabel" Text="{Binding LocalizedResources.SettingsPage_Platform_WebServicePath, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
+							<TextBox Height="72" HorizontalAlignment="Center" x:Name="WebServiceTextBox" Text="{Binding WebServiceSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
+						</StackPanel>
+					</StackPanel>
+					<StackPanel x:Name="PlatformPage" Margin="0">
+						<StackPanel.Projection>
+							<PlaneProjection/>
+						</StackPanel.Projection>
+						<TextBlock HorizontalAlignment="Left" x:Name="NameLabel" Text="{Binding LocalizedResources.SettingsPage_Platform_Name, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}" Width="Auto" Margin="12,0,0,0" />
+						<TextBlock HorizontalAlignment="Left" x:Name="NameValue" Text="{Binding PlatformSetting, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
+						<TextBlock HorizontalAlignment="Left" x:Name="InstLabel" Text="{Binding LocalizedResources.SettingsPage_Platform_Institute, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="12,0,0,0"/>
+						<TextBlock HorizontalAlignment="Left" x:Name="InstValue" Text="{Binding InstituteSetting}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
+					</StackPanel>
+				</Grid>
+			</controls:PivotItem>
+			<controls:PivotItem Header="{Binding LocalizedResources.SettingsPage_Config_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}">
+				<StackPanel Orientation="Vertical" d:LayoutOverrides="Height">
+					<toolkit:ToggleSwitch  Margin="0" IsChecked="{Binding CellularDataEnabledSetting, Mode=TwoWay}" Content="{Binding LocalizedResources.SettingsPage_Config_CellularData, Source={StaticResource LocalizedStrings}}" />
+				</StackPanel>
+			</controls:PivotItem>
+		</controls:Pivot>
+	</Grid>
 
 </phone:PhoneApplicationPage>

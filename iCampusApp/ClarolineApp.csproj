@@ -42,6 +42,7 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>Rules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -62,6 +63,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MvvmLightLibs.4.1.27.0\lib\sl4-wp71\GalaSoft.MvvmLight.WP71.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions" />
     <Reference Include="Microsoft.Phone">
       <HintPath>..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\Silverlight\v4.0\Profile\WindowsPhone71\Microsoft.Phone.dll</HintPath>
     </Reference>
@@ -118,19 +120,19 @@
     <Compile Include="Model\ClarolineDataContext.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\CL_Annonce.cs">
+    <Compile Include="Model\Annonce.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\CL_Document.cs">
+    <Compile Include="Model\Document.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\CL_Notification.cs">
+    <Compile Include="Model\Notification.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\CL_Description.cs">
+    <Compile Include="Model\Description.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\CL_Event.cs" />
+    <Compile Include="Model\Event.cs" />
     <Compile Include="Model\Cours.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -140,7 +142,7 @@
     <Compile Include="Model\ResourceModel.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\User.cs">
+    <Compile Include="Settings\User.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TemplateSelector\ResourceListTemplateSelector.cs" />
@@ -238,7 +240,6 @@
     <Content Include="icons\appbar.arrow.up.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="IconControl.csproj" />
     <Content Include="icons\appbar.cancel.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -271,6 +272,9 @@
   </ItemGroup>
   <ItemGroup>
     <DesignData Include="SampleData\AnnoncePageVMSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </DesignData>
+    <DesignData Include="SampleData\ClarolineVMSampleData.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </DesignData>
   </ItemGroup>

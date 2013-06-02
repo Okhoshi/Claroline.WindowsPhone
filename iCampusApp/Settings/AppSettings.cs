@@ -2,7 +2,7 @@
 using System.IO.IsolatedStorage;
 using System.Diagnostics;
 using System.Collections.Generic;
-using ClarolineApp.Model;
+using ClarolineApp.Settings;
 using System.ComponentModel;
 using System.Windows;
 
@@ -12,7 +12,7 @@ namespace ClarolineApp.Settings
     {
         private static AppSettings _instance;
 
-        public static AppSettings instance
+        public static AppSettings Instance
         {
             get {
                 if (_instance == null)
@@ -24,11 +24,11 @@ namespace ClarolineApp.Settings
         }
 
 
-        // Our isolated storage settings
+        // Our isolated storage Settings
 
         IsolatedStorageSettings settings;
 
-        // The isolated storage key names of our settings
+        // The isolated storage key names of our Settings
 
         internal const string DomainSettingKeyName = "DomainSetting";
         internal const string WebServiceSettingKeyName = "WebServiceSetting";
@@ -43,7 +43,7 @@ namespace ClarolineApp.Settings
         internal const string PlatformSettingKeyName = "PlatformSetting";
         internal const string UserSettingKeyName = "UserSetting";
 
-        // The default value of our settings
+        // The default value of our Settings
 
 #if DEBUG
         const string UsernameSettingDefault = "qdevos";
@@ -68,8 +68,13 @@ namespace ClarolineApp.Settings
         {
             if (!DesignerProperties.IsInDesignTool)
             {
-                // Get the settings for this application.
+                // Get the Settings for this application.
                 settings = IsolatedStorageSettings.ApplicationSettings;
+            }
+
+            if (UserSetting != null)
+            {
+                UserSetting.PropertyChanged += UserSetting_PropertyChanged;
             }
         }
 
@@ -87,32 +92,32 @@ namespace ClarolineApp.Settings
 
         /// <returns></returns>
 
-        public bool AddOrUpdateValue(string Key, Object value)
+        public bool AddOrUpdateValue(string key, Object value)
         {
             bool valueChanged = false;
 
             // If the key exists
 
-            if (settings.Contains(Key))
+            if (settings.Contains(key))
             {
                 // If the value has changed
 
-                if (settings[Key] != value)
+                if (settings[key] != value)
                 {
                     // Store the new value
 
-                    settings[Key] = value;
+                    settings[key] = value;
                     valueChanged = true;
-                    NotifyPropertyChanged(Key);
+                    NotifyPropertyChanged(key);
                 }
             }
             // Otherwise create the key.
 
             else
             {
-                settings.Add(Key, value);
+                settings.Add(key, value);
                 valueChanged = true;
-                NotifyPropertyChanged(Key);
+                NotifyPropertyChanged(key);
             }
 
             return valueChanged;
@@ -134,15 +139,15 @@ namespace ClarolineApp.Settings
 
         /// <returns></returns>
 
-        public T GetValueOrDefault<T>(string Key, T defaultValue)
+        public T GetValueOrDefault<T>(string key, T defaultValue)
         {
             T value;
 
             // If the key exists, retrieve the value.
 
-            if (settings.Contains(Key))
+            if (settings.Contains(key))
             {
-                value = (T)settings[Key];
+                value = (T)settings[key];
             }
             // Otherwise, use the default value.
 
@@ -155,7 +160,7 @@ namespace ClarolineApp.Settings
 
         /// <summary>
 
-        /// Save the settings.
+        /// Save the Settings.
 
         /// </summary>
 
@@ -163,7 +168,6 @@ namespace ClarolineApp.Settings
         {
             settings.Save();
         }
-
 
         /// <summary>
 
@@ -185,7 +189,6 @@ namespace ClarolineApp.Settings
                 }
             }
         }
-
 
         /// <summary>
 
@@ -251,7 +254,6 @@ namespace ClarolineApp.Settings
             }
         }
 
-
         /// <summary>
 
         /// Property to get and set a RadioButton Setting Key.
@@ -272,7 +274,6 @@ namespace ClarolineApp.Settings
                 }
             }
         }
-
 
         /// <summary>
 
@@ -322,7 +323,7 @@ namespace ClarolineApp.Settings
 
         /// </summary>
 
-        public string UsernameSetting
+        public string UserNameSetting
         {
             get
             {
@@ -358,7 +359,7 @@ namespace ClarolineApp.Settings
             }
         }
 
-        public string IntituteSetting
+        public string InstituteSetting
         {
             get
             {
@@ -402,11 +403,22 @@ namespace ClarolineApp.Settings
             }
             set
             {
+                if (UserSetting != null)
+                {
+                    UserSetting.PropertyChanged -= UserSetting_PropertyChanged;
+                }
+
                 if (AddOrUpdateValue(UserSettingKeyName, value))
                 {
                     Save();
                 }
+                UserSetting.PropertyChanged += UserSetting_PropertyChanged;
             }
+        }
+
+        private void UserSetting_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            NotifyPropertyChanged(UserSettingKeyName);
         }
 
         #region INotifyPropertyChanged Members
@@ -426,5 +438,15 @@ namespace ClarolineApp.Settings
         }
 
         #endregion
+
+        internal void Reset()
+        {
+            UserSetting = new User();
+            PlatformSetting = PlatformSettingDefault;
+            PasswordSetting = PasswordSettingDefault;
+            UserNameSetting = UsernameSettingDefault;
+            InstituteSetting = InstituteSettingDefault;
+            DomainSetting = DomainSettingDefault;
+        }
     }
 }

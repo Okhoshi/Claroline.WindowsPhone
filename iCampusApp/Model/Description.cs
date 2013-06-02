@@ -9,11 +9,11 @@ using System.Text;
 namespace ClarolineApp.Model
 {
 
-    public class CL_Description : CL_Annonce
+    public class Description : Annonce
     {
-        public new const string LABEL = "CLDSC";
+        public new const string Label = "CLDSC";
 
-        public CL_Description()
+        public Description()
             : base()
         {
             DiscKey = SupportedModules.CLDSC;
@@ -22,7 +22,7 @@ namespace ClarolineApp.Model
         private int _category;
 
         [Column(CanBeNull = true)]
-        public int category
+        public int Category
         {
             get
             {
@@ -32,9 +32,9 @@ namespace ClarolineApp.Model
             {
                 if (_category != value)
                 {
-                    NotifyPropertyChanging("category");
+                    NotifyPropertyChanging("Category");
                     _category = value;
-                    NotifyPropertyChanged("category");
+                    NotifyPropertyChanged("Category");
                 }
             }
         }

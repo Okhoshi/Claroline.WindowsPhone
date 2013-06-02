@@ -242,7 +242,7 @@ namespace ClarolineApp.Model
         private void attach_Resource(ResourceModel _resource)
         {
             NotifyPropertyChanging("Resources");
-            _resource.resourceList = this;
+            _resource.ResourceList = this;
             //_resource.PropertyChanged += resource_PropertyChanged;
             NotifyPropertyChanged("Resources");
         }
@@ -252,7 +252,7 @@ namespace ClarolineApp.Model
         private void detach_Resource(ResourceModel _resource)
         {
             NotifyPropertyChanging("Resources");
-            _resource.resourceList = null;
+            _resource.ResourceList = null;
             //_resource.PropertyChanged -= resource_PropertyChanged;
             NotifyPropertyChanged("Resources");
         }

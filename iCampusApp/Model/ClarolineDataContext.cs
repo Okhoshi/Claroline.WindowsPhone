@@ -23,50 +23,50 @@ namespace ClarolineApp.Model
         public Table<Cours> Cours_Table;
         public Table<ResourceList> ResourceList_Table;
         public Table<ResourceModel> Resources_Table;
-        public Table<CL_Notification> Notifications_Table;
+        public Table<Notification> Notifications_Table;
 
-        public IQueryable<CL_Annonce> Annonces_Table
+        public IQueryable<Annonce> Annonces_Table
         {
             get
             {
-                return from CL_Annonce a
+                return from Annonce a
                        in Resources_Table
-                       where a is CL_Annonce
-                       && !(a is CL_Description)
-                       && !(a is CL_Event)
+                       where a is Annonce
+                       && !(a is Description)
+                       && !(a is Event)
                        select a;
             }
         }
 
-        public IQueryable<CL_Document> Documents_Table
+        public IQueryable<Document> Documents_Table
         {
             get
             {
-                return from CL_Document d
+                return from Document d
                        in Resources_Table
-                       where d is CL_Document
+                       where d is Document
                        select d;
             }
         }
 
-        public IQueryable<CL_Description> Descriptions_Table
+        public IQueryable<Description> Descriptions_Table
         {
             get
             {
-                return from CL_Description d
+                return from Description d
                        in Resources_Table
-                       where d is CL_Description
+                       where d is Description
                        select d;
             }
         }
 
-        public IQueryable<CL_Event> Events_Table
+        public IQueryable<Event> Events_Table
         {
             get
             {
-                return from CL_Event e
+                return from Event e
                        in Resources_Table
-                       where e is CL_Event
+                       where e is Event
                        select e;
             }
         }

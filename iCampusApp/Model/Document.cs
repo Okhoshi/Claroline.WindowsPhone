@@ -13,11 +13,11 @@ using System.Text;
 namespace ClarolineApp.Model
 {
 
-    public class CL_Document : ResourceModel
+    public class Document : ResourceModel
     {
         // Assign handlers for the add and remove operations, respectively.
 
-        public CL_Document()
+        public Document()
             : base()
         {
             _Date = new DateTime(DateTime.Today.Year, 9, 20);
@@ -30,7 +30,7 @@ namespace ClarolineApp.Model
             DiscKey = SupportedModules.CLDOC;
         }
 
-        public new const string LABEL = "CLDOC";
+        public new const string Label = "CLDOC";
 
         private string _path;
 
@@ -171,9 +171,9 @@ namespace ClarolineApp.Model
 
         public override bool Equals(object obj)
         {
-            if (obj != null && obj.GetType().Equals(typeof(CL_Document)))
+            if (obj != null && obj.GetType().Equals(typeof(Document)))
             {
-                CL_Document fld = obj as CL_Document;
+                Document fld = obj as Document;
                 return (fld._resourceListId == this._resourceListId) && (fld.path == this.path);
             }
             return false;
@@ -184,7 +184,7 @@ namespace ClarolineApp.Model
             return base.GetHashCode();
         }
 
-        public CL_Document getRoot()
+        public Document getRoot()
         {
             string Find = (_isFolder) ? ("/" + _Title) : ("/" + _Title + "." + _ext);
             string rootPath = _path.Remove(_path.LastIndexOf(Find, StringComparison.OrdinalIgnoreCase), Find.Length);
@@ -194,7 +194,7 @@ namespace ClarolineApp.Model
             }
             else
             {
-                IEnumerable<CL_Document> list = resourceList.Resources.Cast<CL_Document>();
+                IEnumerable<Document> list = ResourceList.Resources.Cast<Document>();
 
                 return list.First(d => d.path == rootPath);
             }
@@ -202,22 +202,22 @@ namespace ClarolineApp.Model
 
         private Cours rootCours;
 
-        public ObservableCollection<CL_Document> getContent()
+        public ObservableCollection<Document> getContent()
         {
             if (isFolder)
             {
                 ResourceList rl = this.title == "/"
-                                ? rootCours.Resources.FirstOrDefault(l => l.ressourceType == typeof(CL_Document))
-                                : resourceList;
+                                ? rootCours.Resources.FirstOrDefault(l => l.ressourceType == typeof(Document))
+                                : ResourceList;
 
                 if (rl == null)
                 {
-                    return new ObservableCollection<CL_Document>();
+                    return new ObservableCollection<Document>();
                 }
 
-                IEnumerable<CL_Document> list = rl.Resources.Cast<CL_Document>();
+                IEnumerable<Document> list = rl.Resources.Cast<Document>();
 
-                return new ObservableCollection<CL_Document>(
+                return new ObservableCollection<Document>(
                                 list.Where(d => d.path == ((d.isFolder)
                                                          ? (this._path + "/" + d.title)
                                                          : (this._path + "/" + d.title + "." + d.extension)
@@ -226,19 +226,19 @@ namespace ClarolineApp.Model
             }
             else
             {
-                return new ObservableCollection<CL_Document>();
+                return new ObservableCollection<Document>();
             }
         }
 
-        public CL_Document GetRootDocument()
+        public Document GetRootDocument()
         {
-            return GetRootDocument(this.resourceList.Cours);
+            return GetRootDocument(this.ResourceList.Cours);
         }
 
-        public static CL_Document GetRootDocument(Cours cours)
+        public static Document GetRootDocument(Cours cours)
         {
-            ResourceList list = cours.Resources.FirstOrDefault(rl => rl.ressourceType.Equals(typeof(CL_Document)));
-            return new CL_Document()
+            ResourceList list = cours.Resources.FirstOrDefault(rl => rl.ressourceType.Equals(typeof(Document)));
+            return new Document()
             {
                 path = "",
                 isFolder = true,
@@ -257,7 +257,7 @@ namespace ClarolineApp.Model
         {
             if (!isFolder)
             {
-                String token = await ClaroClient.instance.makeOperationAsync(SupportedModules.CLDOC, SupportedMethods.getSingleResource, resourceList.Cours, path);
+                String token = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.CLDOC, SupportedMethods.GetSingleResource, ResourceList.Cours, path);
 
                 using (JsonTextReader reader = new JsonTextReader(new StringReader(token)))
                 {
@@ -274,7 +274,7 @@ namespace ClarolineApp.Model
 
                 WebBrowserTask open = new WebBrowserTask()
                 {
-                    Uri = new Uri(Uri.EscapeUriString(AppSettings.instance.DomainSetting + AppSettings.instance.WebServiceSetting + "download.php?token=" + token), UriKind.Absolute)
+                    Uri = new Uri(Uri.EscapeUriString(AppSettings.Instance.DomainSetting + AppSettings.Instance.WebServiceSetting + "download.php?token=" + token), UriKind.Absolute)
                 };
                 open.Show();
             }

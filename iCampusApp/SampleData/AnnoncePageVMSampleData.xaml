@@ -1,13 +1,13 @@
-﻿<VM:DetailPageVM xmlns:VM="clr-namespace:ClarolineApp.VM" xmlns:Model="clr-namespace:ClarolineApp.Model" ApplicationName="Facilisis nunc ligula">
+﻿<VM:DetailPageVM xmlns:VM="clr-namespace:ClarolineApp.VM" xmlns:Model="clr-namespace:ClarolineApp.Settings" ApplicationName="Facilisis nunc ligula">
 	<VM:DetailPageVM.currentAnnonce>
-		<Model:CL_Annonce Id="30" content="Nam maecenas aliquam praesent sed accumsan integer cras dis class aenean mauris quisque nullam aptent vivamus est bibendum aliquam auctor aliquet duis dictumst curae eleifend facilisi faucibus donec congue nunc habitant cursus etiam blandit amet fusce inceptos commodo hac conubia interdum lorem leo morbi lobortis dictum cubilia ante mus nascetur arcu nec non lectus dapibus pharetra per nulla sed" date="05/22/2013 01:38:43" isNotified="True" loaded="05/22/2013 01:38:43" notifiedDate="05/22/2013 01:38:43" resourceId="47" seenDate="05/22/2013 01:38:43" title="Libero leo" updated="True" visibility="False">
-			<Model:CL_Annonce.resourceList>
+		<Model:Annonce Id="30" content="Nam maecenas aliquam praesent sed accumsan integer cras dis class aenean mauris quisque nullam aptent vivamus est bibendum aliquam auctor aliquet duis dictumst curae eleifend facilisi faucibus donec congue nunc habitant cursus etiam blandit amet fusce inceptos commodo hac conubia interdum lorem leo morbi lobortis dictum cubilia ante mus nascetur arcu nec non lectus dapibus pharetra per nulla sed" date="05/22/2013 01:38:43" isNotified="True" loaded="05/22/2013 01:38:43" notifiedDate="05/22/2013 01:38:43" resourceId="47" seenDate="05/22/2013 01:38:43" title="Libero leo" updated="True" visibility="False">
+			<Model:Annonce.resourceList>
 				<Model:ResourceList Id="15" isNotified="False" loaded="05/22/2013 01:38:43" label="Praesent est convallis" name="Dignissim accumsan hac vestibulum quisque" ressourceTypeStr="Duis lectus elementum vivamus aliquam" updated="True" visibility="False">
 					<Model:ResourceList.Cours>
 						<Model:Cours Id="60" isNotified="False" loaded="05/22/2013 01:38:43" officialCode="Mauris nullam aptent auctor phasellus" officialEmail="Adipiscing nam congue aliquam sed" sysCode="Dis maecenas parturient" titular="Class dictum consequat" title="Cursus integer cras" updated="True"/>
 					</Model:ResourceList.Cours>
 				</Model:ResourceList>
-			</Model:CL_Annonce.resourceList>
-		</Model:CL_Annonce>
+			</Model:Annonce.resourceList>
+		</Model:Annonce>
 	</VM:DetailPageVM.currentAnnonce>
 </VM:DetailPageVM>

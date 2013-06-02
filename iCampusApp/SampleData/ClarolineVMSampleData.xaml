@@ -1,0 +1,36 @@
+<VM:ClarolineVM xmlns:VM="clr-namespace:ClarolineApp.VM" xmlns:ClarolineApp="clr-namespace:ClarolineApp" xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:Settings="clr-namespace:ClarolineApp.Settings" ApplicationName="Aliquam curabitur" IsConnected="True">
+	<VM:ClarolineVM.Client>
+		<ClarolineApp:ClaroClient IsInSync="True" IsExpired="False">
+			<ClarolineApp:ClaroClient.Instance>
+				<ClarolineApp:ClaroClient IsInSync="False" IsExpired="True">
+					<ClarolineApp:ClaroClient.Instance>
+						<ClarolineApp:ClaroClient IsInSync="True" IsExpired="False"/>
+					</ClarolineApp:ClaroClient.Instance>
+					<ClarolineApp:ClaroClient.LastException>
+						<System:Exception/>
+					</ClarolineApp:ClaroClient.LastException>
+				</ClarolineApp:ClaroClient>
+			</ClarolineApp:ClaroClient.Instance>
+			<ClarolineApp:ClaroClient.LastException>
+				<System:Exception/>
+			</ClarolineApp:ClaroClient.LastException>
+		</ClarolineApp:ClaroClient>
+	</VM:ClarolineVM.Client>
+	<VM:ClarolineVM.Settings>
+		<Settings:AppSettings AuthPageSetting="Nam aenean cras mauris duis" AdvancedSwitchSetting="False" CellularDataEnabledSetting="True" DomainSetting="Sed nullam aptent" InstituteSetting="Dis auctor class" ListBoxSetting="23" PlatformSetting="Amet est hac" PasswordSetting="Curae nunc integer congue" RadioButton3Setting="False" UserNameSetting="Phasellus consequat ante" WebServiceSetting="Arcu convallis mus">
+			<Settings:AppSettings.UserSetting>
+				<Settings:User firstName="Vestibulum leo maecenas" isPlatformAdmin="False" isCourseCreator="True" language="Cursus quisque" lastName="Adipiscing dictum" officialCode="Lectus libero parturient" userID="86"/>
+			</Settings:AppSettings.UserSetting>
+			<Settings:AppSettings.Instance>
+				<Settings:AppSettings AuthPageSetting="Vivamus praesent vestibulum nec donec" AdvancedSwitchSetting="True" CellularDataEnabledSetting="False" DomainSetting="Ligula non per aliquam diam" InstituteSetting="Eget sed vestibulum adipiscing" ListBoxSetting="48" PlatformSetting="Sem aliquet" PasswordSetting="Etiam parturient fusce dignissim" RadioButton3Setting="True" UserNameSetting="Erat vel dictumst eros nam" WebServiceSetting="Facilisis commodo adipiscing conubia fermentum">
+					<Settings:AppSettings.UserSetting>
+						<Settings:User firstName="Elit blandit vestibulum" isPlatformAdmin="True" isCourseCreator="False" language="Lorem vestibulum elementum accumsan litora" lastName="Bibendum morbi" officialCode="Enim sit luctus" userID="37"/>
+					</Settings:AppSettings.UserSetting>
+					<Settings:AppSettings.Instance>
+						<Settings:AppSettings AuthPageSetting="Magnis fringilla mattis" AdvancedSwitchSetting="False" CellularDataEnabledSetting="True" DomainSetting="Mauris cubilia eleifend habitasse" InstituteSetting="Mollis nulla nibh proin hendrerit" ListBoxSetting="74" PlatformSetting="Facilisi sed" PasswordSetting="Parturient himenaeos" RadioButton3Setting="False" UserNameSetting="Montes imperdiet faucibus nostra nisi" WebServiceSetting="Vestibulum dis"/>
+					</Settings:AppSettings.Instance>
+				</Settings:AppSettings>
+			</Settings:AppSettings.Instance>
+		</Settings:AppSettings>
+	</VM:ClarolineVM.Settings>
+</VM:ClarolineVM>

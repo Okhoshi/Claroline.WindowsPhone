@@ -1,4 +1,5 @@
 ﻿using ClarolineApp.Model;
+using ClarolineApp.Settings;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections;
@@ -44,15 +45,15 @@ namespace ClarolineApp.VM
                 {
                     _currentCours = value;
                     LoadCollectionsFromDatabase();
-                    NotifyPropertyChanged("currentCours");
-                    NotifyPropertyChanged("events");
+                    RaisePropertyChanged("currentCours");
+                    RaisePropertyChanged("events");
                 }
             }
         }
 
-        private CL_Document _root;
+        private Document _root;
 
-        public CL_Document root
+        public Document root
         {
             get
             {
@@ -63,23 +64,23 @@ namespace ClarolineApp.VM
                 if (_root != value)
                 {
                     _root = value;
-                    NotifyPropertyChanged("root");
-                    NotifyPropertyChanged("content");
+                    RaisePropertyChanged("root");
+                    RaisePropertyChanged("Content");
                 }
             }
         }
 
-        public ObservableCollection<CL_Document> content
+        public ObservableCollection<Document> content
         {
             get
             {
                 if (DesignerProperties.IsInDesignTool)
                 {
-                    ObservableCollection<CL_Document> ret = new ObservableCollection<CL_Document>();
-                    ret.Add(new CL_Document() { title = "Hello Folder", description = "WTF", date = DateTime.Now, isFolder = false });
-                    ret.Add(new CL_Document() { title = "Document 1", size = 15653614, date = DateTime.Now, extension = "pdf", isFolder = false });
-                    ret.Add(new CL_Document() { title = "Document 2 Document 2 Document 2", size = 165, date = DateTime.Now, extension = "et2", isFolder = false });
-                    ret.Add(new CL_Document() { title = "Document 3", size = 184351861, date = DateTime.Now, extension = "ppt", isFolder = false });
+                    ObservableCollection<Document> ret = new ObservableCollection<Document>();
+                    ret.Add(new Document() { title = "Hello Folder", description = "WTF", date = DateTime.Now, isFolder = false });
+                    ret.Add(new Document() { title = "Document 1", size = 15653614, date = DateTime.Now, extension = "pdf", isFolder = false });
+                    ret.Add(new Document() { title = "Document 2 Document 2 Document 2", size = 165, date = DateTime.Now, extension = "et2", isFolder = false });
+                    ret.Add(new Document() { title = "Document 3", size = 184351861, date = DateTime.Now, extension = "ppt", isFolder = false });
                     return ret;
                 }
                 else
@@ -89,43 +90,43 @@ namespace ClarolineApp.VM
             }
         }
 
-        private ObservableCollection<Group<CL_Event>> _events;
+        private ObservableCollection<Group<Event>> _events;
 
-        public ObservableCollection<Group<CL_Event>> events
+        public ObservableCollection<Group<Event>> events
         {
             get
             {
                 if (_events == null)
                 {
-                    _events = new ObservableCollection<Group<CL_Event>>();
+                    _events = new ObservableCollection<Group<Event>>();
 
                     if (currentCours != null)
                     {
-                        IEnumerable<CL_Event> list = currentCours.Resources.FirstOrDefault(l => l.ressourceType == typeof(CL_Event)).Resources.Cast<CL_Event>();
+                        IEnumerable<Event> list = currentCours.Resources.FirstOrDefault(l => l.ressourceType == typeof(Event)).Resources.Cast<Event>();
 
-                        _events.Add(new Group<CL_Event>("Aujourd'hui", list.Where(e =>
+                        _events.Add(new Group<Event>("Aujourd'hui", list.Where(e =>
                         {
                             return e.date.CompareTo(DateTime.Now) > 0
                             && e.date.Date.CompareTo(DateTime.Now.Date) == 0;
                         })));
 
-                        _events.Add(new Group<CL_Event>("Demain", list.Where(e =>
+                        _events.Add(new Group<Event>("Demain", list.Where(e =>
                         {
                             return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) == 0;
                         })));
 
-                        _events.Add(new Group<CL_Event>("Cette semaine", list.Where(e =>
+                        _events.Add(new Group<Event>("Cette semaine", list.Where(e =>
                         {
                             return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) >= 0
                             && e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) < 0;
                         })));
 
-                        _events.Add(new Group<CL_Event>("Plus tard", list.Where(e =>
+                        _events.Add(new Group<Event>("Plus tard", list.Where(e =>
                         {
                             return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) >= 0;
                         })));
 
-                        _events.Add(new Group<CL_Event>("Passés", list.Where(e =>
+                        _events.Add(new Group<Event>("Passés", list.Where(e =>
                         {
                             return e.date.CompareTo(DateTime.Now) < 0;
                         })));
@@ -138,42 +139,42 @@ namespace ClarolineApp.VM
                 if (_events != value)
                 {
                     _events = value;
-                    NotifyPropertyChanged("events");
+                    RaisePropertyChanged("events");
                 }
             }
         }
 
-        private ObservableCollection<Group<CL_Description>> _descriptions;
+        private ObservableCollection<Group<Description>> _descriptions;
 
-        public ObservableCollection<Group<CL_Description>> descriptions
+        public ObservableCollection<Group<Description>> descriptions
         {
             get
             {
                 if (_descriptions == null)
                 {
-                    IEnumerable<CL_Description> list = currentCours.Resources
-                                                                   .First(r => r.ressourceType == typeof(CL_Description)).Resources.Cast<CL_Description>();
+                    IEnumerable<Description> list = currentCours.Resources
+                                                                   .First(r => r.ressourceType == typeof(Description)).Resources.Cast<Description>();
                     if (list.Count() == 0)
                     {
-                        _descriptions = new ObservableCollection<Group<CL_Description>>();
+                        _descriptions = new ObservableCollection<Group<Description>>();
                     }
                     else
                     {
-                        int otherCat = list.Max(d => d.category) + 1;
+                        int otherCat = list.Max(d => d.Category) + 1;
 
-                        _descriptions = new ObservableCollection<Group<CL_Description>>(
+                        _descriptions = new ObservableCollection<Group<Description>>(
                                                 list.Select(d =>
                                                 {
-                                                    if (d.category == -1)
+                                                    if (d.Category == -1)
                                                     {
                                                         d.title = "Autres";
-                                                        d.category = otherCat;
+                                                        d.Category = otherCat;
                                                     }
                                                     return d;
                                                 })
-                                                .GroupBy(d => d.category)
+                                                .GroupBy(d => d.Category)
                                                 .OrderBy(g => g.Key)
-                                                .Select(g => new Group<CL_Description>(g.First().title, g))
+                                                .Select(g => new Group<Description>(g.First().title, g))
                                             );
                     }
                 }
@@ -215,33 +216,33 @@ namespace ClarolineApp.VM
                     title = "Design test"
                 };
 
-                ResourceList l1 = new ResourceList() { Cours = currentCours, name = "Resource L1", label = "CLANN", ressourceType = typeof(CL_Annonce) };
-                ResourceList l2 = new ResourceList() { Cours = currentCours, name = "Resource L2", label = "CLDOC", ressourceType = typeof(CL_Document) };
-                ResourceList l3 = new ResourceList() { Cours = currentCours, name = "Resource L3", label = "CLDSC", ressourceType = typeof(CL_Description) };
-                ResourceList l4 = new ResourceList() { Cours = currentCours, name = "Resource L4", label = "CLCAL", ressourceType = typeof(CL_Event) };
+                ResourceList l1 = new ResourceList() { Cours = currentCours, name = "Resource L1", label = "CLANN", ressourceType = typeof(Annonce) };
+                ResourceList l2 = new ResourceList() { Cours = currentCours, name = "Resource L2", label = "CLDOC", ressourceType = typeof(Document) };
+                ResourceList l3 = new ResourceList() { Cours = currentCours, name = "Resource L3", label = "CLDSC", ressourceType = typeof(Description) };
+                ResourceList l4 = new ResourceList() { Cours = currentCours, name = "Resource L4", label = "CLCAL", ressourceType = typeof(Event) };
 
                 _resources = new ObservableCollection<ResourceList>();
                 _resources.Add(PivotMenu);
                 currentCours.Resources.Add(new ResourceList() { Cours = currentCours, name = "L4", label = "L4" });
 
-                l1.Resources.Add(new CL_Annonce() { title = "Annonce 1", content = "Contenu 1 Contenu 1 v Contenu 1 Contenu 1 Contenu 1 v Contenu 1", date = DateTime.Now });
-                l1.Resources.Add(new CL_Annonce() { title = "Annonce 2 Annonce 2 Annonce 2", content = "Contenu 2", date = DateTime.Now });
-                l1.Resources.Add(new CL_Annonce() { title = "Annonce 3", content = "Contenu 3", date = DateTime.Now });
-                l1.Resources.Add(new CL_Annonce() { title = "Annonce 4", content = "Contenu 4", date = DateTime.Now });
+                l1.Resources.Add(new Annonce() { title = "Annonce 1", Content = "Contenu 1 Contenu 1 v Contenu 1 Contenu 1 Contenu 1 v Contenu 1", date = DateTime.Now });
+                l1.Resources.Add(new Annonce() { title = "Annonce 2 Annonce 2 Annonce 2", Content = "Contenu 2", date = DateTime.Now });
+                l1.Resources.Add(new Annonce() { title = "Annonce 3", Content = "Contenu 3", date = DateTime.Now });
+                l1.Resources.Add(new Annonce() { title = "Annonce 4", Content = "Contenu 4", date = DateTime.Now });
 
-                l3.Resources.Add(new CL_Description() { title = "Annonce 1", content = "Contenu 1", date = DateTime.Now });
+                l3.Resources.Add(new Description() { title = "Annonce 1", Content = "Contenu 1", date = DateTime.Now });
 
-                l4.Resources.Add(new CL_Event() { title = "Event 1", content = "Contenu 1", date = DateTime.Now, speakers = "Mr Nobody, Someone else" });
-                l4.Resources.Add(new CL_Event() { title = "Event 2", content = "Contenu 1", date = DateTime.Now, location = "This is a very very very very veyr vey long location" });
-                l4.Resources.Add(new CL_Event() { title = "Event 3", content = "Contenu 1", date = DateTime.Now, location = "B543", speakers = "Mr Nobody, Someone else" });
+                l4.Resources.Add(new Event() { title = "Event 1", Content = "Contenu 1", date = DateTime.Now, speakers = "Mr Nobody, Someone else" });
+                l4.Resources.Add(new Event() { title = "Event 2", Content = "Contenu 1", date = DateTime.Now, location = "This is a very very very very veyr vey long location" });
+                l4.Resources.Add(new Event() { title = "Event 3", Content = "Contenu 1", date = DateTime.Now, location = "B543", speakers = "Mr Nobody, Someone else" });
 
-                events = new ObservableCollection<Group<CL_Event>>();
-                events.Add(new Group<CL_Event>("Aujourd'hui", l4.Resources.Cast<CL_Event>()));
-                events.Add(new Group<CL_Event>("Demain", l4.Resources.Cast<CL_Event>()));
-                events.Add(new Group<CL_Event>("Passés", l4.Resources.Cast<CL_Event>()));
+                events = new ObservableCollection<Group<Event>>();
+                events.Add(new Group<Event>("Aujourd'hui", l4.Resources.Cast<Event>()));
+                events.Add(new Group<Event>("Demain", l4.Resources.Cast<Event>()));
+                events.Add(new Group<Event>("Passés", l4.Resources.Cast<Event>()));
 
-                _descriptions = new ObservableCollection<Group<CL_Description>>();
-                _descriptions.Add(new Group<CL_Description>("First", l3.Resources.Cast<CL_Description>()));
+                _descriptions = new ObservableCollection<Group<Description>>();
+                _descriptions.Add(new Group<Description>("First", l3.Resources.Cast<Description>()));
             }
             else
             {
@@ -254,8 +255,8 @@ namespace ClarolineApp.VM
             }
 
             genericSelectedItem = new RelayCommand<ResourceModel>(this.OnGenericItemSelected);
-            documentSelectedItem = new RelayCommand<CL_Document>(this.OnDocumentItemSelected);
-            annonceSelectedItem = new RelayCommand<CL_Annonce>(this.OnItemWithDetailsSelected);
+            documentSelectedItem = new RelayCommand<Document>(this.OnDocumentItemSelected);
+            annonceSelectedItem = new RelayCommand<Annonce>(this.OnItemWithDetailsSelected);
         }
 
         public override void LoadCollectionsFromDatabase()
@@ -266,7 +267,7 @@ namespace ClarolineApp.VM
 
                 if (currentCours != null)
                 {
-                    root = CL_Document.GetRootDocument(currentCours);
+                    root = Document.GetRootDocument(currentCours);
 
                     currentCours.ReloadPropertyChangedHandler();
                 }
@@ -282,15 +283,15 @@ namespace ClarolineApp.VM
             }
         }
 
-        public void OnItemWithDetailsSelected(CL_Annonce item)
+        public void OnItemWithDetailsSelected(Annonce item)
         {
             item.seenDate = DateTime.Now;
             SaveChangesToDB();
 
-            navigationTarget = new Uri(String.Format("/View/DetailPage.xaml?resource={0}&list={1}", item.resourceId, item.resourceList.Id), UriKind.Relative);
+            NavigationTarget = new Uri(String.Format("/View/DetailPage.xaml?resource={0}&list={1}", item.resourceId, item.ResourceList.Id), UriKind.Relative);
         }
 
-        public void OnDocumentItemSelected(CL_Document item)
+        public void OnDocumentItemSelected(Document item)
         {
             if (item != null)
             {
@@ -315,7 +316,7 @@ namespace ClarolineApp.VM
 
         public bool IsOnRoot()
         {
-            return root.Equals(CL_Document.GetRootDocument(currentCours));
+            return root.Equals(Document.GetRootDocument(currentCours));
         }
 
         public bool IsPivotSelectedOfType(object SelectedItem, Type type)

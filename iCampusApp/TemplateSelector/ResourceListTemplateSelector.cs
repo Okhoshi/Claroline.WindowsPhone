@@ -1,4 +1,5 @@
 ﻿using ClarolineApp.Model;
+using ClarolineApp.Settings;
 using System.Windows;
 
 namespace ClarolineApp.TemplateSelector
@@ -55,13 +56,13 @@ namespace ClarolineApp.TemplateSelector
             {
                 switch (list.label)
                 {
-                    case CL_Document.LABEL:
+                    case Model.Document.Label:
                         return Document;
-                    case CL_Annonce.LABEL:
+                    case Model.Annonce.Label:
                         return Annonce;
-                    case CL_Description.LABEL:
+                    case Model.Description.Label:
                         return Description;
-                    case CL_Event.LABEL:
+                    case Model.Event.Label:
                         return Event;
                     case "MENU":
                         return Menu;

@@ -1,9 +1,10 @@
-﻿using ClarolineApp.Model;
+﻿using ClarolineApp.Settings;
 using System;
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using ClarolineApp.Model;
 
 namespace ClarolineApp.VM
 {
@@ -26,19 +27,19 @@ namespace ClarolineApp.VM
                 if (_allCours != value)
                 {
                     _allCours = value;
-                    NotifyPropertyChanged("allCours");
+                    RaisePropertyChanged("allCours");
                 }
             }
         }
 
-        private ObservableCollection<CL_Notification> _topNotifications;
-        public ObservableCollection<CL_Notification> topNotifications
+        private ObservableCollection<Notification> _topNotifications;
+        public ObservableCollection<Notification> topNotifications
         {
             get
             {
                 if (_topNotifications == null)
                 {
-                    _topNotifications = new ObservableCollection<CL_Notification>();
+                    _topNotifications = new ObservableCollection<Notification>();
                 }
                 return _topNotifications;
             }
@@ -47,7 +48,7 @@ namespace ClarolineApp.VM
                 if (_topNotifications != value)
                 {
                     _topNotifications = value;
-                    NotifyPropertyChanged("topNotifications");
+                    RaisePropertyChanged("topNotifications");
                 }
             }
         }
@@ -64,11 +65,11 @@ namespace ClarolineApp.VM
 
         public void SetTopNotifications(int limit = 10, int offset = 0)
         {
-            List<CL_Notification> list = (from CL_Notification n
+            List<Notification> list = (from Notification n
                                           in ClarolineDB.Notifications_Table
                                           orderby n.date descending
                                           select n).ToList();
-            topNotifications = new ObservableCollection<CL_Notification>(list.Where(n => n.isNotified)
+            topNotifications = new ObservableCollection<Notification>(list.Where(n => n.isNotified)
                                                                              .Skip(offset)
                                                                              .Take(limit));
         }
@@ -97,7 +98,7 @@ namespace ClarolineApp.VM
             SetTopNotifications();
         }
 
-        public override void AddNotification(CL_Notification newNot)
+        public override void AddNotification(Notification newNot)
         {
             base.AddNotification(newNot);
 
@@ -113,7 +114,7 @@ namespace ClarolineApp.VM
             SetTopNotifications();
         }
 
-        public override void DeleteNotification(CL_Notification notForDelete)
+        public override void DeleteNotification(Notification notForDelete)
         {
             base.DeleteNotification(notForDelete);
 

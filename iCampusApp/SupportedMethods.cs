@@ -1,9 +1,6 @@
 ﻿using ClarolineApp.Model;
 using ClarolineApp.Settings;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ClarolineApp
 {
@@ -21,21 +18,21 @@ namespace ClarolineApp
     public enum SupportedMethods
     {
         //NOMOD
-        authenticate,
+        Authenticate,
         //USER
-        getUserData,
-        getCourseList,
-        getToolList,
-        getUpdates,
+        GetUserData,
+        GetCourseList,
+        GetToolList,
+        GetUpdates,
         //CLXXX
-        getResourcesList,
-        getSingleResource
+        GetResourcesList,
+        GetSingleResource
     }
 
     public class PostDataWriter
     {
-        public static String login = AppSettings.instance.UsernameSetting;
-        public static String password = AppSettings.instance.PasswordSetting;
+        public static String login = AppSettings.Instance.UserNameSetting;
+        public static String password = AppSettings.Instance.PasswordSetting;
         public SupportedModules module;
         public SupportedMethods method;
         public string GenMod;
@@ -47,19 +44,19 @@ namespace ClarolineApp
             return Enum.GetName(enumeration.GetType(), enumeration);
         }
 
-        public string GetURL()
+        public string GetUrl()
         {
             string URL = "";
 
             switch (module)
             {
                 case SupportedModules.NOMOD:
-                    URL = AppSettings.instance.DomainSetting + AppSettings.instance.AuthPageSetting;
+                    URL = AppSettings.Instance.DomainSetting + AppSettings.Instance.AuthPageSetting;
                     break;
                 default:
                     if (Enum.IsDefined(typeof(SupportedModules), module))
                     {
-                        URL = AppSettings.instance.DomainSetting + AppSettings.instance.WebServiceSetting;
+                        URL = AppSettings.Instance.DomainSetting + AppSettings.Instance.WebServiceSetting;
                         break;
                     }
                     else
@@ -80,7 +77,7 @@ namespace ClarolineApp
                 case SupportedModules.NOMOD:
                     switch (method)
                     {
-                        case SupportedMethods.authenticate:
+                        case SupportedMethods.Authenticate:
                             postString = "login=" + login + "&password=" + password;
                             break;
                         default:
@@ -93,19 +90,19 @@ namespace ClarolineApp
                 case SupportedModules.USER:
                     switch (method)
                     {
-                        case SupportedMethods.getToolList:
+                        case SupportedMethods.GetToolList:
                             if (cidReq != null)
                             {
                                 postString = "cidReset&cidReq=" + cidReq.sysCode + "&module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
                             }
                             else
                             {
-                                throw new ArgumentNullException("cidReq cannot be null");
+                                throw new ArgumentNullException("cidReq");
                             }
                             break;
-                        case SupportedMethods.getUpdates:
-                        case SupportedMethods.getCourseList:
-                        case SupportedMethods.getUserData:
+                        case SupportedMethods.GetUpdates:
+                        case SupportedMethods.GetCourseList:
+                        case SupportedMethods.GetUserData:
                             postString += "module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
                             break;
                         default:
@@ -118,7 +115,7 @@ namespace ClarolineApp
                 case SupportedModules.GENERIC:
                     switch (method)
                     {
-                        case SupportedMethods.getResourcesList:
+                        case SupportedMethods.GetResourcesList:
                             if (cidReq != null && GenMod != null)
                             {
                                 postString = "cidReset&cidReq=" + cidReq.sysCode + "&module=" + GenMod + "&method=" + GetEnumName(method);
@@ -127,11 +124,11 @@ namespace ClarolineApp
                             {
                                 if (cidReq == null)
                                 {
-                                    throw new ArgumentNullException("cidReq cannot be null");
+                                    throw new ArgumentNullException("cidReq");
                                 }
                                 else if (GenMod == null)
                                 {
-                                    throw new ArgumentOutOfRangeException("GenMod must be setted");
+                                    throw new ArgumentOutOfRangeException("genMod");
                                 }
                             }
                             break;
@@ -147,17 +144,17 @@ namespace ClarolineApp
                     {
                         switch (method)
                         {
-                            case SupportedMethods.getResourcesList:
+                            case SupportedMethods.GetResourcesList:
                                 if (cidReq != null)
                                 {
                                     postString = "cidReset&cidReq=" + cidReq.sysCode + "&module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
                                 }
                                 else
                                 {
-                                    throw new ArgumentNullException("cidReq cannot be null");
+                                    throw new ArgumentNullException("cidReq");
                                 }
                                 break;
-                            case SupportedMethods.getSingleResource:
+                            case SupportedMethods.GetSingleResource:
                                 if (cidReq != null && resStr != null)
                                 {
                                     postString = "cidReset&cidReq=" + cidReq.sysCode + "&resID=" + resStr + "&module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
@@ -166,11 +163,11 @@ namespace ClarolineApp
                                 {
                                     if (cidReq == null)
                                     {
-                                        throw new ArgumentNullException("cidReq cannot be null");
+                                        throw new ArgumentNullException("cidReq");
                                     }
                                     else if (resStr == null)
                                     {
-                                        throw new ArgumentOutOfRangeException("resStr must be setted");
+                                        throw new ArgumentOutOfRangeException("resStr");
                                     }
                                 }
                                 break;

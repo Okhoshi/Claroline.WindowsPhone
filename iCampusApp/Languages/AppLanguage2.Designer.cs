@@ -33,7 +33,7 @@ namespace ClarolineApp.Languages {
         }
         
         /// <summary>
-        ///   Retourne l'instance ResourceManager mise en cache utilisée par cette classe.
+        ///   Retourne l'Instance ResourceManager mise en cache utilisée par cette classe.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         public static global::System.Resources.ResourceManager ResourceManager {

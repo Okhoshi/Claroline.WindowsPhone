@@ -11,23 +11,23 @@ namespace ClarolineApp.Model
 {
     [Table]
     [InheritanceMapping(Code = SupportedModules.NOMOD, Type = typeof(ResourceModel), IsDefault = true)]
-    [InheritanceMapping(Code = SupportedModules.CLANN, Type = typeof(CL_Annonce))]
-    [InheritanceMapping(Code = SupportedModules.CLDSC, Type = typeof(CL_Description))]
-    [InheritanceMapping(Code = SupportedModules.CLDOC, Type = typeof(CL_Document))]
-    [InheritanceMapping(Code = SupportedModules.CLCAL, Type = typeof(CL_Event))]
+    [InheritanceMapping(Code = SupportedModules.CLANN, Type = typeof(Annonce))]
+    [InheritanceMapping(Code = SupportedModules.CLDSC, Type = typeof(Description))]
+    [InheritanceMapping(Code = SupportedModules.CLDOC, Type = typeof(Document))]
+    [InheritanceMapping(Code = SupportedModules.CLCAL, Type = typeof(Event))]
     public class ResourceModel : INotifyPropertyChanged, INotifyPropertyChanging
     {
 
         public ResourceModel()
         {
             DiscKey = SupportedModules.NOMOD;
-            _notifications = new EntitySet<CL_Notification>(
-                new Action<CL_Notification>(attach_Notification),
-                new Action<CL_Notification>(detach_Notification)
+            _notifications = new EntitySet<Notification>(
+                new Action<Notification>(attach_Notification),
+                new Action<Notification>(detach_Notification)
                 );
         }
 
-        public const string LABEL = "NOMOD";
+        public const string Label = "NOMOD";
 
         protected int _Id;
 
@@ -228,10 +228,10 @@ namespace ClarolineApp.Model
 
         // Define the entity set for the collection side of the relationship.
 
-        private EntitySet<CL_Notification> _notifications;
+        private EntitySet<Notification> _notifications;
 
         [Association(Storage = "_notifications", OtherKey = "_resourceId", ThisKey = "Id")]
-        public EntitySet<CL_Notification> notifications
+        public EntitySet<Notification> notifications
         {
             get { return this._notifications; }
             set { this._notifications.Assign(value); }
@@ -239,7 +239,7 @@ namespace ClarolineApp.Model
 
         // Called during an add operation
 
-        private void attach_Notification(CL_Notification _notification)
+        private void attach_Notification(Notification _notification)
         {
             NotifyPropertyChanging("notifications");
             _notification.resource = this;
@@ -247,7 +247,7 @@ namespace ClarolineApp.Model
 
         // Called during a remove operation
 
-        private void detach_Notification(CL_Notification _notification)
+        private void detach_Notification(Notification _notification)
         {
             NotifyPropertyChanging("notifications");
             _notification.resource = null;
@@ -265,12 +265,12 @@ namespace ClarolineApp.Model
         // Association, to describe the relationship between this key and that "storage" table
 
         [Association(Storage = "_resourceList", ThisKey = "_resourceListId", OtherKey = "Id", IsForeignKey = true)]
-        public ResourceList resourceList
+        public ResourceList ResourceList
         {
             get { return _resourceList.Entity; }
             set
             {
-                NotifyPropertyChanging("resourceList");
+                NotifyPropertyChanging("ResourceList");
 
                 if (value != null)
                 {
@@ -289,7 +289,7 @@ namespace ClarolineApp.Model
                     }
                 }
 
-                NotifyPropertyChanged("resourceList");
+                NotifyPropertyChanged("ResourceList");
             }
         }
 

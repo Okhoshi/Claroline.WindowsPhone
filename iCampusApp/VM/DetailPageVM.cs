@@ -1,4 +1,5 @@
 ﻿using ClarolineApp.Model;
+using ClarolineApp.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,9 @@ namespace ClarolineApp.VM
 {
     public class DetailPageVM : ClarolineVM, IDetailPageVM
     {
-        private CL_Annonce _currentAnnonce;
+        private Annonce _currentAnnonce;
 
-        public CL_Annonce currentAnnonce
+        public Annonce currentAnnonce
         {
             get
             {
@@ -21,17 +22,17 @@ namespace ClarolineApp.VM
                 if (_currentAnnonce != value)
                 {
                     _currentAnnonce = value;
-                    NotifyPropertyChanged("currentAnnonce");
+                    RaisePropertyChanged("currentAnnonce");
                 }
             }
         }
 
         public DetailPageVM(int resid, int listid)
         {
-            currentAnnonce = (from CL_Annonce a
+            currentAnnonce = (from Annonce a
                               in ClarolineDB.Resources_Table
                               where a.resourceId == resid
-                              && a.resourceList.Id == listid
+                              && a.ResourceList.Id == listid
                               select a).FirstOrDefault();
         }
     }

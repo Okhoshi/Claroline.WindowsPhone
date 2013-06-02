@@ -60,7 +60,7 @@ namespace ClarolineApp
         {
             base.OnNavigatedTo(e);
 
-            if (AppSettings.instance.UsernameSetting == "")
+            if (AppSettings.Instance.UserNameSetting == "")
             {
                 if (MessageBox.Show(AppLanguage.ErrorMessage_NoLogin_Message, AppLanguage.ErrorMessage_NoLogin_Caption, MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                 {
@@ -82,7 +82,7 @@ namespace ClarolineApp
 
             if (!_cours.loadedToday() || _cours.Resources.Count == 0)
             {
-                ClaroClient.instance.PropertyChanged += Failure_Handler;
+                ClaroClient.Instance.PropertyChanged += Failure_Handler;
 
                 PerformanceProgressBar progress = Helper.FindFirstElementInVisualTree<PerformanceProgressBar>(this.CoursList.ItemContainerGenerator.ContainerFromIndex(CoursList.SelectedIndex) as ListBoxItem);
                 progress.Visibility = System.Windows.Visibility.Visible;
@@ -108,11 +108,11 @@ namespace ClarolineApp
 
         void FailureOccured(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "lastException")
+            if (e.PropertyName == "LastException")
             {
-                ClaroClient.instance.PropertyChanged -= Failure_Handler;
+                ClaroClient.Instance.PropertyChanged -= Failure_Handler;
 
-                MessageBox.Show("Exception occured! " + ClaroClient.instance.lastException.Message);
+                MessageBox.Show("Exception occured! " + ClaroClient.Instance.LastException.Message);
             }
         }
 
@@ -125,7 +125,7 @@ namespace ClarolineApp
         {
             indicator.Text = AppLanguage.ProgressBar_Connecting;
             indicator.IsVisible = true;
-            if (!ClaroClient.instance.isValidAccountWithoutWaiting())
+            if (!ClaroClient.Instance.IsValidAccountSync())
             {
                 await _viewModel.GetUserDataAsync();
             }
@@ -153,12 +153,12 @@ namespace ClarolineApp
         {
             WebBrowserTask homepage = new WebBrowserTask()
             {
-                Uri = new Uri(AppSettings.instance.DomainSetting 
-                            + AppSettings.instance.AuthPageSetting 
+                Uri = new Uri(AppSettings.Instance.DomainSetting 
+                            + AppSettings.Instance.AuthPageSetting 
                             + "?login=" 
-                            + AppSettings.instance.UsernameSetting 
+                            + AppSettings.Instance.UserNameSetting 
                             + "&password=" 
-                            + AppSettings.instance.PasswordSetting
+                            + AppSettings.Instance.PasswordSetting
                            , UriKind.Absolute)
             };
             homepage.Show();
@@ -170,7 +170,7 @@ namespace ClarolineApp
             {
                 To = String.Format("\"{0} Development Team\" <support.develop@live.be>", App.ApplicationName),
                 Subject = String.Format("[{0}] {1}", App.ApplicationName, AppLanguage.MainPage_About_DevMailButton),
-				Body = String.Format("[V:{0} Campus:{1}]\n\n", Helper.GetVersionNumber(true), AppSettings.instance.PlatformSetting)
+				Body = String.Format("[V:{0} Campus:{1}]\n\n", Helper.GetVersionNumber(true), AppSettings.Instance.PlatformSetting)
             };
             mailToDev.Show();
         }
@@ -183,7 +183,7 @@ namespace ClarolineApp
                 EmailComposeTask mailToManagers = new EmailComposeTask()
                 {
                     To = String.Format("\"{0}\" <{1}>", _item.titular, _item.officialEmail),
-                    Subject = String.Format("[{0}][{1}]", AppSettings.instance.PlatformSetting, _item.title)
+                    Subject = String.Format("[{0}][{1}]", AppSettings.Instance.PlatformSetting, _item.title)
                 };
                 mailToManagers.Show();
             }
@@ -208,7 +208,7 @@ namespace ClarolineApp
                 return;
             }
 
-            CL_Notification selectedNotification = (sender as ListBox).SelectedItem as CL_Notification;
+            Notification selectedNotification = (sender as ListBox).SelectedItem as Notification;
             
             MessageBox.Show("Selected :" + selectedNotification.ToString());
 

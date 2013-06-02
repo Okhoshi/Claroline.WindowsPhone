@@ -80,22 +80,22 @@ namespace ClarolineApp
         static FrameworkElement currentTiltElement;
 
         /// <summary>
-        /// The single instance of a storyboard used for all tilts
+        /// The single Instance of a storyboard used for all tilts
         /// </summary>
         static Storyboard tiltReturnStoryboard;
 
         /// <summary>
-        /// The single instance of an X rotation used for all tilts
+        /// The single Instance of an X rotation used for all tilts
         /// </summary>
         static DoubleAnimation tiltReturnXAnimation;
 
         /// <summary>
-        /// The single instance of a Y rotation used for all tilts
+        /// The single Instance of a Y rotation used for all tilts
         /// </summary>
         static DoubleAnimation tiltReturnYAnimation;
 
         /// <summary>
-        /// The single instance of a Z depression used for all tilts
+        /// The single Instance of a Z depression used for all tilts
         /// </summary>
         static DoubleAnimation tiltReturnZAnimation;
 

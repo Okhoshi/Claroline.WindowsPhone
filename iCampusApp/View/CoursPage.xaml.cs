@@ -1,5 +1,6 @@
 ﻿using ClarolineApp.Languages;
 using ClarolineApp.Model;
+using ClarolineApp.Settings;
 using ClarolineApp.VM;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -45,7 +46,7 @@ namespace ClarolineApp
             this.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name);
             rootButton = ApplicationBar.Buttons[1] as ApplicationBarIconButton;
 
-            ClaroClient.instance.PropertyChanged += ClaroClient_PropertyChanged;
+            ClaroClient.Instance.PropertyChanged += ClaroClient_PropertyChanged;
         }
 
         private void ClaroClient_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -94,7 +95,7 @@ namespace ClarolineApp
                     rootButton.IsEnabled = !_viewModel.IsOnRoot();
                     //Update the path somewhere
                     break;
-                case "navigationTarget":
+                case "NavigationTarget":
                     NavigationService.Navigate(_viewModel.GetNavigationTarget());
                     break;
                 default:
@@ -104,7 +105,7 @@ namespace ClarolineApp
 
         private void rootButton_Click(object sender, EventArgs e)
         {
-            if (_viewModel.IsPivotSelectedOfType(SectionsPivot.SelectedItem, typeof(CL_Document)))
+            if (_viewModel.IsPivotSelectedOfType(SectionsPivot.SelectedItem, typeof(Document)))
             {
                 _viewModel.GoUp();
             }
@@ -123,7 +124,7 @@ namespace ClarolineApp
             //Enabling root button routine
             if (rootButton != null)
             {
-                if (_viewModel.IsPivotSelectedOfType(SectionsPivot.SelectedItem, typeof(CL_Document))
+                if (_viewModel.IsPivotSelectedOfType(SectionsPivot.SelectedItem, typeof(Document))
                     && !_viewModel.IsOnRoot())
                 {
                     rootButton.IsEnabled = true;
@@ -144,9 +145,9 @@ namespace ClarolineApp
                 return;
             }
 
-            if (_viewModel.IsPivotSelectedOfType(SectionsPivot.SelectedItem, typeof(CL_Document)))
+            if (_viewModel.IsPivotSelectedOfType(SectionsPivot.SelectedItem, typeof(Document)))
             {
-                _viewModel.OnDocumentItemSelected(list.SelectedItem as CL_Document);
+                _viewModel.OnDocumentItemSelected(list.SelectedItem as Document);
             }
 
             list.SelectedItem = null;
@@ -161,9 +162,9 @@ namespace ClarolineApp
                 return;
             }
 
-            if (_viewModel.IsPivotSelectedOfType(SectionsPivot.SelectedItem, typeof(CL_Event)))
+            if (_viewModel.IsPivotSelectedOfType(SectionsPivot.SelectedItem, typeof(Event)))
             {
-                _viewModel.OnItemWithDetailsSelected(list.SelectedItem as CL_Event);
+                _viewModel.OnItemWithDetailsSelected(list.SelectedItem as Event);
             }
 
             list.SelectedItem = null;

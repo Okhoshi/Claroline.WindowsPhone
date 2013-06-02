@@ -9,10 +9,10 @@ using System.Resources;
 [assembly: AssemblyTitle("ClaroMobile")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Claroline")]
-[assembly: AssemblyCopyright("Copyright © 2012")]
-[assembly: AssemblyTrademark("ClarolineMobile")]
+[assembly: AssemblyCompany("Claroline")]
+[assembly: AssemblyProduct("Claroline Mobile")]
+[assembly: AssemblyCopyright("Copyright © 2013")]
+[assembly: AssemblyTrademark("Claroline")]
 [assembly: AssemblyCulture("")]
 
 // L'affectation de la valeur false à ComVisible rend les types invisibles dans cet assembly 
@@ -32,6 +32,6 @@ using System.Resources;
 //
 // Vous pouvez spécifier toutes les valeurs ou indiquer les numéros de révision et de build par défaut 
 // en utilisant '*', comme indiqué ci-dessous :
-[assembly: AssemblyVersion("1.0.0.1")]
-[assembly: AssemblyFileVersion("1.0.0.1")]
+[assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyFileVersion("1.0.1.0")]
 [assembly: NeutralResourcesLanguageAttribute("fr-BE")]

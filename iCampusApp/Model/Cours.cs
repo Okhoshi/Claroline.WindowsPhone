@@ -15,9 +15,9 @@ namespace ClarolineApp.Model
 
         public Cours()
         {
-            _Notif = new EntitySet<CL_Notification>(
-                new Action<CL_Notification>(this.attach_Notif),
-                new Action<CL_Notification>(this.detach_Notif)
+            _Notif = new EntitySet<Notification>(
+                new Action<Notification>(this.attach_Notif),
+                new Action<Notification>(this.detach_Notif)
                 );
             _Resources = new EntitySet<ResourceList>(
                 new Action<ResourceList>(this.attach_Resources),
@@ -232,10 +232,10 @@ namespace ClarolineApp.Model
 
         // Define the entity set for the collection side of the relationship.
 
-        private EntitySet<CL_Notification> _Notif;
+        private EntitySet<Notification> _Notif;
 
         [Association(Storage = "_Notif", OtherKey = "_coursId", ThisKey = "Id")]
-        public EntitySet<CL_Notification> Notifications
+        public EntitySet<Notification> Notifications
         {
             get { return this._Notif; }
             set { this._Notif.Assign(value); }
@@ -243,7 +243,7 @@ namespace ClarolineApp.Model
 
         // Called during an add operation
 
-        private void attach_Notif(CL_Notification _notif)
+        private void attach_Notif(Notification _notif)
         {
             NotifyPropertyChanging("Notification");
             _notif.Cours = this;
@@ -251,7 +251,7 @@ namespace ClarolineApp.Model
 
         // Called during a remove operation
 
-        private void detach_Notif(CL_Notification _notif)
+        private void detach_Notif(Notification _notif)
         {
             NotifyPropertyChanging("Notification");
             _notif.Cours = null;

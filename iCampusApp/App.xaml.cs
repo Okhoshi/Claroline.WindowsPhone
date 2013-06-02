@@ -1,23 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using ClarolineApp.Model;
+using ClarolineApp.Settings;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using ClarolineApp.Model;
-using ClarolineApp.VM;
-using ClarolineApp.Settings;
-using ClarolineApp.Languages;
-using System.Windows.Markup;
-using System.Globalization;
+using System;
+using System.Windows;
+using System.Windows.Navigation;
 
 namespace ClarolineApp
 {
@@ -78,15 +65,15 @@ namespace ClarolineApp
                     {
                         db.CreateDatabase();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         db.DeleteDatabase();
-                        throw e;
+                        throw;
                     }
                 }
             }
 
-            AppSettings setting = AppSettings.instance;
+            AppSettings setting = AppSettings.Instance;
             if(setting.UserSetting == null)
             {
                 setting.UserSetting = new User();

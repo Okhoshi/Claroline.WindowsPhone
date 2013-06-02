@@ -1,4 +1,5 @@
 ﻿using ClarolineApp.Model;
+using ClarolineApp.Settings;
 using ClarolineApp.VM;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,8 @@ namespace ClarolineApp.VM
 {
     interface ICoursPageVM : IClarolineVM
     {
-        void OnItemWithDetailsSelected(CL_Annonce item);
-        void OnDocumentItemSelected(CL_Document item);
+        void OnItemWithDetailsSelected(Annonce item);
+        void OnDocumentItemSelected(Document item);
         void OnGenericItemSelected(ResourceModel item);
 
         bool IsOnRoot();

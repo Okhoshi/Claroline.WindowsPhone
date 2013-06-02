@@ -9,11 +9,11 @@ using System.Text;
 namespace ClarolineApp.Model
 {
 
-    public class CL_Event : CL_Annonce
+    public class Event : Annonce
     {
-        public new const string LABEL = "CLCAL";
+        public new const string Label = "CLCAL";
 
-        public CL_Event()
+        public Event()
             : base()
         {
             DiscKey = SupportedModules.CLCAL;
@@ -81,9 +81,9 @@ namespace ClarolineApp.Model
 
         public override bool Equals(object obj)
         {
-            if (obj != null && obj.GetType().Equals(typeof(CL_Event)))
+            if (obj != null && obj.GetType().Equals(typeof(Event)))
             {
-                CL_Event evt = obj as CL_Event;
+                Event evt = obj as Event;
                 return this._resourceListId == evt._resourceListId && this._resourceId == evt._resourceId;
             }
             return false;

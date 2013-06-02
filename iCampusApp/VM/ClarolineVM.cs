@@ -1,6 +1,6 @@
 ﻿using ClarolineApp.Model;
 using ClarolineApp.Settings;
-using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -10,13 +10,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace ClarolineApp.VM
 {
-    public class ClarolineVM : IClarolineVM
+    public class ClarolineVM : ViewModelBase, IClarolineVM
     {
-        public string ApplicationName
+        public static string ApplicationName
         {
             get
             {
@@ -26,7 +25,7 @@ namespace ClarolineApp.VM
                 }
                 else
                 {
-                    return AppSettings.instance.PlatformSetting;
+                    return AppSettings.Instance.PlatformSetting;
                 }
             }
         }
@@ -51,14 +50,48 @@ namespace ClarolineApp.VM
             }
         }
 
+        public static AppSettings Settings
+        {
+            get
+            {
+                return AppSettings.Instance;
+            }
+        }
+
+        public static ClaroClient Client
+        {
+            get
+            {
+                return ClaroClient.Instance;
+            }
+        }
+
+        public static bool IsConnected
+        {
+            get
+            {
+                return Settings.UserSetting != null && Settings.UserSetting.firstName != "";
+            }
+        }
+
         public ClarolineVM()
         {
             LoadCollectionsFromDatabase();
+
+            Settings.PropertyChanged += (sender, e) =>
+            {
+                RaisePropertyChanged("IsConnected");
+
+                if (e.PropertyName == AppSettings.PlatformSettingKeyName)
+                {
+                    RaisePropertyChanged("ApplicationName");
+                }
+            };
         }
 
         private Uri _navigationTarget;
 
-        public Uri navigationTarget
+        public Uri NavigationTarget
         {
             get
             {
@@ -71,7 +104,7 @@ namespace ClarolineApp.VM
                     _navigationTarget = value;
                     if (_navigationTarget != null)
                     {
-                        NotifyPropertyChanged("navigationTarget");
+                        RaisePropertyChanged("NavigationTarget");
                     }
                 }
             }
@@ -79,7 +112,7 @@ namespace ClarolineApp.VM
 
         public Uri GetNavigationTarget()
         {
-            return navigationTarget;
+            return NavigationTarget;
         }
 
         public virtual void ResetViewModel()
@@ -88,7 +121,7 @@ namespace ClarolineApp.VM
                                                 in ClarolineDB.Resources_Table
                                                 select d).ToList();
 
-            List<CL_Notification> AllNotifications = (from CL_Notification n
+            List<Notification> AllNotifications = (from Notification n
                                                       in ClarolineDB.Notifications_Table
                                                       select n).ToList();
 
@@ -105,6 +138,10 @@ namespace ClarolineApp.VM
             ClarolineDB.Notifications_Table.DeleteAllOnSubmit(AllNotifications);
             ClarolineDB.Cours_Table.DeleteAllOnSubmit(AllCours);
             SaveChangesToDB();
+
+            Client.InvalidateClient();
+
+            Settings.Reset();
         }
 
         public void SaveChangesToDB()
@@ -164,14 +201,14 @@ namespace ClarolineApp.VM
             }
         }
 
-        public virtual void AddNotification(CL_Notification newNot)
+        public virtual void AddNotification(Notification newNot)
         {
             bool alreadyInDB = ClarolineDB.Notifications_Table.Any(n => n._coursId == newNot._coursId
                                                                      && n._resourceId == newNot._resourceId);
 
             if (alreadyInDB)
             {
-                CL_Notification lastNotificationFromDB = (from CL_Notification n
+                Notification lastNotificationFromDB = (from Notification n
                                                           in ClarolineDB.Notifications_Table
                                                           where n._resourceId == newNot._resourceId
                                                           orderby n.date descending
@@ -190,7 +227,7 @@ namespace ClarolineApp.VM
         {
             bool alreadyInDB = ClarolineDB.Resources_Table.Any(r => r.DiscKey == newRes.DiscKey
                                                                  && r.resourceId == newRes.resourceId
-                                                                 && r.resourceList.Id == newRes.resourceList.Id);
+                                                                 && r.ResourceList.Id == newRes.ResourceList.Id);
 
             if (!alreadyInDB)
             {
@@ -207,9 +244,9 @@ namespace ClarolineApp.VM
                 SaveChangesToDB();
             }
 
-            if (!(newRes is CL_Document) || !(newRes as CL_Document).isFolder)
+            if (!(newRes is Document) || !(newRes as Document).isFolder)
             {
-                AddNotification(CL_Notification.CreateNotification(newRes, alreadyInDB));
+                AddNotification(Notification.CreateNotification(newRes, alreadyInDB));
             }
         }
 
@@ -225,7 +262,7 @@ namespace ClarolineApp.VM
                 DeleteResourceList(rl);
             }
 
-            var queryNot = from CL_Notification n in ClarolineDB.Notifications_Table
+            var queryNot = from Notification n in ClarolineDB.Notifications_Table
                            where n._coursId == coursForDelete.Id
                            select n;
             foreach (var not in queryNot)
@@ -254,7 +291,7 @@ namespace ClarolineApp.VM
         public virtual void DeleteResource(ResourceModel resForDelete)
         {
 
-            var queryNot = from CL_Notification n in ClarolineDB.Notifications_Table
+            var queryNot = from Notification n in ClarolineDB.Notifications_Table
                            where n.resource.Equals(resForDelete)
                            select n;
             foreach (var not in queryNot)
@@ -271,7 +308,7 @@ namespace ClarolineApp.VM
             SaveChangesToDB();
         }
 
-        public virtual void DeleteNotification(CL_Notification notForDelete)
+        public virtual void DeleteNotification(Notification notForDelete)
         {
             ClarolineDB.Notifications_Table.DeleteOnSubmit(notForDelete);
             SaveChangesToDB();
@@ -299,7 +336,7 @@ namespace ClarolineApp.VM
         {
             (from ResourceModel rm
              in ClarolineDB.Resources_Table
-             where rm.resourceList.Cours.Equals(coursToClear)
+             where rm.ResourceList.Cours.Equals(coursToClear)
              select rm).ToList()
              .ForEach(rm =>
              {
@@ -320,7 +357,7 @@ namespace ClarolineApp.VM
 
         public void ClearNotifsOfCours(Cours coursToClear, int keeped)
         {
-            (from CL_Notification n
+            (from Notification n
              in ClarolineDB.Notifications_Table
              where n.Cours.Equals(coursToClear)
              orderby n.date descending
@@ -328,36 +365,18 @@ namespace ClarolineApp.VM
              .ForEach(n => DeleteNotification(n));
         }
 
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // Used to notify Silverlight that a property has changed.
-
-        protected void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-                });
-            }
-        }
-        #endregion
-
         public virtual void LoadCollectionsFromDatabase() { }
 
         protected DateTime _lastClientCall = DateTime.MinValue;
 
         //Delay between two updates in hours
-        protected const double UPDATE_DELAY = 1.0;
+        protected const double UpdateDelay = 1.0;
 
         public virtual async Task RefreshAsync(bool force = false)
         {
-            if (force || _lastClientCall.AddHours(UPDATE_DELAY).CompareTo(DateTime.Now) < 0)
+            if (force || _lastClientCall.AddHours(UpdateDelay).CompareTo(DateTime.Now) < 0)
             {
-                String updates = await ClaroClient.instance.makeOperationAsync(SupportedModules.USER, SupportedMethods.getUpdates);
+                String updates = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER, SupportedMethods.GetUpdates);
                 if (!updates.Equals("[]"))
                 {
                     Dictionary<String, Dictionary<String, Dictionary<String, Dictionary<String, String>>>> Updates;
@@ -448,24 +467,24 @@ namespace ClarolineApp.VM
 
         public async Task GetResourcesForThisListAsync(ResourceList container)
         {
-            String strContent = await ClaroClient.instance.makeOperationAsync(container.GetSupportedModule(),
-                                                                              SupportedMethods.getResourcesList,
+            String strContent = await ClaroClient.Instance.MakeOperationAsync(container.GetSupportedModule(),
+                                                                              SupportedMethods.GetResourcesList,
                                                                               reqCours:container.Cours,
-                                                                              GenMod:container.label);
+                                                                              genMod:container.label);
 
             IList resources = (IList)JsonConvert.DeserializeObject(strContent, container.ressourceListType);
 
             foreach (ResourceModel item in resources)
             {
-                item.resourceList = container;
+                item.ResourceList = container;
                 AddResource(item);
             }
         }
 
         public async Task GetSingleResourceAsync(ResourceList container, string resourceString = null)
         {
-            String strContent = await ClaroClient.instance.makeOperationAsync(container.GetSupportedModule(),
-                                                                              SupportedMethods.getSingleResource,
+            String strContent = await ClaroClient.Instance.MakeOperationAsync(container.GetSupportedModule(),
+                                                                              SupportedMethods.GetSingleResource,
                                                                               container.Cours,
                                                                               resourceString);
 
@@ -475,8 +494,8 @@ namespace ClarolineApp.VM
 
         public async Task GetUserDataAsync()
         {
-            String strContent = await ClaroClient.instance.makeOperationAsync(SupportedModules.USER,
-                                                                              SupportedMethods.getUserData);
+            String strContent = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER,
+                                                                              SupportedMethods.GetUserData);
 
             User connectedUser = JsonConvert.DeserializeObject<User>(strContent);
             StringReader str = new StringReader(strContent);
@@ -504,15 +523,15 @@ namespace ClarolineApp.VM
             reader.Close();
             str.Close();
 
-            AppSettings.instance.UserSetting.setUser(connectedUser);
-            AppSettings.instance.IntituteSetting = institution;
-            AppSettings.instance.PlatformSetting = platform;
+            AppSettings.Instance.UserSetting.setUser(connectedUser);
+            AppSettings.Instance.InstituteSetting = institution;
+            AppSettings.Instance.PlatformSetting = platform;
         }
 
         public async Task GetCoursListAsync()
         {
-            String strContent = await ClaroClient.instance.makeOperationAsync(SupportedModules.USER,
-                                                                              SupportedMethods.getCourseList);
+            String strContent = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER,
+                                                                              SupportedMethods.GetCourseList);
 
             List<Cours> Courses = JsonConvert.DeserializeObject<List<Cours>>(strContent);
 
@@ -526,8 +545,8 @@ namespace ClarolineApp.VM
 
         public async Task GetResourcesListForThisCoursAsync(Cours cours)
         {
-            String strContent = await ClaroClient.instance.makeOperationAsync(SupportedModules.USER,
-                                                                              SupportedMethods.getToolList,
+            String strContent = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER,
+                                                                              SupportedMethods.GetToolList,
                                                                               cours);
 
             List<ResourceList> rl = JsonConvert.DeserializeObject<List<ResourceList>>(strContent);
@@ -535,17 +554,17 @@ namespace ClarolineApp.VM
             {
                 switch (item.label)
                 {
-                    case CL_Annonce.LABEL:
-                        item.ressourceType = typeof(CL_Annonce);
+                    case Annonce.Label:
+                        item.ressourceType = typeof(Annonce);
                         break;
-                    case CL_Document.LABEL:
-                        item.ressourceType = typeof(CL_Document);
+                    case Document.Label:
+                        item.ressourceType = typeof(Document);
                         break;
-                    case CL_Description.LABEL:
-                        item.ressourceType = typeof(CL_Description);
+                    case Description.Label:
+                        item.ressourceType = typeof(Description);
                         break;
-                    case CL_Event.LABEL:
-                        item.ressourceType = typeof(CL_Event);
+                    case Event.Label:
+                        item.ressourceType = typeof(Event);
                         break;
                     default:
                         item.ressourceType = typeof(ResourceModel);

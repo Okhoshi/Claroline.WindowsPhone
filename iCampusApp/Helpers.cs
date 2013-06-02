@@ -77,13 +77,13 @@ namespace ClarolineApp
             }
             else
             {
-                return AppSettings.instance.PlatformSetting.ToUpperInvariant() + " - " + (string)value;
+                return AppSettings.Instance.PlatformSetting.ToUpperInvariant() + " - " + (string)value;
             }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((string)value).Replace(AppSettings.instance.PlatformSetting.ToUpperInvariant() + " - ", String.Empty);
+            return ((string)value).Replace(AppSettings.Instance.PlatformSetting.ToUpperInvariant() + " - ", String.Empty);
         }
     }
 

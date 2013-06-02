@@ -11,14 +11,14 @@ namespace ClarolineApp.Model
 {
 
     [Table]
-    public class CL_Notification : INotifyPropertyChanged, INotifyPropertyChanging
+    public class Notification : INotifyPropertyChanged, INotifyPropertyChanging
     {
 
-        public static CL_Notification CreateNotification(ResourceModel resource, bool isOld)
+        public static Notification CreateNotification(ResourceModel resource, bool isOld)
         {
-            CL_Notification note = new CL_Notification();
+            Notification note = new Notification();
             note.isOldResource = isOld;
-            note.Cours = resource.resourceList.Cours;
+            note.Cours = resource.ResourceList.Cours;
             note.resource = resource;
             note.date = resource.date;
 
@@ -237,9 +237,9 @@ namespace ClarolineApp.Model
 
         public override bool Equals(object obj)
         {
-            if (obj != null && obj.GetType().Equals(typeof(CL_Notification)))
+            if (obj != null && obj.GetType().Equals(typeof(Notification)))
             {
-                CL_Notification notif = obj as CL_Notification;
+                Notification notif = obj as Notification;
                 return this._resourceId == notif._resourceId;
             }
             return false;
@@ -258,9 +258,9 @@ namespace ClarolineApp.Model
             }
         }
 
-        public static List<CL_Notification> ConvertFromJson(string json)
+        public static List<Notification> ConvertFromJson(string json)
         {
-            return JsonConvert.DeserializeObject<List<CL_Notification>>(json);
+            return JsonConvert.DeserializeObject<List<Notification>>(json);
         }
     }
 }

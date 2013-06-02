@@ -9,11 +9,11 @@ using System.Text;
 namespace ClarolineApp.Model
 {
 
-    public class CL_Annonce : ResourceModel
+    public class Annonce : ResourceModel
     {
-        public new const string LABEL = "CLANN";
+        public new const string Label = "CLANN";
 
-        public CL_Annonce()
+        public Annonce()
             : base()
         {
             DiscKey = SupportedModules.CLANN;
@@ -22,7 +22,7 @@ namespace ClarolineApp.Model
         protected string _Content;
 
         [Column(CanBeNull = true)]
-        public string content
+        public string Content
         {
             get
             {
@@ -32,9 +32,9 @@ namespace ClarolineApp.Model
             {
                 if (_Content != value)
                 {
-                    NotifyPropertyChanging("content");
+                    NotifyPropertyChanging("Content");
                     _Content = value;
-                    NotifyPropertyChanged("content");
+                    NotifyPropertyChanged("Content");
                 }
             }
         }
@@ -43,7 +43,7 @@ namespace ClarolineApp.Model
         {
             if (obj != null && obj.GetType().Equals(this.GetType()))
             {
-                CL_Annonce ann = obj as CL_Annonce;
+                Annonce ann = obj as Annonce;
                 return this._resourceListId == ann._resourceListId && this._resourceId == ann._resourceId;
             }
             return false;

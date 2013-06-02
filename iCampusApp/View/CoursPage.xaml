@@ -8,7 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:my="clr-namespace:IconControl;assembly=IconControl"
-    xmlns:iCampusApp_Model="clr-namespace:ClarolineApp.Model"
+    xmlns:iCampusApp_Model="clr-namespace:ClarolineApp.Settings"
     xmlns:vm="clr-namespace:ClarolineApp.VM"
     xmlns:local="clr-namespace:ClarolineApp"
 	xmlns:customSelector="clr-namespace:ClarolineApp.TemplateSelector"
