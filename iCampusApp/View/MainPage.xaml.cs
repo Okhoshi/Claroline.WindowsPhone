@@ -153,7 +153,7 @@ namespace ClarolineApp
         {
             WebBrowserTask homepage = new WebBrowserTask()
             {
-                Uri = new Uri(AppSettings.Instance.DomainSetting 
+                Uri = new Uri("http://icampus.uclouvain.be" 
                             + AppSettings.Instance.AuthPageSetting 
                             + "?login=" 
                             + AppSettings.Instance.UserNameSetting 

@@ -9,27 +9,27 @@ namespace ClarolineApp.VM
 {
     public class DetailPageVM : ClarolineVM, IDetailPageVM
     {
-        private Annonce _currentAnnonce;
+        private ResourceModel _currentResource;
 
-        public Annonce currentAnnonce
+        public ResourceModel currentResource
         {
             get
             {
-                return _currentAnnonce;
+                return _currentResource;
             }
             set
             {
-                if (_currentAnnonce != value)
+                if (_currentResource != value)
                 {
-                    _currentAnnonce = value;
-                    RaisePropertyChanged("currentAnnonce");
+                    _currentResource = value;
+                    RaisePropertyChanged("currentResource");
                 }
             }
         }
 
         public DetailPageVM(int resid, int listid)
         {
-            currentAnnonce = (from Annonce a
+            currentResource = (from a
                               in ClarolineDB.Resources_Table
                               where a.resourceId == resid
                               && a.ResourceList.Id == listid

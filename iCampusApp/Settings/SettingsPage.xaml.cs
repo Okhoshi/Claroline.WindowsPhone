@@ -48,7 +48,7 @@ namespace ClarolineApp.Settings
             _viewModel = new ClarolineVM();
             this.DataContext = _viewModel;
 
-            _viewModel.Settings.PropertyChanged += (sender, e) =>
+            ClarolineVM.Settings.PropertyChanged += (sender, e) =>
             {
                 string[] _listened = new String[] { AppSettings.UsernameSettingKeyName, 
                                                     AppSettings.PasswordSettingKeyName, 
@@ -130,9 +130,9 @@ namespace ClarolineApp.Settings
 
         private void Deco_Click(object sender, EventArgs e)
         {
-            string url = _viewModel.Settings.DomainSetting;
+            string url = ClarolineVM.Settings.DomainSetting;
             _viewModel.ResetViewModel();
-            _viewModel.Settings.DomainSetting = url;
+            ClarolineVM.Settings.DomainSetting = url;
         }
 
         private void passwordBox_KeyDown(object sender, KeyEventArgs e)

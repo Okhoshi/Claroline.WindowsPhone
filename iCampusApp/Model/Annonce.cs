@@ -22,7 +22,7 @@ namespace ClarolineApp.Model
         protected string _Content;
 
         [Column(CanBeNull = true)]
-        public string Content
+        public string content
         {
             get
             {
@@ -32,9 +32,9 @@ namespace ClarolineApp.Model
             {
                 if (_Content != value)
                 {
-                    NotifyPropertyChanging("Content");
+                    NotifyPropertyChanging("content");
                     _Content = value;
-                    NotifyPropertyChanged("Content");
+                    NotifyPropertyChanged("content");
                 }
             }
         }

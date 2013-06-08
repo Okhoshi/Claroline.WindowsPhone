@@ -117,11 +117,11 @@
 		</VisualStateManager.VisualStateGroups>
 
 		<i:Interaction.Behaviors>
-			<ec:DataStateBehavior Binding="{Binding settings.AdvancedSwitchSetting}" TrueState="Enabled" FalseState="Disabled" Value="True"/>
-			<ec:DataStateBehavior Binding="{Binding isConnected}" Value="True" TrueState="Connected" FalseState="Disconnected"/>
+			<ec:DataStateBehavior Binding="{Binding Settings.AdvancedSwitchSetting}" TrueState="Enabled" FalseState="Disabled" Value="True"/>
+			<ec:DataStateBehavior Binding="{Binding IsConnected}" Value="True" TrueState="Connected" FalseState="Disconnected"/>
 		</i:Interaction.Behaviors>
 <!--TitlePanel contient le nom de l'application et le titre de la page-->
-		<controls:Pivot x:Name="SettingsPivot" Title="{Binding PlatformSetting}" d:LayoutOverrides="GridBox" DataContext="{Binding settings}">
+		<controls:Pivot x:Name="SettingsPivot" Title="{Binding PlatformSetting}" d:LayoutOverrides="GridBox" DataContext="{Binding Settings}">
 			<controls:PivotItem x:Name="pivotItem" Header="{Binding LocalizedResources.SettingsPage_User_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Margin="12,28,12,0">
 
 				<Grid>

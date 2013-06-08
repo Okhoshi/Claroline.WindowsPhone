@@ -65,7 +65,7 @@ namespace ClarolineApp.VM
                 {
                     _root = value;
                     RaisePropertyChanged("root");
-                    RaisePropertyChanged("Content");
+                    RaisePropertyChanged("content");
                 }
             }
         }
@@ -160,19 +160,19 @@ namespace ClarolineApp.VM
                     }
                     else
                     {
-                        int otherCat = list.Max(d => d.Category) + 1;
+                        int otherCat = list.Max(d => d.category) + 1;
 
                         _descriptions = new ObservableCollection<Group<Description>>(
                                                 list.Select(d =>
                                                 {
-                                                    if (d.Category == -1)
+                                                    if (d.category == -1)
                                                     {
                                                         d.title = "Autres";
-                                                        d.Category = otherCat;
+                                                        d.category = otherCat;
                                                     }
                                                     return d;
                                                 })
-                                                .GroupBy(d => d.Category)
+                                                .GroupBy(d => d.category)
                                                 .OrderBy(g => g.Key)
                                                 .Select(g => new Group<Description>(g.First().title, g))
                                             );
@@ -221,20 +221,21 @@ namespace ClarolineApp.VM
                 ResourceList l3 = new ResourceList() { Cours = currentCours, name = "Resource L3", label = "CLDSC", ressourceType = typeof(Description) };
                 ResourceList l4 = new ResourceList() { Cours = currentCours, name = "Resource L4", label = "CLCAL", ressourceType = typeof(Event) };
 
+                currentCours.Resources.Add(l1);
                 _resources = new ObservableCollection<ResourceList>();
                 _resources.Add(PivotMenu);
                 currentCours.Resources.Add(new ResourceList() { Cours = currentCours, name = "L4", label = "L4" });
 
-                l1.Resources.Add(new Annonce() { title = "Annonce 1", Content = "Contenu 1 Contenu 1 v Contenu 1 Contenu 1 Contenu 1 v Contenu 1", date = DateTime.Now });
-                l1.Resources.Add(new Annonce() { title = "Annonce 2 Annonce 2 Annonce 2", Content = "Contenu 2", date = DateTime.Now });
-                l1.Resources.Add(new Annonce() { title = "Annonce 3", Content = "Contenu 3", date = DateTime.Now });
-                l1.Resources.Add(new Annonce() { title = "Annonce 4", Content = "Contenu 4", date = DateTime.Now });
+                l1.Resources.Add(new Annonce() { title = "Annonce 1", content = "Contenu 1 Contenu 1 v Contenu 1 Contenu 1 Contenu 1 v Contenu 1", date = DateTime.Now });
+                l1.Resources.Add(new Annonce() { title = "Annonce 2 Annonce 2 Annonce 2", content = "Contenu 2", date = DateTime.Now });
+                l1.Resources.Add(new Annonce() { title = "Annonce 3", content = "Contenu 3", date = DateTime.Now });
+                l1.Resources.Add(new Annonce() { title = "Annonce 4", content = "Contenu 4", date = DateTime.Now });
 
-                l3.Resources.Add(new Description() { title = "Annonce 1", Content = "Contenu 1", date = DateTime.Now });
+                l3.Resources.Add(new Description() { title = "Annonce 1", content = "Contenu 1", date = DateTime.Now });
 
-                l4.Resources.Add(new Event() { title = "Event 1", Content = "Contenu 1", date = DateTime.Now, speakers = "Mr Nobody, Someone else" });
-                l4.Resources.Add(new Event() { title = "Event 2", Content = "Contenu 1", date = DateTime.Now, location = "This is a very very very very veyr vey long location" });
-                l4.Resources.Add(new Event() { title = "Event 3", Content = "Contenu 1", date = DateTime.Now, location = "B543", speakers = "Mr Nobody, Someone else" });
+                l4.Resources.Add(new Event() { title = "Event 1", content = "Contenu 1", date = DateTime.Now, speakers = "Mr Nobody, Someone else" });
+                l4.Resources.Add(new Event() { title = "Event 2", content = "Contenu 1", date = DateTime.Now, location = "This is a very very very very veyr vey long location" });
+                l4.Resources.Add(new Event() { title = "Event 3", content = "Contenu 1", date = DateTime.Now, location = "B543", speakers = "Mr Nobody, Someone else" });
 
                 events = new ObservableCollection<Group<Event>>();
                 events.Add(new Group<Event>("Aujourd'hui", l4.Resources.Cast<Event>()));
@@ -283,7 +284,7 @@ namespace ClarolineApp.VM
             }
         }
 
-        public void OnItemWithDetailsSelected(Annonce item)
+        public void OnItemWithDetailsSelected(ResourceModel item)
         {
             item.seenDate = DateTime.Now;
             SaveChangesToDB();

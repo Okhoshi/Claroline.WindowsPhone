@@ -19,6 +19,7 @@ namespace ClarolineApp
     {
         //NOMOD
         Authenticate,
+        GetPage,
         //USER
         GetUserData,
         GetCourseList,
@@ -51,7 +52,20 @@ namespace ClarolineApp
             switch (module)
             {
                 case SupportedModules.NOMOD:
-                    URL = AppSettings.Instance.DomainSetting + AppSettings.Instance.AuthPageSetting;
+                    switch (method)
+                    {
+                        case SupportedMethods.Authenticate:
+                            URL = AppSettings.Instance.DomainSetting + AppSettings.Instance.AuthPageSetting;
+                            break;
+                        case SupportedMethods.GetPage:
+                            URL = GenMod;
+                            break;
+                        default:
+                            throw new NotSupportedException(
+                                        GetEnumName(method)
+                                        + " is not supported in "
+                                        + GetEnumName(module));
+                    }
                     break;
                 default:
                     if (Enum.IsDefined(typeof(SupportedModules), module))
@@ -79,6 +93,9 @@ namespace ClarolineApp
                     {
                         case SupportedMethods.Authenticate:
                             postString = "login=" + login + "&password=" + password;
+                            break;
+                        case SupportedMethods.GetPage:
+                            postString = "";
                             break;
                         default:
                             throw new NotSupportedException(

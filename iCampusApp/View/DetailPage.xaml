@@ -1,55 +1,69 @@
-﻿<phone:PhoneApplicationPage 
-    x:Class="ClarolineApp.DetailPage"
+﻿<phone:PhoneApplicationPage
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    FontFamily="{StaticResource PhoneFontFamilyNormal}"
-    FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    xmlns:selector="clr-namespace:ClarolineApp.TemplateSelector"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+    xmlns:local="clr-namespace:ClarolineApp"
+    x:Class="ClarolineApp.DetailPage"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
 	shell:SystemTray.Opacity="0"
-    Style="{StaticResource TransitionPageStyle}">
+    >
 
-    <!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
-    <Grid x:Name="LayoutRoot" Background="Transparent" d:DataContext="{d:DesignData /SampleData/AnnoncePageVMSampleData.xaml}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <phone:PhoneApplicationPage.Resources>
+    	<local:TypeVisibilityConverter x:Key="TypeVisibilityConverter"/>
+        <DataTemplate x:Key="AnnonceBasedTemplate">
+        	<ScrollViewer d:DataContext="{d:DesignData /SampleData/AnnonceSampleData.xaml}">
+        		<TextBlock x:Name="Content" Text="{Binding content}" TextWrapping="Wrap"/>
+        	</ScrollViewer>
+        </DataTemplate>
+        <DataTemplate x:Key="GenericTemplate">
+        	<phone:WebBrowser x:Name="WB" Source="{Binding url, Mode=OneTime}" Navigating="WB_Navigating"/>
+        </DataTemplate>
+    </phone:PhoneApplicationPage.Resources>
 
-        <!--TitlePanel contient le nom de l'application et le titre de la page-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="{Binding ApplicationName, Converter={StaticResource ToUpper}}" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="{Binding title, Mode=OneWay}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" DataContext="{Binding currentAnnonce}"/>
-            <TextBlock x:Name="Date" TextWrapping="Wrap" DataContext="{Binding currentAnnonce}" Style="{StaticResource PhoneTextSubtleStyle}">
-                <Run Text="{Binding LocalizedResources.AnnoncePage_DateFormater_Published, Source={StaticResource LocalizedStrings}}"/>
-                <Run Text="{Binding date, StringFormat=\ \{0:D\}}" />
-            </TextBlock>
-        </StackPanel>
+	<phone:PhoneApplicationPage.FontFamily>
+		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
+	</phone:PhoneApplicationPage.FontFamily>
+	<phone:PhoneApplicationPage.FontSize>
+		<StaticResource ResourceKey="PhoneFontSizeNormal"/>
+	</phone:PhoneApplicationPage.FontSize>
+	<phone:PhoneApplicationPage.Foreground>
+		<StaticResource ResourceKey="PhoneForegroundBrush"/>
+	</phone:PhoneApplicationPage.Foreground>
+	<phone:PhoneApplicationPage.Style>
+		<StaticResource ResourceKey="TransitionPageStyle"/>
+	</phone:PhoneApplicationPage.Style>
+<!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
+	<!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
+	<Grid x:Name="LayoutRoot" Background="Transparent">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<!--TitlePanel contient le nom de l'application et le titre de la page-->
+		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+			<TextBlock x:Name="ApplicationTitle" Text="{Binding ApplicationName, Converter={StaticResource ToUpper}}" Style="{StaticResource PhoneTextNormalStyle}"/>
+			<TextBlock x:Name="PageTitle" Text="{Binding title, Mode=OneWay}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" DataContext="{Binding currentResource}" d:DataContext="{d:DesignData /SampleData/AnnonceSampleData.xaml}"/>
+			<TextBlock x:Name="Date" TextWrapping="Wrap" DataContext="{Binding currentResource}" Style="{StaticResource PhoneTextSubtleStyle}" d:DataContext="{d:DesignData /SampleData/AnnonceSampleData.xaml}" Visibility="{Binding ConverterParameter=ClarolineApp.Model.Annonce, Converter={StaticResource TypeVisibilityConverter}, Mode=OneWay}">
+				<Run Text="{Binding LocalizedResources.AnnoncePage_DateFormater_Published, Source={StaticResource LocalizedStrings}}"/>
+				<Run Text="{Binding date, StringFormat=' \{0:D\}'}" />
+			</TextBlock>
+		</StackPanel>
 
         <!--ContentPanel - placez tout contenu supplémentaire ici-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" DataContext="{Binding currentAnnonce}">
-            <ScrollViewer>
-                <TextBlock x:Name="AnnContent" Text="{Binding content, Mode=TwoWay}" TextWrapping="Wrap"/>
-            </ScrollViewer>
-        </Grid>
-    </Grid>
- 
-    <!--Exemple de code illustrant l'utilisation de l'ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Bouton 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Bouton 2"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="ÉlémentMenu 1"/>
-                <shell:ApplicationBarMenuItem Text="ÉlémentMenu 2"/>
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
-
+		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" DataContext="{Binding currentResource}">
+			<selector:ResourceTemplateSelector x:Name="ResourceSelector" Content="{Binding Mode=OneWay}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+				Annonce="{StaticResource AnnonceBasedTemplate}"
+				Description="{StaticResource AnnonceBasedTemplate}"
+				Event="{StaticResource AnnonceBasedTemplate}"
+				Generic="{StaticResource GenericTemplate}"/>
+		</Grid>
+	</Grid>
 </phone:PhoneApplicationPage>

@@ -188,5 +188,19 @@ namespace ClarolineApp
         {
             SectionsPivot.SelectedIndex = 0;
         }
+
+        private void GENLIST_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListBox l = sender as ListBox;
+
+            if (l.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            _viewModel.OnItemWithDetailsSelected(l.SelectedItem as ResourceModel);
+
+            l.SelectedIndex = -1;
+        }
     }
 }

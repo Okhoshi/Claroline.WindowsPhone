@@ -115,20 +115,24 @@ namespace ClarolineApp
         {
             //Data request
             HttpWebRequest client = (HttpWebRequest)WebRequest.Create(args.GetUrl());
-            client.Method = "POST";
             client.CookieContainer = Cookies;
-            client.ContentType = "application/x-www-form-urlencoded";
-            client.AllowAutoRedirect = false;
+            client.AllowAutoRedirect = args.method == SupportedMethods.GetPage;
+            client.Method = args.method == SupportedMethods.GetPage ? "GET" : "POST";
 
-            Stream postStream = await client.GetRequestStreamAsync();
-            String postData = args.GetPostDataString();
+            if (args.method != SupportedMethods.GetPage)
+            {
+                client.ContentType = "application/x-www-form-urlencoded";
 
-            // Convert the string into a byte array.
-            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+                Stream postStream = await client.GetRequestStreamAsync();
+                String postData = args.GetPostDataString();
 
-            // Write to the request stream.
-            postStream.Write(byteArray, 0, postData.Length);
-            postStream.Close();
+                // Convert the string into a byte array.
+                byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+
+                // Write to the request stream.
+                postStream.Write(byteArray, 0, postData.Length);
+                postStream.Close();
+            }
 
             return client;
         }
@@ -149,10 +153,16 @@ namespace ClarolineApp
                     IsInSync = true;
                     HttpWebRequest client = await GetClientAsync(args);
                     response = (HttpWebResponse)await client.GetResponseAsync();
-                    responseStream = response.GetResponseStream();
-                    StreamReader sr = new StreamReader(responseStream, Encoding.UTF8);
-                    strContent = sr.ReadToEnd();
-                    responseStream.Close();
+                    strContent = DecodeData(response);
+
+                    if (forAuth)
+                    {
+                        foreach (string cookie in response.Headers["Set-Cookie"].Split(new string[] { ",  " }, StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            int indexOfEqual = cookie.IndexOf("=");
+                            Cookies.Add(new Uri(Settings.DomainSetting, UriKind.Absolute), new Cookie(cookie.Substring(0, indexOfEqual), cookie.Substring(indexOfEqual + 1, cookie.IndexOf(";") - (indexOfEqual + 1))));
+                        }
+                    }
                     response.Close();
 
 #if DEBUG
@@ -229,6 +239,94 @@ namespace ClarolineApp
         {
             CookieCreation = DateTime.MinValue;
             Cookies = new CookieContainer();
+        }
+
+        private static string DecodeData(WebResponse w)
+        {
+
+            //
+            // first see if content length header has charset = calue
+            //
+            String charset = null;
+            String ctype = w.Headers["content-type"];
+            if (ctype != null)
+            {
+                int ind = ctype.IndexOf("charset=");
+                if (ind != -1)
+                {
+                    charset = ctype.Substring(ind + 8);
+                    Console.WriteLine("CT: charset=" + charset);
+                }
+            }
+
+            // save data to a memorystream
+            MemoryStream rawdata = new MemoryStream();
+            byte[] buffer = new byte[1024];
+            Stream rs = w.GetResponseStream();
+            int read = rs.Read(buffer, 0, buffer.Length);
+            while (read > 0)
+            {
+                rawdata.Write(buffer, 0, read);
+                read = rs.Read(buffer, 0, buffer.Length);
+            }
+
+            rs.Close();
+
+            //
+            // if ContentType is null, or did not contain charset, we search in body
+            //
+            if (charset == null)
+            {
+                MemoryStream ms = rawdata;
+                ms.Seek(0, SeekOrigin.Begin);
+
+                StreamReader srr = new StreamReader(ms, Encoding.UTF8);
+                String meta = srr.ReadToEnd();
+
+                if (meta != null)
+                {
+                    int start_ind = meta.IndexOf("charset=");
+                    int end_ind = -1;
+                    if (start_ind != -1)
+                    {
+                        end_ind = meta.IndexOf("\"", start_ind);
+                        if (end_ind != -1)
+                        {
+                            int start = start_ind + 8;
+                            charset = meta.Substring(start, end_ind - start + 1);
+                            charset = charset.TrimEnd(new Char[] { '>', '"' });
+                            Console.WriteLine("META: charset=" + charset);
+                        }
+                    }
+                }
+            }
+
+            Encoding e = null;
+            if (charset == null)
+            {
+                e = Encoding.UTF8; //default encoding
+            }
+            else
+            {
+                try
+                {
+                    e = Encoding.GetEncoding(charset);
+                }
+                catch (Exception ee)
+                {
+                    Console.WriteLine("Exception: GetEncoding: " + charset);
+                    Console.WriteLine(ee.ToString());
+                    e = Encoding.UTF8;
+                }
+            }
+
+            rawdata.Seek(0, SeekOrigin.Begin);
+
+            StreamReader sr = new StreamReader(rawdata, e);
+
+            String s = sr.ReadToEnd();
+
+            return s;
         }
 
         #region INotifyPropertyChanged Members

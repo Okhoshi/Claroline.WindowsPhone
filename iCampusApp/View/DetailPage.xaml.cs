@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
-using ClarolineApp.Settings;
-using Microsoft.Phone.Shell;
+﻿using ClarolineApp.Settings;
 using ClarolineApp.VM;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using System.Windows.Navigation;
 
 namespace ClarolineApp
@@ -40,6 +32,14 @@ namespace ClarolineApp
                 return _indicator;
             }
         }
+
+        public static Regex regex = new Regex("(?:<div id=\"claroPage\">\\P{Cn}*?<div id=\"courseRightContent\">" +
+                                              "(?<Content>\\P{Cn}+?)</div>\\s*?<!-- rightContent --" +
+                                              ">\\P{Cn}*?<!-- end of claroPage -->\\P{Cn}*?</div>)",
+                                              RegexOptions.CultureInvariant | RegexOptions.Compiled);
+
+        // This is the replacement string
+        public static string regexReplace = "<div id=\"claroPage\">${Content}<!-- end of claroPage --></div>";
 
         public DetailPage()
         {
@@ -79,6 +79,19 @@ namespace ClarolineApp
             {
                 NavigationService.GoBack();
             }
+        }
+
+        protected async void WB_Navigating(object sender, NavigatingEventArgs e)
+        {
+            e.Cancel = true;
+
+            string page = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.NOMOD, SupportedMethods.GetPage, genMod: e.Uri.AbsoluteUri.Replace("about:", AppSettings.Instance.DomainSetting));
+            
+            //// Replace the matched text in the InputText using the replacement pattern
+            page = regex.Replace(page, regexReplace);
+            page = page.Replace("</head>", "<meta name=\"viewport\" content=\"width=" + (sender as WebBrowser).ActualWidth + "\"/>\n</head>");
+            page = page.Replace("=\"/", "=\"" + AppSettings.Instance.DomainSetting + "/");
+            (sender as WebBrowser).NavigateToString(page);
         }
     }
 }

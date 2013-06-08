@@ -22,7 +22,7 @@ namespace ClarolineApp.Model
         private int _category;
 
         [Column(CanBeNull = true)]
-        public int Category
+        public int category
         {
             get
             {
@@ -32,9 +32,9 @@ namespace ClarolineApp.Model
             {
                 if (_category != value)
                 {
-                    NotifyPropertyChanging("Category");
+                    NotifyPropertyChanging("category");
                     _category = value;
-                    NotifyPropertyChanged("Category");
+                    NotifyPropertyChanged("category");
                 }
             }
         }

@@ -15,7 +15,7 @@ namespace ClarolineApp.VM
 {
     public class ClarolineVM : ViewModelBase, IClarolineVM
     {
-        public static string ApplicationName
+        public string ApplicationName
         {
             get
             {
@@ -66,7 +66,7 @@ namespace ClarolineApp.VM
             }
         }
 
-        public static bool IsConnected
+        public bool IsConnected
         {
             get
             {

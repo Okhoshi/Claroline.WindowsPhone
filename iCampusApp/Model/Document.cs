@@ -68,26 +68,6 @@ namespace ClarolineApp.Model
             }
         }
 
-        private string _url;
-
-        [Column(CanBeNull = true)]
-        public string url
-        {
-            get
-            {
-                return _url;
-            }
-            set
-            {
-                if (_url != value)
-                {
-                    NotifyPropertyChanging("url");
-                    _url = value;
-                    NotifyPropertyChanged("url");
-                }
-            }
-        }
-
         private string _desc;
 
         [Column(CanBeNull = true)]

@@ -160,6 +160,19 @@ namespace ClarolineApp
         }
     }
 
+    public class TypeVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return Type.GetType(parameter as string).IsInstanceOfType(value) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return new object();
+        }
+    }
+
     public class Helper
     {
 

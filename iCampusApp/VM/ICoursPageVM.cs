@@ -10,7 +10,7 @@ namespace ClarolineApp.VM
 {
     interface ICoursPageVM : IClarolineVM
     {
-        void OnItemWithDetailsSelected(Annonce item);
+        void OnItemWithDetailsSelected(ResourceModel item);
         void OnDocumentItemSelected(Document item);
         void OnGenericItemSelected(ResourceModel item);
 

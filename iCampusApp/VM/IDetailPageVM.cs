@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using ClarolineApp.Model;
 
 namespace ClarolineApp.VM
 {
     interface IDetailPageVM : IClarolineVM
     {
-
+        ResourceModel currentResource
+        {
+            get;
+            set;
+        }
     }
 }
