@@ -131,7 +131,7 @@
 							<PlaneProjection/>
 						</StackPanel.Projection>
 						<TextBlock HorizontalAlignment="Center" x:Name="userLabel" Text="{Binding LocalizedResources.SettingsPage_User_Username, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
-						<TextBox Height="72" HorizontalAlignment="Center" x:Name="userTextBox" Text="{Binding UsernameSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
+						<TextBox Height="72" HorizontalAlignment="Center" x:Name="userTextBox" Text="{Binding UserNameSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
 						<TextBlock HorizontalAlignment="Center" x:Name="passLabel" Text="{Binding LocalizedResources.SettingsPage_User_Password, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}"/>
 						<PasswordBox Height="72" HorizontalAlignment="Center" x:Name="passwordBox" VerticalAlignment="Top" Width="412" Password="{Binding PasswordSetting, Mode=TwoWay}" Margin="22,0" KeyDown="passwordBox_KeyDown"/>
 						<Button x:Name="Connect" Content="{Binding LocalizedResources.SettingsPage_User_ConnectButton, Source={StaticResource LocalizedStrings}}" Margin="24,40,24,0" Click="Connect_Button"/>

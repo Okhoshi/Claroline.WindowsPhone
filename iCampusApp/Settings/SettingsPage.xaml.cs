@@ -50,7 +50,7 @@ namespace ClarolineApp.Settings
 
             ClarolineVM.Settings.PropertyChanged += (sender, e) =>
             {
-                string[] _listened = new String[] { AppSettings.UsernameSettingKeyName, 
+                string[] _listened = new String[] { AppSettings.UserNameSettingKeyName, 
                                                     AppSettings.PasswordSettingKeyName, 
                                                     AppSettings.WebServiceSettingKeyName, 
                                                     AppSettings.DomainSettingKeyName };

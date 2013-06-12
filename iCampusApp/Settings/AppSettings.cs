@@ -37,7 +37,7 @@ namespace ClarolineApp.Settings
         internal const string AdvancedSwitchSettingKeyName = "AdvancedSwitchSetting";
         internal const string CellularDataEnabledSettingKeyName = "CellularDataEnabledSetting";
         internal const string RadioButton3SettingKeyName = "RadioButton3Setting";
-        internal const string UsernameSettingKeyName = "UsernameSetting";
+        internal const string UserNameSettingKeyName = "UserNameSetting";
         internal const string PasswordSettingKeyName = "PasswordSetting";
         internal const string InstituteSettingKeyName = "InstituteSetting";
         internal const string PlatformSettingKeyName = "PlatformSetting";
@@ -46,11 +46,11 @@ namespace ClarolineApp.Settings
         // The default value of our Settings
 
 #if DEBUG
-        const string UsernameSettingDefault = "qdevos";
+        const string UserNameSettingDefault = "qdevos";
         const string PasswordSettingDefault = "elegie24";
         const string DomainSettingDefault = "http://mesconsult.be/clarodev"; // Debug Platform
 #else
-        const string UsernameSettingDefault = "";
+        const string UserNameSettingDefault = "";
         const string PasswordSettingDefault = "";
         const string DomainSettingDefault = "http://"; // Debug Platform
 #endif
@@ -327,11 +327,11 @@ namespace ClarolineApp.Settings
         {
             get
             {
-                return GetValueOrDefault<string>(UsernameSettingKeyName, UsernameSettingDefault);
+                return GetValueOrDefault<string>(UserNameSettingKeyName, UserNameSettingDefault);
             }
             set
             {
-                if (AddOrUpdateValue(UsernameSettingKeyName, value))
+                if (AddOrUpdateValue(UserNameSettingKeyName, value))
                 {
                     Save();
                 }
@@ -444,7 +444,7 @@ namespace ClarolineApp.Settings
             UserSetting = new User();
             PlatformSetting = PlatformSettingDefault;
             PasswordSetting = PasswordSettingDefault;
-            UserNameSetting = UsernameSettingDefault;
+            UserNameSetting = UserNameSettingDefault;
             InstituteSetting = InstituteSettingDefault;
             DomainSetting = DomainSettingDefault;
         }

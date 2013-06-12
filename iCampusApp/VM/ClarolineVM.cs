@@ -13,7 +13,7 @@ using System.Windows;
 
 namespace ClarolineApp.VM
 {
-    public class ClarolineVM : ViewModelBase, IClarolineVM
+    public class ClarolineVM : IClarolineVM
     {
         public string ApplicationName
         {
@@ -364,6 +364,24 @@ namespace ClarolineApp.VM
              select n).Skip(keeped).ToList()
              .ForEach(n => DeleteNotification(n));
         }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Used to notify Silverlight that a property has changed.
+
+        protected void RaisePropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                });
+            }
+        }
+        #endregion
 
         public virtual void LoadCollectionsFromDatabase() { }
 
