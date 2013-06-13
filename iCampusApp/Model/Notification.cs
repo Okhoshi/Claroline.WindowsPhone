@@ -32,9 +32,9 @@ namespace ClarolineApp.Model
             switch (e.PropertyName)
             {
                 case "isNotified":
+                case "seenDate":
                     if (resource.isNotified)
                     {
-                        resource.PropertyChanged -= this.resource_PropertyChanged;
                         NotifyPropertyChanged("isNotified");
                     }
                     break;
@@ -69,7 +69,7 @@ namespace ClarolineApp.Model
         {
             get
             {
-                return _resource.Entity.seenDate.CompareTo(date) > 0;
+                return _resource.Entity.seenDate.CompareTo(date) < 0;
             }
         }
 

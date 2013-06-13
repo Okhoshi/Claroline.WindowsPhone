@@ -1,4 +1,5 @@
-﻿using ClarolineApp.Settings;
+﻿using ClarolineApp.Model;
+using ClarolineApp.Settings;
 using ClarolineApp.VM;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -70,6 +71,12 @@ namespace ClarolineApp
                 
                 _viewModel = new DetailPageVM(resid, listid);
                 this.DataContext = _viewModel;
+
+                if (_viewModel.currentResource is Document)
+                {
+                    (_viewModel.currentResource as Document).OpenDocumentAsync();
+                    NavigationService.GoBack();
+                }
 
                 _viewModel.RefreshAsync();
 

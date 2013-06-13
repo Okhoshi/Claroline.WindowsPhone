@@ -49,6 +49,8 @@ namespace ClarolineApp
             _viewModel = new MainPageVM();
             this.DataContext = _viewModel;
 
+            ClaroClient.Instance.PropertyChanged += Failure_Handler;
+
             version_text.Text = Helper.GetVersionNumber();
         }
         //--------------------------------------------------------------------
@@ -82,8 +84,6 @@ namespace ClarolineApp
 
             if (!_cours.loadedToday() || _cours.Resources.Count == 0)
             {
-                ClaroClient.Instance.PropertyChanged += Failure_Handler;
-
                 PerformanceProgressBar progress = Helper.FindFirstElementInVisualTree<PerformanceProgressBar>(this.CoursList.ItemContainerGenerator.ContainerFromIndex(CoursList.SelectedIndex) as ListBoxItem);
                 progress.Visibility = System.Windows.Visibility.Visible;
 
@@ -110,8 +110,6 @@ namespace ClarolineApp
         {
             if (e.PropertyName == "LastException")
             {
-                ClaroClient.Instance.PropertyChanged -= Failure_Handler;
-
                 MessageBox.Show("Exception occured! " + ClaroClient.Instance.LastException.Message);
             }
         }
@@ -125,14 +123,17 @@ namespace ClarolineApp
         {
             indicator.Text = AppLanguage.ProgressBar_Connecting;
             indicator.IsVisible = true;
+
+            bool r = true;
             if (!ClaroClient.Instance.IsValidAccountSync())
             {
-                await _viewModel.GetUserDataAsync();
+                r = await _viewModel.GetUserDataAsync();
             }
-
-            indicator.Text = String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.MainPage_Cours_PI);
-            await _viewModel.GetCoursListAsync();
-
+            if (r)
+            {
+                indicator.Text = String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.MainPage_Cours_PI);
+                await _viewModel.GetCoursListAsync();
+            }
             indicator.IsVisible = false;
         }
 
@@ -209,8 +210,12 @@ namespace ClarolineApp
             }
 
             Notification selectedNotification = (sender as ListBox).SelectedItem as Notification;
-            
-            MessageBox.Show("Selected :" + selectedNotification.ToString());
+
+            if (selectedNotification != null)
+            {
+                ResourceModel item = selectedNotification.resource;
+                NavigationService.Navigate(new Uri(String.Format("/View/DetailPage.xaml?resource={0}&list={1}", item.resourceId, item.ResourceList.Id), UriKind.Relative));
+            }
 
             NotifList.SelectedIndex = -1;
         }

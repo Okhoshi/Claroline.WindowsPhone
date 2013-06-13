@@ -78,15 +78,18 @@ namespace ClarolineApp.VM
         {
             LoadCollectionsFromDatabase();
 
-            Settings.PropertyChanged += (sender, e) =>
+            if (!DesignerProperties.IsInDesignTool)
             {
-                RaisePropertyChanged("IsConnected");
-
-                if (e.PropertyName == AppSettings.PlatformSettingKeyName)
+                Settings.PropertyChanged += (sender, e) =>
                 {
-                    RaisePropertyChanged("ApplicationName");
-                }
-            };
+                    RaisePropertyChanged("IsConnected");
+
+                    if (e.PropertyName == AppSettings.PlatformSettingKeyName)
+                    {
+                        RaisePropertyChanged("ApplicationName");
+                    }
+                };
+            }
         }
 
         private Uri _navigationTarget;
@@ -395,61 +398,65 @@ namespace ClarolineApp.VM
             if (force || _lastClientCall.AddHours(UpdateDelay).CompareTo(DateTime.Now) < 0)
             {
                 String updates = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER, SupportedMethods.GetUpdates);
-                if (!updates.Equals("[]"))
+                if(updates != "")
                 {
-                    Dictionary<String, Dictionary<String, Dictionary<String, Dictionary<String, String>>>> Updates;
-                    Updates = JsonConvert.DeserializeObject<Dictionary<String, Dictionary<String, Dictionary<String, Dictionary<String, String>>>>>(updates);
-                    foreach (KeyValuePair<String, Dictionary<String, Dictionary<String, Dictionary<String, String>>>> course in Updates)
+                    _lastClientCall = DateTime.Now;
+                    if (!updates.Equals("[]"))
                     {
-                        Cours upCours = (from Cours c
-                                        in ClarolineDB.Cours_Table
-                                         where c.sysCode.Equals(course.Key)
-                                         select c).FirstOrDefault();
-
-                        if (upCours == null)
+                        Dictionary<String, Dictionary<String, Dictionary<String, Dictionary<String, String>>>> Updates;
+                        Updates = JsonConvert.DeserializeObject<Dictionary<String, Dictionary<String, Dictionary<String, Dictionary<String, String>>>>>(updates);
+                        foreach (KeyValuePair<String, Dictionary<String, Dictionary<String, Dictionary<String, String>>>> course in Updates)
                         {
-                            await GetCoursListAsync();
+                            Cours upCours = (from Cours c
+                                            in ClarolineDB.Cours_Table
+                                             where c.sysCode.Equals(course.Key)
+                                             select c).FirstOrDefault();
 
-                            upCours = (from Cours c
-                                        in ClarolineDB.Cours_Table
-                                       where c.sysCode.Equals(course.Key)
-                                       select c).FirstOrDefault();
-                            if (upCours != null)
+                            if (upCours == null)
                             {
-                                await PrepareCoursForOpeningAsync(upCours);
-                            }
-                            continue;
-                        }
-                        else
-                        {
-                            foreach (KeyValuePair<String, Dictionary<String, Dictionary<String, String>>> tool in course.Value)
-                            {
-                                if (!upCours.Resources.Any(rl => rl.label.Equals(tool.Key)))
+                                await GetCoursListAsync();
+
+                                upCours = (from Cours c
+                                            in ClarolineDB.Cours_Table
+                                           where c.sysCode.Equals(course.Key)
+                                           select c).FirstOrDefault();
+                                if (upCours != null)
                                 {
-                                    await GetResourcesListForThisCoursAsync(upCours);
-
-                                    if (upCours.Resources.Any(rl => rl.label.Equals(tool.Key)))
-                                    {
-                                        await GetResourcesForThisListAsync(upCours.Resources.First(rl => rl.label.Equals(tool.Key)));
-                                    }
-                                    continue;
+                                    await PrepareCoursForOpeningAsync(upCours);
                                 }
-                                else
+                                continue;
+                            }
+                            else
+                            {
+                                foreach (KeyValuePair<String, Dictionary<String, Dictionary<String, String>>> tool in course.Value)
                                 {
-                                    foreach (KeyValuePair<String, Dictionary<String, String>> resource in tool.Value)
+                                    if (!upCours.Resources.Any(rl => rl.label.Equals(tool.Key)))
                                     {
-                                        ResourceList rlist = upCours.Resources.First(rl => rl.label.Equals(tool.Key));
-                                        ResourceModel upRes = rlist.GetResourceByResId(resource.Key);
+                                        await GetResourcesListForThisCoursAsync(upCours);
 
-                                        if (upRes == null)
+                                        if (upCours.Resources.Any(rl => rl.label.Equals(tool.Key)))
                                         {
-                                            await GetSingleResourceAsync(rlist, resource.Key);
+                                            await GetResourcesForThisListAsync(upCours.Resources.First(rl => rl.label.Equals(tool.Key)));
                                         }
-                                        else
+                                        continue;
+                                    }
+                                    else
+                                    {
+                                        foreach (KeyValuePair<String, Dictionary<String, String>> resource in tool.Value)
                                         {
-                                            upRes.date = DateTime.Parse(resource.Value["date"]);
-                                            upRes.notifiedDate = DateTime.Now;
-                                            SaveChangesToDB();
+                                            ResourceList rlist = upCours.Resources.First(rl => rl.label.Equals(tool.Key));
+                                            ResourceModel upRes = rlist.GetResourceByResId(resource.Key);
+
+                                            if (upRes == null)
+                                            {
+                                                await GetSingleResourceAsync(rlist, resource.Key);
+                                            }
+                                            else
+                                            {
+                                                upRes.date = DateTime.Parse(resource.Value["date"]);
+                                                upRes.notifiedDate = DateTime.Now;
+                                                SaveChangesToDB();
+                                            }
                                         }
                                     }
                                 }
@@ -464,90 +471,106 @@ namespace ClarolineApp.VM
 
         public async Task PrepareCoursForOpeningAsync(Cours coursToPrepare)
         {
-            await GetResourcesListForThisCoursAsync(coursToPrepare);
+            bool r = await GetResourcesListForThisCoursAsync(coursToPrepare);
 
-            foreach (ResourceList rl in (from ResourceList l
-                                         in ClarolineDB.ResourceList_Table
-                                         where l.Cours.Equals(coursToPrepare)
-                                         select l))
+            if (r)
             {
-                if (Enum.IsDefined(typeof(SupportedModules), rl.GetSupportedModule()))
+                foreach (ResourceList rl in (from ResourceList l
+                                             in ClarolineDB.ResourceList_Table
+                                             where l.Cours.Equals(coursToPrepare)
+                                             select l))
                 {
-                    await GetResourcesForThisListAsync(rl);
+                    if (Enum.IsDefined(typeof(SupportedModules), rl.GetSupportedModule()))
+                    {
+                        await GetResourcesForThisListAsync(rl);
+                    }
                 }
-            }
-            ClearResOfCours(coursToPrepare);
+                ClearResOfCours(coursToPrepare);
 
-            coursToPrepare.Resources.AddRange(from ResourceList l in ClarolineDB.ResourceList_Table
-                                              where l.Cours.Equals(coursToPrepare)
-                                              select l);
+                coursToPrepare.Resources.AddRange(from ResourceList l in ClarolineDB.ResourceList_Table
+                                                  where l.Cours.Equals(coursToPrepare)
+                                                  select l);
+            }
         }
 
         public async Task GetResourcesForThisListAsync(ResourceList container)
         {
+            _lastClientCall = DateTime.Now;
             String strContent = await ClaroClient.Instance.MakeOperationAsync(container.GetSupportedModule(),
                                                                               SupportedMethods.GetResourcesList,
-                                                                              reqCours:container.Cours,
-                                                                              genMod:container.label);
-
-            IList resources = (IList)JsonConvert.DeserializeObject(strContent, container.ressourceListType);
-
-            foreach (ResourceModel item in resources)
+                                                                              reqCours: container.Cours,
+                                                                              genMod: container.label);
+            if (strContent != "")
             {
-                item.ResourceList = container;
-                AddResource(item);
+                IList resources = (IList)JsonConvert.DeserializeObject(strContent, container.ressourceListType);
+
+                foreach (ResourceModel item in resources)
+                {
+                    item.ResourceList = container;
+                    AddResource(item);
+                }
             }
         }
 
         public async Task GetSingleResourceAsync(ResourceList container, string resourceString = null)
         {
+            _lastClientCall = DateTime.Now;
             String strContent = await ClaroClient.Instance.MakeOperationAsync(container.GetSupportedModule(),
                                                                               SupportedMethods.GetSingleResource,
                                                                               container.Cours,
                                                                               resourceString);
-
-            ResourceModel resource = (ResourceModel)JsonConvert.DeserializeObject(strContent, container.ressourceType);
-            AddResource(resource);
+            if (strContent != "")
+            {
+                ResourceModel resource = (ResourceModel)JsonConvert.DeserializeObject(strContent, container.ressourceType);
+                AddResource(resource);
+            }
         }
 
-        public async Task GetUserDataAsync()
+        public async Task<bool> GetUserDataAsync()
         {
             String strContent = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER,
                                                                               SupportedMethods.GetUserData);
 
-            User connectedUser = JsonConvert.DeserializeObject<User>(strContent);
-            StringReader str = new StringReader(strContent);
-            String institution = "";
-            String platform = "";
-
-            JsonTextReader reader = new JsonTextReader(str);
-            while (reader.Read())
+            if (strContent != "")
             {
-                if (reader.Value != null)
+                User connectedUser = JsonConvert.DeserializeObject<User>(strContent);
+                StringReader str = new StringReader(strContent);
+                String institution = "";
+                String platform = "";
+
+                JsonTextReader reader = new JsonTextReader(str);
+                while (reader.Read())
                 {
-                    switch (reader.Value.ToString())
+                    if (reader.Value != null)
                     {
-                        case "institutionName":
-                            institution = reader.ReadAsString();
-                            break;
-                        case "platformName":
-                            platform = reader.ReadAsString();
-                            break;
-                        default:
-                            continue;
+                        switch (reader.Value.ToString())
+                        {
+                            case "institutionName":
+                                institution = reader.ReadAsString();
+                                break;
+                            case "platformName":
+                                platform = reader.ReadAsString();
+                                break;
+                            default:
+                                continue;
+                        }
                     }
                 }
-            }
-            reader.Close();
-            str.Close();
+                reader.Close();
+                str.Close();
 
-            AppSettings.Instance.UserSetting.setUser(connectedUser);
-            AppSettings.Instance.InstituteSetting = institution;
-            AppSettings.Instance.PlatformSetting = platform;
+                AppSettings.Instance.UserSetting.setUser(connectedUser);
+                AppSettings.Instance.InstituteSetting = institution;
+                AppSettings.Instance.PlatformSetting = platform;
+
+                return true;
+            }
+            return false;
         }
 
         public async Task GetCoursListAsync()
         {
+            _lastClientCall = DateTime.Now;
             String strContent = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER,
                                                                               SupportedMethods.GetCourseList);
 
@@ -561,38 +584,43 @@ namespace ClarolineApp.VM
             ClearCoursList();
         }
 
-        public async Task GetResourcesListForThisCoursAsync(Cours cours)
+        public async Task<bool> GetResourcesListForThisCoursAsync(Cours cours)
         {
+                    _lastClientCall = DateTime.Now;
             String strContent = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER,
                                                                               SupportedMethods.GetToolList,
                                                                               cours);
-
-            List<ResourceList> rl = JsonConvert.DeserializeObject<List<ResourceList>>(strContent);
-            foreach (ResourceList item in rl)
+            if (strContent != "")
             {
-                switch (item.label)
+                List<ResourceList> rl = JsonConvert.DeserializeObject<List<ResourceList>>(strContent);
+                foreach (ResourceList item in rl)
                 {
-                    case Annonce.Label:
-                        item.ressourceType = typeof(Annonce);
-                        break;
-                    case Document.Label:
-                        item.ressourceType = typeof(Document);
-                        break;
-                    case Description.Label:
-                        item.ressourceType = typeof(Description);
-                        break;
-                    case Event.Label:
-                        item.ressourceType = typeof(Event);
-                        break;
-                    default:
-                        item.ressourceType = typeof(ResourceModel);
-                        break;
+                    switch (item.label)
+                    {
+                        case Annonce.Label:
+                            item.ressourceType = typeof(Annonce);
+                            break;
+                        case Document.Label:
+                            item.ressourceType = typeof(Document);
+                            break;
+                        case Description.Label:
+                            item.ressourceType = typeof(Description);
+                            break;
+                        case Event.Label:
+                            item.ressourceType = typeof(Event);
+                            break;
+                        default:
+                            item.ressourceType = typeof(ResourceModel);
+                            break;
+                    }
+
+                    item.Cours = cours;
+
+                    AddResourceList(item);
                 }
-
-                item.Cours = cours;
-
-                AddResourceList(item);
+                return true;
             }
+            return false;
         }
     }
 }

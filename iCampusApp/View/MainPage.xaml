@@ -8,6 +8,7 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls" 
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:local="clr-namespace:ClarolineApp"
+    xmlns:vm="clr-namespace:ClarolineApp.VM"
     xmlns:UC="clr-namespace:ClarolineApp.Settings"
     x:Class="ClarolineApp.MainPage"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
@@ -15,7 +16,8 @@
     shell:SystemTray.IsVisible="True"
 	shell:SystemTray.Opacity="0"
     local:TiltEffect.IsTiltEnabled="true"
-    Style="{StaticResource TransitionPageStyle}">
+    Style="{StaticResource TransitionPageStyle}"
+    d:DataContext="{d:DesignInstance Type=vm:MainPageVM, IsDesignTimeCreatable=True}">
 
     <phone:PhoneApplicationPage.Resources>
     </phone:PhoneApplicationPage.Resources>
@@ -44,9 +46,6 @@
 
     <!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-    	<Grid.RowDefinitions>
-    		<RowDefinition Height="768"/>
-    	</Grid.RowDefinitions>
     	<controls:Panorama Title="{Binding ApplicationName}" x:Name="Panorama" SelectionChanged="Panorama_SelectionChanged">
     		<controls:Panorama.Background>
     			<ImageBrush ImageSource="/BSTwp2.jpg" Stretch="None"/>

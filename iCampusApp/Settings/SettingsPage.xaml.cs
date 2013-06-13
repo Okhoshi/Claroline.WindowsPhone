@@ -139,6 +139,7 @@ namespace ClarolineApp.Settings
         {
             if (e.Key == Key.Enter)
             {
+                AppSettings.Instance.PasswordSetting = (sender as PasswordBox).Password;
                 Connect_Button(sender, null);
             }
         }

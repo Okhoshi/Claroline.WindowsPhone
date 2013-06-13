@@ -102,7 +102,7 @@ namespace ClarolineApp.Settings
             {
                 // If the value has changed
 
-                if (settings[key] != value)
+                if (!settings[key].Equals(value))
                 {
                     // Store the new value
 

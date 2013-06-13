@@ -18,9 +18,9 @@ namespace ClarolineApp.VM
         Task GetResourcesForThisListAsync(ResourceList container);
         Task GetSingleResourceAsync(ResourceList container, string resourceId);
 
-        Task GetUserDataAsync();
+        Task<bool> GetUserDataAsync();
         Task GetCoursListAsync();
-        Task GetResourcesListForThisCoursAsync(Cours cours);
+        Task<bool> GetResourcesListForThisCoursAsync(Cours cours);
 
         void AddCours(Cours newCours);
         void AddResourceList(ResourceList newList);

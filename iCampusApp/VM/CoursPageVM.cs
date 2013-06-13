@@ -286,9 +286,6 @@ namespace ClarolineApp.VM
 
         public void OnItemWithDetailsSelected(ResourceModel item)
         {
-            item.seenDate = DateTime.Now;
-            SaveChangesToDB();
-
             NavigationTarget = new Uri(String.Format("/View/DetailPage.xaml?resource={0}&list={1}", item.resourceId, item.ResourceList.Id), UriKind.Relative);
         }
 

@@ -32,8 +32,8 @@ namespace ClarolineApp
 
     public class PostDataWriter
     {
-        public static String login = AppSettings.Instance.UserNameSetting;
-        public static String password = AppSettings.Instance.PasswordSetting;
+        public String login = AppSettings.Instance.UserNameSetting;
+        public String password = AppSettings.Instance.PasswordSetting;
         public SupportedModules module;
         public SupportedMethods method;
         public string GenMod;

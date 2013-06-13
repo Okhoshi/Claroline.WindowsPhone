@@ -40,9 +40,8 @@ namespace ClarolineApp
         }
 
         CookieContainer Cookies;
-        
+
         private DateTime _cookieCreation;
-        
         DateTime CookieCreation
         {
             get
@@ -61,7 +60,6 @@ namespace ClarolineApp
         }
 
         private bool _inSync;
-
         public bool IsInSync
         {
             get
@@ -70,7 +68,7 @@ namespace ClarolineApp
             }
             private set
             {
-                if (!_inSync == value)
+                if (_inSync != value)
                 {
                     _inSync = value;
                     NotifyPropertyChanged("IsInSync");
@@ -87,7 +85,6 @@ namespace ClarolineApp
         }
 
         private Exception _lastException;
-
         public Exception LastException
         {
             get { return _lastException; }
@@ -141,7 +138,7 @@ namespace ClarolineApp
         {
             _lastException = null;
 
-            if (IsNetworkAvailable() && ( forAuth || await IsValidAccountAsync()))
+            if (IsNetworkAvailable() && ( forAuth || await IsValidAccountAsync()) && _lastException == null)
             {
                 PostDataWriter args = new PostDataWriter() { module = module, method = method, cidReq = reqCours, resStr = resStr, GenMod = genMod };
 
@@ -172,6 +169,10 @@ namespace ClarolineApp
                 catch (Exception ex)
                 {
                     LastException = ex;
+                    if (forAuth)
+                    {
+                        strContent = ex.Message;
+                    }
 
                     if (responseStream != null)
                     {
@@ -187,10 +188,14 @@ namespace ClarolineApp
 
                 return strContent;
             }
-            else
+            else if (_lastException == null)
             {
                 LastException = new NetworkException("Network Unavailable");
-                return null;
+                return "";
+            }
+            else
+            {
+                return "";
             }
         }
 
@@ -204,7 +209,10 @@ namespace ClarolineApp
             }
             else
             {
-                LastException = new AuthenticationException("Authentication Fails");
+                if (LastException == null)
+                {
+                    LastException = new AuthenticationException("Authentication Fails");
+                }
                 return false;
             }
         }

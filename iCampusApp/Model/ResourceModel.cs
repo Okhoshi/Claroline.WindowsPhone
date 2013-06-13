@@ -367,7 +367,7 @@ namespace ClarolineApp.Model
 
         #endregion
 
-        public virtual string getNotificationText() { return ""; }
+        public virtual string getNotificationText() { return title; }
 
         public void markAsRead()
         {

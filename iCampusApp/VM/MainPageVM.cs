@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using ClarolineApp.Model;
+using System.ComponentModel;
 
 namespace ClarolineApp.VM
 {
@@ -32,23 +33,17 @@ namespace ClarolineApp.VM
             }
         }
 
-        private ObservableCollection<Notification> _topNotifications;
         public ObservableCollection<Notification> topNotifications
         {
             get
             {
-                if (_topNotifications == null)
+                if (DesignerProperties.IsInDesignTool)
                 {
-                    _topNotifications = new ObservableCollection<Notification>();
+                    return new ObservableCollection<Notification>();
                 }
-                return _topNotifications;
-            }
-            set
-            {
-                if (_topNotifications != value)
+                else
                 {
-                    _topNotifications = value;
-                    RaisePropertyChanged("topNotifications");
+                    return GetTopNotifications();
                 }
             }
         }
@@ -57,19 +52,33 @@ namespace ClarolineApp.VM
         {
             base.LoadCollectionsFromDatabase();
 
-            allCours = new ObservableCollection<Cours>(from Cours c
-                                                       in ClarolineDB.Cours_Table
-                                                       select c);
-            SetTopNotifications();
+            if (DesignerProperties.IsInDesignTool)
+            {
+                Cours c1 = new Cours() { title = "Design Cours 1", titular = "Design Titular 1", officialCode = "Design Code 1" };
+                allCours.Add(c1);
+                allCours.Add(new Cours() { title = "Design Cours 2", titular = "Design Titular 2", officialCode = "Design Code 2" });
+                allCours.Add(new Cours() { title = "Design Cours 3", titular = "Design Titular 3", officialCode = "Design Code 3" });
+                allCours.Add(new Cours() { title = "Design Cours 4", titular = "Design Titular 4", officialCode = "Design Code 4" });
+
+                topNotifications.Add(new Notification() { resource = new ResourceModel() { title = "Design Resource 1", date = DateTime.Now }, Cours = c1, date = DateTime.Now });
+            }
+            else
+            {
+
+                allCours = new ObservableCollection<Cours>(from Cours c
+                                                           in ClarolineDB.Cours_Table
+                                                           select c);
+                RaisePropertyChanged("topNotifications");
+            }
         }
 
-        public void SetTopNotifications(int limit = 10, int offset = 0)
+        public ObservableCollection<Notification> GetTopNotifications(int limit = 10, int offset = 0)
         {
             List<Notification> list = (from Notification n
                                           in ClarolineDB.Notifications_Table
                                           orderby n.date descending
                                           select n).ToList();
-            topNotifications = new ObservableCollection<Notification>(list.Where(n => n.isNotified)
+            return new ObservableCollection<Notification>(list.Where(n => n.isNotified)
                                                                              .Skip(offset)
                                                                              .Take(limit));
         }
@@ -95,14 +104,14 @@ namespace ClarolineApp.VM
                 allCours.Add(newCours);
             }
 
-            SetTopNotifications();
+            RaisePropertyChanged("topNotifications");
         }
 
         public override void AddNotification(Notification newNot)
         {
             base.AddNotification(newNot);
 
-            SetTopNotifications();
+            RaisePropertyChanged("topNotifications");
         }
 
         public override void DeleteCours(Cours coursForDelete)
@@ -111,14 +120,14 @@ namespace ClarolineApp.VM
 
             allCours.Remove(coursForDelete);
 
-            SetTopNotifications();
+            RaisePropertyChanged("topNotifications");
         }
 
         public override void DeleteNotification(Notification notForDelete)
         {
             base.DeleteNotification(notForDelete);
 
-            topNotifications.Remove(notForDelete);
+            RaisePropertyChanged("topNotifications");
         }
 
         public override void ResetViewModel()
@@ -126,7 +135,7 @@ namespace ClarolineApp.VM
             base.ResetViewModel();
 
             _allCours.Clear();
-            _topNotifications.Clear();
+            RaisePropertyChanged("topNotifications");
         }
     }
 }
