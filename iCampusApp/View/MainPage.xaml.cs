@@ -141,7 +141,7 @@ namespace ClarolineApp
         {
             indicator.Text = AppLanguage.ProgressBar_Update;
             indicator.IsVisible = true;
-            await _viewModel.RefreshAsync();
+            await _viewModel.RefreshAsync(true);
             indicator.IsVisible = false;
         }
 

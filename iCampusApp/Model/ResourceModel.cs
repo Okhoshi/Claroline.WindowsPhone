@@ -386,5 +386,20 @@ namespace ClarolineApp.Model
         {
             return new List<ResourceModel>();
         }
+
+        public virtual string GetResourceString()
+        {
+            return resourceId.ToString();
+        }
+
+        public virtual void UpdateFrom(ResourceModel newRes)
+        {
+            title = newRes.title;
+            visibility = newRes.visibility;
+            url = newRes.url;
+            seenDate = newRes.seenDate;
+            date = newRes.date;
+            notifiedDate = newRes.notifiedDate;
+        }
     }
 }

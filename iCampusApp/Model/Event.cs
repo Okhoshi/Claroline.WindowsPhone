@@ -104,5 +104,17 @@ namespace ClarolineApp.Model
             int val;
             return int.TryParse(resource, out val) && resourceId == val;
         }
+
+        public override void UpdateFrom(ResourceModel newRes)
+        {
+            base.UpdateFrom(newRes);
+
+            if (newRes is Event)
+            {
+                speakers = (newRes as Event).speakers;
+                location = (newRes as Event).location;
+                lasting = (newRes as Event).lasting;
+            }
+        }
     }
 }

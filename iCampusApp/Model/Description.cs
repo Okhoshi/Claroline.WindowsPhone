@@ -43,5 +43,15 @@ namespace ClarolineApp.Model
         {
             return _Title;
         }
+
+        public override void UpdateFrom(ResourceModel newRes)
+        {
+            base.UpdateFrom(newRes);
+
+            if (newRes is Description)
+            {
+                category = (newRes as Description).category;
+            }
+        }
     }
 }

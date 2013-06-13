@@ -113,10 +113,10 @@ namespace ClarolineApp
 
         private async void refrButton_Click(object sender, EventArgs e)
         {
-            _indicator.Text = AppLanguage.ProgressBar_Update;
-            _indicator.IsVisible = true;
-            await _viewModel.RefreshAsync();
-            _indicator.IsVisible = false;
+            indicator.Text = AppLanguage.ProgressBar_Update;
+            indicator.IsVisible = true;
+            await _viewModel.RefreshAsync(true);
+            indicator.IsVisible = false;
         }
 
         private void Pivot_SelectionChanged(object sender, SelectionChangedEventArgs e)

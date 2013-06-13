@@ -58,5 +58,15 @@ namespace ClarolineApp.Model
         {
             return base.GetHashCode();
         }
+
+        public override void UpdateFrom(ResourceModel newRes)
+        {
+            base.UpdateFrom(newRes);
+
+            if (newRes is Annonce)
+            {
+                content = (newRes as Annonce).content;
+            }
+        }
     }
 }

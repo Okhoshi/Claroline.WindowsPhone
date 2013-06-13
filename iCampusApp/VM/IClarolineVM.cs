@@ -23,7 +23,8 @@ namespace ClarolineApp.VM
         Task<bool> GetResourcesListForThisCoursAsync(Cours cours);
 
         void AddCours(Cours newCours);
-        void AddResourceList(ResourceList newList);
+        void AddResourceList(ResourceList newList, int coursId);
+        void AddResource(ResourceModel newRes, int listId);
         void AddNotification(Notification newNot);
 
         void DeleteCours(Cours coursForDelete);

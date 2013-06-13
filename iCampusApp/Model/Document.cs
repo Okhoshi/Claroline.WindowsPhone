@@ -4,11 +4,9 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data.Linq.Mapping;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace ClarolineApp.Model
 {
@@ -161,7 +159,7 @@ namespace ClarolineApp.Model
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return path.GetHashCode();
         }
 
         public Document getRoot()
@@ -272,6 +270,24 @@ namespace ClarolineApp.Model
         public override List<ResourceModel> GetSubRes()
         {
             return getContent().Cast<ResourceModel>().ToList();
+        }
+
+        public override string GetResourceString()
+        {
+            return path;
+        }
+
+        public override void UpdateFrom(ResourceModel newRes)
+        {
+            base.UpdateFrom(newRes);
+
+            if (newRes is Document)
+            {
+                size = (newRes as Document).size;
+                isFolder = (newRes as Document).isFolder;
+                description = (newRes as Document).description;
+                extension = (newRes as Document).extension;
+            }
         }
     }
 }

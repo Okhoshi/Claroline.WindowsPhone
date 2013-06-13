@@ -126,7 +126,7 @@ namespace ClarolineApp.VM
 
             List<Notification> AllNotifications = (from Notification n
                                                       in ClarolineDB.Notifications_Table
-                                                      select n).ToList();
+                                                   select n).ToList();
 
             List<ResourceList> AllLists = (from ResourceList l
                                            in ClarolineDB.ResourceList_Table
@@ -159,7 +159,6 @@ namespace ClarolineApp.VM
             if (coursInDb == null)
             {
                 newCours.updated = true;
-                newCours.loaded = DateTime.Now;
                 ClarolineDB.Cours_Table.InsertOnSubmit(newCours);
                 SaveChangesToDB();
 
@@ -168,36 +167,33 @@ namespace ClarolineApp.VM
             else
             {
                 coursInDb.updated = true;
-                coursInDb.loaded = DateTime.Now;
                 SaveChangesToDB();
             }
 
             foreach (ResourceList list in newCours.Resources)
             {
-                AddResourceList(list);
+                AddResourceList(list, newCours.Id);
             }
         }
 
-        public virtual void AddResourceList(ResourceList newList)
+        public virtual void AddResourceList(ResourceList newList, int coursId)
         {
-            bool alreadyInDB = ClarolineDB.ResourceList_Table.Any(l => l._coursId == newList._coursId
-                                                                    && l.label == newList.label);
+            ResourceList listFromDB = ClarolineDB.ResourceList_Table.FirstOrDefault(rl => rl._coursId == coursId
+                                                                                       && rl.label == newList.label);
 
-            if (!alreadyInDB)
+            if (listFromDB == null)
             {
-                newList.loaded = DateTime.Now;
                 newList.updated = true;
+                newList.Cours = ClarolineDB.Cours_Table.First(c => c.Id == coursId);
                 ClarolineDB.ResourceList_Table.InsertOnSubmit(newList);
                 SaveChangesToDB();
+
+                newList.Id = ClarolineDB.ResourceList_Table.FirstOrDefault(rl => rl._coursId == coursId
+                                                                              && rl.label == newList.label).Id;
             }
             else
             {
-                ResourceList listFromDB = (from ResourceList rl
-                                           in ClarolineDB.ResourceList_Table
-                                           where rl.Id == newList.Id
-                                           select rl).First();
                 listFromDB.updated = true;
-                listFromDB.loaded = DateTime.Now;
                 listFromDB.name = newList.name;
                 listFromDB.visibility = newList.visibility;
                 SaveChangesToDB();
@@ -206,16 +202,12 @@ namespace ClarolineApp.VM
 
         public virtual void AddNotification(Notification newNot)
         {
-            bool alreadyInDB = ClarolineDB.Notifications_Table.Any(n => n._coursId == newNot._coursId
-                                                                     && n._resourceId == newNot._resourceId);
+            Notification lastNotificationFromDB = ClarolineDB.Notifications_Table.OrderByDescending(n => n.date)
+                                                                                 .FirstOrDefault(n => n._coursId == newNot._coursId
+                                                                                                   && n._resourceId == newNot._resourceId);
 
-            if (alreadyInDB)
+            if (lastNotificationFromDB != null)
             {
-                Notification lastNotificationFromDB = (from Notification n
-                                                          in ClarolineDB.Notifications_Table
-                                                          where n._resourceId == newNot._resourceId
-                                                          orderby n.date descending
-                                                          select n).First();
                 if (lastNotificationFromDB.date.CompareTo(newNot.date) >= 0)
                 {
                     return;
@@ -226,30 +218,35 @@ namespace ClarolineApp.VM
             SaveChangesToDB();
         }
 
-        public virtual void AddResource(ResourceModel newRes)
+        public virtual void AddResource(ResourceModel newRes, int containerId)
         {
-            bool alreadyInDB = ClarolineDB.Resources_Table.Any(r => r.DiscKey == newRes.DiscKey
-                                                                 && r.resourceId == newRes.resourceId
-                                                                 && r.ResourceList.Id == newRes.ResourceList.Id);
-
-            if (!alreadyInDB)
+            ResourceModel res = ClarolineDB.Resources_Table.FirstOrDefault(r => r.DiscKey == newRes.DiscKey
+                                                                             && r.resourceId == newRes.resourceId
+                                                                             && r.ResourceList.Id == containerId);
+            bool alreadyInDb = false;
+            if (res == null)
             {
                 newRes.updated = true;
                 newRes.loaded = DateTime.Now;
+                newRes.ResourceList = ClarolineDB.ResourceList_Table.First(r => r.Id == containerId);
                 ClarolineDB.Resources_Table.InsertOnSubmit(newRes);
                 SaveChangesToDB();
+
+                res = newRes;
             }
             else
             {
-                newRes.updated = true;
-                newRes.loaded = DateTime.Now;
-
+                res.updated = true;
+                res.loaded = DateTime.Now;
+                res.UpdateFrom(newRes);
                 SaveChangesToDB();
+
+                alreadyInDb = true;
             }
 
             if (!(newRes is Document) || !(newRes as Document).isFolder)
             {
-                AddNotification(Notification.CreateNotification(newRes, alreadyInDB));
+                AddNotification(Notification.CreateNotification(res, alreadyInDb));
             }
         }
 
@@ -398,7 +395,7 @@ namespace ClarolineApp.VM
             if (force || _lastClientCall.AddHours(UpdateDelay).CompareTo(DateTime.Now) < 0)
             {
                 String updates = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER, SupportedMethods.GetUpdates);
-                if(updates != "")
+                if (updates != "")
                 {
                     _lastClientCall = DateTime.Now;
                     if (!updates.Equals("[]"))
@@ -408,7 +405,7 @@ namespace ClarolineApp.VM
                         foreach (KeyValuePair<String, Dictionary<String, Dictionary<String, Dictionary<String, String>>>> course in Updates)
                         {
                             Cours upCours = (from Cours c
-                                            in ClarolineDB.Cours_Table
+                                             in ClarolineDB.Cours_Table
                                              where c.sysCode.Equals(course.Key)
                                              select c).FirstOrDefault();
 
@@ -417,7 +414,7 @@ namespace ClarolineApp.VM
                                 await GetCoursListAsync();
 
                                 upCours = (from Cours c
-                                            in ClarolineDB.Cours_Table
+                                           in ClarolineDB.Cours_Table
                                            where c.sysCode.Equals(course.Key)
                                            select c).FirstOrDefault();
                                 if (upCours != null)
@@ -453,9 +450,10 @@ namespace ClarolineApp.VM
                                             }
                                             else
                                             {
-                                                upRes.date = DateTime.Parse(resource.Value["date"]);
-                                                upRes.notifiedDate = DateTime.Now;
+                                                upRes.notifiedDate = DateTime.Parse(resource.Value["date"]);
                                                 SaveChangesToDB();
+
+                                                AddNotification(Notification.CreateNotification(upRes, true));
                                             }
                                         }
                                     }
@@ -486,6 +484,7 @@ namespace ClarolineApp.VM
                     }
                 }
                 ClearResOfCours(coursToPrepare);
+                coursToPrepare.loaded = DateTime.Now;
 
                 coursToPrepare.Resources.AddRange(from ResourceList l in ClarolineDB.ResourceList_Table
                                                   where l.Cours.Equals(coursToPrepare)
@@ -506,9 +505,9 @@ namespace ClarolineApp.VM
 
                 foreach (ResourceModel item in resources)
                 {
-                    item.ResourceList = container;
-                    AddResource(item);
+                    AddResource(item, container.Id);
                 }
+                container.loaded = DateTime.Now;
             }
         }
 
@@ -521,8 +520,9 @@ namespace ClarolineApp.VM
                                                                               resourceString);
             if (strContent != "")
             {
+
                 ResourceModel resource = (ResourceModel)JsonConvert.DeserializeObject(strContent, container.ressourceType);
-                AddResource(resource);
+                AddResource(resource, container.Id);
             }
         }
 
@@ -586,7 +586,7 @@ namespace ClarolineApp.VM
 
         public async Task<bool> GetResourcesListForThisCoursAsync(Cours cours)
         {
-                    _lastClientCall = DateTime.Now;
+            _lastClientCall = DateTime.Now;
             String strContent = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER,
                                                                               SupportedMethods.GetToolList,
                                                                               cours);
@@ -614,9 +614,7 @@ namespace ClarolineApp.VM
                             break;
                     }
 
-                    item.Cours = cours;
-
-                    AddResourceList(item);
+                    AddResourceList(item, cours.Id);
                 }
                 return true;
             }

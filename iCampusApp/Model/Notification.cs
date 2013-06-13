@@ -20,7 +20,7 @@ namespace ClarolineApp.Model
             note.isOldResource = isOld;
             note.Cours = resource.ResourceList.Cours;
             note.resource = resource;
-            note.date = resource.date;
+            note.date = resource.notifiedDate;
 
             resource.PropertyChanged += note.resource_PropertyChanged;
 
