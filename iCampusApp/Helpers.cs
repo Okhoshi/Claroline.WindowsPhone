@@ -230,6 +230,11 @@ namespace ClarolineApp
             return (that != null) && (this.Title.Equals(that.Title));
         }
 
+        public override int GetHashCode()
+        {
+            return Title.GetHashCode();
+        }
+
         public string Title
         {
             get;

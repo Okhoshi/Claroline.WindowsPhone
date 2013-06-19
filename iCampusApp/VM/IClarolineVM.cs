@@ -25,7 +25,7 @@ namespace ClarolineApp.VM
         void AddCours(Cours newCours);
         void AddResourceList(ResourceList newList, int coursId);
         void AddResource(ResourceModel newRes, int listId);
-        void AddNotification(Notification newNot);
+        void AddNotification(Notification newNot, ResourceModel attachedResource);
 
         void DeleteCours(Cours coursForDelete);
         void DeleteResourceList(ResourceList listForDelete);

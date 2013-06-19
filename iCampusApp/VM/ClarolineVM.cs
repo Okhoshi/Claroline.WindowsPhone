@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Linq;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ using System.Windows;
 
 namespace ClarolineApp.VM
 {
-    public class ClarolineVM : IClarolineVM
+    public class ClarolineVM : ViewModelBase, IClarolineVM
     {
         public string ApplicationName
         {
@@ -89,6 +90,8 @@ namespace ClarolineApp.VM
                         RaisePropertyChanged("ApplicationName");
                     }
                 };
+
+                ClarolineDB.Log = new DebugStreamWriter();
             }
         }
 
@@ -154,104 +157,118 @@ namespace ClarolineApp.VM
 
         public virtual void AddCours(Cours newCours)
         {
-            Cours coursInDb = ClarolineDB.Cours_Table.FirstOrDefault(c => c.sysCode == newCours.sysCode);
-
-            if (coursInDb == null)
+            using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
             {
+                var q = cdc.Cours_Table.Where(c => c.sysCode == newCours.sysCode);
+
                 newCours.updated = true;
-                ClarolineDB.Cours_Table.InsertOnSubmit(newCours);
-                SaveChangesToDB();
+                newCours.loaded = DateTime.Now;
 
-                newCours.Id = ClarolineDB.Cours_Table.FirstOrDefault(c => c.sysCode == newCours.sysCode).Id;
-            }
-            else
-            {
-                coursInDb.updated = true;
-                SaveChangesToDB();
-            }
+                if (!q.Any())
+                {
+                    cdc.Cours_Table.InsertOnSubmit(newCours);
+                    cdc.SubmitChanges();
+                    cdc.Refresh(RefreshMode.OverwriteCurrentValues, newCours);
+                }
+                else
+                {
+                    q.First().UpdateFrom(newCours);
+                    newCours.Id = q.First().Id;
+                    cdc.SubmitChanges();
+                }
 
-            foreach (ResourceList list in newCours.Resources)
-            {
-                AddResourceList(list, newCours.Id);
             }
         }
 
         public virtual void AddResourceList(ResourceList newList, int coursId)
         {
-            ResourceList listFromDB = ClarolineDB.ResourceList_Table.FirstOrDefault(rl => rl._coursId == coursId
-                                                                                       && rl.label == newList.label);
-
-            if (listFromDB == null)
+            using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
             {
+                var q = cdc.ResourceList_Table.Where(rl => rl._coursId == coursId && rl.label == newList.label);
+
                 newList.updated = true;
-                newList.Cours = ClarolineDB.Cours_Table.First(c => c.Id == coursId);
-                ClarolineDB.ResourceList_Table.InsertOnSubmit(newList);
-                SaveChangesToDB();
+                newList.loaded = DateTime.Now;
 
-                newList.Id = ClarolineDB.ResourceList_Table.FirstOrDefault(rl => rl._coursId == coursId
-                                                                              && rl.label == newList.label).Id;
-            }
-            else
-            {
-                listFromDB.updated = true;
-                listFromDB.name = newList.name;
-                listFromDB.visibility = newList.visibility;
-                SaveChangesToDB();
+                if (!q.Any())
+                {
+                    newList.Cours = cdc.Cours_Table.Single(c => c.Id == coursId);
+
+                    cdc.ResourceList_Table.InsertOnSubmit(newList);
+                    cdc.SubmitChanges();
+                    cdc.Refresh(RefreshMode.OverwriteCurrentValues, newList);
+                }
+                else
+                {
+                    q.First().UpdateFrom(newList);
+                    cdc.SubmitChanges();
+                    newList.Id = q.First().Id;
+                }
             }
         }
 
-        public virtual void AddNotification(Notification newNot)
+        public virtual void AddNotification(Notification newNot, ResourceModel attachedResource)
         {
-            Notification lastNotificationFromDB = ClarolineDB.Notifications_Table.OrderByDescending(n => n.date)
-                                                                                 .FirstOrDefault(n => n._coursId == newNot._coursId
-                                                                                                   && n._resourceId == newNot._resourceId);
-
-            if (lastNotificationFromDB != null)
+            using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
             {
-                if (lastNotificationFromDB.date.CompareTo(newNot.date) >= 0)
-                {
-                    return;
-                }
-            }
 
-            ClarolineDB.Notifications_Table.InsertOnSubmit(newNot);
-            SaveChangesToDB();
+                Notification lastNotificationFromDB = cdc.Notifications_Table.OrderByDescending(n => n.date)
+                                                                                     .FirstOrDefault(n => n.resource == newNot.resource);
+
+                if (lastNotificationFromDB != null)
+                {
+                    if (lastNotificationFromDB.date.CompareTo(newNot.date) >= 0)
+                    {
+                        return;
+                    }
+                }
+
+                newNot.resource = cdc.Resources_Table.Single(r => r.Id == attachedResource.Id);
+                cdc.Notifications_Table.InsertOnSubmit(newNot);
+                cdc.SubmitChanges(); 
+            }
         }
 
         public virtual void AddResource(ResourceModel newRes, int containerId)
         {
-            ResourceModel res = ClarolineDB.Resources_Table.FirstOrDefault(r => r.DiscKey == newRes.DiscKey
-                                                                             && r.resourceId == newRes.resourceId
-                                                                             && r.ResourceList.Id == containerId);
-            bool alreadyInDb = false;
-            if (res == null)
+
+            using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
             {
+                var q = cdc.Resources_Table.Where(r => r.DiscKey == newRes.DiscKey
+                                                    && r.ResourceList.Id == containerId
+                                                    && r.resourceId == newRes.resourceId
+                                                 );
+
                 newRes.updated = true;
                 newRes.loaded = DateTime.Now;
-                newRes.ResourceList = ClarolineDB.ResourceList_Table.First(r => r.Id == containerId);
-                ClarolineDB.Resources_Table.InsertOnSubmit(newRes);
-                SaveChangesToDB();
+                bool alreadyInDb = false;
 
-                res = newRes;
-            }
-            else
-            {
-                res.updated = true;
-                res.loaded = DateTime.Now;
-                res.UpdateFrom(newRes);
-                SaveChangesToDB();
+                if (!q.Any())
+                {
+                    newRes.ResourceList = cdc.ResourceList_Table.First(r => r.Id == containerId);
 
-                alreadyInDb = true;
-            }
+                    cdc.Resources_Table.InsertOnSubmit(newRes);
+                    cdc.SubmitChanges();
+                    cdc.Refresh(RefreshMode.OverwriteCurrentValues, newRes);
+                }
+                else
+                {
+                    q.Single().UpdateFrom(newRes);
+                    cdc.SubmitChanges();
+                    newRes.Id = q.Single().Id;
 
-            if (!(newRes is Document) || !(newRes as Document).isFolder)
-            {
-                AddNotification(Notification.CreateNotification(res, alreadyInDb));
+                    alreadyInDb = true;
+                }
+
+                if (!(newRes is Document) || !(newRes as Document).isFolder)
+                {
+                    AddNotification(Notification.CreateNotification(alreadyInDb), newRes);
+                }
             }
         }
 
         public virtual void DeleteCours(Cours coursForDelete)
         {
+            /*
             // Remove the cours item from the "all" observable collection.
             var queryList = from ResourceList rl
                             in ClarolineDB.ResourceList_Table
@@ -269,6 +286,7 @@ namespace ClarolineApp.VM
             {
                 DeleteNotification(not);
             }
+             */
 
             ClarolineDB.Cours_Table.DeleteOnSubmit(coursForDelete);
 
@@ -277,12 +295,14 @@ namespace ClarolineApp.VM
 
         public virtual void DeleteResourceList(ResourceList listForDelete)
         {
+            /*
             var list = listForDelete.Resources.ToList();
 
             foreach (ResourceModel item in list)
             {
                 DeleteResource(item);
             }
+             */
 
             ClarolineDB.ResourceList_Table.DeleteOnSubmit(listForDelete);
             SaveChangesToDB();
@@ -290,7 +310,7 @@ namespace ClarolineApp.VM
 
         public virtual void DeleteResource(ResourceModel resForDelete)
         {
-
+            /*
             var queryNot = from Notification n in ClarolineDB.Notifications_Table
                            where n.resource.Equals(resForDelete)
                            select n;
@@ -298,7 +318,7 @@ namespace ClarolineApp.VM
             {
                 DeleteNotification(not);
             }
-
+            */
             foreach (var subres in resForDelete.GetSubRes())
             {
                 DeleteResource(subres);
@@ -340,16 +360,13 @@ namespace ClarolineApp.VM
              select rm).ToList()
              .ForEach(rm =>
              {
-                 if (rm.GetSubRes().Count == 0)
+                 if (rm.updated)
                  {
-                     if (rm.updated)
-                     {
-                         rm.updated = false;
-                     }
-                     else
-                     {
-                         DeleteResource(rm);
-                     }
+                     rm.updated = false;
+                 }
+                 else
+                 {
+                     DeleteResource(rm);
                  }
              });
             SaveChangesToDB();
@@ -364,24 +381,6 @@ namespace ClarolineApp.VM
              select n).Skip(keeped).ToList()
              .ForEach(n => DeleteNotification(n));
         }
-
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // Used to notify Silverlight that a property has changed.
-
-        protected void RaisePropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-                });
-            }
-        }
-        #endregion
 
         public virtual void LoadCollectionsFromDatabase() { }
 
@@ -453,7 +452,7 @@ namespace ClarolineApp.VM
                                                 upRes.notifiedDate = DateTime.Parse(resource.Value["date"]);
                                                 SaveChangesToDB();
 
-                                                AddNotification(Notification.CreateNotification(upRes, true));
+                                                AddNotification(Notification.CreateNotification(true), upRes);
                                             }
                                         }
                                     }

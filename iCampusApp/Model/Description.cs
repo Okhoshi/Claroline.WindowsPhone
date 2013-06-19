@@ -32,9 +32,9 @@ namespace ClarolineApp.Model
             {
                 if (_category != value)
                 {
-                    NotifyPropertyChanging("category");
+                    RaisePropertyChanging("category");
                     _category = value;
-                    NotifyPropertyChanged("category");
+                    RaisePropertyChanged("category");
                 }
             }
         }

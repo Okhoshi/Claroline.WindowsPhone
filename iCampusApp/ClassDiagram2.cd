@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ClarolineApp.Model.Annonce">
+    <Position X="1.75" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAECAAAAEAAAAAAAgAAAAgAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Annonce.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClarolineApp.Model.ClarolineDataContext" Collapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAFgQgAAAAAEAAAAYAAACABAAAAAAAA=</HashCode>
+      <FileName>Model\ClarolineDataContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClarolineApp.Model.Cours" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACUAKAaAIwIZABkAAAASAJgiAAAIAAAACAAEEMAQI=</HashCode>
+      <FileName>Model\Cours.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ClarolineApp.Model.Description">
+    <Position X="2.75" Y="8" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAIABAAAAAAAAgAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Model\Description.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClarolineApp.Model.Document">
+    <Position X="5" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAAAAACAEAICIEAAoKACAwAAAAAAAoYAAAEEAAIgBCA=</HashCode>
+      <FileName>Model\Document.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClarolineApp.Model.Event">
+    <Position X="0.5" Y="8" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAIBAAgEAIAAAAAgAAAAgACAAAAAoAAAACAACAAAAA=</HashCode>
+      <FileName>Model\Event.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClarolineApp.Model.Forum">
+    <Position X="7.25" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAABBBAAEAAgAgIAAAAAAAEAACAAAQAEABAAACCABAA=</HashCode>
+      <FileName>Model\Forum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClarolineApp.Model.Notification" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACUAAAAAAAoKAAhIAAAQARiAAAIMgAQAAACQQEAUA=</HashCode>
+      <FileName>Model\Notification.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ClarolineApp.Model.Post" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12" Y="1.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Events" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ACAHGACAAgQAAAAAAAAAAQABAAAECAAgBAAICSAEAAA=</HashCode>
+      <FileName>Model\Post.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ClarolineApp.Model.ResourceList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="13.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABACAAAgIwAQAJABgIIAMSIBiAAEEMIAAAAAAEFEAUI=</HashCode>
+      <FileName>Model\ResourceList.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ClarolineApp.Model.ResourceModel">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Events" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAAGESCAUIYAIIAhgIQAEwIBgMQYAogABAAgAUFEAUA=</HashCode>
+      <FileName>Model\ResourceModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClarolineApp.Model.Topic">
+    <Position X="9.5" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AiABAAAAEAAAAAAAJCQAAAACAAAACAIAAAAIAgAABAA=</HashCode>
+      <FileName>Model\Topic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

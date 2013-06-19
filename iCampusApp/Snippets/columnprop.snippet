@@ -26,10 +26,6 @@
           <Default>publicProperty</Default>
         </Literal>
         <Literal>
-          <ID>privprop</ID>
-          <Default>privateProperty</Default>
-        </Literal>
-        <Literal>
           <ID>
             type
           </ID>
@@ -40,21 +36,21 @@
       </Declarations>
       <Code Language="CSharp">
         <![CDATA[
-        private $type$ $privprop$;
+        private $type$ _$publicprop$;
 
         [Column(CanBeNull = true)]
         public $type$ $publicprop$
         {
             get
             {
-                return $privprop$;
+                return _$publicprop$;
             }
             set
             {
-                if ($privprop$ != value)
+                if (_$publicprop$ != value)
                 {
                     NotifyPropertyChanging("$publicprop$");
-                    $privprop$ = value;
+                    _$publicprop$ = value;
                     NotifyPropertyChanged("$publicprop$");
                 }
             }

@@ -49,9 +49,7 @@ namespace ClarolineApp
                 // PhoneApplicationService de l'application sur Désactivé.
                 // Attention :- À utiliser uniquement en mode de débogage. Les applications qui désactivent la détection d'inactivité de l'utilisateur continueront de s'exécuter
                 // et seront alimentées par la batterie lorsque l'utilisateur ne se sert pas du téléphone.
-#if DEBUG
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
-#endif
             }
 
             string DBConnectionString = "Data Source=isostore:/Claroline.sdf";
@@ -59,6 +57,9 @@ namespace ClarolineApp
             // Create database if not exists
             using (ClarolineDataContext db = new ClarolineDataContext(DBConnectionString))
             {
+#if(DEBUG)
+                //db.DeleteDatabase();
+#endif
                 if (!db.DatabaseExists())
                 {
                     try

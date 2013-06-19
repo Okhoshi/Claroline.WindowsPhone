@@ -32,9 +32,9 @@ namespace ClarolineApp.Model
             {
                 if (_Content != value)
                 {
-                    NotifyPropertyChanging("content");
+                    RaisePropertyChanging("content");
                     _Content = value;
-                    NotifyPropertyChanged("content");
+                    RaisePropertyChanged("content");
                 }
             }
         }
@@ -47,11 +47,6 @@ namespace ClarolineApp.Model
                 return this._resourceListId == ann._resourceListId && this._resourceId == ann._resourceId;
             }
             return false;
-        }
-
-        public override string getNotificationText()
-        {
-            return _Title;
         }
 
         public override int GetHashCode()

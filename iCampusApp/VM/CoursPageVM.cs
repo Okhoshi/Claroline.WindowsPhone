@@ -207,6 +207,9 @@ namespace ClarolineApp.VM
 
         public CoursPageVM(string sysCode)
         {
+            ClarolineDB.Dispose();
+            ClarolineDB = null;
+
             if (DesignerProperties.IsInDesignTool)
             {
                 currentCours = new Cours()
@@ -237,13 +240,6 @@ namespace ClarolineApp.VM
                 l4.Resources.Add(new Event() { title = "Event 2", content = "Contenu 1", date = DateTime.Now, location = "This is a very very very very veyr vey long location" });
                 l4.Resources.Add(new Event() { title = "Event 3", content = "Contenu 1", date = DateTime.Now, location = "B543", speakers = "Mr Nobody, Someone else" });
 
-                events = new ObservableCollection<Group<Event>>();
-                events.Add(new Group<Event>("Aujourd'hui", l4.Resources.Cast<Event>()));
-                events.Add(new Group<Event>("Demain", l4.Resources.Cast<Event>()));
-                events.Add(new Group<Event>("Passés", l4.Resources.Cast<Event>()));
-
-                _descriptions = new ObservableCollection<Group<Description>>();
-                _descriptions.Add(new Group<Description>("First", l3.Resources.Cast<Description>()));
             }
             else
             {

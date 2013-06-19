@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>
+        SqlCE Association Column (Many side) Snippet
+      </Title>
+      <Author>
+        Devos Q.
+      </Author>
+      <Shortcut>
+        sqlcemanyprop
+      </Shortcut>
+      <Description>
+        Adds easily a new association column in a Linq-to-SQL Model object.
+      </Description>
+      <SnippetTypes>
+        <SnippetType>SurroundsWith</SnippetType>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>assocname</ID>
+          <Default>associationName</Default>
+        </Literal>
+        <Literal>
+          <ID>publicprop</ID>
+          <Default>publicProperty</Default>
+        </Literal>
+        <Literal>
+          <ID>foreignkey</ID>
+          <Default>foreignKey</Default>
+        </Literal>
+        <Literal>
+          <ID>foreigncoll</ID>
+          <Default>foreignCollection</Default>
+        </Literal>
+        <Literal>
+          <ID>thiskey</ID>
+          <Default>ID</Default>
+        </Literal>
+        <Literal>
+          <ID>
+            type
+          </ID>
+          <Default>
+            propertyType
+          </Default>
+        </Literal>
+      </Declarations>
+      <Code Language="CSharp">
+        <![CDATA[
+        #region Association $assocname$ Many Side
+
+        // Define the entity set for the collection side of the relationship.
+
+        private EntitySet<$type$> _$publicprop$;
+
+        [Association(Name = "$assocname$", Storage = "_$publicprop$", OtherKey = "$foreignkey$", ThisKey = "$thiskey$", DeleteRule="Cascade")]
+        public EntitySet<$type$> $publicprop$
+        {
+            get { return this._$publicprop$; }
+            set { this._$publicprop$.Assign(value); }
+        }
+
+        // Called during an add operation
+
+        private void attach_$publicprop$($type$ _$publicprop$)
+        {
+            NotifyPropertyChanging("$publicprop$");
+            _$publicprop$.$foreigncoll$ = this;
+            NotifyPropertyChanged("$publicprop$");
+        }
+
+        // Called during a remove operation
+
+        private void detach_$publicprop$($type$ _$publicprop$)
+        {
+            NotifyPropertyChanging("$publicprop$");
+            _$publicprop$.$foreigncoll$ = null;
+            NotifyPropertyChanged("$publicprop$");
+        }
+
+        #endregion
+        ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

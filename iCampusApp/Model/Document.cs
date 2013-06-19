@@ -43,10 +43,10 @@ namespace ClarolineApp.Model
             {
                 if (_path != value)
                 {
-                    NotifyPropertyChanging("path");
+                    RaisePropertyChanging("path");
                     _path = value;
-                    _resourceId = value.GetHashCode();
-                    NotifyPropertyChanged("path");
+                    resourceId = value.GetHashCode();
+                    RaisePropertyChanged("path");
                 }
             }
         }
@@ -79,9 +79,9 @@ namespace ClarolineApp.Model
             {
                 if (_desc != value)
                 {
-                    NotifyPropertyChanging("description");
+                    RaisePropertyChanging("description");
                     _desc = value;
-                    NotifyPropertyChanged("description");
+                    RaisePropertyChanged("description");
                 }
             }
         }
@@ -99,9 +99,9 @@ namespace ClarolineApp.Model
             {
                 if (_ext != value)
                 {
-                    NotifyPropertyChanging("extension");
+                    RaisePropertyChanging("extension");
                     _ext = value;
-                    NotifyPropertyChanged("extension");
+                    RaisePropertyChanged("extension");
                 }
             }
         }
@@ -119,9 +119,9 @@ namespace ClarolineApp.Model
             {
                 if (_isFolder != value)
                 {
-                    NotifyPropertyChanging("isFolder");
+                    RaisePropertyChanging("isFolder");
                     _isFolder = value;
-                    NotifyPropertyChanged("isFolder");
+                    RaisePropertyChanged("isFolder");
                 }
             }
         }
@@ -140,9 +140,9 @@ namespace ClarolineApp.Model
             {
                 if (_size != value)
                 {
-                    NotifyPropertyChanging("size");
+                    RaisePropertyChanging("size");
                     _size = value;
-                    NotifyPropertyChanged("size");
+                    RaisePropertyChanged("size");
                 }
             }
         }

@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>
+        SqlCE Association Column (One side) Snippet
+      </Title>
+      <Author>
+        Devos Q.
+      </Author>
+      <Shortcut>
+        sqlceoneprop
+      </Shortcut>
+      <Description>
+        Adds easily a new association column in a Linq-to-SQL Model object.
+      </Description>
+      <SnippetTypes>
+        <SnippetType>SurroundsWith</SnippetType>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>assocname</ID>
+          <Default>associationName</Default>
+        </Literal>
+        <Literal>
+          <ID>publicprop</ID>
+          <Default>publicProperty</Default>
+        </Literal>
+        <Literal>
+          <ID>foreignprop</ID>
+          <Default>foreignProperty</Default>
+        </Literal>
+        <Literal>
+          <ID>foreignkey</ID>
+          <Default>foreignKey</Default>
+        </Literal>
+        <Literal>
+          <ID>thiskey</ID>
+          <Default>ID</Default>
+        </Literal>
+        <Literal>
+          <ID>type</ID>
+          <Default>propertyType</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="CSharp">
+        <![CDATA[
+        #region Entity Side for $assocname$
+
+        [Column]
+        protected int _$publicprop$Id;
+
+        protected EntityRef<$type$> _$publicprop$;
+
+        // Association, to describe the relationship between this key and that "storage" table
+
+        [Association(Name = "$assocname$", Storage = "_$publicprop$", ThisKey = "_$publicprop$Id", OtherKey = "$foreignkey$", IsForeignKey = true)]
+        public $type$ $publicprop$
+        {
+            get { return _$publicprop$.Entity; }
+            set
+            {
+                NotifyPropertyChanging("$publicprop$");
+
+                if (value != null)
+                {
+                    $type$ previousValue = this._$publicprop$.Entity;
+                    if (((previousValue != value) || (this._$publicprop$.HasLoadedOrAssignedValue == false)))
+                    {
+                        if ((previousValue != null))
+                        {
+                            this._$publicprop$.Entity = null;
+                            previousValue.$foreignprop$.Remove(this);
+                        }
+                        this._$publicprop$.Entity = value;
+
+                        value.$foreignprop$.Add(this);
+                        this._$publicprop$Id = value.Id;
+                    }
+                }
+
+                NotifyPropertyChanged("$publicprop$");
+            }
+        }
+
+        #endregion
+        ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Phone.Data.Linq.Mapping;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -10,15 +11,12 @@ using System.Text;
 namespace ClarolineApp.Model
 {
     [Table]
+    [Index(Name = "i_SysCode", IsUnique = true, Columns = "sysCode")]
     public class Cours : INotifyPropertyChanged, INotifyPropertyChanging
     {
 
         public Cours()
         {
-            _Notif = new EntitySet<Notification>(
-                new Action<Notification>(this.attach_Notif),
-                new Action<Notification>(this.detach_Notif)
-                );
             _Resources = new EntitySet<ResourceList>(
                 new Action<ResourceList>(this.attach_Resources),
                 new Action<ResourceList>(this.detach_Resources)
@@ -189,7 +187,7 @@ namespace ClarolineApp.Model
 
         private EntitySet<ResourceList> _Resources;
 
-        [Association(Storage = "_Resources", OtherKey = "_coursId", ThisKey = "Id")]
+        [Association(Storage = "_Resources", OtherKey = "_coursId", ThisKey = "Id", DeleteRule = "Cascade")]
         public EntitySet<ResourceList> Resources
         {
             get { return this._Resources; }
@@ -224,37 +222,6 @@ namespace ClarolineApp.Model
                 default:
                     break;
             }
-        }
-
-        #endregion
-
-        #region Collection Side for NOTIF - COURS
-
-        // Define the entity set for the collection side of the relationship.
-
-        private EntitySet<Notification> _Notif;
-
-        [Association(Storage = "_Notif", OtherKey = "_coursId", ThisKey = "Id")]
-        public EntitySet<Notification> Notifications
-        {
-            get { return this._Notif; }
-            set { this._Notif.Assign(value); }
-        }
-
-        // Called during an add operation
-
-        private void attach_Notif(Notification _notif)
-        {
-            NotifyPropertyChanging("Notification");
-            _notif.Cours = this;
-        }
-
-        // Called during a remove operation
-
-        private void detach_Notif(Notification _notif)
-        {
-            NotifyPropertyChanging("Notification");
-            _notif.Cours = null;
         }
 
         #endregion
@@ -367,6 +334,16 @@ namespace ClarolineApp.Model
                 item.PropertyChanged += resources_PropertyChanged;
                 item.ReloadPropertyChangedHandler();
             }
+        }
+
+        internal void UpdateFrom(Cours newCours)
+        {
+            updated = newCours.updated;
+            loaded = newCours.loaded;
+            title = newCours.title;
+            titular = newCours.titular;
+            officialCode = newCours.officialCode;
+            officialEmail = newCours.officialEmail;
         }
     }
 }

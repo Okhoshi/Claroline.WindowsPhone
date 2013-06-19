@@ -18,6 +18,9 @@ namespace ClarolineApp.Model
         public ClarolineDataContext(string connectionString)
             : base(connectionString)
         {
+#if(DEBUG)
+            Log = new DebugStreamWriter();
+#endif
         }
 
         public Table<Cours> Cours_Table;

@@ -60,7 +60,7 @@ namespace ClarolineApp.VM
                 allCours.Add(new Cours() { title = "Design Cours 3", titular = "Design Titular 3", officialCode = "Design Code 3" });
                 allCours.Add(new Cours() { title = "Design Cours 4", titular = "Design Titular 4", officialCode = "Design Code 4" });
 
-                topNotifications.Add(new Notification() { resource = new ResourceModel() { title = "Design Resource 1", date = DateTime.Now }, Cours = c1, date = DateTime.Now });
+                topNotifications.Add(new Notification() { resource = new ResourceModel() { title = "Design Resource 1", date = DateTime.Now }, date = DateTime.Now });
             }
             else
             {
@@ -107,9 +107,9 @@ namespace ClarolineApp.VM
             RaisePropertyChanged("topNotifications");
         }
 
-        public override void AddNotification(Notification newNot)
+        public override void AddNotification(Notification newNot, ResourceModel attachedResource)
         {
-            base.AddNotification(newNot);
+            base.AddNotification(newNot, attachedResource);
 
             RaisePropertyChanged("topNotifications");
         }

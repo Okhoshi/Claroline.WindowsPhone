@@ -32,9 +32,9 @@ namespace ClarolineApp.Model
             {
                 if (_Speakers != value)
                 {
-                    NotifyPropertyChanging("speakers");
+                    RaisePropertyChanging("speakers");
                     _Speakers = value;
-                    NotifyPropertyChanged("speakers");
+                    RaisePropertyChanged("speakers");
                 }
             }
         }
@@ -52,9 +52,9 @@ namespace ClarolineApp.Model
             {
                 if (_Location != value)
                 {
-                    NotifyPropertyChanging("location");
+                    RaisePropertyChanging("location");
                     _Location = value;
-                    NotifyPropertyChanged("location");
+                    RaisePropertyChanged("location");
                 }
             }
         }
@@ -72,9 +72,9 @@ namespace ClarolineApp.Model
             {
                 if (_Lasting != value)
                 {
-                    NotifyPropertyChanging("lasting");
+                    RaisePropertyChanging("lasting");
                     _Lasting = value;
-                    NotifyPropertyChanged("lasting");
+                    RaisePropertyChanged("lasting");
                 }
             }
         }

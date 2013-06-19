@@ -1,11 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using ClarolineApp.Common;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
-using System.Linq;
-using System.Text;
 
 namespace ClarolineApp.Model
 {
@@ -15,7 +12,7 @@ namespace ClarolineApp.Model
     [InheritanceMapping(Code = SupportedModules.CLDSC, Type = typeof(Description))]
     [InheritanceMapping(Code = SupportedModules.CLDOC, Type = typeof(Document))]
     [InheritanceMapping(Code = SupportedModules.CLCAL, Type = typeof(Event))]
-    public class ResourceModel : INotifyPropertyChanged, INotifyPropertyChanging
+    public class ResourceModel : ModelBase
     {
 
         public ResourceModel()
@@ -44,9 +41,9 @@ namespace ClarolineApp.Model
             {
                 if (_Id != value)
                 {
-                    NotifyPropertyChanging("Id");
+                    RaisePropertyChanging("Id");
                     _Id = value;
-                    NotifyPropertyChanged("Id");
+                    RaisePropertyChanged("Id");
                 }
             }
         }
@@ -67,9 +64,9 @@ namespace ClarolineApp.Model
             {
                 if (value != _Title)
                 {
-                    NotifyPropertyChanging("title");
+                    RaisePropertyChanging("title");
                     _Title = value;
-                    NotifyPropertyChanged("title");
+                    RaisePropertyChanged("title");
                 }
             }
         }
@@ -87,9 +84,9 @@ namespace ClarolineApp.Model
             {
                 if (_resourceId != value)
                 {
-                    NotifyPropertyChanging("resourceId");
+                    RaisePropertyChanging("resourceId");
                     _resourceId = value;
-                    NotifyPropertyChanged("resourceId");
+                    RaisePropertyChanged("resourceId");
                 }
             }
         }
@@ -107,10 +104,10 @@ namespace ClarolineApp.Model
             {
                 if (_NotifiedDate != value)
                 {
-                    NotifyPropertyChanging("notifiedDate");
+                    RaisePropertyChanging("notifiedDate");
                     _NotifiedDate = value;
-                    NotifyPropertyChanged("notifiedDate");
-                    NotifyPropertyChanged("isNotified");
+                    RaisePropertyChanged("notifiedDate");
+                    RaisePropertyChanged("isNotified");
                 }
             }
         }
@@ -136,10 +133,10 @@ namespace ClarolineApp.Model
             {
                 if (_SeenDate != value)
                 {
-                    NotifyPropertyChanging("seenDate");
+                    RaisePropertyChanging("seenDate");
                     _SeenDate = value;
-                    NotifyPropertyChanged("seenDate");
-                    NotifyPropertyChanged("isNotified");
+                    RaisePropertyChanged("seenDate");
+                    RaisePropertyChanged("isNotified");
                 }
             }
         }
@@ -157,14 +154,14 @@ namespace ClarolineApp.Model
             {
                 if (_Date != value)
                 {
-                    NotifyPropertyChanging("date");
+                    RaisePropertyChanging("date");
                     _Date = value;
-                    NotifyPropertyChanged("date");
+                    RaisePropertyChanged("date");
                 }
             }
         }
 
-        protected bool _Visibility;
+        protected bool _Visibility = true;
 
         [Column]
         public bool visibility
@@ -177,9 +174,9 @@ namespace ClarolineApp.Model
             {
                 if (_Visibility != value)
                 {
-                    NotifyPropertyChanging("visibility");
+                    RaisePropertyChanging("visibility");
                     _Visibility = value;
-                    NotifyPropertyChanged("visibility");
+                    RaisePropertyChanged("visibility");
                 }
             }
         }
@@ -197,9 +194,9 @@ namespace ClarolineApp.Model
             {
                 if (_url != value)
                 {
-                    NotifyPropertyChanging("url");
+                    RaisePropertyChanging("url");
                     _url = value;
-                    NotifyPropertyChanged("url");
+                    RaisePropertyChanged("url");
                 }
             }
         }
@@ -217,9 +214,9 @@ namespace ClarolineApp.Model
             {
                 if (_Updated != value)
                 {
-                    NotifyPropertyChanging("updated");
+                    RaisePropertyChanging("updated");
                     _Updated = value;
-                    NotifyPropertyChanged("updated");
+                    RaisePropertyChanged("updated");
                 }
             }
         }
@@ -237,9 +234,9 @@ namespace ClarolineApp.Model
             {
                 if (value != _Loaded)
                 {
-                    NotifyPropertyChanging("loaded");
+                    RaisePropertyChanging("loaded");
                     _Loaded = value;
-                    NotifyPropertyChanged("loaded");
+                    RaisePropertyChanged("loaded");
                 }
             }
         }
@@ -250,7 +247,7 @@ namespace ClarolineApp.Model
 
         private EntitySet<Notification> _notifications;
 
-        [Association(Storage = "_notifications", OtherKey = "_resourceId", ThisKey = "Id")]
+        [Association(Name = "Resource2Notification", Storage = "_notifications", OtherKey = "_resourceId", ThisKey = "Id", DeleteRule = "Cascade")]
         public EntitySet<Notification> notifications
         {
             get { return this._notifications; }
@@ -261,7 +258,7 @@ namespace ClarolineApp.Model
 
         private void attach_Notification(Notification _notification)
         {
-            NotifyPropertyChanging("notifications");
+            RaisePropertyChanging("notifications");
             _notification.resource = this;
         }
 
@@ -269,7 +266,7 @@ namespace ClarolineApp.Model
 
         private void detach_Notification(Notification _notification)
         {
-            NotifyPropertyChanging("notifications");
+            RaisePropertyChanging("notifications");
             _notification.resource = null;
         }
 
@@ -290,7 +287,7 @@ namespace ClarolineApp.Model
             get { return _resourceList.Entity; }
             set
             {
-                NotifyPropertyChanging("ResourceList");
+                RaisePropertyChanging("ResourceList");
 
                 if (value != null)
                 {
@@ -309,7 +306,7 @@ namespace ClarolineApp.Model
                     }
                 }
 
-                NotifyPropertyChanged("ResourceList");
+                RaisePropertyChanged("ResourceList");
             }
         }
 
@@ -318,11 +315,11 @@ namespace ClarolineApp.Model
         // Version column aids update performance.
 
         [Column(IsVersion = true)]
-        protected Binary _version;
+        private Binary _version;
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return title.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -335,45 +332,13 @@ namespace ClarolineApp.Model
             return false;
         }
 
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        // Used to notify that a property changed
-
-        protected void NotifyPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
-        #region INotifyPropertyChanging Members
-
-        public event PropertyChangingEventHandler PropertyChanging;
-
-        // Used to notify that a property is about to change
-
-        protected void NotifyPropertyChanging(string propertyName)
-        {
-            if (PropertyChanging != null)
-            {
-                PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
         public virtual string getNotificationText() { return title; }
 
         public void markAsRead()
         {
-            NotifyPropertyChanging("isNotified");
+            RaisePropertyChanging("isNotified");
             seenDate = DateTime.Now;
-            NotifyPropertyChanged("isNotified");
+            RaisePropertyChanged("isNotified");
         }
 
         public virtual bool IsResIdMatching(string resource)
