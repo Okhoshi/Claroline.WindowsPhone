@@ -42,6 +42,12 @@ namespace ClarolineApp.TemplateSelector
             set;
         }
 
+        public DataTemplate Forum
+        {
+            get;
+            set;
+        }
+
         public DataTemplate Menu
         {
             get;
@@ -64,6 +70,8 @@ namespace ClarolineApp.TemplateSelector
                         return Description;
                     case Model.Event.Label:
                         return Event;
+                    case Model.Forum.Label:
+                        return Forum;
                     case "MENU":
                         return Menu;
                     default:

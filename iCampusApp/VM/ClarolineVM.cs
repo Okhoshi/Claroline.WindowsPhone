@@ -608,6 +608,9 @@ namespace ClarolineApp.VM
                         case Event.Label:
                             item.ressourceType = typeof(Event);
                             break;
+                        case Forum.Label:
+                            item.ressourceType = typeof(Forum);
+                            break;
                         default:
                             item.ressourceType = typeof(ResourceModel);
                             break;

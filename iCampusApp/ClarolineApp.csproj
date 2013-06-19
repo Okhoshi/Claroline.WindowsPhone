@@ -127,6 +127,7 @@
     <Compile Include="Model\Document.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\Forum.cs" />
     <Compile Include="Model\Notification.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -137,12 +138,14 @@
     <Compile Include="Model\Cours.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\Post.cs" />
     <Compile Include="Model\ResourceList.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\ResourceModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Model\Topic.cs" />
     <Compile Include="Settings\User.cs">
       <SubType>Code</SubType>
     </Compile>

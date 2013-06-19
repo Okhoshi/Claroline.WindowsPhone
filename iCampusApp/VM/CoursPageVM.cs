@@ -182,6 +182,42 @@ namespace ClarolineApp.VM
             }
         }
 
+        private ObservableCollection<Group<Forum>> _forums;
+
+        public ObservableCollection<Group<Forum>> forums
+        {
+            get
+            {
+                if (_forums == null)
+                {
+                    IEnumerable<Forum> list = currentCours.Resources.First(r => r.ressourceType == typeof(Forum)).Resources.Cast<Forum>();
+
+                    if (list.Count() == 0)
+                    {
+                        _forums = new ObservableCollection<Group<Forum>>();
+                    }
+                    else
+                    {
+                        _forums = new ObservableCollection<Group<Forum>>(
+                                                list.OrderBy(f => f.Rank)
+                                                .GroupBy(f => f.CategoryId)
+                                                .OrderBy(g => g.First().CategoryRank)
+                                                .Select(g => new Group<Forum>(g.First().CategoryName, g))
+                                            );
+                    }
+                }
+                return _forums;
+            }
+            set
+            {
+                if (_forums != value)
+                {
+                    _forums = value;
+                    RaisePropertyChanged("forums");
+                }
+            }
+        }
+
         public ResourceList PivotMenu = new ResourceList() { label = "MENU", name = "Menu", ressourceType = typeof(Object), visibility = true };
 
         private ObservableCollection<ResourceList> _resources;
@@ -223,9 +259,11 @@ namespace ClarolineApp.VM
                 ResourceList l2 = new ResourceList() { Cours = currentCours, name = "Resource L2", label = "CLDOC", ressourceType = typeof(Document) };
                 ResourceList l3 = new ResourceList() { Cours = currentCours, name = "Resource L3", label = "CLDSC", ressourceType = typeof(Description) };
                 ResourceList l4 = new ResourceList() { Cours = currentCours, name = "Resource L4", label = "CLCAL", ressourceType = typeof(Event) };
+                ResourceList l5 = new ResourceList() { Cours = currentCours, name = "Resource L5", label = "CLFRM", ressourceType = typeof(Forum) };
 
-                currentCours.Resources.Add(l1);
+                currentCours.Resources.Add(l5);
                 _resources = new ObservableCollection<ResourceList>();
+                _resources.Add(l5);
                 _resources.Add(PivotMenu);
                 currentCours.Resources.Add(new ResourceList() { Cours = currentCours, name = "L4", label = "L4" });
 
@@ -240,6 +278,10 @@ namespace ClarolineApp.VM
                 l4.Resources.Add(new Event() { title = "Event 2", content = "Contenu 1", date = DateTime.Now, location = "This is a very very very very veyr vey long location" });
                 l4.Resources.Add(new Event() { title = "Event 3", content = "Contenu 1", date = DateTime.Now, location = "B543", speakers = "Mr Nobody, Someone else" });
 
+                l5.Resources.Add(new Forum() { title = "Forum 1", ForumDescription = "ForumDescription 1", CategoryId = 1, CategoryName = "Cat 1", CategoryRank = 1, Rank = 2 });
+                l5.Resources.Add(new Forum() { title = "Forum 2", ForumDescription = "ForumDescription 2", CategoryId = 1, CategoryName = "Cat 1", CategoryRank = 1, Rank = 1 });
+                l5.Resources.Add(new Forum() { title = "Forum 3", ForumDescription = "ForumDescription 3", CategoryId = 2, CategoryName = "Cat 2", CategoryRank = 2, Rank = 3 });
+                l5.Resources.Add(new Forum() { title = "Forum 4", ForumDescription = "ForumDescription 4", CategoryId = 2, CategoryName = "Cat 2", CategoryRank = 2, Rank = 0 });
             }
             else
             {

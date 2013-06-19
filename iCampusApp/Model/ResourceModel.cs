@@ -12,6 +12,8 @@ namespace ClarolineApp.Model
     [InheritanceMapping(Code = SupportedModules.CLDSC, Type = typeof(Description))]
     [InheritanceMapping(Code = SupportedModules.CLDOC, Type = typeof(Document))]
     [InheritanceMapping(Code = SupportedModules.CLCAL, Type = typeof(Event))]
+    [InheritanceMapping(Code = SupportedModules.CLFRM, Type = typeof(Forum))]
+    [InheritanceMapping(Code = SupportedModules.CLFRM_TOPIC, Type = typeof(Topic))]
     public class ResourceModel : ModelBase
     {
 

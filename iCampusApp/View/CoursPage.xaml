@@ -44,6 +44,10 @@
         <CollectionViewSource x:Key="Descriptions"
                               Source="{Binding descriptions}"
                               d:Source="{Binding descriptions, Source={d:DesignInstance IsDesignTimeCreatable=True, Type=vm:CoursPageVM}}" />
+        <CollectionViewSource x:Key="Forums"
+                              Source="{Binding forums}"
+                              d:Source="{Binding forums, Source={d:DesignInstance IsDesignTimeCreatable=True, Type=vm:CoursPageVM}}" />
+
         <DataTemplate x:Key="AnnoncePivotTemplate">
             <ListBox x:Name="CLANNList" ItemsSource="{Binding Resources}" ItemContainerStyle="{StaticResource StretchStyle}">
                 <i:Interaction.Triggers>
@@ -158,6 +162,53 @@
                 </toolkit:LongListSelector.ItemTemplate>
             </toolkit:LongListSelector>
         </DataTemplate>
+        <DataTemplate x:Key="ForumPivotTemplate">
+            <toolkit:LongListSelector x:Name="CLFRMList" ItemsSource="{Binding Source={StaticResource Forums}}" IsFlatList="False" HorizontalContentAlignment="Stretch" ShowListFooter="False" ShowListHeader="False" VerticalContentAlignment="Stretch" >
+                <toolkit:LongListSelector.GroupItemsPanel>
+                    <ItemsPanelTemplate>
+                        <toolkit:WrapPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="0,10" />
+                    </ItemsPanelTemplate>
+                </toolkit:LongListSelector.GroupItemsPanel>
+                <toolkit:LongListSelector.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <Border Background="{StaticResource PhoneAccentBrush}" 
+                                    Padding="{StaticResource GroupHeaderTemplate}">
+                            <TextBlock Text="{Binding Title}" Style="{StaticResource PhoneTextGroupHeaderStyle}"/>
+                        </Border>
+                    </DataTemplate>
+                </toolkit:LongListSelector.GroupHeaderTemplate>
+                <toolkit:LongListSelector.GroupItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{StaticResource PhoneAccentBrush}" 
+                                    Padding="{StaticResource PhoneTouchTargetOverhang}" Margin="0,10">
+                            <TextBlock Text="{Binding Title}" Style="{StaticResource PhoneTextGroupHeaderStyle}" />
+                        </Border>
+                    </DataTemplate>
+                </toolkit:LongListSelector.GroupItemTemplate>
+                <toolkit:LongListSelector.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0,5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
+                                <TextBlock Grid.Column="1" Text="{Binding Views}" Style="{StaticResource PhoneTextSubtleStyle}" TextTrimming="WordEllipsis"/>
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding ForumDescription}" Style="{StaticResource PhoneTextSubtleStyle}" TextTrimming="WordEllipsis"/>
+                                <TextBlock Grid.Column="1" Text="{Binding date, StringFormat=\{0:g\}}" HorizontalAlignment="Right" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                            </Grid>
+                        </StackPanel>
+                    </DataTemplate>
+                </toolkit:LongListSelector.ItemTemplate>
+            </toolkit:LongListSelector>
+        </DataTemplate>
         <DataTemplate x:Key="GenPivotTemplate">
             <ListBox x:Name="GENLIST" ItemsSource="{Binding Resources}" ItemContainerStyle="{StaticResource StretchStyle}" SelectionChanged="GENLIST_SelectionChanged">
                 <ListBox.ItemTemplate>
@@ -199,6 +250,7 @@
 					    Generic="{StaticResource GenPivotTemplate}"
                         Event="{StaticResource EventPivotTemplate}"
                         Document="{StaticResource DocumentPivotTemplate}"
+                        Forum="{StaticResource ForumPivotTemplate}"
 					    Notification="{StaticResource NotificationPivotTemplate}">
                         <customSelector:ResourceListTemplateSelector.Menu>
                             <DataTemplate>
