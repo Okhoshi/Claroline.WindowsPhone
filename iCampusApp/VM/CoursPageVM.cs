@@ -74,7 +74,7 @@ namespace ClarolineApp.VM
         {
             get
             {
-                if (DesignerProperties.IsInDesignTool)
+                if (IsInDesignMode)
                 {
                     ObservableCollection<Document> ret = new ObservableCollection<Document>();
                     ret.Add(new Document() { title = "Hello Folder", description = "WTF", date = DateTime.Now, isFolder = false });
@@ -243,10 +243,7 @@ namespace ClarolineApp.VM
 
         public CoursPageVM(string sysCode)
         {
-            ClarolineDB.Dispose();
-            ClarolineDB = null;
-
-            if (DesignerProperties.IsInDesignTool)
+            if (IsInDesignMode)
             {
                 currentCours = new Cours()
                 {
@@ -300,7 +297,7 @@ namespace ClarolineApp.VM
 
         public override void LoadCollectionsFromDatabase()
         {
-            if (!DesignerProperties.IsInDesignTool)
+            if (!IsInDesignMode)
             {
                 base.LoadCollectionsFromDatabase();
 

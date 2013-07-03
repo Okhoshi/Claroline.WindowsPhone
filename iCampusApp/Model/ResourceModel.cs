@@ -199,6 +199,13 @@ namespace ClarolineApp.Model
                     RaisePropertyChanging("url");
                     _url = value;
                     RaisePropertyChanged("url");
+
+                    if (DiscKey == SupportedModules.NOMOD)
+                    {
+                        RaisePropertyChanging("resourceId");
+                        _resourceId = value.GetHashCode();
+                        RaisePropertyChanged("resourceId");
+                    }
                 }
             }
         }

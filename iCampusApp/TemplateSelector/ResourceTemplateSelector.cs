@@ -4,38 +4,8 @@ using System.Windows;
 
 namespace ClarolineApp.TemplateSelector
 {
-    public class ResourceTemplateSelector : DataTemplateSelector
+    public class ResourceTemplateSelector : ResourceListTemplateSelector
     {
-        public DataTemplate Annonce
-        {
-            get;
-            set;
-        }
-
-        public DataTemplate Document
-        {
-            get;
-            set;
-        }
-
-        public DataTemplate Description
-        {
-            get;
-            set;
-        }
-
-        public DataTemplate Event
-        {
-            get;
-            set;
-        }
-
-        public DataTemplate Generic
-        {
-            get;
-            set;
-        }
-
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             ResourceModel rm = item as ResourceModel;
@@ -52,6 +22,8 @@ namespace ClarolineApp.TemplateSelector
                         return Description;
                     case SupportedModules.CLCAL:
                         return Event;
+                    case SupportedModules.CLFRM:
+                        return Forum;
                     default:
                         return Generic;
                 }

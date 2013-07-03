@@ -153,7 +153,7 @@ namespace ClarolineApp
             list.SelectedItem = null;
         }
 
-        private void CLCALList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void LongListSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LongListSelector list = sender as LongListSelector;
 
@@ -162,11 +162,8 @@ namespace ClarolineApp
                 return;
             }
 
-            if (_viewModel.IsPivotSelectedOfType(SectionsPivot.SelectedItem, typeof(Event)))
-            {
-                _viewModel.OnItemWithDetailsSelected(list.SelectedItem as Event);
-            }
-
+            _viewModel.OnItemWithDetailsSelected(list.SelectedItem as ResourceModel);
+            
             list.SelectedItem = null;
         }
 
@@ -189,7 +186,7 @@ namespace ClarolineApp
             SectionsPivot.SelectedIndex = 0;
         }
 
-        private void GENLIST_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBox l = sender as ListBox;
 

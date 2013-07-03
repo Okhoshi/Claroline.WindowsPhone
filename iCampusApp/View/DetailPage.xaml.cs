@@ -39,6 +39,8 @@ namespace ClarolineApp
                                               ">\\P{Cn}*?<!-- end of claroPage -->\\P{Cn}*?</div>)",
                                               RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
+        public static string host = AppSettings.Instance.DomainSetting.Substring(0, AppSettings.Instance.DomainSetting.LastIndexOf("/"));
+
         // This is the replacement string
         public static string regexReplace = "<div id=\"claroPage\">${Content}<!-- end of claroPage --></div>";
 
@@ -97,7 +99,7 @@ namespace ClarolineApp
             //// Replace the matched text in the InputText using the replacement pattern
             page = regex.Replace(page, regexReplace);
             page = page.Replace("</head>", "<meta name=\"viewport\" content=\"width=" + (sender as WebBrowser).ActualWidth + "\"/>\n</head>");
-            page = page.Replace("=\"/", "=\"" + AppSettings.Instance.DomainSetting + "/");
+            page = page.Replace("=\"/", "=\"" + host + "/");
             (sender as WebBrowser).NavigateToString(page);
         }
     }

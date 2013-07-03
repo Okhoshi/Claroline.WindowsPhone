@@ -31,8 +31,8 @@ namespace ClarolineApp.VM
             }
         }
 
-        private static ClarolineDataContext _db;
-        protected static ClarolineDataContext ClarolineDB
+        private ClarolineDataContext _db;
+        protected ClarolineDataContext ClarolineDB
         {
             get
             {
@@ -90,8 +90,6 @@ namespace ClarolineApp.VM
                         RaisePropertyChanged("ApplicationName");
                     }
                 };
-
-                ClarolineDB.Log = new DebugStreamWriter();
             }
         }
 
@@ -139,9 +137,9 @@ namespace ClarolineApp.VM
                                     in ClarolineDB.Cours_Table
                                     select c).ToList();
 
+            ClarolineDB.Notifications_Table.DeleteAllOnSubmit(AllNotifications);
             ClarolineDB.Resources_Table.DeleteAllOnSubmit(AllResources);
             ClarolineDB.ResourceList_Table.DeleteAllOnSubmit(AllLists);
-            ClarolineDB.Notifications_Table.DeleteAllOnSubmit(AllNotifications);
             ClarolineDB.Cours_Table.DeleteAllOnSubmit(AllCours);
             SaveChangesToDB();
 
@@ -336,40 +334,47 @@ namespace ClarolineApp.VM
 
         public void ClearCoursList()
         {
-            (from Cours c
-             in ClarolineDB.Cours_Table
-             select c).ToList()
-             .ForEach(c =>
-             {
-                 if (c.updated)
+            using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
+            {
+                (from Cours c
+                 in cdc.Cours_Table
+                 select c).ToList()
+                 .ForEach(c =>
                  {
-                     c.updated = false;
-                 }
-                 else
-                 {
-                     DeleteCours(c);
-                 }
-             });
+                     if (c.updated)
+                     {
+                         c.updated = false;
+                     }
+                     else
+                     {
+                         DeleteCours(c);
+                     }
+                 });
+                cdc.SubmitChanges();
+            }
         }
 
         public void ClearResOfCours(Cours coursToClear)
         {
-            (from ResourceModel rm
-             in ClarolineDB.Resources_Table
-             where rm.ResourceList.Cours.Equals(coursToClear)
-             select rm).ToList()
-             .ForEach(rm =>
-             {
-                 if (rm.updated)
-                 {
-                     rm.updated = false;
-                 }
-                 else
-                 {
-                     DeleteResource(rm);
-                 }
-             });
-            SaveChangesToDB();
+            using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
+            {
+                (from ResourceModel rm
+                     in cdc.Resources_Table
+                 where rm.ResourceList.Cours.Equals(coursToClear)
+                 select rm).ToList()
+                     .ForEach(rm =>
+                     {
+                         if (rm.updated)
+                         {
+                             rm.updated = false;
+                         }
+                         else
+                         {
+                             DeleteResource(rm);
+                         }
+                     });
+                cdc.SubmitChanges();
+            }
         }
 
         public void ClearNotifsOfCours(Cours coursToClear, int keeped)

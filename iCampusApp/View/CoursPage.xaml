@@ -66,7 +66,7 @@
             </ListBox>
         </DataTemplate>
         <DataTemplate x:Key="EventPivotTemplate">
-            <toolkit:LongListSelector x:Name="CLCALList" ItemsSource="{Binding Source={StaticResource Events}}" IsFlatList="False" HorizontalContentAlignment="Stretch" ShowListFooter="False" ShowListHeader="False" VerticalContentAlignment="Stretch" SelectionChanged="CLCALList_SelectionChanged">
+            <toolkit:LongListSelector x:Name="CLCALList" ItemsSource="{Binding Source={StaticResource Events}}" IsFlatList="False" HorizontalContentAlignment="Stretch" ShowListFooter="False" ShowListHeader="False" VerticalContentAlignment="Stretch" SelectionChanged="LongListSelector_SelectionChanged">
                 <toolkit:LongListSelector.GroupItemsPanel>
                     <ItemsPanelTemplate>
                         <toolkit:WrapPanel Margin="0,10" Orientation="Vertical" HorizontalAlignment="Left" Width="{Binding ColumnDefinitions[0].ActualWidth, ElementName=LayoutRoot, Mode=OneWay}"/>
@@ -163,7 +163,7 @@
             </toolkit:LongListSelector>
         </DataTemplate>
         <DataTemplate x:Key="ForumPivotTemplate">
-            <toolkit:LongListSelector x:Name="CLFRMList" ItemsSource="{Binding Source={StaticResource Forums}}" IsFlatList="False" HorizontalContentAlignment="Stretch" ShowListFooter="False" ShowListHeader="False" VerticalContentAlignment="Stretch" >
+            <toolkit:LongListSelector x:Name="CLFRMList" ItemsSource="{Binding Source={StaticResource Forums}}" IsFlatList="False" HorizontalContentAlignment="Stretch" ShowListFooter="False" ShowListHeader="False" VerticalContentAlignment="Stretch" SelectionChanged="LongListSelector_SelectionChanged">
                 <toolkit:LongListSelector.GroupItemsPanel>
                     <ItemsPanelTemplate>
                         <toolkit:WrapPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="0,10" />
@@ -188,14 +188,7 @@
                 <toolkit:LongListSelector.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="0,5">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="{Binding title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
-                                <TextBlock Grid.Column="1" Text="{Binding Views}" Style="{StaticResource PhoneTextSubtleStyle}" TextTrimming="WordEllipsis"/>
-                            </Grid>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -210,7 +203,7 @@
             </toolkit:LongListSelector>
         </DataTemplate>
         <DataTemplate x:Key="GenPivotTemplate">
-            <ListBox x:Name="GENLIST" ItemsSource="{Binding Resources}" ItemContainerStyle="{StaticResource StretchStyle}" SelectionChanged="GENLIST_SelectionChanged">
+            <ListBox x:Name="GENLIST" ItemsSource="{Binding Resources}" ItemContainerStyle="{StaticResource StretchStyle}" SelectionChanged="ListBox_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="0,10">
