@@ -138,7 +138,6 @@
     <Compile Include="Model\Cours.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\Post.cs" />
     <Compile Include="Model\ResourceList.cs">
       <SubType>Code</SubType>
     </Compile>

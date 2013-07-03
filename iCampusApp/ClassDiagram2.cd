@@ -14,7 +14,7 @@
   <Class Name="ClarolineApp.Model.ClarolineDataContext" Collapsed="true">
     <Position X="15.75" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAABABAAAAAAAFgQAAAAAAEAAAAYAAACABAAAAAAAA=</HashCode>
+      <HashCode>AAAABABAAAAAAAFgQAAAAAAAAAAAYAAACABAAAAAAAA=</HashCode>
       <FileName>Model\ClarolineDataContext.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -66,7 +66,7 @@
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AgABBBAAEAAAAgIAAAAAAAEAgCAAAQAAABAAACCABAA=</HashCode>
+      <HashCode>AgABBBAAEAAAAgIAAAAgAAEAgCAAAQAAABAEACCABAA=</HashCode>
       <FileName>Model\Forum.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -75,18 +75,6 @@
     <TypeIdentifier>
       <HashCode>AAACUAAAAAAAoCAAhIAAAQAQAAAAIIgAQAAACQQEAEA=</HashCode>
       <FileName>Model\Notification.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ClarolineApp.Model.Post" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="10.5" Y="1.5" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-      <Compartment Name="Methods" Collapsed="true" />
-      <Compartment Name="Events" Collapsed="true" />
-    </Compartments>
-    <TypeIdentifier>
-      <HashCode>ACAHGACAAgQAAAAAAAAAAQAAAAAECAAABAAICSAEAAA=</HashCode>
-      <FileName>Model\Post.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ClarolineApp.Model.ResourceList" BaseTypeListCollapsed="true">
@@ -112,14 +100,13 @@
       <FileName>Model\ResourceModel.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ClarolineApp.Model.Topic" Collapsed="true">
-    <Position X="14" Y="1.5" Width="1.5" />
+  <Class Name="ClarolineApp.Model.Topic">
+    <Position X="14" Y="1.5" Width="2" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
-      <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AiADAAAAQAAAAAAAJKQAAQACAIAACAoAAAAIAgAEBAA=</HashCode>
+      <HashCode>AiADAAAAQAAAAAAAAKQAAQAAAIAACAgAAAAIAgAEAAA=</HashCode>
       <FileName>Model\Topic.cs</FileName>
     </TypeIdentifier>
   </Class>

@@ -19,7 +19,7 @@ namespace ClarolineApp.Model
             : base(connectionString)
         {
 #if(DEBUG)
-            //Log = new DebugStreamWriter();
+            Log = new DebugStreamWriter();
 #endif
         }
 
@@ -28,7 +28,7 @@ namespace ClarolineApp.Model
         public Table<ResourceModel> Resources_Table;
         public Table<Notification> Notifications_Table;
         public Table<Topic> Topics_Table;
-        public Table<Post> Posts_Table;
+        //public Table<Post> Posts_Table;
 
         public IQueryable<Annonce> Annonces_Table
         {

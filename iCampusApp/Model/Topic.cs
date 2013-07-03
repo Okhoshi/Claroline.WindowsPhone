@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace ClarolineApp.Model
         public Topic()
             : base()
         {
-            _Posts = new EntitySet<Post>(attach_Posts, detach_Posts);
+            //_Posts = new EntitySet<Post>(attach_Posts, detach_Posts);
         }
 
         protected int _Id;
@@ -63,7 +64,7 @@ namespace ClarolineApp.Model
 
         protected int _resourceId;
 
-        [Column(CanBeNull = true)]
+        [Column]
         public int resourceId
         {
             get
@@ -92,7 +93,7 @@ namespace ClarolineApp.Model
         private int _Views;
 
         [JsonProperty("topic_views")]
-        [Column(CanBeNull = true)]
+        [Column]
         public int Views
         {
             get
@@ -113,7 +114,7 @@ namespace ClarolineApp.Model
         private string _PosterLastname;
 
         [JsonProperty("poster_lastname")]
-        [Column(CanBeNull = true)]
+        [Column]
         public string PosterLastname
         {
             get
@@ -134,7 +135,7 @@ namespace ClarolineApp.Model
         private string _PosterFirstname;
 
         [JsonProperty("poster_firstname")]
-        [Column(CanBeNull = true)]
+        [Column]
         public string PosterFirstname
         {
             get
@@ -151,17 +152,17 @@ namespace ClarolineApp.Model
                 }
             }
         }
-        
+        /*
         #region Entity Side for Forum2Topic
 
-        [Column(CanBeNull = true)]
-        protected int _ForumId;
+        [Column]
+        protected string _ForumUId;
 
         protected EntityRef<Forum> _Forum;
 
         // Association, to describe the relationship between this key and that "storage" table
 
-        [Association(Name = "Forum2Topic", Storage = "_Forum", ThisKey = "_ForumId", OtherKey = "Id", IsForeignKey = false)]
+        [Association(Name = "Forum2Topic", Storage = "_Forum", ThisKey = "_ForumUId", OtherKey = "UniqueIdentifier", IsForeignKey = false)]
         public Forum Forum
         {
             get { return _Forum.Entity; }
@@ -182,7 +183,7 @@ namespace ClarolineApp.Model
                         this._Forum.Entity = value;
 
                         value.Topics.Add(this);
-                        this._ForumId = value.Id;
+                        this._ForumUId = value.UniqueIdentifier;
                     }
                 }
 
@@ -191,7 +192,7 @@ namespace ClarolineApp.Model
         }
 
         #endregion
-        
+        /*
         #region Association Topic2Posts Many Side
 
         // Define the entity set for the collection side of the relationship.
@@ -224,6 +225,6 @@ namespace ClarolineApp.Model
         }
 
         #endregion
-        
+        */
     }
 }

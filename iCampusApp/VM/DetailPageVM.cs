@@ -35,11 +35,11 @@ namespace ClarolineApp.VM
             if (IsInDesignMode)
             {
                 currentResource = new Forum() { title = "Design Forum" };
-                Topic t1 = new Topic() { Forum = currentResource as Forum, PosterFirstname = "John", PosterLastname = "Doe", title = "Design Topic 1", Views = 15 };
+               /* Topic t1 = new Topic() { Forum = currentResource as Forum, PosterFirstname = "John", PosterLastname = "Doe", title = "Design Topic 1", Views = 15 };
                 Topic t2 = new Topic() { Forum = currentResource as Forum, PosterFirstname = "Jane", PosterLastname = "Doe", title = "Design Topic 2", Views = 15 };
 
                 (currentResource as Forum).Topics.AddRange(new Topic[] { t1, t2 });
-
+                /*
                 t1.Posts.Add(new Post()
                 {
                     PosterFirstname = "John",
@@ -87,7 +87,7 @@ namespace ClarolineApp.VM
                          + "Design Text 1 Design Text 1 Design Text 1 "
                 });
 
-
+                */
             }
         }
 

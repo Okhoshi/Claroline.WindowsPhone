@@ -102,34 +102,38 @@ namespace ClarolineApp.VM
 
                     if (currentCours != null)
                     {
-                        IEnumerable<Event> list = currentCours.Resources.FirstOrDefault(l => l.ressourceType == typeof(Event)).Resources.Cast<Event>();
-
-                        _events.Add(new Group<Event>("Aujourd'hui", list.Where(e =>
+                        ResourceList rl = currentCours.Resources.FirstOrDefault(l => l.ressourceType == typeof(Event));
+                        if (rl != null)
                         {
-                            return e.date.CompareTo(DateTime.Now) > 0
-                            && e.date.Date.CompareTo(DateTime.Now.Date) == 0;
-                        })));
+                            IEnumerable<Event> list = rl.Resources.Cast<Event>();
 
-                        _events.Add(new Group<Event>("Demain", list.Where(e =>
-                        {
-                            return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) == 0;
-                        })));
+                            _events.Add(new Group<Event>("Aujourd'hui", list.Where(e =>
+                            {
+                                return e.date.CompareTo(DateTime.Now) > 0
+                                && e.date.Date.CompareTo(DateTime.Now.Date) == 0;
+                            })));
 
-                        _events.Add(new Group<Event>("Cette semaine", list.Where(e =>
-                        {
-                            return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) >= 0
-                            && e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) < 0;
-                        })));
+                            _events.Add(new Group<Event>("Demain", list.Where(e =>
+                            {
+                                return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) == 0;
+                            })));
 
-                        _events.Add(new Group<Event>("Plus tard", list.Where(e =>
-                        {
-                            return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) >= 0;
-                        })));
+                            _events.Add(new Group<Event>("Cette semaine", list.Where(e =>
+                            {
+                                return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) >= 0
+                                && e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) < 0;
+                            })));
 
-                        _events.Add(new Group<Event>("Passés", list.Where(e =>
-                        {
-                            return e.date.CompareTo(DateTime.Now) < 0;
-                        })));
+                            _events.Add(new Group<Event>("Plus tard", list.Where(e =>
+                            {
+                                return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) >= 0;
+                            })));
+
+                            _events.Add(new Group<Event>("Passés", list.Where(e =>
+                            {
+                                return e.date.CompareTo(DateTime.Now) < 0;
+                            })));
+                        }
                     }
                 }
                 return _events;
@@ -152,30 +156,37 @@ namespace ClarolineApp.VM
             {
                 if (_descriptions == null)
                 {
-                    IEnumerable<Description> list = currentCours.Resources
-                                                                   .First(r => r.ressourceType == typeof(Description)).Resources.Cast<Description>();
-                    if (list.Count() == 0)
+                    ResourceList rl = currentCours.Resources.FirstOrDefault(r => r.ressourceType == typeof(Description));
+                    if (rl != null)
                     {
-                        _descriptions = new ObservableCollection<Group<Description>>();
+                        IEnumerable<Description> list = rl.Resources.Cast<Description>();
+                        if (list.Count() == 0)
+                        {
+                            _descriptions = new ObservableCollection<Group<Description>>();
+                        }
+                        else
+                        {
+                            int otherCat = list.Max(d => d.category) + 1;
+
+                            _descriptions = new ObservableCollection<Group<Description>>(
+                                                    list.Select(d =>
+                                                    {
+                                                        if (d.category == -1)
+                                                        {
+                                                            d.title = "Autres";
+                                                            d.category = otherCat;
+                                                        }
+                                                        return d;
+                                                    })
+                                                    .GroupBy(d => d.category)
+                                                    .OrderBy(g => g.Key)
+                                                    .Select(g => new Group<Description>(g.First().title, g))
+                                                );
+                        }
                     }
                     else
                     {
-                        int otherCat = list.Max(d => d.category) + 1;
-
-                        _descriptions = new ObservableCollection<Group<Description>>(
-                                                list.Select(d =>
-                                                {
-                                                    if (d.category == -1)
-                                                    {
-                                                        d.title = "Autres";
-                                                        d.category = otherCat;
-                                                    }
-                                                    return d;
-                                                })
-                                                .GroupBy(d => d.category)
-                                                .OrderBy(g => g.Key)
-                                                .Select(g => new Group<Description>(g.First().title, g))
-                                            );
+                        _descriptions = new ObservableCollection<Group<Description>>();
                     }
                 }
                 return _descriptions;
@@ -190,20 +201,28 @@ namespace ClarolineApp.VM
             {
                 if (_forums == null)
                 {
-                    IEnumerable<Forum> list = currentCours.Resources.First(r => r.ressourceType == typeof(Forum)).Resources.Cast<Forum>();
-
-                    if (list.Count() == 0)
+                    ResourceList rl = currentCours.Resources.First(r => r.ressourceType == typeof(Forum));
+                    if (rl != null)
                     {
-                        _forums = new ObservableCollection<Group<Forum>>();
+                        IEnumerable<Forum> list = rl.Resources.Cast<Forum>();
+
+                        if (list.Count() == 0)
+                        {
+                            _forums = new ObservableCollection<Group<Forum>>();
+                        }
+                        else
+                        {
+                            _forums = new ObservableCollection<Group<Forum>>(
+                                                    list.OrderBy(f => f.Rank)
+                                                    .GroupBy(f => f.CategoryId)
+                                                    .OrderBy(g => g.First().CategoryRank)
+                                                    .Select(g => new Group<Forum>(g.First().CategoryName, g))
+                                                );
+                        }
                     }
                     else
                     {
-                        _forums = new ObservableCollection<Group<Forum>>(
-                                                list.OrderBy(f => f.Rank)
-                                                .GroupBy(f => f.CategoryId)
-                                                .OrderBy(g => g.First().CategoryRank)
-                                                .Select(g => new Group<Forum>(g.First().CategoryName, g))
-                                            );
+                        _forums = new ObservableCollection<Group<Forum>>();
                     }
                 }
                 return _forums;

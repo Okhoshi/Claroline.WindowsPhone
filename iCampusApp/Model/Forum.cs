@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Phone.Data.Linq.Mapping;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using System.Linq;
@@ -8,6 +10,7 @@ using System.Text;
 
 namespace ClarolineApp.Model
 {
+    [Index(Name = "i_UID", IsUnique = true, Columns = "UniqueIdentifier")]
     public class Forum : ResourceModel
     {
         public new const string Label = "CLFRM";
@@ -16,7 +19,23 @@ namespace ClarolineApp.Model
             : base()
         {
             DiscKey = SupportedModules.CLFRM;
-            _Topics = new EntitySet<Topic>(attach_Topics, detach_Topics);
+            //_Topics = new EntitySet<Topic>(attach_Topics, detach_Topics);
+
+            PropertyChanged += Forum_PropertyChanged;
+        }
+
+        void Forum_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "ResourceList":
+                case "resourceId":
+                    RaisePropertyChanging("UniqueIdentifier");
+                    RaisePropertyChanged("UniqueIdentifier");
+                    break;
+                default:
+                    break;
+            }
         }
 
         private string _ForumDescription;
@@ -40,6 +59,18 @@ namespace ClarolineApp.Model
             }
         }
 
+        [Column(CanBeNull = true)]
+        public string UniqueIdentifier
+        {
+            get
+            {
+                return _resourceListId + "-" + _resourceId;
+            }
+            private set
+            {
+                return;
+            }
+        }
 
         private int _Rank;
 
@@ -127,14 +158,14 @@ namespace ClarolineApp.Model
                 }
             }
         }
-
+        /*
         #region Association Forum2Topic Many Side
 
         // Define the entity set for the collection side of the relationship.
 
         private EntitySet<Topic> _Topics;
 
-        [Association(Name = "Forum2Topic", Storage = "_Topics", OtherKey = "_ForumId", ThisKey = "Id", DeleteRule = "Cascade")]
+        [Association(Name = "Forum2Topic", Storage = "_Topics", OtherKey = "_ForumUId", ThisKey = "UniqueIdentifier", DeleteRule = "Cascade")]
         public EntitySet<Topic> Topics
         {
             get { return this._Topics; }
@@ -160,6 +191,6 @@ namespace ClarolineApp.Model
         }
 
         #endregion
-
+        */
     }
 }

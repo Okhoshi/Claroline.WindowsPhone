@@ -242,7 +242,14 @@ namespace ClarolineApp.VM
 
                 if (!q.Any())
                 {
-                    newRes.ResourceList = cdc.ResourceList_Table.First(r => r.Id == containerId);
+                    cdc.ResourceList_Table.Single(r => r.Id == containerId).Resources.Add(newRes);
+
+                    if (newRes is Forum)
+                    {
+                        //(newRes as Forum).Topics.Clear();
+                        //cdc.Topics_Table.InsertAllOnSubmit((newRes as Forum).Topics);
+                        //cdc.SubmitChanges();
+                    }
 
                     cdc.Resources_Table.InsertOnSubmit(newRes);
                     cdc.SubmitChanges();

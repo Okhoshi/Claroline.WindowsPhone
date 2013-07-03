@@ -46,8 +46,8 @@ namespace ClarolineApp.Settings
         // The default value of our Settings
 
 #if DEBUG
-        const string UserNameSettingDefault = "qdevos";
-        const string PasswordSettingDefault = "elegie24";
+        const string UserNameSettingDefault = "qd";
+        const string PasswordSettingDefault = "el";
         const string DomainSettingDefault = "http://mesconsult.be/clarodev"; // Debug Platform
 #else
         const string UserNameSettingDefault = "";
