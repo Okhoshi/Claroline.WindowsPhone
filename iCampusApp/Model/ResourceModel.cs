@@ -13,7 +13,6 @@ namespace ClarolineApp.Model
     [InheritanceMapping(Code = SupportedModules.CLDOC, Type = typeof(Document))]
     [InheritanceMapping(Code = SupportedModules.CLCAL, Type = typeof(Event))]
     [InheritanceMapping(Code = SupportedModules.CLFRM, Type = typeof(Forum))]
-    [InheritanceMapping(Code = SupportedModules.CLFRM_TOPIC, Type = typeof(Topic))]
     public class ResourceModel : ModelBase
     {
 
@@ -322,9 +321,20 @@ namespace ClarolineApp.Model
         #endregion
 
         // Version column aids update performance.
+        private Binary v;
 
         [Column(IsVersion = true)]
-        private Binary _version;
+        private Binary _version
+        {
+            get
+            {
+                return v;
+            }
+            set
+            {
+                v = value;
+            }
+        }
 
         public override int GetHashCode()
         {

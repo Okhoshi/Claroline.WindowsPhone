@@ -19,7 +19,7 @@ namespace ClarolineApp.Model
             : base(connectionString)
         {
 #if(DEBUG)
-            Log = new DebugStreamWriter();
+            //Log = new DebugStreamWriter();
 #endif
         }
 
@@ -27,6 +27,7 @@ namespace ClarolineApp.Model
         public Table<ResourceList> ResourceList_Table;
         public Table<ResourceModel> Resources_Table;
         public Table<Notification> Notifications_Table;
+        public Table<Topic> Topics_Table;
         public Table<Post> Posts_Table;
 
         public IQueryable<Annonce> Annonces_Table
@@ -83,17 +84,6 @@ namespace ClarolineApp.Model
                        in Resources_Table
                        where f is Forum
                        select f;
-            }
-        }
-
-        public IQueryable<Topic> Topic_Table
-        {
-            get
-            {
-                return from Topic t
-                       in Resources_Table
-                       where t is Topic
-                       select t;
             }
         }
     }

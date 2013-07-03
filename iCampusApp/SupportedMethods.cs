@@ -13,8 +13,7 @@ namespace ClarolineApp
         CLANN,
         CLDSC,
         CLCAL,
-        CLFRM,
-        CLFRM_TOPIC
+        CLFRM
     }
 
     public enum SupportedMethods

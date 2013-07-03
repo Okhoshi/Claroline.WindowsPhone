@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ClarolineApp.Common;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Linq;
@@ -8,19 +9,86 @@ using System.Text;
 
 namespace ClarolineApp.Model
 {
-    public class Topic : ResourceModel
+    [Table]
+    public class Topic : ModelBase
     {
-        public new const string Label = "CLFRM_TOPIC";
 
         public Topic()
             : base()
         {
-            DiscKey = SupportedModules.CLFRM_TOPIC;
-
             _Posts = new EntitySet<Post>(attach_Posts, detach_Posts);
         }
 
-        
+        protected int _Id;
+
+        // Define ID: internal Notifications, public property and database column.
+
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+        public virtual int Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    RaisePropertyChanging("Id");
+                    _Id = value;
+                    RaisePropertyChanged("Id");
+                }
+            }
+        }
+
+        protected string _Title;
+
+        [Column]
+        public string title
+        {
+            get
+            {
+                return _Title;
+            }
+            set
+            {
+                if (value != _Title)
+                {
+                    RaisePropertyChanging("title");
+                    _Title = value;
+                    RaisePropertyChanged("title");
+                }
+            }
+        }
+
+        protected int _resourceId;
+
+        [Column(CanBeNull = true)]
+        public int resourceId
+        {
+            get
+            {
+                return _resourceId;
+            }
+            set
+            {
+                if (_resourceId != value)
+                {
+                    RaisePropertyChanging("resourceId");
+                    _resourceId = value;
+                    RaisePropertyChanged("resourceId");
+                }
+            }
+        }
+
+        public bool isNotified
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         private int _Views;
 
         [JsonProperty("topic_views")]
