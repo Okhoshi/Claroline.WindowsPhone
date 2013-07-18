@@ -356,7 +356,7 @@ namespace ClarolineApp.VM
                 }
                 else
                 {
-                    //dbItem.OpenDocumentAsync();
+                    dbItem.OpenDocumentAsync();
                 }
             }
         }

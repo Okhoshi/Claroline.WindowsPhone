@@ -175,7 +175,7 @@ namespace ClarolineApp
                             case SupportedMethods.GetSingleResource:
                                 if (cidReq != null && resStr != null)
                                 {
-                                    postString = "cidReset&cidReq=" + cidReq.sysCode + "&resID=" + resStr + "&module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
+                                    postString = "platform=WP&cidReset&cidReq=" + cidReq.sysCode + "&resID=" + resStr + "&module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
                                 }
                                 else
                                 {
