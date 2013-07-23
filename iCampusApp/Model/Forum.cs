@@ -10,7 +10,7 @@ using System.Text;
 
 namespace ClarolineApp.Model
 {
-    [Index(Name = "i_UID", IsUnique = true, Columns = "UniqueIdentifier")]
+    [Index(Name = "i_UID", IsUnique = true, Columns = "_resourceListId,resourceId")]
     public class Forum : ResourceModel
     {
         public new const string Label = "CLFRM";
@@ -19,7 +19,7 @@ namespace ClarolineApp.Model
             : base()
         {
             DiscKey = SupportedModules.CLFRM;
-            //_Topics = new EntitySet<Topic>(attach_Topics, detach_Topics);
+            _Topics = new EntitySet<Topic>(attach_Topics, detach_Topics);
 
             PropertyChanged += Forum_PropertyChanged;
         }
@@ -60,11 +60,11 @@ namespace ClarolineApp.Model
         }
 
         [Column(CanBeNull = true)]
-        public string UniqueIdentifier
+        public int UniqueIdentifier
         {
             get
             {
-                return _resourceListId + "-" + _resourceId;
+                return (_resourceListId + "-" + _resourceId).GetHashCode();
             }
             private set
             {
@@ -158,7 +158,7 @@ namespace ClarolineApp.Model
                 }
             }
         }
-        /*
+        
         #region Association Forum2Topic Many Side
 
         // Define the entity set for the collection side of the relationship.
@@ -191,6 +191,5 @@ namespace ClarolineApp.Model
         }
 
         #endregion
-        */
     }
 }

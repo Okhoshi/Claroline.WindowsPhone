@@ -169,16 +169,7 @@ namespace ClarolineApp.VM
                             int otherCat = list.Max(d => d.category) + 1;
 
                             _descriptions = new ObservableCollection<Group<Description>>(
-                                                    list.Select(d =>
-                                                    {
-                                                        if (d.category == -1)
-                                                        {
-                                                            d.title = "Autres";
-                                                            d.category = otherCat;
-                                                        }
-                                                        return d;
-                                                    })
-                                                    .GroupBy(d => d.category)
+                                                    list.GroupBy(d => d.category)
                                                     .OrderBy(g => g.Key)
                                                     .Select(g => new Group<Description>(g.First().title, g))
                                                 );
@@ -348,6 +339,7 @@ namespace ClarolineApp.VM
             if (item != null)
             {
                 item.seenDate = DateTime.Now;
+                ClarolineDB.Log = new DebugStreamWriter();
                 SaveChangesToDB();
 
                 if (item.isFolder)
@@ -356,7 +348,7 @@ namespace ClarolineApp.VM
                 }
                 else
                 {
-                    dbItem.OpenDocumentAsync();
+                    item.OpenDocumentAsync();
                 }
             }
         }

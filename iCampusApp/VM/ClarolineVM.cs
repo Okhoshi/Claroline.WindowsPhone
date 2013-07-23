@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Linq;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -244,13 +245,6 @@ namespace ClarolineApp.VM
                 {
                     cdc.ResourceList_Table.Single(r => r.Id == containerId).Resources.Add(newRes);
 
-                    if (newRes is Forum)
-                    {
-                        //(newRes as Forum).Topics.Clear();
-                        //cdc.Topics_Table.InsertAllOnSubmit((newRes as Forum).Topics);
-                        //cdc.SubmitChanges();
-                    }
-
                     cdc.Resources_Table.InsertOnSubmit(newRes);
                     cdc.SubmitChanges();
                     cdc.Refresh(RefreshMode.OverwriteCurrentValues, newRes);
@@ -273,26 +267,6 @@ namespace ClarolineApp.VM
 
         public virtual void DeleteCours(Cours coursForDelete)
         {
-            /*
-            // Remove the cours item from the "all" observable collection.
-            var queryList = from ResourceList rl
-                            in ClarolineDB.ResourceList_Table
-                            where rl.Cours.Equals(coursForDelete)
-                            select rl;
-            foreach (var rl in queryList)
-            {
-                DeleteResourceList(rl);
-            }
-
-            var queryNot = from Notification n in ClarolineDB.Notifications_Table
-                           where n._coursId == coursForDelete.Id
-                           select n;
-            foreach (var not in queryNot)
-            {
-                DeleteNotification(not);
-            }
-             */
-
             ClarolineDB.Cours_Table.DeleteOnSubmit(coursForDelete);
 
             SaveChangesToDB();
@@ -300,30 +274,12 @@ namespace ClarolineApp.VM
 
         public virtual void DeleteResourceList(ResourceList listForDelete)
         {
-            /*
-            var list = listForDelete.Resources.ToList();
-
-            foreach (ResourceModel item in list)
-            {
-                DeleteResource(item);
-            }
-             */
-
             ClarolineDB.ResourceList_Table.DeleteOnSubmit(listForDelete);
             SaveChangesToDB();
         }
 
         public virtual void DeleteResource(ResourceModel resForDelete)
         {
-            /*
-            var queryNot = from Notification n in ClarolineDB.Notifications_Table
-                           where n.resource.Equals(resForDelete)
-                           select n;
-            foreach (var not in queryNot)
-            {
-                DeleteNotification(not);
-            }
-            */
             foreach (var subres in resForDelete.GetSubRes())
             {
                 DeleteResource(subres);

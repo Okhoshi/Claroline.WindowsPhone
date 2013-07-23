@@ -17,7 +17,7 @@ namespace ClarolineApp.Model
         public Topic()
             : base()
         {
-            //_Posts = new EntitySet<Post>(attach_Posts, detach_Posts);
+            _Posts = new EntitySet<Post>(attach_Posts, detach_Posts);
         }
 
         protected int _Id;
@@ -152,11 +152,11 @@ namespace ClarolineApp.Model
                 }
             }
         }
-        /*
+        
         #region Entity Side for Forum2Topic
 
         [Column]
-        protected string _ForumUId;
+        protected int _ForumUId;
 
         protected EntityRef<Forum> _Forum;
 
@@ -177,10 +177,12 @@ namespace ClarolineApp.Model
                     {
                         if ((previousValue != null))
                         {
+                            this._Forum.Entity.PropertyChanged -= Forum_PropertyChanged;
                             this._Forum.Entity = null;
                             previousValue.Topics.Remove(this);
                         }
                         this._Forum.Entity = value;
+                        this._Forum.Entity.PropertyChanged += Forum_PropertyChanged;
 
                         value.Topics.Add(this);
                         this._ForumUId = value.UniqueIdentifier;
@@ -191,8 +193,20 @@ namespace ClarolineApp.Model
             }
         }
 
+        private void Forum_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "UniqueIdentifier":
+                    this._ForumUId = this._Forum.Entity.UniqueIdentifier;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         #endregion
-        /*
+        
         #region Association Topic2Posts Many Side
 
         // Define the entity set for the collection side of the relationship.
@@ -225,6 +239,5 @@ namespace ClarolineApp.Model
         }
 
         #endregion
-        */
     }
 }

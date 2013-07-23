@@ -343,7 +343,7 @@ namespace ClarolineApp.Model
 
         public override bool Equals(object obj)
         {
-            if (obj != null && obj.GetType().Equals(typeof(ResourceModel)))
+            if (obj != null && obj is ResourceModel)
             {
                 ResourceModel res = obj as ResourceModel;
                 return (res._resourceListId == this._resourceListId) && (res._Title == this._Title);
