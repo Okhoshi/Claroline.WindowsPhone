@@ -1,4 +1,5 @@
 ﻿using ClarolineApp.Languages;
+using ClarolineApp.Model;
 using ClarolineApp.Settings;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,19 @@ namespace ClarolineApp
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return (value as SolidColorBrush == App.Current.Resources["PhoneAccentBrush"]);
+        }
+    }
+
+    public class PostSubtitleConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return String.Format(AppLanguage.Forum_PostInTopicCount, (value as Topic).Posts.Count, (value as Topic).Views);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return null;
         }
     }
 
