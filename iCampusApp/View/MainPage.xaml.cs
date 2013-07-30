@@ -89,18 +89,20 @@ namespace ClarolineApp
 
                 await _viewModel.PrepareCoursForOpeningAsync(_cours);
 
-                if (_cours.Resources.Count > 0)
-                {
-                    _cours.loaded = DateTime.Now;
-                }
-
                 progress.Visibility = System.Windows.Visibility.Collapsed;
             }
 
-            if (_cours.loadedToday() && _cours.Resources.Count != 0)
+            if (_cours.loadedToday())
             {
-                string destination = String.Format("/View/CoursPage.xaml?cours={0}", _cours.sysCode);
-                NavigationService.Navigate(new Uri(destination, UriKind.Relative));
+                if (_cours.Resources.Count > 0)
+                {
+                    string destination = String.Format("/View/CoursPage.xaml?cours={0}", _cours.sysCode);
+                    NavigationService.Navigate(new Uri(destination, UriKind.Relative));
+                }
+                else
+                {
+                    MessageBox.Show("No resources in this course");
+                }
             }
 
             CoursList.SelectedIndex = -1;

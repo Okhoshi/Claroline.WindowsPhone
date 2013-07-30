@@ -453,9 +453,7 @@ namespace ClarolineApp.VM
                 ClearResOfCours(coursToPrepare);
                 coursToPrepare.loaded = DateTime.Now;
 
-                coursToPrepare.Resources.AddRange(from ResourceList l in ClarolineDB.ResourceList_Table
-                                                  where l.Cours.Equals(coursToPrepare)
-                                                  select l);
+                SaveChangesToDB();
             }
         }
 
