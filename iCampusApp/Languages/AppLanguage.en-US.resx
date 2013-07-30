@@ -247,4 +247,10 @@ network</value>
   <data name="MainPage_About_Thanks" xml:space="preserve">
     <value>Special thanks</value>
   </data>
+  <data name="Forum_CreatedBy" xml:space="preserve">
+    <value>Created by</value>
+  </data>
+  <data name="Forum_PostInTopicCount" xml:space="preserve">
+    <value>{0} posts in this topic, seen {1} times</value>
+  </data>
 </root>

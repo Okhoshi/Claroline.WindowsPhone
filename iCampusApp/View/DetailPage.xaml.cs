@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Windows.Markup;
 using System.Windows.Navigation;
 
 namespace ClarolineApp
@@ -48,6 +50,7 @@ namespace ClarolineApp
         {
             InitializeComponent();
             ClaroClient.Instance.PropertyChanged += ClaroClient_propertyChanged;
+            this.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name);
         }
 
         private void ClaroClient_propertyChanged(object sender, PropertyChangedEventArgs e)

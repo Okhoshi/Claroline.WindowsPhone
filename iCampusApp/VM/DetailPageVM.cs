@@ -65,7 +65,7 @@ namespace ClarolineApp.VM
 
                 t1.Posts.Add(new Post()
                 {
-                    PosterFirstname = "John",
+                    PosterFirstname = "Jane",
                     PosterLastname = "Doe",
                     Topic = t1,
                     Text = "Design Text 3 Design Text 3 Design Text 3 "

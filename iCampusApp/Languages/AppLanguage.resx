@@ -256,4 +256,10 @@ Claroline Dev Team</value>
   <data name="CLDOC_Module_Name" xml:space="preserve">
     <value>Documents &amp; Liens</value>
   </data>
+  <data name="Forum_CreatedBy" xml:space="preserve">
+    <value>Créé par</value>
+  </data>
+  <data name="Forum_PostInTopicCount" xml:space="preserve">
+    <value>{0} messages dans ce sujet, vu {1} fois</value>
+  </data>
 </root>

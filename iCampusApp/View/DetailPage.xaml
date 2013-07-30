@@ -16,73 +16,97 @@
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
 	shell:SystemTray.Opacity="0"
-	d:DataContext="{d:DesignInstance Type=vm:DetailPageVM, IsDesignTimeCreatable=True}">
+    d:DataContext="{d:DesignInstance Type=vm:DetailPageVM, IsDesignTimeCreatable=True}">
 
     <phone:PhoneApplicationPage.Resources>
-    	<local:TypeVisibilityConverter x:Key="TypeVisibilityConverter"/>
+        <local:TypeVisibilityConverter x:Key="TypeVisibilityConverter"/>
         <DataTemplate x:Key="AnnonceBasedTemplate">
-        	<ScrollViewer>
-        		<TextBlock x:Name="Content" Text="{Binding content}" TextWrapping="Wrap"/>
-        	</ScrollViewer>
+            <ScrollViewer>
+                <TextBlock x:Name="Content" Text="{Binding content}" TextWrapping="Wrap"/>
+            </ScrollViewer>
         </DataTemplate>
         <DataTemplate x:Key="GenericTemplate">
-        	<phone:WebBrowser x:Name="WB" Source="{Binding url, Mode=OneTime}" Navigating="WB_Navigating"/>
+            <phone:WebBrowser x:Name="WB" Source="{Binding url, Mode=OneTime}" Navigating="WB_Navigating"/>
         </DataTemplate>
         <DataTemplate x:Key="TopicListTemplate">
-            <ListBox ItemsSource="{Binding Topics}" DataContext="{Binding}">
+            <ListBox ItemsSource="{Binding Topics}" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding title}"></TextBlock>
-                        <!--<toolkit:ExpanderView d:DataContext="{d:DesignData /SampleData/TopicSampleData.xaml}" ItemsSource="{Binding Posts}">
-							<toolkit:ExpanderView.ExpanderTemplate>
-								<DataTemplate>
-								</DataTemplate>
-							</toolkit:ExpanderView.ExpanderTemplate>
-						</toolkit:ExpanderView>-->
+                        <toolkit:ExpanderView ItemsSource="{Binding Posts}" 
+                                              Header="{Binding}"
+                                              Expander="{Binding}">
+                            <toolkit:ExpanderView.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding title}" Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,12,0" Padding="0,10,0,0" />
+                                </DataTemplate>
+                            </toolkit:ExpanderView.HeaderTemplate>
+                            <toolkit:ExpanderView.ExpanderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock x:Name="Date" TextWrapping="Wrap" DataContext="{Binding}" Style="{StaticResource PhoneTextSubtleStyle}" >
+				                            <Run Text="{Binding LocalizedResources.Forum_CreatedBy, Source={StaticResource LocalizedStrings}}"/>
+				                            <Run Text="{Binding PosterFirstname}" />
+                                            <Run Text="{Binding PosterLastname}"/>
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding Converter={StaticResource PostSubtitle}}" Style="{StaticResource PhoneTextSubtleStyle}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </toolkit:ExpanderView.ExpanderTemplate>
+                            <toolkit:ExpanderView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,12,0" Padding="0,10,0,0" >
+                                            <Run Text="{Binding PosterFirstname}"/>
+                                            <Run Text="{Binding PosterLastname}" />
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding date, StringFormat='\{0:D\}'}" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </toolkit:ExpanderView.ItemTemplate>
+                        </toolkit:ExpanderView>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
 
-	<phone:PhoneApplicationPage.FontFamily>
-		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
-	</phone:PhoneApplicationPage.FontFamily>
-	<phone:PhoneApplicationPage.FontSize>
-		<StaticResource ResourceKey="PhoneFontSizeNormal"/>
-	</phone:PhoneApplicationPage.FontSize>
-	<phone:PhoneApplicationPage.Foreground>
-		<StaticResource ResourceKey="PhoneForegroundBrush"/>
-	</phone:PhoneApplicationPage.Foreground>
-	<phone:PhoneApplicationPage.Style>
-		<StaticResource ResourceKey="TransitionPageStyle"/>
-	</phone:PhoneApplicationPage.Style>
-<!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
-	<!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
-	<Grid x:Name="LayoutRoot" Background="Transparent">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
+    <phone:PhoneApplicationPage.FontFamily>
+        <StaticResource ResourceKey="PhoneFontFamilyNormal"/>
+    </phone:PhoneApplicationPage.FontFamily>
+    <phone:PhoneApplicationPage.FontSize>
+        <StaticResource ResourceKey="PhoneFontSizeNormal"/>
+    </phone:PhoneApplicationPage.FontSize>
+    <phone:PhoneApplicationPage.Foreground>
+        <StaticResource ResourceKey="PhoneForegroundBrush"/>
+    </phone:PhoneApplicationPage.Foreground>
+    <phone:PhoneApplicationPage.Style>
+        <StaticResource ResourceKey="TransitionPageStyle"/>
+    </phone:PhoneApplicationPage.Style>
 
-		<!--TitlePanel contient le nom de l'application et le titre de la page-->
-		<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-			<TextBlock x:Name="ApplicationTitle" Text="{Binding ApplicationName, Converter={StaticResource ToUpper}}" Style="{StaticResource PhoneTextNormalStyle}"/>
-			<TextBlock x:Name="PageTitle" Text="{Binding title}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" DataContext="{Binding currentResource}"/>
-			<TextBlock x:Name="Date" TextWrapping="Wrap" DataContext="{Binding currentResource}" Style="{StaticResource PhoneTextSubtleStyle}" Visibility="{Binding ConverterParameter=ClarolineApp.Model.Annonce, Converter={StaticResource TypeVisibilityConverter}, Mode=OneWay}">
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contient le nom de l'application et le titre de la page-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" Text="{Binding ApplicationName, Converter={StaticResource ToUpper}}" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="{Binding title}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" DataContext="{Binding currentResource}"/>
+            <TextBlock x:Name="Date" TextWrapping="Wrap" DataContext="{Binding currentResource}" Style="{StaticResource PhoneTextSubtleStyle}" Visibility="{Binding ConverterParameter=ClarolineApp.Model.Annonce, Converter={StaticResource TypeVisibilityConverter}, Mode=OneWay}">
 				<Run Text="{Binding LocalizedResources.AnnoncePage_DateFormater_Published, Source={StaticResource LocalizedStrings}}"/>
 				<Run Text="{Binding date, StringFormat=' \{0:D\}'}" />
-			</TextBlock>
-		</StackPanel>
+            </TextBlock>
+        </StackPanel>
 
         <!--ContentPanel - placez tout contenu supplémentaire ici-->
-		<Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" DataContext="{Binding currentResource}">
-			<selector:ResourceTemplateSelector x:Name="ResourceSelector" Content="{Binding Mode=OneWay}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" DataContext="{Binding currentResource}">
+            <selector:ResourceTemplateSelector x:Name="ResourceSelector" Content="{Binding}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
 				Annonce="{StaticResource AnnonceBasedTemplate}"
 				Description="{StaticResource AnnonceBasedTemplate}"
 				Event="{StaticResource AnnonceBasedTemplate}"
 				Generic="{StaticResource GenericTemplate}"
 				Forum="{StaticResource TopicListTemplate}"/>
-		</Grid>
-	</Grid>
+        </Grid>
+    </Grid>
 </phone:PhoneApplicationPage>
