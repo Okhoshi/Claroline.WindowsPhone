@@ -148,6 +148,10 @@
     </Compile>
     <Compile Include="TemplateSelector\ResourceTemplateSelector.cs" />
     <Compile Include="TemplateSelector\ResourceListTemplateSelector.cs" />
+    <Compile Include="View\TopicPage.xaml.cs">
+      <DependentUpon>TopicPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VM\ITopicPageVM.cs" />
     <Compile Include="VM\DetailPageVM.cs" />
     <Compile Include="VM\IDetailPageVM.cs" />
     <Compile Include="View\DetailPage.xaml.cs">
@@ -189,6 +193,7 @@
     <Compile Include="VM\IClarolineVM.cs" />
     <Compile Include="VM\IMainPageVM.cs" />
     <Compile Include="VM\MainPageVM.cs" />
+    <Compile Include="VM\TopicPageVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -218,6 +223,10 @@
     <Page Include="Settings\SettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\TopicPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -265,7 +274,6 @@
     <Content Include="icons\appbar.refresh.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="README_FIRST.txt" />
     <Content Include="SplashScreenImage.jpg" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
