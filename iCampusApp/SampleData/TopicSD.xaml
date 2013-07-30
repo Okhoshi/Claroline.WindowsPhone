@@ -1,0 +1,6 @@
+﻿<Model:Topic xmlns:Model="clr-namespace:ClarolineApp.Model" IsInDesignMode="True" Id="97" PosterLastname="Vestibulum aliquam aptent dolor aliquet" PosterFirstname="Bibendum ante hac proin augue" Views="99" isNotified="False" resourceId="68" title="Convallis blandit dictumst dignissim leo">
+	<Model:Topic.Posts>
+		<Model:Post Text="Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 Text1 ">
+		</Model:Post>
+	</Model:Topic.Posts>
+</Model:Topic>

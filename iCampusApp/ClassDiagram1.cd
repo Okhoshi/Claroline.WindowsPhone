@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ClarolineApp.Model.ResourceList" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABACAAAgIwAQIBABgIIAMyIACAAEEMIAAAAAAEFEAEI=</HashCode>
+      <FileName>Model\ResourceList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClarolineApp.Model.ResourceModel">
+    <Position X="2" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAGESCAUIYAIAAhgIQAEwIAAMQYAogABBAgAUFEAEA=</HashCode>
+      <FileName>Model\ResourceModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClarolineApp.Model.Topic">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiADAAAAQAAAAAAABKQAAQACAIAACAoAAAAMAgAEBAA=</HashCode>
+      <FileName>Model\Topic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClarolineApp.Model.Post">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAHGACAAgQAAAAAAAAAAQAAAAAECAAABAAICSAEAAA=</HashCode>
+      <FileName>Model\Post.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
