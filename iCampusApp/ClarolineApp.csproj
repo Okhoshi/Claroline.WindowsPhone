@@ -182,7 +182,6 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="SupportedMethods.cs" />
-    <Compile Include="TiltEffect.cs" />
     <Compile Include="VM\ClarolineVM.cs" />
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

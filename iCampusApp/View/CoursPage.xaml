@@ -20,7 +20,7 @@
     shell:SystemTray.IsVisible="True"
 	shell:SystemTray.Opacity="0"
     Style="{StaticResource TransitionPageStyle}"
-    local:TiltEffect.IsTiltEnabled="True"
+    toolkit:TiltEffect.IsTiltEnabled="True"
     d:DataContext="{d:DesignInstance Type=vm:CoursPageVM, IsDesignTimeCreatable=True}">
 
     <!--Exemple de code illustrant l'utilisation d'ApplicationBar-->
@@ -156,7 +156,7 @@
                 <toolkit:LongListSelector.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="0,5,0,10">
-                            <TextBlock Text="{Binding content, Mode=OneWay}" Style="{StaticResource PhoneTextNormalStyle}" HorizontalAlignment="Stretch" TextWrapping="Wrap" local:TiltEffect.SuppressTilt="True"  />
+                            <TextBlock Text="{Binding content, Mode=OneWay}" Style="{StaticResource PhoneTextNormalStyle}" HorizontalAlignment="Stretch" TextWrapping="Wrap" toolkit:TiltEffect.SuppressTilt="True"  />
                         </StackPanel>
                     </DataTemplate>
                 </toolkit:LongListSelector.ItemTemplate>
