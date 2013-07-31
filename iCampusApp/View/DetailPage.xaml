@@ -28,7 +28,7 @@
         <DataTemplate x:Key="GenericTemplate">
             <phone:WebBrowser x:Name="WB" Source="{Binding url, Mode=OneTime}" Navigating="WB_Navigating"/>
         </DataTemplate>
-        <DataTemplate x:Key="TopicListTemplate">
+        <DataTemplate x:Key="TopicListTemplate"><!--
             <ListBox ItemsSource="{Binding Topics}" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -54,19 +54,21 @@
                             </toolkit:ExpanderView.ExpanderTemplate>
                             <toolkit:ExpanderView.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Vertical">
-                                        <TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,12,0" Padding="0,10,0,0" >
+                                    <ListBoxItem toolkit:TiltEffect.IsTiltEnabled="True" DataContext="{Binding}" Tap="Post_Selected">
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,12,0" Padding="0,10,0,0" >
                                             <Run Text="{Binding PosterFirstname}"/>
                                             <Run Text="{Binding PosterLastname}" />
-                                        </TextBlock>
-                                        <TextBlock Text="{Binding date, StringFormat='\{0:D\}'}" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                                    </StackPanel>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding date, StringFormat='\{0:D\}'}" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                        </StackPanel>
+                                    </ListBoxItem>
                                 </DataTemplate>
                             </toolkit:ExpanderView.ItemTemplate>
                         </toolkit:ExpanderView>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
-            </ListBox>
+            </ListBox>-->
         </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
 
@@ -101,12 +103,52 @@
 
         <!--ContentPanel - placez tout contenu supplémentaire ici-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" DataContext="{Binding currentResource}">
-            <selector:ResourceTemplateSelector x:Name="ResourceSelector" Content="{Binding}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+            <!--<selector:ResourceTemplateSelector x:Name="ResourceSelector" Content="{Binding}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
 				Annonce="{StaticResource AnnonceBasedTemplate}"
 				Description="{StaticResource AnnonceBasedTemplate}"
 				Event="{StaticResource AnnonceBasedTemplate}"
 				Generic="{StaticResource GenericTemplate}"
-				Forum="{StaticResource TopicListTemplate}"/>
+				Forum="{StaticResource TopicListTemplate}"/>-->
+            <ListBox ItemsSource="{Binding Topics}" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <toolkit:ExpanderView ItemsSource="{Binding Posts}" 
+                                              Header="{Binding}"
+                                              Expander="{Binding}">
+                            <toolkit:ExpanderView.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding title}" Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,12,0" Padding="0,10,0,0" />
+                                </DataTemplate>
+                            </toolkit:ExpanderView.HeaderTemplate>
+                            <toolkit:ExpanderView.ExpanderTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock x:Name="Date" TextWrapping="Wrap" DataContext="{Binding}" Style="{StaticResource PhoneTextSubtleStyle}" >
+				                            <Run Text="{Binding LocalizedResources.Forum_CreatedBy, Source={StaticResource LocalizedStrings}}"/>
+				                            <Run Text="{Binding PosterFirstname}" />
+                                            <Run Text="{Binding PosterLastname}"/>
+                                        </TextBlock>
+                                        <TextBlock Text="{Binding Converter={StaticResource PostSubtitle}}" Style="{StaticResource PhoneTextSubtleStyle}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </toolkit:ExpanderView.ExpanderTemplate>
+                            <toolkit:ExpanderView.ItemTemplate>
+                                <DataTemplate>
+                                    <ListBoxItem toolkit:TiltEffect.IsTiltEnabled="True" DataContext="{Binding}" Tap="ListBoxItem_Tap">
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="12,0,12,0" Padding="0,10,0,0" >
+                                            <Run Text="{Binding PosterFirstname}"/>
+                                            <Run Text="{Binding PosterLastname}" />
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding date, StringFormat='\{0:D\}'}" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                                        </StackPanel>
+                                    </ListBoxItem>
+                                </DataTemplate>
+                            </toolkit:ExpanderView.ItemTemplate>
+                        </toolkit:ExpanderView>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Grid>
 </phone:PhoneApplicationPage>

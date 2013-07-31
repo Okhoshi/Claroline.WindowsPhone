@@ -24,7 +24,7 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contient le nom de l'application et le titre de la page-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel Grid.Row="0" Margin="12,17,0,17">
             <TextBlock Text="{Binding ApplicationName, Converter={StaticResource ToUpper}}" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock Text="{Binding currentTopic.title}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
             <TextBlock Style="{StaticResource PhoneTextSubtleStyle}">
@@ -40,14 +40,14 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Vertical">
-                            <Grid Margin="0,10,0,5">
+                            <StackPanel Orientation="Vertical" Margin="0,0,0,5">
                                 <TextBlock Style="{StaticResource PhoneTextLargeStyle}" Margin="0">
                                     <Run Text="{Binding PosterFirstname}" />
                                     <Run Text="{Binding PosterLastname}" />
                                 </TextBlock>
-                                <TextBlock Text="{Binding date, StringFormat='\{0:D\}'}" Style="{StaticResource PhoneTextSubtleStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="12,0,0,0"/>
-                            </Grid>
-                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="15,0,0,0" />
+                                <TextBlock Text="{Binding date, StringFormat='\{0:D\}'}" Style="{StaticResource PhoneTextSubtleStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="0,0,0,0"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="15,0,0,10" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

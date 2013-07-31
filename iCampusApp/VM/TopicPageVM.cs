@@ -87,13 +87,14 @@ namespace ClarolineApp.VM
             }
         }
 
-        public TopicPageVM(int topicId, int forumId)
+        public TopicPageVM(int topicId, int forumUId)
         {
             using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
             {
                 currentTopic = (from Topic t in cdc.Topics_Table 
-                               where t.resourceId == topicId && t.Forum.Id == forumId
+                               where t.resourceId == topicId && t.Forum.UniqueIdentifier == forumUId
                                select t).Single();
+                var p = posts;
             }
         }
     }

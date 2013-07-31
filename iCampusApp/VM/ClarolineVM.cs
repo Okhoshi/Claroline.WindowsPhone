@@ -434,7 +434,7 @@ namespace ClarolineApp.VM
             return;
         }
 
-        public async Task PrepareCoursForOpeningAsync(Cours coursToPrepare)
+        public async Task<Cours> PrepareCoursForOpeningAsync(Cours coursToPrepare)
         {
             bool r = await GetResourcesListForThisCoursAsync(coursToPrepare);
 
@@ -451,10 +451,16 @@ namespace ClarolineApp.VM
                     }
                 }
                 ClearResOfCours(coursToPrepare);
-                coursToPrepare.loaded = DateTime.Now;
 
-                SaveChangesToDB();
+                using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
+                {
+                    coursToPrepare = (from Cours c in cdc.Cours_Table where c.Equals(coursToPrepare) select c).Single();
+                    coursToPrepare.loaded = DateTime.Now;
+                    int count = coursToPrepare.Resources.Count;
+                    cdc.SubmitChanges();
+                }
             }
+            return coursToPrepare;
         }
 
         public async Task GetResourcesForThisListAsync(ResourceList container)

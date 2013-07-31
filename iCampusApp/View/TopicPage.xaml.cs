@@ -71,7 +71,12 @@ namespace ClarolineApp.View
                 int postid;
                 if (parameters.ContainsKey("post") && int.TryParse(parameters["post"], out postid))
                 {
-                    Posts.ScrollIntoView(_viewModel.posts.FirstOrDefault(p => p.Id == postid));
+                    var i = _viewModel.posts.FirstOrDefault(p => p.Id == postid);
+                    Dispatcher.BeginInvoke(() =>
+                    {
+                        Posts.SelectedItem = i;
+                        Posts.ScrollIntoView(i);
+                    });
                 }
 
                 base.OnNavigatedTo(e);

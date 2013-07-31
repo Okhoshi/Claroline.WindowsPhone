@@ -87,7 +87,7 @@ namespace ClarolineApp
                 PerformanceProgressBar progress = Helper.FindFirstElementInVisualTree<PerformanceProgressBar>(this.CoursList.ItemContainerGenerator.ContainerFromIndex(CoursList.SelectedIndex) as ListBoxItem);
                 progress.Visibility = System.Windows.Visibility.Visible;
 
-                await _viewModel.PrepareCoursForOpeningAsync(_cours);
+                _cours = await _viewModel.PrepareCoursForOpeningAsync(_cours);
 
                 progress.Visibility = System.Windows.Visibility.Collapsed;
             }

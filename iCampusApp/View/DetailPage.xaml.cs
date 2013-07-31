@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Controls;
 using System.Windows.Markup;
 using System.Windows.Navigation;
 
@@ -104,6 +105,13 @@ namespace ClarolineApp
             page = page.Replace("</head>", "<meta name=\"viewport\" content=\"width=" + (sender as WebBrowser).ActualWidth + "\"/>\n</head>");
             page = page.Replace("=\"/", "=\"" + host + "/");
             (sender as WebBrowser).NavigateToString(page);
+        }
+
+        private void ListBoxItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            ListBoxItem lbi = sender as ListBoxItem;
+            Post p = lbi.DataContext as Post;
+            NavigationService.Navigate(new Uri(String.Format("/View/TopicPage.xaml?forum={0}&topic={1}&post={2}", p.Topic.Forum.UniqueIdentifier, p.Topic.resourceId, p.Id), UriKind.Relative));
         }
     }
 }
