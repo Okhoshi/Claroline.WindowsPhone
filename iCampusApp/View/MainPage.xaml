@@ -39,7 +39,7 @@
             <shell:ApplicationBarIconButton x:Name="Sync_Btn" IconUri="/icons/appbar.refresh.rest.png" Text="Sync" Click="Sync_Btn_Click"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem x:Name="SettingsPage" Text="Réglages" Click="SettingsPage_Click"/>
-                <shell:ApplicationBarMenuItem x:Name="DEV_clrDB" Text="[DEV] Clear DB" Click="DEV_clrDB_Click"/>
+                <!--<shell:ApplicationBarMenuItem x:Name="DEV_clrDB" Text="[DEV] Clear DB" Click="DEV_clrDB_Click"/>-->
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
@@ -74,7 +74,7 @@
             		</ListBox.ItemTemplate>
             	</ListBox>
     		</controls:PanoramaItem>
-            <controls:PanoramaItem x:Name="Notif_PI" Header="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.MainPage_Notif_PI, Converter={StaticResource ToLower}}" Foreground="Black">
+            <!--<controls:PanoramaItem x:Name="Notif_PI" Header="{Binding Source={StaticResource LocalizedStrings}, Path=LocalizedResources.MainPage_Notif_PI, Converter={StaticResource ToLower}}" Foreground="Black">
                 <ListBox x:Name="NotifList" ItemsSource="{Binding topNotifications, Mode=OneWay}" Margin="0,-30,0,30" SelectionChanged="NotifList_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -98,7 +98,7 @@
                         <TextBlock x:Name="platformTextAuthentified" TextWrapping="Wrap" Margin="0"/>
                     </StackPanel>
                 </ScrollViewer>
-    		</controls:PanoramaItem>
+    		</controls:PanoramaItem>-->
             <controls:PanoramaItem x:Name="About_PI" Header="{Binding LocalizedResources.MainPage_About_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Foreground="Black">
                 <ScrollViewer Margin="0,-30,0,30">
                     <Grid  ShowGridLines="False">

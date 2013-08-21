@@ -544,15 +544,17 @@ namespace ClarolineApp.VM
             _lastClientCall = DateTime.Now;
             String strContent = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER,
                                                                               SupportedMethods.GetCourseList);
-
-            List<Cours> Courses = JsonConvert.DeserializeObject<List<Cours>>(strContent);
-
-            foreach (Cours cours in Courses)
+            if (strContent != "")
             {
-                AddCours(cours);
-            }
+                List<Cours> Courses = JsonConvert.DeserializeObject<List<Cours>>(strContent);
 
-            ClearCoursList();
+                foreach (Cours cours in Courses)
+                {
+                    AddCours(cours);
+                }
+
+                ClearCoursList();
+            }
         }
 
         public async Task<bool> GetResourcesListForThisCoursAsync(Cours cours)

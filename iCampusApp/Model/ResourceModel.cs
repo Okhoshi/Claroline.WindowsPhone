@@ -144,7 +144,7 @@ namespace ClarolineApp.Model
 
         protected DateTime _Date = DateTime.Parse("01/01/1753");
 
-        [Column]
+        [Column(CanBeNull=true)]
         public DateTime date
         {
             get

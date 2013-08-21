@@ -57,7 +57,9 @@ namespace ClarolineApp.Model
             {
                 if (isFolder)
                 {
-                    return getContent().Any(f => f.isNotified);
+                    return getContent().Any(f => { 
+                        return f.isNotified;
+                    });
                 }
                 else
                 {

@@ -204,22 +204,22 @@ namespace ClarolineApp
             }
         }
 
-        private void NotifList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (NotifList.SelectedIndex == -1)
-            {
-                return;
-            }
+        //private void NotifList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    if (NotifList.SelectedIndex == -1)
+        //    {
+        //        return;
+        //    }
 
-            Notification selectedNotification = (sender as ListBox).SelectedItem as Notification;
+        //    Notification selectedNotification = (sender as ListBox).SelectedItem as Notification;
 
-            if (selectedNotification != null)
-            {
-                ResourceModel item = selectedNotification.resource;
-                NavigationService.Navigate(new Uri(String.Format("/View/DetailPage.xaml?resource={0}&list={1}", item.resourceId, item.ResourceList.Id), UriKind.Relative));
-            }
+        //    if (selectedNotification != null)
+        //    {
+        //        ResourceModel item = selectedNotification.resource;
+        //        NavigationService.Navigate(new Uri(String.Format("/View/DetailPage.xaml?resource={0}&list={1}", item.resourceId, item.ResourceList.Id), UriKind.Relative));
+        //    }
 
-            NotifList.SelectedIndex = -1;
-        }
+        //    NotifList.SelectedIndex = -1;
+        //}
     }
 }

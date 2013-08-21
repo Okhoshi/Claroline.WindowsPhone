@@ -107,7 +107,9 @@ namespace ClarolineApp.Model
         {
             get
             {
-                return Resources.Any(r => r.isNotified);
+                return Resources.Any(r => {
+                    return r.isNotified;
+                    });
             }
         }
 

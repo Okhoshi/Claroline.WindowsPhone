@@ -158,6 +158,26 @@ namespace ClarolineApp.Model
                 }
             }
         }
+
+        public new DateTime date
+        {
+            get
+            {
+                DateTime d = Topics.SelectMany(t => t.Posts).OrderBy(p => p.date).Select(p => p.date).LastOrDefault();
+                if (d != null)
+                {
+                    return d;
+                }
+                else
+                {
+                    return DateTime.Parse("01/01/1753");
+                }
+            }
+            set
+            {
+                _Date = DateTime.Parse("01/01/1753");
+            }
+        }
         
         #region Association Forum2Topic Many Side
 

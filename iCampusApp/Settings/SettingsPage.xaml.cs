@@ -55,7 +55,7 @@ namespace ClarolineApp.Settings
                                                     AppSettings.WebServiceSettingKeyName, 
                                                     AppSettings.DomainSettingKeyName };
 
-                if ( _viewModel.IsConnected && _listened.Contains(e.PropertyName))
+                if (_viewModel.IsConnected && _listened.Contains(e.PropertyName))
                 {
                     _viewModel.ResetViewModel();
                 }
@@ -124,7 +124,11 @@ namespace ClarolineApp.Settings
         private async void Connect_Button(object sender, RoutedEventArgs e)
         {
             indicator.IsVisible = true;
-            await _viewModel.GetUserDataAsync();
+            bool r = await _viewModel.GetUserDataAsync();
+            if (r)
+            {
+                await _viewModel.GetCoursListAsync();
+            }
             indicator.IsVisible = false;
         }
 
