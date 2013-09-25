@@ -230,7 +230,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="ClarolineApp_2013_08_17_16_46_08.sap" />
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
