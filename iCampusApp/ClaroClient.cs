@@ -152,7 +152,7 @@ namespace ClarolineApp
                     response = (HttpWebResponse)await client.GetResponseAsync();
                     strContent = DecodeData(response);
 
-                    if (forAuth)
+                    if (forAuth && method == SupportedMethods.Authenticate && response.Headers["Set-Cookie"] != null)
                     {
                         foreach (string cookie in response.Headers["Set-Cookie"].Split(new string[] { ",  " }, StringSplitOptions.RemoveEmptyEntries))
                         {

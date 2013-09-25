@@ -253,4 +253,21 @@ network</value>
   <data name="Forum_PostInTopicCount" xml:space="preserve">
     <value>{0} posts in this topic, seen {1} times</value>
   </data>
+  <data name="SettingsPage_Platform_ValidateButton" xml:space="preserve">
+    <value>Validate</value>
+  </data>
+  <data name="ErrorMessage_MissingModule" xml:space="preserve">
+    <value>Sorry, we managed to log you in but something is missing on this platform. This application need this thing.
+
+Ask your platform manager to contact us for more infos</value>
+  </data>
+  <data name="ErrorMessage_OutdatedModule" xml:space="preserve">
+    <value>Sorry, we managed to log you in but the module seems to be outdated. Tell your platform manager that an update is necessary to continue to use this application.</value>
+  </data>
+  <data name="ErrorMessage_NotAClarolinePlatform" xml:space="preserve">
+    <value>Sorry, we found no Claroline platform here</value>
+  </data>
+  <data name="SettingsPage_Platform_UseSSL" xml:space="preserve">
+    <value>Use securized connection ( if possible )</value>
+  </data>
 </root>

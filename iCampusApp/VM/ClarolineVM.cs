@@ -10,6 +10,7 @@ using System.Data.Linq;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -595,6 +596,23 @@ namespace ClarolineApp.VM
                 return true;
             }
             return false;
+        }
+
+        public async Task<bool> CheckHostValidity(string url)
+        {
+            string page = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.NOMOD, SupportedMethods.GetPage, genMod: url, forAuth:true);
+            return page.Contains("<!-- - - - - - - - - - - Claroline Body - - - - - - - - - -->");
+        }
+
+        public async Task<string> CheckModuleValidity()
+        {
+            Regex regex = new Regex(@"<!-- PLATFORM SETTINGS (\P{Cn}*?) PLATFORM SETTINGS -->", RegexOptions.CultureInvariant);
+            string page = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.NOMOD, SupportedMethods.GetPage, genMod: AppSettings.Instance.DomainSetting);
+            if (regex.IsMatch(page))
+            {
+                return regex.Match(page).Groups[1].Value;
+            }
+            return "{}";
         }
     }
 }

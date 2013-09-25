@@ -72,6 +72,12 @@ namespace ClarolineApp
 
             _viewModel.LoadCollectionsFromDatabase();
         }
+
+        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            ClaroClient.Instance.PropertyChanged -= FailureOccured;
+        }
         
         private async void CoursList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -121,7 +127,7 @@ namespace ClarolineApp
             NavigationService.Navigate(new Uri("/Settings/SettingsPage.xaml", UriKind.Relative));
         }
 
-        private async void Connect_Click(object sender, EventArgs e)
+        private async void Sync_Btn_Click(object sender, EventArgs e)
         {
             indicator.Text = AppLanguage.ProgressBar_Connecting;
             indicator.IsVisible = true;
@@ -131,19 +137,16 @@ namespace ClarolineApp
             {
                 r = await _viewModel.GetUserDataAsync();
             }
-            if (r)
+            if (r && ((_viewModel as MainPageVM).allCours.Count == 0 || AppSettings.Instance.LastListRequestSetting.CompareTo(DateTime.Now.AddDays(-2)) < 0))
             {
                 indicator.Text = String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.MainPage_Cours_PI);
                 await _viewModel.GetCoursListAsync();
             }
-            indicator.IsVisible = false;
-        }
-
-        private async void Sync_Btn_Click(object sender, EventArgs e)
-        {
-            indicator.Text = AppLanguage.ProgressBar_Update;
-            indicator.IsVisible = true;
-            await _viewModel.RefreshAsync(true);
+            else if(r)
+            {
+                indicator.Text = AppLanguage.ProgressBar_Update;
+                await _viewModel.RefreshAsync(true);
+            }
             indicator.IsVisible = false;
         }
 
@@ -156,7 +159,7 @@ namespace ClarolineApp
         {
             WebBrowserTask homepage = new WebBrowserTask()
             {
-                Uri = new Uri("http://icampus.uclouvain.be" 
+                Uri = new Uri(AppSettings.Instance.DomainSetting 
                             + AppSettings.Instance.AuthPageSetting 
                             + "?login=" 
                             + AppSettings.Instance.UserNameSetting 
@@ -191,35 +194,5 @@ namespace ClarolineApp
                 mailToManagers.Show();
             }
         }
-
-        private void Panorama_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (Panorama.SelectedItem.Equals(About_PI))
-            {
-                ApplicationBar.Mode = ApplicationBarMode.Minimized;
-            }
-            else
-            {
-                ApplicationBar.Mode = ApplicationBarMode.Default;
-            }
-        }
-
-        //private void NotifList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    if (NotifList.SelectedIndex == -1)
-        //    {
-        //        return;
-        //    }
-
-        //    Notification selectedNotification = (sender as ListBox).SelectedItem as Notification;
-
-        //    if (selectedNotification != null)
-        //    {
-        //        ResourceModel item = selectedNotification.resource;
-        //        NavigationService.Navigate(new Uri(String.Format("/View/DetailPage.xaml?resource={0}&list={1}", item.resourceId, item.ResourceList.Id), UriKind.Relative));
-        //    }
-
-        //    NotifList.SelectedIndex = -1;
-        //}
     }
 }

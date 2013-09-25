@@ -16,6 +16,9 @@ using System.Globalization;
 using System.ComponentModel;
 using Microsoft.Phone.Shell;
 using ClarolineApp.VM;
+using System.IO;
+using Newtonsoft.Json;
+using ClarolineApp.Languages;
 
 namespace ClarolineApp.Settings
 {
@@ -61,6 +64,14 @@ namespace ClarolineApp.Settings
                 }
             };
 
+            ClarolineVM.Client.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == "IsInSync")
+                {
+                    indicator.IsVisible = ClarolineVM.Client.IsInSync;
+                }
+            };
+
             Deco = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
             Deco.IsEnabled = _viewModel.IsConnected;
 
@@ -72,29 +83,10 @@ namespace ClarolineApp.Settings
                 }
             };
 
-#if DEBUG
-            PivotItem devPivot = new PivotItem()
+            if (AppSettings.Instance.IsValidHostSetting)
             {
-                Header = "[DEV]",
-                Margin = new Thickness(12, 28, 12, 0),
-                Content = new StackPanel()
-                {
-                    VerticalAlignment = System.Windows.VerticalAlignment.Bottom
-                }
-            };
-
-            Button QAccBut = new Button() { Content = "Charge QAcc" };
-            QAccBut.Click += new RoutedEventHandler(QAccBut_Click);
-            Button SAccBut = new Button() { Content = "Charge SAcc" };
-            SAccBut.Click += new RoutedEventHandler(SAccBut_Click);
-            Button Button = new Button() { Content = "Test Connect" };
-            Button.Click += new RoutedEventHandler(Button_Click);
-
-            ((StackPanel)devPivot.Content).Children.Add(QAccBut);
-            ((StackPanel)devPivot.Content).Children.Add(SAccBut);
-            ((StackPanel)devPivot.Content).Children.Add(Button);
-            SettingsPivot.Items.Add(devPivot);
-#endif
+                VisualStateManager.GoToState(this, "Valid", true);
+            }
         }
 
         private void Reset_Click(object sender, EventArgs e)
@@ -102,34 +94,90 @@ namespace ClarolineApp.Settings
             _viewModel.ResetViewModel();
         }
 
-#if DEBUG
-        private void QAccBut_Click(object sender, RoutedEventArgs e)
-        {
-            userTextBox.Text = "devosq";
-            passwordBox.Password = "Elegie24";
-        }
-
-        private void SAccBut_Click(object sender, RoutedEventArgs e)
-        {
-            userTextBox.Text = "sluysmanss";
-            passwordBox.Password = "kids4747";
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ((Button)e.OriginalSource).Content = ClaroClient.Instance.IsValidAccountSync().ToString();
-        }
-#endif
-
         private async void Connect_Button(object sender, RoutedEventArgs e)
         {
-            indicator.IsVisible = true;
-            bool r = await _viewModel.GetUserDataAsync();
+            bool r = ClaroClient.IsNetworkAvailable();
             if (r)
             {
-                await _viewModel.GetCoursListAsync();
+                r = await ClaroClient.Instance.IsValidAccountAsync();
+                if (r)
+                {
+                    string response = await _viewModel.CheckModuleValidity();
+                    if (response != "{}")
+                    {
+                        JsonTextReader reader = new JsonTextReader(new StringReader(response));
+                        while (reader.Read())
+                        {
+                            if (reader.Value != null && reader.TokenType == JsonToken.PropertyName)
+                            {
+                                switch (reader.Value.ToString())
+                                {
+                                    case "version":
+                                        if (reader.Read() && reader.TokenType == JsonToken.Integer)
+                                        {
+                                            int version;
+                                            if (!int.TryParse(reader.Value.ToString(), out version) || App.ModuleVersionRequired > version)
+                                            {
+                                                ClaroClient.Instance.InvalidateClient();
+                                                ShowMessage(AppLanguage.ErrorMessage_OutdatedModule); //Not readable version or outdated one
+                                            }
+                                        }
+                                        else
+                                        {
+                                            ClaroClient.Instance.InvalidateClient();
+                                            ShowMessage(AppLanguage.ErrorMessage_UnreadableJson); // Unreadable
+                                        }
+                                        break;
+                                    case "path":
+                                        if (reader.Read() && reader.TokenType == JsonToken.String)
+                                        {
+                                            AppSettings.Instance.WebServiceSetting = reader.Value.ToString();
+                                        }
+                                        else
+                                        {
+                                            ClaroClient.Instance.InvalidateClient();
+                                            ShowMessage(AppLanguage.ErrorMessage_UnreadableJson); // Unreadable
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+
+                        if (ClaroClient.Instance.IsValidAccountSync())
+                        {
+                            _viewModel.GetUserDataAsync();
+                            _viewModel.GetCoursListAsync();
+                        }
+                    }
+                    else
+                    {
+                        ShowMessage(AppLanguage.ErrorMessage_MissingModule); // Missing Module
+                    }
+                }
+                else
+                {
+                    ShowMessage(AppLanguage.ErrorMessage_AuthFailed, true); // Bad password
+                }
             }
-            indicator.IsVisible = false;
+            else
+            {
+                ShowMessage(AppLanguage.ErrorMessage_NetworkUnavailable); //Missing Network
+            }
+        }
+
+        private void ShowMessage(string message, bool concernPassword = false)
+        {
+            if (message != null)
+            {
+                VisualStateManager.GoToState(this, concernPassword ? "PasswordError" : "Error", true);
+                userError.Text = message;
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "UserDefault", true);
+            }
         }
 
         private void Deco_Click(object sender, EventArgs e)
@@ -141,10 +189,49 @@ namespace ClarolineApp.Settings
 
         private void passwordBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            ShowMessage(null);
+            if (e.Key == Key.Enter && AppSettings.Instance.IsValidHostSetting)
             {
                 AppSettings.Instance.PasswordSetting = (sender as PasswordBox).Password;
                 Connect_Button(sender, null);
+            }
+        }
+
+        private async void Validate_Click(object sender, RoutedEventArgs e)
+        {
+            string url = SiteTextBox.Text;
+
+            if (AppSettings.Instance.UseSSLSetting)
+            {
+                url = url.Replace("http://", "https://");
+            }
+            bool isHostValid = await _viewModel.CheckHostValidity(url);
+            if (AppSettings.Instance.UseSSLSetting && !isHostValid)
+            {
+                url = url.Replace("https://", "http://");
+                isHostValid = await _viewModel.CheckHostValidity(url);
+            }
+
+            AppSettings.Instance.DomainSetting = url;
+            AppSettings.Instance.IsValidHostSetting = isHostValid;
+            VisualStateManager.GoToState(this, isHostValid ? "Valid" : "Invalid", true);
+        }
+
+        private void SiteTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!AppSettings.Instance.DomainSetting.Equals(SiteTextBox.Text))
+            {
+                VisualStateManager.GoToState(this, "Default", true);
+                AppSettings.Instance.IsValidHostSetting = false;
+            }
+        }
+
+        private void SiteTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && !AppSettings.Instance.IsValidHostSetting)
+            {
+                AppSettings.Instance.DomainSetting = (sender as TextBox).Text;
+                Validate_Click(sender, null);
             }
         }
     }

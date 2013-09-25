@@ -99,12 +99,6 @@ namespace ClarolineApp.Model
             return base.GetHashCode();
         }
 
-        public override bool IsResIdMatching(string resource)
-        {
-            int val;
-            return int.TryParse(resource, out val) && resourceId == val;
-        }
-
         public override void UpdateFrom(ResourceModel newRes)
         {
             base.UpdateFrom(newRes);

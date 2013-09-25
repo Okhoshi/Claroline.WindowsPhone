@@ -72,10 +72,10 @@ namespace ClarolineApp.Model
             }
         }
 
-        protected int _resourceId;
+        protected string _resourceId;
 
         [Column(CanBeNull = true)]
-        public int resourceId
+        public string resourceId
         {
             get
             {
@@ -198,13 +198,6 @@ namespace ClarolineApp.Model
                     RaisePropertyChanging("url");
                     _url = value;
                     RaisePropertyChanged("url");
-
-                    if (DiscKey == SupportedModules.NOMOD)
-                    {
-                        RaisePropertyChanging("resourceId");
-                        _resourceId = value.GetHashCode();
-                        RaisePropertyChanged("resourceId");
-                    }
                 }
             }
         }
@@ -362,8 +355,7 @@ namespace ClarolineApp.Model
 
         public virtual bool IsResIdMatching(string resource)
         {
-            int val;
-            return int.TryParse(resource, out val) && resourceId == val;
+            return resource != null && resource.Equals(resourceId);
         }
 
         public virtual List<ResourceModel> GetSubRes()

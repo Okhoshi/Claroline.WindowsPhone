@@ -35,7 +35,7 @@
     <!--Exemple de code illustrant l'utilisation d'ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton x:Name="Connect_Btn" IconUri="/icons/appbar.download.rest.png" Text="Connect" Click="Connect_Click"/>
+            <!--<shell:ApplicationBarIconButton x:Name="Connect_Btn" IconUri="/icons/appbar.download.rest.png" Text="Connect" Click="Connect_Click"/>-->
             <shell:ApplicationBarIconButton x:Name="Sync_Btn" IconUri="/icons/appbar.refresh.rest.png" Text="Sync" Click="Sync_Btn_Click"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem x:Name="SettingsPage" Text="Réglages" Click="SettingsPage_Click"/>
@@ -46,7 +46,7 @@
 
     <!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-    	<controls:Panorama Title="{Binding ApplicationName}" x:Name="Panorama" SelectionChanged="Panorama_SelectionChanged">
+    	<controls:Panorama Title="{Binding ApplicationName}" x:Name="Panorama">
     		<controls:Panorama.Background>
     			<ImageBrush ImageSource="/BSTwp2.jpg" Stretch="None"/>
     		</controls:Panorama.Background>

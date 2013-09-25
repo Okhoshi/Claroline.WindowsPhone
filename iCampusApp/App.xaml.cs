@@ -12,6 +12,8 @@ namespace ClarolineApp
     {
         public const string ApplicationName = "ClaroMobile";
 
+        public const int ModuleVersionRequired = 1;
+
         /// <summary>
         /// Permet d'accéder facilement au frame racine de l'application téléphonique.
         /// </summary>

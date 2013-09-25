@@ -10,25 +10,12 @@
     xmlns:System="clr-namespace:System;assembly=mscorlib" 
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
     xmlns:my="clr-namespace:ClarolineApp.Settings" xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:ec="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions" 
+    xmlns:toolkitPrimitives="clr-namespace:Microsoft.Phone.Controls.Primitives;assembly=Microsoft.Phone.Controls.Toolkit" 
     x:Class="ClarolineApp.Settings.SettingsPage"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-	shell:SystemTray.Opacity="0" d:DataContext="{d:DesignData /SampleData/ClarolineVMSampleData.xaml}">
-  
-  <phone:PhoneApplicationPage.Style>
-		<StaticResource ResourceKey="TransitionPageStyle"/>
-	</phone:PhoneApplicationPage.Style>
-
-	<phone:PhoneApplicationPage.FontFamily>
-		<StaticResource ResourceKey="PhoneFontFamilyNormal"/>
-	</phone:PhoneApplicationPage.FontFamily>
-	<phone:PhoneApplicationPage.FontSize>
-		<StaticResource ResourceKey="PhoneFontSizeNormal"/>
-	</phone:PhoneApplicationPage.FontSize>
-	<phone:PhoneApplicationPage.Foreground>
-		<StaticResource ResourceKey="PhoneForegroundBrush"/>
-	</phone:PhoneApplicationPage.Foreground>
+	shell:SystemTray.Opacity="0" d:DataContext="{d:DesignData /SampleData/ClarolineVMSampleData.xaml}" Style="{StaticResource TransitionPageStyle}" FontFamily="{StaticResource PhoneFontFamilyNormal}" FontSize="{StaticResource PhoneFontSizeNormal}" Foreground="{StaticResource PhoneForegroundBrush}">
  
     <!--Exemple de code illustrant l'utilisation de l'ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
@@ -114,6 +101,75 @@
 					</Storyboard>
 				</VisualState>
 			</VisualStateGroup>
+			<VisualStateGroup x:Name="HostValidationStatus">
+				<VisualStateGroup.Transitions>
+					<VisualTransition GeneratedDuration="0"/>
+				</VisualStateGroup.Transitions>
+				<VisualState x:Name="Default"/>
+				<VisualState x:Name="Valid">
+					<Storyboard>
+						<ColorAnimation Duration="0" To="#FF008800" Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="SiteTextBox" d:IsOptimized="True"/>
+						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="button" d:IsOptimized="True"/>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="button">
+							<DiscreteObjectKeyFrame KeyTime="0">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Collapsed</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						
+					</Storyboard>
+				</VisualState>
+				<VisualState x:Name="Invalid">
+					<Storyboard>
+						<ColorAnimation Duration="0" To="Red" Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="SiteTextBox" d:IsOptimized="True"/>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="errorDetail">
+							<DiscreteObjectKeyFrame KeyTime="0">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Visible</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="errorDetail" d:IsOptimized="True"/>
+						<DoubleAnimation Duration="0" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="button" d:IsOptimized="True"/>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="button">
+							<DiscreteObjectKeyFrame KeyTime="0">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Collapsed</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+			</VisualStateGroup>
+			<VisualStateGroup x:Name="UserValidationStatus">
+				<VisualState x:Name="UserDefault"/>
+				<VisualState x:Name="Error">
+					<Storyboard>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="userError">
+							<DiscreteObjectKeyFrame KeyTime="0">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Visible</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="userError" d:IsOptimized="True"/>
+					</Storyboard>
+				</VisualState>
+				<VisualState x:Name="PasswordError">
+					<Storyboard>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="userError">
+							<DiscreteObjectKeyFrame KeyTime="0">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Visible</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="userError" d:IsOptimized="True"/>
+						<ColorAnimation Duration="0" To="Red" Storyboard.TargetProperty="(Control.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="passwordBox" d:IsOptimized="True"/>
+					</Storyboard>
+				</VisualState>
+			</VisualStateGroup>
 		</VisualStateManager.VisualStateGroups>
 
 		<i:Interaction.Behaviors>
@@ -122,42 +178,18 @@
 		</i:Interaction.Behaviors>
 <!--TitlePanel contient le nom de l'application et le titre de la page-->
 		<controls:Pivot x:Name="SettingsPivot" Title="{Binding PlatformSetting}" d:LayoutOverrides="GridBox" DataContext="{Binding Settings}">
-			<controls:PivotItem x:Name="pivotItem" Header="{Binding LocalizedResources.SettingsPage_User_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Margin="12,28,12,0">
-
-				<Grid>
-
-					<StackPanel x:Name="ConnectPage" Margin="0">
-						<StackPanel.Projection>
-							<PlaneProjection/>
-						</StackPanel.Projection>
-						<TextBlock HorizontalAlignment="Center" x:Name="userLabel" Text="{Binding LocalizedResources.SettingsPage_User_Username, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
-						<TextBox Height="72" HorizontalAlignment="Center" x:Name="userTextBox" Text="{Binding UserNameSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
-						<TextBlock HorizontalAlignment="Center" x:Name="passLabel" Text="{Binding LocalizedResources.SettingsPage_User_Password, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}"/>
-						<PasswordBox Height="72" HorizontalAlignment="Center" x:Name="passwordBox" VerticalAlignment="Top" Width="412" Password="{Binding PasswordSetting, Mode=TwoWay}" Margin="22,0" KeyDown="passwordBox_KeyDown"/>
-						<Button x:Name="Connect" Content="{Binding LocalizedResources.SettingsPage_User_ConnectButton, Source={StaticResource LocalizedStrings}}" Margin="24,40,24,0" Click="Connect_Button"/>
-					</StackPanel>
-					<StackPanel x:Name="UserPage" Margin="0">
-						<StackPanel.Projection>
-							<PlaneProjection/>
-						</StackPanel.Projection>
-						<TextBlock HorizontalAlignment="Left" x:Name="FNlabel" Text="{Binding LocalizedResources.SettingsPage_User_FirstName, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}" Width="Auto" />
-						<TextBlock HorizontalAlignment="Left" x:Name="FNvalue" Text="{Binding UserSetting.firstName, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
-						<TextBlock HorizontalAlignment="Left" x:Name="LNlabel" Text="{Binding LocalizedResources.SettingsPage_User_LastName, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
-						<TextBlock HorizontalAlignment="Left" x:Name="LNvalue" Text="{Binding UserSetting.lastName, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
-						<TextBlock HorizontalAlignment="Left" x:Name="NOMAlabel" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="12,0,0,0" Text="{Binding LocalizedResources.SettingsPage_User_NOMA, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" />
-						<TextBlock HorizontalAlignment="Left" x:Name="NOMAvalue" Text="{Binding UserSetting.officialCode, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
-					</StackPanel>
-				</Grid>
-			</controls:PivotItem>
 			<controls:PivotItem Header="{Binding LocalizedResources.SettingsPage_Platform_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Margin="12,28,12,0">
 				<Grid Margin="0">
-					<StackPanel x:Name="AddressPage" Orientation="Vertical" Margin="0" RenderTransformOrigin="0,0">
+					<StackPanel x:Name="AddressPage" Orientation="Vertical" RenderTransformOrigin="0,0">
 						<StackPanel.Projection>
 							<PlaneProjection/>
 						</StackPanel.Projection>
 						<TextBlock HorizontalAlignment="Center" x:Name="SiteLabel" Text="{Binding LocalizedResources.SettingsPage_Platform_URL, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
-						<TextBox Height="72" HorizontalAlignment="Center" x:Name="siteTextBox" Text="{Binding DomainSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
-						<toolkit:ToggleSwitch x:Name="toggleSwitch" Header="" Margin="22,-12,22,0" Content="{Binding LocalizedResources.SettingsPage_Platform_AdvancedSwitch, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding AdvancedSwitchSetting, Mode=TwoWay}"/>
+						<TextBox Height="72" HorizontalAlignment="Center" x:Name="SiteTextBox" Text="{Binding DomainSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412" TextChanged="SiteTextBox_TextChanged" KeyDown="SiteTextBox_KeyDown"/>
+						<Button x:Name="button" Content="{Binding LocalizedResources.SettingsPage_Platform_ValidateButton, Mode=OneWay, Source={StaticResource LocalizedStrings}}" Margin="22,0" Click="Validate_Click"/>
+						<TextBlock x:Name="errorDetail" TextWrapping="Wrap" Padding="0" Margin="35,0" Foreground="Red" Opacity="0" Text="{Binding LocalizedResources.ErrorMessage_NotAClarolinePlatform, Mode=OneWay, Source={StaticResource LocalizedStrings}}" Visibility="Collapsed"/>
+						<CheckBox HorizontalContentAlignment="Stretch" IsChecked="{Binding UseSSLSetting, Mode=TwoWay}" VerticalContentAlignment="Stretch" Padding="0" Margin="22,0"><TextBlock Text="{Binding LocalizedResources.SettingsPage_Platform_UseSSL, Mode=OneWay, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"></TextBlock></CheckBox>
+						<toolkit:ToggleSwitch x:Name="toggleSwitch" Header="" Margin="22,0" Content="{Binding LocalizedResources.SettingsPage_Platform_AdvancedSwitch, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding AdvancedSwitchSetting, Mode=TwoWay}"/>
 						<StackPanel x:Name="stackPanel2" Margin="22,0" Orientation="Vertical" Height="230">
 							<TextBlock HorizontalAlignment="Center" x:Name="WebServiceLabel" Text="{Binding LocalizedResources.SettingsPage_Platform_WebServicePath, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
 							<TextBox Height="72" HorizontalAlignment="Center" x:Name="WebServiceTextBox" Text="{Binding WebServiceSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
@@ -171,6 +203,32 @@
 						<TextBlock HorizontalAlignment="Left" x:Name="NameValue" Text="{Binding PlatformSetting, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
 						<TextBlock HorizontalAlignment="Left" x:Name="InstLabel" Text="{Binding LocalizedResources.SettingsPage_Platform_Institute, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="12,0,0,0"/>
 						<TextBlock HorizontalAlignment="Left" x:Name="InstValue" Text="{Binding InstituteSetting}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
+					</StackPanel>
+				</Grid>
+			</controls:PivotItem>
+			<controls:PivotItem x:Name="pivotItem" Header="{Binding LocalizedResources.SettingsPage_User_PI, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" Margin="12,28,12,0">
+				<Grid>
+					<StackPanel x:Name="ConnectPage" Margin="0">
+						<StackPanel.Projection>
+							<PlaneProjection/>
+						</StackPanel.Projection>
+						<TextBlock HorizontalAlignment="Center" x:Name="userLabel" Text="{Binding LocalizedResources.SettingsPage_User_Username, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
+						<TextBox Height="72" HorizontalAlignment="Center" x:Name="userTextBox" Text="{Binding UserNameSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
+						<TextBlock HorizontalAlignment="Center" x:Name="passLabel" Text="{Binding LocalizedResources.SettingsPage_User_Password, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}"/>
+						<PasswordBox Height="72" HorizontalAlignment="Center" x:Name="passwordBox" VerticalAlignment="Top" Width="412" Password="{Binding PasswordSetting, Mode=TwoWay}" Margin="22,0" KeyDown="passwordBox_KeyDown"/>
+						<TextBlock x:Name="userError" TextWrapping="Wrap" Margin="35,0" Foreground="Red" Visibility="Collapsed" Opacity="0"/>
+						<Button x:Name="Connect" Content="{Binding LocalizedResources.SettingsPage_User_ConnectButton, Source={StaticResource LocalizedStrings}}" Margin="24,40,24,0" Click="Connect_Button" IsEnabled="{Binding IsValidHostSetting}"/>
+					</StackPanel>
+					<StackPanel x:Name="UserPage" Margin="0">
+						<StackPanel.Projection>
+							<PlaneProjection/>
+						</StackPanel.Projection>
+						<TextBlock HorizontalAlignment="Left" x:Name="FNlabel" Text="{Binding LocalizedResources.SettingsPage_User_FirstName, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}" Width="Auto" />
+						<TextBlock HorizontalAlignment="Left" x:Name="FNvalue" Text="{Binding UserSetting.firstName, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
+						<TextBlock HorizontalAlignment="Left" x:Name="LNlabel" Text="{Binding LocalizedResources.SettingsPage_User_LastName, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+						<TextBlock HorizontalAlignment="Left" x:Name="LNvalue" Text="{Binding UserSetting.lastName, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
+						<TextBlock HorizontalAlignment="Left" x:Name="NOMAlabel" VerticalAlignment="Top" Style="{StaticResource PhoneTextExtraLargeStyle}" Margin="12,0,0,0" Text="{Binding LocalizedResources.SettingsPage_User_NOMA, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" />
+						<TextBlock HorizontalAlignment="Left" x:Name="NOMAvalue" Text="{Binding UserSetting.officialCode, Mode=TwoWay}" VerticalAlignment="Top" Style="{StaticResource PhoneTextAccentStyle}" Width="Auto" Margin="12,0,0,12" />
 					</StackPanel>
 				</Grid>
 			</controls:PivotItem>

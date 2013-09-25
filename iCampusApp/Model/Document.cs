@@ -45,7 +45,6 @@ namespace ClarolineApp.Model
                 {
                     RaisePropertyChanging("path");
                     _path = value;
-                    resourceId = value.GetHashCode();
                     RaisePropertyChanged("path");
                 }
             }

@@ -89,7 +89,7 @@ namespace ClarolineApp.VM
             }
         }
 
-        public DetailPageVM(int resid, int listid)
+        public DetailPageVM(string resid, int listid)
         {
             if(!IsInDesignMode)
             {

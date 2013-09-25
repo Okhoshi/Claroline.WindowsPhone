@@ -115,6 +115,17 @@ namespace ClarolineApp.Languages {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Nous avons réussi à vous connecter à la plateforme, mais un module semble manquer. Nous ne pouvons malheureusement pas continuer sans ce dernier.
+        ///
+        ///Pour plus d&apos;informations, veuillez demander à votre gestionnaire de plateforme de nous contacter..
+        /// </summary>
+        public static string ErrorMessage_MissingModule {
+            get {
+                return ResourceManager.GetString("ErrorMessage_MissingModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Un accès à internet est nécessaire pour réaliser cette action. Veuillez vous connecter avant de réessayer.
         /// </summary>
         public static string ErrorMessage_NetworkUnavailable {
@@ -138,6 +149,25 @@ namespace ClarolineApp.Languages {
         public static string ErrorMessage_NoLogin_Message {
             get {
                 return ResourceManager.GetString("ErrorMessage_NoLogin_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Désolé, nous n&apos;avons trouvé aucune plateforme Claroline à cette adresse.
+        /// </summary>
+        public static string ErrorMessage_NotAClarolinePlatform {
+            get {
+                return ResourceManager.GetString("ErrorMessage_NotAClarolinePlatform", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Désolé, nous avons réussi à vous connecter mais le module semble être obsolète.
+        ///Demandez à votre gestionnnaire de le mettre à jour afin de pouvoir continuer à utiliser cette application..
+        /// </summary>
+        public static string ErrorMessage_OutdatedModule {
+            get {
+                return ResourceManager.GetString("ErrorMessage_OutdatedModule", resourceCulture);
             }
         }
         
@@ -393,6 +423,24 @@ namespace ClarolineApp.Languages {
         public static string SettingsPage_Platform_URL {
             get {
                 return ResourceManager.GetString("SettingsPage_Platform_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Utiliser une connexion sécurisée ( si possible ).
+        /// </summary>
+        public static string SettingsPage_Platform_UseSSL {
+            get {
+                return ResourceManager.GetString("SettingsPage_Platform_UseSSL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Valider.
+        /// </summary>
+        public static string SettingsPage_Platform_ValidateButton {
+            get {
+                return ResourceManager.GetString("SettingsPage_Platform_ValidateButton", resourceCulture);
             }
         }
         

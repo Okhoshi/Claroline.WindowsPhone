@@ -14,6 +14,9 @@ namespace ClarolineApp.VM
 
         Task RefreshAsync(bool force = false);
 
+        Task<bool> CheckHostValidity(string url);
+        Task<string> CheckModuleValidity();
+
         Task<Cours> PrepareCoursForOpeningAsync(Cours coursToPrepare);
         Task GetResourcesForThisListAsync(ResourceList container);
         Task GetSingleResourceAsync(ResourceList container, string resourceId);

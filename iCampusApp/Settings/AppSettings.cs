@@ -42,6 +42,9 @@ namespace ClarolineApp.Settings
         internal const string InstituteSettingKeyName = "InstituteSetting";
         internal const string PlatformSettingKeyName = "PlatformSetting";
         internal const string UserSettingKeyName = "UserSetting";
+        internal const string ValidHostSettingKeyName = "IsValidHostSetting";
+        internal const string SSLSettingKeyName = "UseSSLSetting";
+        internal const string LastListRequestSettingKeyName = "LastListRequestSetting";
 
         // The default value of our Settings
 
@@ -63,6 +66,9 @@ namespace ClarolineApp.Settings
         const string InstituteSettingDefault = "";
         const string PlatformSettingDefault = "Claroline";
         const User UserSettingDefault = null;
+        const bool ValidHostSettingDefault = false;
+        const bool SSLSettingDefault = true;
+        DateTime LastListRequestSettingDefault = DateTime.Now;
 
         public AppSettings()
         {
@@ -383,6 +389,51 @@ namespace ClarolineApp.Settings
             set
             {
                 if (AddOrUpdateValue(PlatformSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        public bool IsValidHostSetting
+        {
+            get
+            {
+                return GetValueOrDefault<bool>(ValidHostSettingKeyName, ValidHostSettingDefault);
+            }
+            set
+            {
+                if (AddOrUpdateValue(ValidHostSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        public bool UseSSLSetting
+        {
+            get
+            {
+                return GetValueOrDefault<bool>(SSLSettingKeyName, SSLSettingDefault);
+            }
+            set
+            {
+                if (AddOrUpdateValue(SSLSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        public DateTime LastListRequestSetting
+        {
+            get
+            {
+                return GetValueOrDefault<DateTime>(LastListRequestSettingKeyName, LastListRequestSettingDefault);
+            }
+            set
+            {
+                if (AddOrUpdateValue(LastListRequestSettingKeyName, value))
                 {
                     Save();
                 }

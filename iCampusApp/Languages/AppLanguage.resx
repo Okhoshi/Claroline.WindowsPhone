@@ -262,4 +262,22 @@ Claroline Dev Team</value>
   <data name="Forum_PostInTopicCount" xml:space="preserve">
     <value>{0} messages dans ce sujet, vu {1} fois</value>
   </data>
+  <data name="SettingsPage_Platform_ValidateButton" xml:space="preserve">
+    <value>Valider</value>
+  </data>
+  <data name="ErrorMessage_MissingModule" xml:space="preserve">
+    <value>Nous avons réussi à vous connecter à la plateforme, mais un module semble manquer. Nous ne pouvons malheureusement pas continuer sans ce dernier.
+
+Pour plus d'informations, veuillez demander à votre gestionnaire de plateforme de nous contacter.</value>
+  </data>
+  <data name="ErrorMessage_OutdatedModule" xml:space="preserve">
+    <value>Désolé, nous avons réussi à vous connecter mais le module semble être obsolète.
+Demandez à votre gestionnnaire de le mettre à jour afin de pouvoir continuer à utiliser cette application.</value>
+  </data>
+  <data name="ErrorMessage_NotAClarolinePlatform" xml:space="preserve">
+    <value>Désolé, nous n'avons trouvé aucune plateforme Claroline à cette adresse</value>
+  </data>
+  <data name="SettingsPage_Platform_UseSSL" xml:space="preserve">
+    <value>Utiliser une connexion sécurisée ( si possible )</value>
+  </data>
 </root>

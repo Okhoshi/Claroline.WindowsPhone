@@ -69,13 +69,13 @@ namespace ClarolineApp
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             IDictionary<string, string> parameters = this.NavigationContext.QueryString;
-            int resid, listid;
+            int listid;
 
-            if (parameters.ContainsKey("resource") && int.TryParse(parameters["resource"], out resid)
+            if (parameters.ContainsKey("resource")
              && parameters.ContainsKey("list") && int.TryParse(parameters["list"], out listid))
             {
                 
-                _viewModel = new DetailPageVM(resid, listid);
+                _viewModel = new DetailPageVM(parameters["resource"], listid);
                 this.DataContext = _viewModel;
 
                 if (_viewModel.currentResource is Document)
