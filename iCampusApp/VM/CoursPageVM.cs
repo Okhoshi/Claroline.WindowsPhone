@@ -1,13 +1,18 @@
-﻿using ClarolineApp.Model;
+﻿using ClarolineApp.Languages;
+using ClarolineApp.Model;
 using ClarolineApp.Settings;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Data.Linq;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace ClarolineApp.VM
 {
@@ -46,7 +51,6 @@ namespace ClarolineApp.VM
                     _currentCours = value;
                     LoadCollectionsFromDatabase();
                     RaisePropertyChanged("currentCours");
-                    RaisePropertyChanged("events");
                 }
             }
         }
@@ -65,12 +69,12 @@ namespace ClarolineApp.VM
                 {
                     _root = value;
                     RaisePropertyChanged("root");
-                    RaisePropertyChanged("content");
+                    RaisePropertyChanged("Content");
                 }
             }
         }
 
-        public ObservableCollection<Document> content
+        public ObservableCollection<Document> Content
         {
             get
             {
@@ -90,141 +94,106 @@ namespace ClarolineApp.VM
             }
         }
 
-        private ObservableCollection<Group<Event>> _events;
-
         public ObservableCollection<Group<Event>> events
         {
             get
             {
-                if (_events == null)
+                ObservableCollection<Group<Event>> _events = new ObservableCollection<Group<Event>>();
+
+                if (currentCours != null)
                 {
-                    _events = new ObservableCollection<Group<Event>>();
-
-                    if (currentCours != null)
+                    ResourceList rl = currentCours.Resources.FirstOrDefault(l => l.ressourceType == typeof(Event));
+                    if (rl != null)
                     {
-                        ResourceList rl = currentCours.Resources.FirstOrDefault(l => l.ressourceType == typeof(Event));
-                        if (rl != null)
+                        IEnumerable<Event> list = rl.Resources.Cast<Event>();
+
+                        _events.Add(new Group<Event>(AppLanguage.Today, list.Where(e =>
                         {
-                            IEnumerable<Event> list = rl.Resources.Cast<Event>();
+                            return e.date.CompareTo(DateTime.Now) > 0
+                            && e.date.Date.CompareTo(DateTime.Now.Date) == 0;
+                        })));
 
-                            _events.Add(new Group<Event>("Aujourd'hui", list.Where(e =>
-                            {
-                                return e.date.CompareTo(DateTime.Now) > 0
-                                && e.date.Date.CompareTo(DateTime.Now.Date) == 0;
-                            })));
+                        _events.Add(new Group<Event>(AppLanguage.Tomorrow, list.Where(e =>
+                        {
+                            return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) == 0;
+                        })));
 
-                            _events.Add(new Group<Event>("Demain", list.Where(e =>
-                            {
-                                return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) == 0;
-                            })));
+                        _events.Add(new Group<Event>(AppLanguage.ThisWeek, list.Where(e =>
+                        {
+                            return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) >= 0
+                            && e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) < 0;
+                        })));
 
-                            _events.Add(new Group<Event>("Cette semaine", list.Where(e =>
-                            {
-                                return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(1.0)) >= 0
-                                && e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) < 0;
-                            })));
+                        _events.Add(new Group<Event>(AppLanguage.Later, list.Where(e =>
+                        {
+                            return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) >= 0;
+                        })));
 
-                            _events.Add(new Group<Event>("Plus tard", list.Where(e =>
-                            {
-                                return e.date.Date.CompareTo(DateTime.Now.Date.AddDays(7.0)) >= 0;
-                            })));
+                        _events.Add(new Group<Event>(AppLanguage.Passed, list.Where(e =>
+                        {
+                            return e.date.CompareTo(DateTime.Now) < 0;
+                        })));
 
-                            _events.Add(new Group<Event>("Passés", list.Where(e =>
-                            {
-                                return e.date.CompareTo(DateTime.Now) < 0;
-                            })));
-                        }
                     }
                 }
                 return _events;
             }
-            set
-            {
-                if (_events != value)
-                {
-                    _events = value;
-                    RaisePropertyChanged("events");
-                }
-            }
         }
-
-        private ObservableCollection<Group<Description>> _descriptions;
 
         public ObservableCollection<Group<Description>> descriptions
         {
             get
             {
-                if (_descriptions == null)
-                {
-                    ResourceList rl = currentCours.Resources.FirstOrDefault(r => r.ressourceType == typeof(Description));
-                    if (rl != null)
-                    {
-                        IEnumerable<Description> list = rl.Resources.Cast<Description>();
-                        if (list.Count() == 0)
-                        {
-                            _descriptions = new ObservableCollection<Group<Description>>();
-                        }
-                        else
-                        {
-                            int otherCat = list.Max(d => d.category) + 1;
 
-                            _descriptions = new ObservableCollection<Group<Description>>(
-                                                    list.GroupBy(d => d.category)
-                                                    .OrderBy(g => g.Key)
-                                                    .Select(g => new Group<Description>(g.First().title, g))
-                                                );
-                        }
-                    }
-                    else
+                ObservableCollection<Group<Description>> _descriptions = new ObservableCollection<Group<Description>>();
+
+                ResourceList rl = currentCours.Resources.FirstOrDefault(r => r.ressourceType == typeof(Description));
+                if (rl != null)
+                {
+                    IEnumerable<Description> list = rl.Resources.Cast<Description>();
+                    if (list.Count() == 0)
                     {
                         _descriptions = new ObservableCollection<Group<Description>>();
                     }
+                    else
+                    {
+                        int otherCat = list.Max(d => d.category) + 1;
+
+                        _descriptions = new ObservableCollection<Group<Description>>(
+                                                list.GroupBy(d => d.category)
+                                                .OrderBy(g => g.Key)
+                                                .Select(g => new Group<Description>(g.First().title, g))
+                                            );
+                    }
                 }
+
                 return _descriptions;
             }
         }
-
-        private ObservableCollection<Group<Forum>> _forums;
 
         public ObservableCollection<Group<Forum>> forums
         {
             get
             {
-                if (_forums == null)
-                {
-                    ResourceList rl = currentCours.Resources.First(r => r.ressourceType == typeof(Forum));
-                    if (rl != null)
-                    {
-                        IEnumerable<Forum> list = rl.Resources.Cast<Forum>();
+                ObservableCollection<Group<Forum>> _forums = new ObservableCollection<Group<Forum>>();
 
-                        if (list.Count() == 0)
-                        {
-                            _forums = new ObservableCollection<Group<Forum>>();
-                        }
-                        else
-                        {
-                            _forums = new ObservableCollection<Group<Forum>>(
-                                                    list.OrderBy(f => f.Rank)
-                                                    .GroupBy(f => f.CategoryId)
-                                                    .OrderBy(g => g.First().CategoryRank)
-                                                    .Select(g => new Group<Forum>(g.First().CategoryName, g))
-                                                );
-                        }
-                    }
-                    else
-                    {
-                        _forums = new ObservableCollection<Group<Forum>>();
-                    }
-                }
-                return _forums;
-            }
-            set
-            {
-                if (_forums != value)
+                ResourceList rl = currentCours.Resources.FirstOrDefault(r => r.ressourceType == typeof(Forum));
+                if (rl != null)
                 {
-                    _forums = value;
-                    RaisePropertyChanged("forums");
+                    IEnumerable<Forum> list = rl.Resources.Cast<Forum>();
+
+                    if (list.Count() > 0)
+                    {
+                        _forums = new ObservableCollection<Group<Forum>>(
+                                                list.OrderBy(f => f.Rank)
+                                                .GroupBy(f => f.CategoryId)
+                                                .OrderBy(g => g.First().CategoryRank)
+                                                .Select(g => new Group<Forum>(g.First().CategoryName, g))
+                                            );
+                    }
                 }
+
+                return _forums;
             }
         }
 
@@ -237,10 +206,18 @@ namespace ClarolineApp.VM
             {
                 if (_resources == null)
                 {
-                    _resources = new ObservableCollection<ResourceList>(currentCours.Resources.Where(l => l.visibility && l.Resources.Count > 0));
+                    _resources = new ObservableCollection<ResourceList>(currentCours.Resources.Where(l => l.ListVisibility));
                     _resources.Insert(0, PivotMenu);
                 }
                 return _resources;
+            }
+            set
+            {
+                if (_resources != value)
+                {
+                    _resources = value;
+                    RaisePropertyChanged("resources");
+                }
             }
         }
 
@@ -298,6 +275,11 @@ namespace ClarolineApp.VM
                                 select c).FirstOrDefault();
 
                 LoadCollectionsFromDatabase();
+
+                if (!currentCours.loadedToday() || currentCours.Resources.Count == 0)
+                {
+                    PrepareCoursForOpeningAsync(currentCours);
+                }
             }
 
             genericSelectedItem = new RelayCommand<ResourceModel>(this.OnGenericItemSelected);
@@ -314,6 +296,11 @@ namespace ClarolineApp.VM
                 if (currentCours != null)
                 {
                     root = Document.GetRootDocument(currentCours);
+                    RaisePropertyChanged("Content");
+                    RaisePropertyChanged("descriptions");
+                    RaisePropertyChanged("forums");
+                    RaisePropertyChanged("events");
+                    resources = null;
 
                     currentCours.ReloadPropertyChangedHandler();
                 }
@@ -376,6 +363,85 @@ namespace ClarolineApp.VM
                 return mod.visibility && mod.Resources.Count > 0;
             }
             return false;
+        }
+
+        public override void AddResourceList(ResourceList newList, int coursId)
+        {
+            base.AddResourceList(newList, coursId);
+
+            newList.PropertyChanged += RL_PropertyChanged;
+        }
+
+        public override void DeleteResourceList(ResourceList listForDelete)
+        {
+            listForDelete.PropertyChanged -= RL_PropertyChanged;
+
+            base.DeleteResourceList(listForDelete);
+        }
+
+        void RL_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "ListVisibility":
+                    if ((sender as ResourceList).ListVisibility)
+                    {
+                        resources.Add(sender as ResourceList);
+                    }
+                    else
+                    {
+                        resources.Remove(sender as ResourceList);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public override void AddResource(ResourceModel newRes, int containerId)
+        {
+            base.AddResource(newRes, containerId);
+
+            switch (newRes.DiscKey)
+            {
+                case SupportedModules.CLDOC:
+                    RaisePropertyChanged("Content");
+                    break;
+                case SupportedModules.CLDSC:
+                    RaisePropertyChanged("descriptions");
+                    break;
+                case SupportedModules.CLFRM:
+                    RaisePropertyChanged("forums");
+                    break;
+                case SupportedModules.CLCAL:
+                    RaisePropertyChanged("events");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public override void DeleteResource(ResourceModel resForDelete)
+        {
+            switch (resForDelete.DiscKey)
+            {
+                case SupportedModules.CLDOC:
+                    RaisePropertyChanged("Content");
+                    break;
+                case SupportedModules.CLDSC:
+                    RaisePropertyChanged("descriptions");
+                    break;
+                case SupportedModules.CLFRM:
+                    RaisePropertyChanged("forums");
+                    break;
+                case SupportedModules.CLCAL:
+                    RaisePropertyChanged("events");
+                    break;
+                default:
+                    break;
+            }
+
+            base.DeleteResource(resForDelete);
         }
     }
 }

@@ -97,8 +97,8 @@ namespace ClarolineApp.VM
                 ClarolineDB = null;
 
                 currentResource = (from r
-                                  in ClarolineDB.Resources_Table
-                                   where r.resourceId == resid
+                                   in ClarolineDB.Resources_Table
+                                   where r.resourceId.Equals(resid)
                                    && r.ResourceList.Id == listid
                                    select r).FirstOrDefault();
 

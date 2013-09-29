@@ -253,10 +253,10 @@ namespace ClarolineApp
         {
 
             //
-            // first see if content length header has charset = calue
+            // first see if Content length header has charset = calue
             //
             String charset = null;
-            String ctype = w.Headers["content-type"];
+            String ctype = w.Headers["Content-type"];
             if (ctype != null)
             {
                 int ind = ctype.IndexOf("charset=");

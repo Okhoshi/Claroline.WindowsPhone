@@ -32,12 +32,24 @@ namespace ClarolineApp.Model
                 {
                     item.PropertyChanged -= resource_PropertyChanged;
                 }
+                if (Resources.Count == 0)
+                {
+                    RaisePropertyChanged("ListVisibility");
+                }
             }
             if (e.NewItems != null)
             {
                 foreach (ResourceModel item in e.NewItems)
                 {
+                    if (item.isNotified)
+                    {
+                        RaisePropertyChanged("isNotified");
+                    }
                     item.PropertyChanged += resource_PropertyChanged;
+                }
+                if (Resources.Count == 1)
+                {
+                    RaisePropertyChanged("ListVisibility");
                 }
             }
         }
@@ -153,7 +165,7 @@ namespace ClarolineApp.Model
             }
         }
 
-        public bool listVisibility
+        public bool ListVisibility
         {
             get
             {

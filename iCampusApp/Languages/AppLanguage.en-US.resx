@@ -270,4 +270,19 @@ Ask your platform manager to contact us for more infos</value>
   <data name="SettingsPage_Platform_UseSSL" xml:space="preserve">
     <value>Use securized connection ( if possible )</value>
   </data>
+  <data name="Later" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="Passed" xml:space="preserve">
+    <value>Older</value>
+  </data>
+  <data name="ThisWeek" xml:space="preserve">
+    <value>This week</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="Tomorrow" xml:space="preserve">
+    <value>Demain</value>
+  </data>
 </root>

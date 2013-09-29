@@ -280,4 +280,19 @@ Demandez à votre gestionnnaire de le mettre à jour afin de pouvoir continuer �
   <data name="SettingsPage_Platform_UseSSL" xml:space="preserve">
     <value>Utiliser une connexion sécurisée ( si possible )</value>
   </data>
+  <data name="Later" xml:space="preserve">
+    <value>Plus tard</value>
+  </data>
+  <data name="Passed" xml:space="preserve">
+    <value>Passés</value>
+  </data>
+  <data name="ThisWeek" xml:space="preserve">
+    <value>Cette semaine</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Aujourd'hui</value>
+  </data>
+  <data name="Tomorrow" xml:space="preserve">
+    <value>Demain</value>
+  </data>
 </root>

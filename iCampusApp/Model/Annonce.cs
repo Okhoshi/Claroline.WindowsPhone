@@ -32,9 +32,9 @@ namespace ClarolineApp.Model
             {
                 if (_Content != value)
                 {
-                    RaisePropertyChanging("content");
+                    RaisePropertyChanging("Content");
                     _Content = value;
-                    RaisePropertyChanged("content");
+                    RaisePropertyChanged("Content");
                 }
             }
         }

@@ -77,6 +77,23 @@ namespace ClarolineApp.VM
             }
         }
 
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get
+            {
+                return _isLoading;
+            }
+            private set
+            {
+                if (value != _isLoading)
+                {
+                    _isLoading = value;
+                    RaisePropertyChanged("IsLoading");
+                }
+            }
+        }
+
         public ClarolineVM()
         {
             LoadCollectionsFromDatabase();
@@ -105,7 +122,7 @@ namespace ClarolineApp.VM
             }
             set
             {
-                if (!value.Equals(_navigationTarget))
+                if (value == null || !value.Equals(_navigationTarget))
                 {
                     _navigationTarget = value;
                     if (_navigationTarget != null)
@@ -152,58 +169,71 @@ namespace ClarolineApp.VM
 
         public void SaveChangesToDB()
         {
-            ClarolineDB.SubmitChanges();
+            try
+            {
+                ClarolineDB.SubmitChanges(ConflictMode.ContinueOnConflict);
+            }
+            catch (ChangeConflictException e)
+            {
+                foreach (ObjectChangeConflict c in ClarolineDB.ChangeConflicts)
+                {
+                    c.Resolve(RefreshMode.KeepCurrentValues, true);
+                }
+                SaveChangesToDB();
+            }
         }
 
         public virtual void AddCours(Cours newCours)
         {
-            using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
+            ClarolineDataContext cdc = ClarolineDB;
+            //using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
+            //{
+            var q = cdc.Cours_Table.Where(c => c.sysCode == newCours.sysCode);
+
+            newCours.updated = true;
+            newCours.loaded = DateTime.Now;
+
+            if (!q.Any())
             {
-                var q = cdc.Cours_Table.Where(c => c.sysCode == newCours.sysCode);
-
-                newCours.updated = true;
-                newCours.loaded = DateTime.Now;
-
-                if (!q.Any())
-                {
-                    cdc.Cours_Table.InsertOnSubmit(newCours);
-                    cdc.SubmitChanges();
-                    cdc.Refresh(RefreshMode.OverwriteCurrentValues, newCours);
-                }
-                else
-                {
-                    q.First().UpdateFrom(newCours);
-                    newCours.Id = q.First().Id;
-                    cdc.SubmitChanges();
-                }
-
+                cdc.Cours_Table.InsertOnSubmit(newCours);
+                cdc.SubmitChanges();
+                cdc.Refresh(RefreshMode.OverwriteCurrentValues, newCours);
             }
+            else
+            {
+                q.First().UpdateFrom(newCours);
+                newCours.Id = q.First().Id;
+                cdc.SubmitChanges();
+            }
+
+            //}
         }
 
         public virtual void AddResourceList(ResourceList newList, int coursId)
         {
-            using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
+            ClarolineDataContext cdc = ClarolineDB;
+            //using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
+            //{
+            var q = cdc.ResourceList_Table.Where(rl => rl._coursId == coursId && rl.label == newList.label);
+
+            newList.updated = true;
+            newList.loaded = DateTime.Now;
+
+            if (!q.Any())
             {
-                var q = cdc.ResourceList_Table.Where(rl => rl._coursId == coursId && rl.label == newList.label);
+                newList.Cours = cdc.Cours_Table.Single(c => c.Id == coursId);
 
-                newList.updated = true;
-                newList.loaded = DateTime.Now;
-
-                if (!q.Any())
-                {
-                    newList.Cours = cdc.Cours_Table.Single(c => c.Id == coursId);
-
-                    cdc.ResourceList_Table.InsertOnSubmit(newList);
-                    cdc.SubmitChanges();
-                    cdc.Refresh(RefreshMode.OverwriteCurrentValues, newList);
-                }
-                else
-                {
-                    q.First().UpdateFrom(newList);
-                    cdc.SubmitChanges();
-                    newList.Id = q.First().Id;
-                }
+                cdc.ResourceList_Table.InsertOnSubmit(newList);
+                cdc.SubmitChanges();
+                cdc.Refresh(RefreshMode.OverwriteCurrentValues, newList);
             }
+            else
+            {
+                q.First().UpdateFrom(newList);
+                cdc.SubmitChanges();
+                newList.Id = q.First().Id;
+            }
+            //}
         }
 
         public virtual void AddNotification(Notification newNot, ResourceModel attachedResource)
@@ -224,15 +254,15 @@ namespace ClarolineApp.VM
 
                 newNot.resource = cdc.Resources_Table.Single(r => r.Id == attachedResource.Id);
                 cdc.Notifications_Table.InsertOnSubmit(newNot);
-                cdc.SubmitChanges(); 
+                cdc.SubmitChanges();
             }
         }
 
         public virtual void AddResource(ResourceModel newRes, int containerId)
         {
-
-            using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
-            {
+            ClarolineDataContext cdc = ClarolineDB;
+            //using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
+            //{
                 var q = cdc.Resources_Table.Where(r => r.DiscKey == newRes.DiscKey
                                                     && r.ResourceList.Id == containerId
                                                     && r.resourceId == newRes.resourceId
@@ -263,7 +293,7 @@ namespace ClarolineApp.VM
                 {
                     AddNotification(Notification.CreateNotification(alreadyInDb), newRes);
                 }
-            }
+            //}
         }
 
         public virtual void DeleteCours(Cours coursForDelete)
@@ -362,6 +392,7 @@ namespace ClarolineApp.VM
         {
             if (force || _lastClientCall.AddHours(UpdateDelay).CompareTo(DateTime.Now) < 0)
             {
+                IsLoading = true;
                 String updates = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER, SupportedMethods.GetUpdates);
                 if (updates != "")
                 {
@@ -430,9 +461,8 @@ namespace ClarolineApp.VM
                         }
                     }
                 }
-            }
-            //Else
-            return;
+                IsLoading = false;
+            } //Else
         }
 
         public async Task<Cours> PrepareCoursForOpeningAsync(Cours coursToPrepare)
@@ -466,11 +496,13 @@ namespace ClarolineApp.VM
 
         public async Task GetResourcesForThisListAsync(ResourceList container)
         {
+            IsLoading = true;
             _lastClientCall = DateTime.Now;
             String strContent = await ClaroClient.Instance.MakeOperationAsync(container.GetSupportedModule(),
                                                                               SupportedMethods.GetResourcesList,
                                                                               reqCours: container.Cours,
                                                                               genMod: container.label);
+
             if (strContent != "")
             {
                 IList resources = (IList)JsonConvert.DeserializeObject(strContent, container.ressourceListType);
@@ -481,10 +513,12 @@ namespace ClarolineApp.VM
                 }
                 container.loaded = DateTime.Now;
             }
+            IsLoading = false;
         }
 
         public async Task GetSingleResourceAsync(ResourceList container, string resourceString = null)
         {
+            IsLoading = true;
             _lastClientCall = DateTime.Now;
             String strContent = await ClaroClient.Instance.MakeOperationAsync(container.GetSupportedModule(),
                                                                               SupportedMethods.GetSingleResource,
@@ -496,10 +530,12 @@ namespace ClarolineApp.VM
                 ResourceModel resource = (ResourceModel)JsonConvert.DeserializeObject(strContent, container.ressourceType);
                 AddResource(resource, container.Id);
             }
+            IsLoading = false;
         }
 
         public async Task<bool> GetUserDataAsync()
         {
+            IsLoading = true;
             String strContent = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER,
                                                                               SupportedMethods.GetUserData);
 
@@ -535,13 +571,16 @@ namespace ClarolineApp.VM
                 AppSettings.Instance.InstituteSetting = institution;
                 AppSettings.Instance.PlatformSetting = platform;
 
+                IsLoading = false;
                 return true;
             }
+            IsLoading = false;
             return false;
         }
 
         public async Task GetCoursListAsync()
         {
+            IsLoading = true;
             _lastClientCall = DateTime.Now;
             String strContent = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER,
                                                                               SupportedMethods.GetCourseList);
@@ -556,10 +595,12 @@ namespace ClarolineApp.VM
 
                 ClearCoursList();
             }
+            IsLoading = false;
         }
 
         public async Task<bool> GetResourcesListForThisCoursAsync(Cours cours)
         {
+            IsLoading = false;
             _lastClientCall = DateTime.Now;
             String strContent = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER,
                                                                               SupportedMethods.GetToolList,
@@ -593,14 +634,16 @@ namespace ClarolineApp.VM
 
                     AddResourceList(item, cours.Id);
                 }
+                IsLoading = false;
                 return true;
             }
+            IsLoading = false;
             return false;
         }
 
         public async Task<bool> CheckHostValidity(string url)
         {
-            string page = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.NOMOD, SupportedMethods.GetPage, genMod: url, forAuth:true);
+            string page = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.NOMOD, SupportedMethods.GetPage, genMod: url, forAuth: true);
             return page.Contains("<!-- - - - - - - - - - - Claroline Body - - - - - - - - - -->");
         }
 

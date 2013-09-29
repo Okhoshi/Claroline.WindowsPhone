@@ -1,6 +1,6 @@
 ﻿<Model:Annonce xmlns:Model="clr-namespace:ClarolineApp.Model" content="Vestibulum nam sed aenean cras" Id="83" date="06/07/2013 23:12:49" isNotified="True" loaded="06/07/2013 23:12:49" notifiedDate="06/07/2013 23:12:49" resourceId="64" seenDate="06/07/2013 23:12:49" title="Arcu integer donec vestibulum" updated="False" url="Vestibulum facilisi consequat est convallis" visibility="True">
 	<Model:Annonce.ResourceList>
-		<Model:ResourceList Id="38" isNotified="True" loaded="06/07/2013 23:12:49" label="Mauris parturient dis" listVisibility="False" name="Amet ante" ressourceTypeStr="Dictumst eleifend" updated="True" visibility="False">
+		<Model:ResourceList Id="38" isNotified="True" loaded="06/07/2013 23:12:49" label="Mauris parturient dis" ListVisibility="False" name="Amet ante" ressourceTypeStr="Dictumst eleifend" updated="True" visibility="False">
 			<Model:ResourceList.Cours>
 				<Model:Cours Id="87" isNotified="True" loaded="06/07/2013 23:12:49" officialCode="Class curae" officialEmail="Duis nunc" sysCode="Maecenas curabitur adipiscing" titular="Phasellus aliquam bibendum" title="Praesent accumsan" updated="False"/>
 			</Model:ResourceList.Cours>

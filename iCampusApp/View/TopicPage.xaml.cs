@@ -19,7 +19,6 @@ namespace ClarolineApp.View
         ITopicPageVM _viewModel;
 
         ProgressIndicator _indicator;
-
         ProgressIndicator indicator
         {
             get
@@ -40,20 +39,7 @@ namespace ClarolineApp.View
         public TopicPage()
         {
             InitializeComponent();
-            ClaroClient.Instance.PropertyChanged += ClaroClient_propertyChanged;
             this.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name);
-        }
-
-        private void ClaroClient_propertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "IsInSync":
-                    indicator.IsVisible = (sender as ClaroClient).IsInSync;
-                    break;
-                default:
-                    break;
-            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -67,6 +53,7 @@ namespace ClarolineApp.View
 
                 _viewModel = new TopicPageVM(topicid, forumid);
                 this.DataContext = _viewModel;
+                _viewModel.PropertyChanged += VM_PropertyChanged;
 
                 int postid;
                 if (parameters.ContainsKey("post") && int.TryParse(parameters["post"], out postid))
@@ -84,6 +71,24 @@ namespace ClarolineApp.View
             else
             {
                 NavigationService.GoBack();
+            }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            _viewModel.PropertyChanged -= VM_PropertyChanged;
+        }
+
+        private void VM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "IsLoading":
+                    indicator.IsVisible = _viewModel.IsLoading;
+                    break;
+                default:
+                    break;
             }
         }
     }

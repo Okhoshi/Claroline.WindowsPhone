@@ -7,6 +7,7 @@ using Microsoft.Phone.Shell;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -21,7 +22,6 @@ namespace ClarolineApp
         private ICoursPageVM _viewModel;
 
         ProgressIndicator _indicator;
-
         ProgressIndicator indicator
         {
             get
@@ -45,20 +45,6 @@ namespace ClarolineApp
 
             this.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name);
             rootButton = ApplicationBar.Buttons[1] as ApplicationBarIconButton;
-
-            ClaroClient.Instance.PropertyChanged += ClaroClient_PropertyChanged;
-        }
-
-        private void ClaroClient_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "IsInSync":
-                    indicator.IsVisible = (sender as ClaroClient).IsInSync;
-                    break;
-                default:
-                    break;
-            }
         }
 
         //--------------------------------------------------------------------
@@ -75,10 +61,9 @@ namespace ClarolineApp
                 {
                     _viewModel = new CoursPageVM(parameters["cours"]);
                     this.DataContext = _viewModel;
-
-                    _viewModel.PropertyChanged += _viewModel_PropertyChanged;
                 }
 
+                _viewModel.PropertyChanged += VM_PropertyChanged;
                 base.OnNavigatedTo(e);
             }
             else
@@ -87,7 +72,14 @@ namespace ClarolineApp
             }
         }
 
-        void _viewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            _viewModel.NavigationTarget = null;
+            //_viewModel.PropertyChanged -= VM_PropertyChanged;
+        }
+
+        void VM_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -96,7 +88,13 @@ namespace ClarolineApp
                     //Update the path somewhere
                     break;
                 case "NavigationTarget":
-                    NavigationService.Navigate(_viewModel.GetNavigationTarget());
+                    if (_viewModel.NavigationTarget != null)
+                    {
+                        NavigationService.Navigate(_viewModel.NavigationTarget);
+                    }
+                    break;
+                case "IsLoading":
+                    indicator.IsVisible = _viewModel.IsLoading;
                     break;
                 default:
                     break;
@@ -138,9 +136,9 @@ namespace ClarolineApp
 
         private void CLDOCList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LongListSelector list = sender as LongListSelector;
+            ListBox list = sender as ListBox;
 
-            if (list == null || list.SelectedItem == null)
+            if (list.SelectedIndex == -1)
             {
                 return;
             }
@@ -150,7 +148,7 @@ namespace ClarolineApp
                 _viewModel.OnDocumentItemSelected(list.SelectedItem as Document);
             }
 
-            list.SelectedItem = null;
+            list.SelectedIndex = -1;
         }
 
         private void LongListSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -163,7 +161,7 @@ namespace ClarolineApp
             }
 
             _viewModel.OnItemWithDetailsSelected(list.SelectedItem as ResourceModel);
-            
+
             list.SelectedItem = null;
         }
 

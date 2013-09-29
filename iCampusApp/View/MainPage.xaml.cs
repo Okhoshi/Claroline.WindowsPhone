@@ -48,11 +48,13 @@ namespace ClarolineApp
 
             _viewModel = new MainPageVM();
             this.DataContext = _viewModel;
+            _viewModel.PropertyChanged += VM_PropertyChanged;
 
             ClaroClient.Instance.PropertyChanged += Failure_Handler;
 
             version_text.Text = Helper.GetVersionNumber();
         }
+
         //--------------------------------------------------------------------
         // Event handler
         //--------------------------------------------------------------------
@@ -77,9 +79,22 @@ namespace ClarolineApp
         {
             base.OnNavigatedFrom(e);
             ClaroClient.Instance.PropertyChanged -= FailureOccured;
+            _viewModel.PropertyChanged -= VM_PropertyChanged;
         }
-        
-        private async void CoursList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void VM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "IsLoading":
+                    indicator.IsVisible = _viewModel.IsLoading;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void CoursList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (CoursList.SelectedIndex == -1)
             {
@@ -88,28 +103,8 @@ namespace ClarolineApp
 
             Cours _cours = CoursList.SelectedItem as Cours;
 
-            if (!_cours.loadedToday() || _cours.Resources.Count == 0)
-            {
-                PerformanceProgressBar progress = Helper.FindFirstElementInVisualTree<PerformanceProgressBar>(this.CoursList.ItemContainerGenerator.ContainerFromIndex(CoursList.SelectedIndex) as ListBoxItem);
-                progress.Visibility = System.Windows.Visibility.Visible;
-
-                _cours = await _viewModel.PrepareCoursForOpeningAsync(_cours);
-
-                progress.Visibility = System.Windows.Visibility.Collapsed;
-            }
-
-            if (_cours.loadedToday())
-            {
-                if (_cours.Resources.Count > 0)
-                {
-                    string destination = String.Format("/View/CoursPage.xaml?cours={0}", _cours.sysCode);
-                    NavigationService.Navigate(new Uri(destination, UriKind.Relative));
-                }
-                else
-                {
-                    MessageBox.Show("No resources in this course");
-                }
-            }
+            string destination = String.Format("/View/CoursPage.xaml?cours={0}", _cours.sysCode);
+            NavigationService.Navigate(new Uri(destination, UriKind.Relative));
 
             CoursList.SelectedIndex = -1;
         }
@@ -142,7 +137,7 @@ namespace ClarolineApp
                 indicator.Text = String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.MainPage_Cours_PI);
                 await _viewModel.GetCoursListAsync();
             }
-            else if(r)
+            else if (r)
             {
                 indicator.Text = AppLanguage.ProgressBar_Update;
                 await _viewModel.RefreshAsync(true);
@@ -159,11 +154,11 @@ namespace ClarolineApp
         {
             WebBrowserTask homepage = new WebBrowserTask()
             {
-                Uri = new Uri(AppSettings.Instance.DomainSetting 
-                            + AppSettings.Instance.AuthPageSetting 
-                            + "?login=" 
-                            + AppSettings.Instance.UserNameSetting 
-                            + "&password=" 
+                Uri = new Uri(AppSettings.Instance.DomainSetting
+                            + AppSettings.Instance.AuthPageSetting
+                            + "?login="
+                            + AppSettings.Instance.UserNameSetting
+                            + "&password="
                             + AppSettings.Instance.PasswordSetting
                            , UriKind.Absolute)
             };
@@ -176,7 +171,7 @@ namespace ClarolineApp
             {
                 To = String.Format("\"{0} Development Team\" <support.develop@live.be>", App.ApplicationName),
                 Subject = String.Format("[{0}] {1}", App.ApplicationName, AppLanguage.MainPage_About_DevMailButton),
-				Body = String.Format("[V:{0} Campus:{1}]\n\n", Helper.GetVersionNumber(true), AppSettings.Instance.PlatformSetting)
+                Body = String.Format("[V:{0} Campus:{1}]\n\n", Helper.GetVersionNumber(true), AppSettings.Instance.PlatformSetting)
             };
             mailToDev.Show();
         }

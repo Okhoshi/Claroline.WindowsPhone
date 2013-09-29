@@ -50,20 +50,7 @@ namespace ClarolineApp
         public DetailPage()
         {
             InitializeComponent();
-            ClaroClient.Instance.PropertyChanged += ClaroClient_propertyChanged;
             this.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name);
-        }
-
-        private void ClaroClient_propertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "IsInSync":
-                    indicator.IsVisible = (sender as ClaroClient).IsInSync;
-                    break;
-                default:
-                    break;
-            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -77,7 +64,7 @@ namespace ClarolineApp
                 
                 _viewModel = new DetailPageVM(parameters["resource"], listid);
                 this.DataContext = _viewModel;
-
+                _viewModel.PropertyChanged += VM_PropertyChanged;
                 if (_viewModel.currentResource is Document)
                 {
                     (_viewModel.currentResource as Document).OpenDocumentAsync();
@@ -94,6 +81,24 @@ namespace ClarolineApp
             }
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            _viewModel.PropertyChanged -= VM_PropertyChanged;
+        }
+
+        private void VM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "IsLoading":
+                    indicator.IsVisible = _viewModel.IsLoading;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         protected async void WB_Navigating(object sender, NavigatingEventArgs e)
         {
             e.Cancel = true;
@@ -102,7 +107,7 @@ namespace ClarolineApp
             
             //// Replace the matched text in the InputText using the replacement pattern
             page = regex.Replace(page, regexReplace);
-            page = page.Replace("</head>", "<meta name=\"viewport\" content=\"width=" + (sender as WebBrowser).ActualWidth + "\"/>\n</head>");
+            page = page.Replace("</head>", "<meta name=\"viewport\" Content=\"width=" + (sender as WebBrowser).ActualWidth + "\"/>\n</head>");
             page = page.Replace("=\"/", "=\"" + host + "/");
             (sender as WebBrowser).NavigateToString(page);
         }

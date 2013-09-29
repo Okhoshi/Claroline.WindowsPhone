@@ -8,6 +8,8 @@ namespace ClarolineApp.VM
 {
     interface IClarolineVM : INotifyPropertyChanged
     {
+        bool IsLoading { get; }
+
         void LoadCollectionsFromDatabase();
         void ResetViewModel();
         void SaveChangesToDB();
@@ -39,6 +41,6 @@ namespace ClarolineApp.VM
         void ClearResOfCours(Cours coursToClear);
         void ClearNotifsOfCours(Cours coursToClear, int keeped);
 
-        Uri GetNavigationTarget();
+        Uri NavigationTarget { get; set; }
     }
 }

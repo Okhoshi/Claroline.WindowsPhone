@@ -20,7 +20,6 @@
     shell:SystemTray.IsVisible="True"
 	shell:SystemTray.Opacity="0"
     Style="{StaticResource TransitionPageStyle}"
-    toolkit:TiltEffect.IsTiltEnabled="True"
     d:DataContext="{d:DesignInstance Type=vm:CoursPageVM, IsDesignTimeCreatable=True}">
 
     <!--Exemple de code illustrant l'utilisation d'ApplicationBar-->
@@ -33,31 +32,11 @@
     </phone:PhoneApplicationPage.ApplicationBar>
 
     <phone:PhoneApplicationPage.Resources>
-        <local:BindingProxy x:Key="AnnonceSelectedItemCommand" Data="{Binding annonceSelectedItem}" />
-        <local:BindingProxy x:Key="GenericSelectedItemCommand" Data="{Binding genericSelectedItem}" />
-        <CollectionViewSource x:Key="Content"
-                              Source="{Binding content}"
-                              d:Source="{Binding content, Source={d:DesignInstance IsDesignTimeCreatable=True, Type=vm:CoursPageVM}}" />
-        <CollectionViewSource x:Key="Events"
-                              Source="{Binding events}"
-                              d:Source="{Binding events, Source={d:DesignInstance IsDesignTimeCreatable=True, Type=vm:CoursPageVM}}" />
-        <CollectionViewSource x:Key="Descriptions"
-                              Source="{Binding descriptions}"
-                              d:Source="{Binding descriptions, Source={d:DesignInstance IsDesignTimeCreatable=True, Type=vm:CoursPageVM}}" />
-        <CollectionViewSource x:Key="Forums"
-                              Source="{Binding forums}"
-                              d:Source="{Binding forums, Source={d:DesignInstance IsDesignTimeCreatable=True, Type=vm:CoursPageVM}}" />
-
         <DataTemplate x:Key="AnnoncePivotTemplate">
-            <ListBox x:Name="CLANNList" ItemsSource="{Binding Resources}" ItemContainerStyle="{StaticResource StretchStyle}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding Data, Source={StaticResource AnnonceSelectedItemCommand}}"  CommandParameter="{Binding SelectedItem, ElementName=CLANNList}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+            <ListBox x:Name="CLANNList" ItemsSource="{Binding Resources}" ItemContainerStyle="{StaticResource StretchStyle}" SelectionChanged="ListBox_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="0,10">
+                        <StackPanel Margin="0,10" toolkit:TiltEffect.IsTiltEnabled="True">
                             <TextBlock Text="{Binding title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
                             <TextBlock Text="{Binding date, StringFormat=\{0:D\}}" HorizontalAlignment="Right" Style="{StaticResource PhoneTextSubtleStyle}"/>
                         </StackPanel>
@@ -66,7 +45,12 @@
             </ListBox>
         </DataTemplate>
         <DataTemplate x:Key="EventPivotTemplate">
-            <toolkit:LongListSelector x:Name="CLCALList" ItemsSource="{Binding Source={StaticResource Events}}" IsFlatList="False" HorizontalContentAlignment="Stretch" ShowListFooter="False" ShowListHeader="False" VerticalContentAlignment="Stretch" SelectionChanged="LongListSelector_SelectionChanged">
+            <toolkit:LongListSelector x:Name="CLCALList" ItemsSource="{Binding Path=DataContext.events, ElementName=LayoutRoot}" 
+                                      IsFlatList="False" HorizontalContentAlignment="Stretch" 
+                                      ShowListFooter="False" 
+                                      ShowListHeader="False" 
+                                      VerticalContentAlignment="Stretch"
+                                      SelectionChanged="LongListSelector_SelectionChanged">
                 <toolkit:LongListSelector.GroupItemsPanel>
                     <ItemsPanelTemplate>
                         <toolkit:WrapPanel Margin="0,10" Orientation="Vertical" HorizontalAlignment="Left" Width="{Binding ColumnDefinitions[0].ActualWidth, ElementName=LayoutRoot, Mode=OneWay}"/>
@@ -75,7 +59,7 @@
                 <toolkit:LongListSelector.GroupHeaderTemplate>
                     <DataTemplate>
                         <Border Background="{StaticResource PhoneAccentBrush}"
-                                    Padding="{StaticResource GroupHeaderTemplate}">
+                                    Padding="{StaticResource GroupHeaderTemplate}" toolkit:TiltEffect.IsTiltEnabled="True">
                             <TextBlock Text="{Binding Title}" Style="{StaticResource PhoneTextGroupHeaderStyle}"/>
                         </Border>
                     </DataTemplate>
@@ -90,7 +74,7 @@
                 </toolkit:LongListSelector.GroupItemTemplate>
                 <toolkit:LongListSelector.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="0,5">
+                        <StackPanel Margin="0,5" toolkit:TiltEffect.IsTiltEnabled="True">
                             <TextBlock Text="{Binding title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
                             <TextBlock Text="{Binding speakers}" Style="{StaticResource PhoneTextSubtleStyle}" TextTrimming="WordEllipsis"/>
                             <Grid>
@@ -106,32 +90,11 @@
                 </toolkit:LongListSelector.ItemTemplate>
             </toolkit:LongListSelector>
         </DataTemplate>
-        <DataTemplate x:Key="DocumentPivotTemplate">
-            <toolkit:LongListSelector x:Name="CLDOCList" IsFlatList="True" SelectionChanged="CLDOCList_SelectionChanged" ItemsSource="{Binding Source={StaticResource Content}}" >
-                <toolkit:LongListSelector.ItemTemplate>
-                    <DataTemplate x:Name="Doc">
-                        <Grid x:Name="lvl0" Margin="0,5,5,10" HorizontalAlignment="Stretch">
-                            <my:FileIcon Height="60" Width="60"  ExtensionLabel="{Binding extension, Converter={StaticResource ToUpper}}" LabelForeground="{StaticResource PhoneAccentBrush}" PathColor="{StaticResource PhoneForegroundBrush}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            <StackPanel Orientation="Vertical" Grid.Column="1">
-                                <TextBlock x:Name="Name" Text="{Binding title, Mode=OneWay}" Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" Margin="0" />
-                                <TextBlock x:Name="Desc" Text="{Binding description, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" TextWrapping="Wrap" Visibility="{Binding description, Converter={StaticResource DescVisibilityConverter}}"/>
-                                <Grid>
-                                    <TextBlock x:Name="Ext" TextWrapping="Wrap" Text="{Binding extension, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0"/>
-                                    <TextBlock x:Name="Date" TextWrapping="Wrap" Text="{Binding date, StringFormat=\{0:d\}}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" Margin="0" />
-                                    <TextBlock x:Name="Size" TextWrapping="Wrap" Text="{Binding size, Converter={StaticResource SizeConv}, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Right" Margin="0"/>
-                                </Grid>
-                            </StackPanel>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="70"/>
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                        </Grid>
-                    </DataTemplate>
-                </toolkit:LongListSelector.ItemTemplate>
-            </toolkit:LongListSelector>
-        </DataTemplate>
         <DataTemplate x:Key="DescriptionPivotTemplate">
-            <toolkit:LongListSelector x:Name="CLCALList" ItemsSource="{Binding Source={StaticResource Descriptions}}" IsFlatList="False" HorizontalContentAlignment="Stretch" ShowListFooter="False" ShowListHeader="False" VerticalContentAlignment="Stretch" >
+            <toolkit:LongListSelector x:Name="CLCALList" ItemsSource="{Binding Path=DataContext.descriptions, ElementName=LayoutRoot}" 
+                                      IsFlatList="False" HorizontalContentAlignment="Stretch" 
+                                      ShowListFooter="False" ShowListHeader="False" 
+                                      VerticalContentAlignment="Stretch">
                 <toolkit:LongListSelector.GroupItemsPanel>
                     <ItemsPanelTemplate>
                         <toolkit:WrapPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="0,10" />
@@ -140,7 +103,7 @@
                 <toolkit:LongListSelector.GroupHeaderTemplate>
                     <DataTemplate>
                         <Border Background="{StaticResource PhoneAccentBrush}" 
-                                    Padding="{StaticResource GroupHeaderTemplate}">
+                                    Padding="{StaticResource GroupHeaderTemplate}" toolkit:TiltEffect.IsTiltEnabled="True">
                             <TextBlock Text="{Binding Title}" Style="{StaticResource PhoneTextGroupHeaderStyle}"/>
                         </Border>
                     </DataTemplate>
@@ -156,23 +119,27 @@
                 <toolkit:LongListSelector.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="0,5,0,10">
-                            <TextBlock Text="{Binding content, Mode=OneWay}" Style="{StaticResource PhoneTextNormalStyle}" HorizontalAlignment="Stretch" TextWrapping="Wrap" toolkit:TiltEffect.SuppressTilt="True"  />
+                            <TextBlock Text="{Binding content, Mode=OneWay}" Style="{StaticResource PhoneTextNormalStyle}" HorizontalAlignment="Stretch" TextWrapping="Wrap"/>
                         </StackPanel>
                     </DataTemplate>
                 </toolkit:LongListSelector.ItemTemplate>
             </toolkit:LongListSelector>
         </DataTemplate>
         <DataTemplate x:Key="ForumPivotTemplate">
-            <toolkit:LongListSelector x:Name="CLFRMList" ItemsSource="{Binding Source={StaticResource Forums}}" IsFlatList="False" HorizontalContentAlignment="Stretch" ShowListFooter="False" ShowListHeader="False" VerticalContentAlignment="Stretch" SelectionChanged="LongListSelector_SelectionChanged">
+            <toolkit:LongListSelector x:Name="CLFRMList" ItemsSource="{Binding Path=DataContext.forums,ElementName=LayoutRoot}" 
+                                      IsFlatList="False" HorizontalContentAlignment="Stretch" 
+                                      ShowListFooter="False" ShowListHeader="False" 
+                                      VerticalContentAlignment="Stretch" 
+                                      SelectionChanged="LongListSelector_SelectionChanged">
                 <toolkit:LongListSelector.GroupItemsPanel>
                     <ItemsPanelTemplate>
-                        <toolkit:WrapPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="0,10" />
+                        <toolkit:WrapPanel Orientation="Vertical" HorizontalAlignment="Stretch" Margin="0,10"/>
                     </ItemsPanelTemplate>
                 </toolkit:LongListSelector.GroupItemsPanel>
                 <toolkit:LongListSelector.GroupHeaderTemplate>
                     <DataTemplate>
                         <Border Background="{StaticResource PhoneAccentBrush}" 
-                                    Padding="{StaticResource GroupHeaderTemplate}">
+                                    Padding="{StaticResource GroupHeaderTemplate}" toolkit:TiltEffect.IsTiltEnabled="True">
                             <TextBlock Text="{Binding Title}" Style="{StaticResource PhoneTextGroupHeaderStyle}"/>
                         </Border>
                     </DataTemplate>
@@ -180,15 +147,15 @@
                 <toolkit:LongListSelector.GroupItemTemplate>
                     <DataTemplate>
                         <Border Background="{StaticResource PhoneAccentBrush}" 
-                                    Padding="{StaticResource PhoneTouchTargetOverhang}" Margin="0,10">
+                                    Padding="{StaticResource PhoneTouchTargetOverhang}">
                             <TextBlock Text="{Binding Title}" Style="{StaticResource PhoneTextGroupHeaderStyle}" />
                         </Border>
                     </DataTemplate>
                 </toolkit:LongListSelector.GroupItemTemplate>
                 <toolkit:LongListSelector.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="0,5">
-                                <TextBlock Grid.Column="0" Text="{Binding title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
+                        <StackPanel Margin="0,5" toolkit:TiltEffect.IsTiltEnabled="True">
+                            <TextBlock Grid.Column="0" Text="{Binding title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -202,11 +169,31 @@
                 </toolkit:LongListSelector.ItemTemplate>
             </toolkit:LongListSelector>
         </DataTemplate>
+        <DataTemplate x:Key="DocumentPivotTemplate">
+            <ListBox x:Name="CLDOCList" ItemsSource="{Binding Path=DataContext.Content, ElementName=LayoutRoot}" SelectionChanged="CLDOCList_SelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:Name="Doc">
+                        <StackPanel x:Name="lvl0" Margin="0,5,5,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" toolkit:TiltEffect.IsTiltEnabled="True" Orientation="Horizontal">
+                            <my:FileIcon Height="60" Width="60"  ExtensionLabel="{Binding extension, Converter={StaticResource ToUpper}}" LabelForeground="{StaticResource PhoneAccentBrush}" PathColor="{StaticResource PhoneForegroundBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0"/>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock x:Name="Name" Text="{Binding title, Mode=OneWay}" Style="{StaticResource PhoneTextLargeStyle}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" Margin="0" />
+                                <TextBlock x:Name="Desc" Text="{Binding description, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" TextWrapping="Wrap" Visibility="{Binding description, Converter={StaticResource DescVisibilityConverter}}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock x:Name="Ext" TextWrapping="Wrap" Text="{Binding extension, Mode=OneWay}" Visibility="{Binding extension, Converter={StaticResource DescVisibilityConverter}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="0" Padding="0,0,15,0"/>
+                                    <TextBlock x:Name="Date" TextWrapping="Wrap" Text="{Binding date, StringFormat=\{0:d\}}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Center" Margin="0" Padding="0,0,15,0" />
+                                    <TextBlock x:Name="Size" TextWrapping="Wrap" Text="{Binding size, Converter={StaticResource SizeConv}, Mode=OneWay}" Style="{StaticResource PhoneTextSubtleStyle}" HorizontalAlignment="Right" Margin="0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate> 
+            </ListBox>
+        </DataTemplate>
         <DataTemplate x:Key="GenPivotTemplate">
             <ListBox x:Name="GENLIST" ItemsSource="{Binding Resources}" ItemContainerStyle="{StaticResource StretchStyle}" SelectionChanged="ListBox_SelectionChanged">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="0,10">
+                        <StackPanel Margin="0,10" toolkit:TiltEffect.IsTiltEnabled="True">
                             <TextBlock Text="{Binding title, Mode=OneWay}" Style="{StaticResource PhoneTextTitle2Style}" Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}" TextTrimming="WordEllipsis" />
                         </StackPanel>
                     </DataTemplate>
@@ -226,7 +213,7 @@
 
     <!--LayoutRoot est la grille racine où tout le contenu de la page est placé-->
     <Grid x:Name="LayoutRoot">
-        <controls:Pivot Title="{Binding currentCours.officialCode, Converter={StaticResource TitleConverter}, Mode=TwoWay}" x:Name="SectionsPivot" SelectionChanged="Pivot_SelectionChanged" ItemsSource="{Binding resources}" DataContext="{Binding}" Grid.Column="0">
+        <controls:Pivot Title="{Binding currentCours.officialCode, Converter={StaticResource TitleConverter}, Mode=TwoWay}" x:Name="SectionsPivot" SelectionChanged="Pivot_SelectionChanged" ItemsSource="{Binding resources, Mode=OneWay}" DataContext="{Binding}" Grid.Column="0">
             <controls:Pivot.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
@@ -251,8 +238,9 @@
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding name}" Style="{StaticResource PhoneTextExtraLargeStyle}" 
-                                                       Margin="12,5" Visibility="{Binding listVisibility, Converter={StaticResource VisibilityConverter}}"
-                                                       Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}"/>
+                                                       Margin="12,5" Visibility="{Binding ListVisibility, Converter={StaticResource VisibilityConverter}}"
+                                                       Foreground="{Binding isNotified, Converter={StaticResource StatusConverter}}"
+                                                       toolkit:TiltEffect.IsTiltEnabled="True"/>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
