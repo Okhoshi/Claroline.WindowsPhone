@@ -173,7 +173,7 @@ namespace ClarolineApp.VM
             {
                 ClarolineDB.SubmitChanges(ConflictMode.ContinueOnConflict);
             }
-            catch (ChangeConflictException e)
+            catch (ChangeConflictException)
             {
                 foreach (ObjectChangeConflict c in ClarolineDB.ChangeConflicts)
                 {
