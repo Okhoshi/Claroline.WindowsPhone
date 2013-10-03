@@ -20,6 +20,7 @@ namespace ClarolineApp
     {
 
         private ICoursPageVM _viewModel;
+        private ApplicationBarIconButton rootButton;
 
         ProgressIndicator _indicator;
         ProgressIndicator indicator
@@ -44,7 +45,27 @@ namespace ClarolineApp
             InitializeComponent();
 
             this.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name);
+            ApplicationBar.Buttons.Add(new ApplicationBarIconButton()
+            {
+                IconUri = new Uri("/icons/appbar.lines.horizontal.4.png", UriKind.Relative),
+                Text = AppLanguage.AppBar_Menu
+            });
+            (ApplicationBar.Buttons[0] as ApplicationBarIconButton).Click += menuButton_Click;
+            
+            ApplicationBar.Buttons.Add(new ApplicationBarIconButton()
+            {
+                IconUri = new Uri("/icons/appbar.arrow.up.png", UriKind.Relative),
+                Text = AppLanguage.AppBar_GoUp
+            });
             rootButton = ApplicationBar.Buttons[1] as ApplicationBarIconButton;
+            rootButton.Click += rootButton_Click;
+
+            ApplicationBar.Buttons.Add(new ApplicationBarIconButton()
+            {
+                IconUri = new Uri("/icons/appbar.refresh.rest.png", UriKind.Relative),
+                Text = AppLanguage.AppBar_Refresh
+            });
+            (ApplicationBar.Buttons[2] as ApplicationBarIconButton).Click += refrButton_Click;
         }
 
         //--------------------------------------------------------------------

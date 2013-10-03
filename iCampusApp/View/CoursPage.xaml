@@ -25,9 +25,6 @@
     <!--Exemple de code illustrant l'utilisation d'ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
-            <shell:ApplicationBarIconButton x:Name="menuButton" Text="Menu" Click="menuButton_Click" IconUri="/icons/appbar.lines.horizontal.4.png"/>
-            <shell:ApplicationBarIconButton x:Name="rootButton" IconUri="/icons/appbar.arrow.up.png" Text="Remonter" Click="rootButton_Click"/>
-            <shell:ApplicationBarIconButton x:Name="refrButton" IconUri="/icons/appbar.refresh.rest.png" Text="Actualiser" Click="refrButton_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

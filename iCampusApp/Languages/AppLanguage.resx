@@ -295,4 +295,16 @@ Demandez à votre gestionnnaire de le mettre à jour afin de pouvoir continuer �
   <data name="Tomorrow" xml:space="preserve">
     <value>Demain</value>
   </data>
+  <data name="AppBar_GoUp" xml:space="preserve">
+    <value>Remonter</value>
+  </data>
+  <data name="AppBar_Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="AppBar_Refresh" xml:space="preserve">
+    <value>Actualiser</value>
+  </data>
+  <data name="AppBar_Settings" xml:space="preserve">
+    <value>Réglages</value>
+  </data>
 </root>

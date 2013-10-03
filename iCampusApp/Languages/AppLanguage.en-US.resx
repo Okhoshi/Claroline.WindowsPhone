@@ -285,4 +285,16 @@ Ask your platform manager to contact us for more infos</value>
   <data name="Tomorrow" xml:space="preserve">
     <value>Demain</value>
   </data>
+  <data name="AppBar_GoUp" xml:space="preserve">
+    <value>Go Up</value>
+  </data>
+  <data name="AppBar_Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="AppBar_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="AppBar_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
 </root>

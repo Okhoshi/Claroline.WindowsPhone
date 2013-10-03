@@ -53,6 +53,20 @@ namespace ClarolineApp
             ClaroClient.Instance.PropertyChanged += Failure_Handler;
 
             version_text.Text = Helper.GetVersionNumber();
+
+            ApplicationBar.Buttons.Add(new ApplicationBarIconButton()
+            {
+                Text = AppLanguage.AppBar_Refresh,
+                IconUri = new Uri("/icons/appbar.refresh.rest.png", UriKind.Relative)
+            });
+            (ApplicationBar.Buttons[0] as ApplicationBarIconButton).Click += Sync_Btn_Click;
+
+            ApplicationBar.MenuItems.Add(new ApplicationBarMenuItem(AppLanguage.AppBar_Settings));
+            (ApplicationBar.MenuItems[0] as ApplicationBarMenuItem).Click += SettingsPage_Click;
+#if DEBUG
+            ApplicationBar.MenuItems.Add(new ApplicationBarMenuItem("[DEV] CLEAR"));
+            (ApplicationBar.MenuItems[0] as ApplicationBarMenuItem).Click += DEV_clrDB_Click ;
+#endif
         }
 
         //--------------------------------------------------------------------
@@ -144,11 +158,12 @@ namespace ClarolineApp
             }
             indicator.IsVisible = false;
         }
-
+#if DEBUG
         private void DEV_clrDB_Click(object sender, EventArgs e)
         {
             _viewModel.ResetViewModel();
         }
+#endif
 
         private void IEButton_Click(object sender, RoutedEventArgs e)
         {

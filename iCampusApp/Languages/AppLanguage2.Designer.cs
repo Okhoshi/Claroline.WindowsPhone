@@ -70,6 +70,42 @@ namespace ClarolineApp.Languages {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Remonter.
+        /// </summary>
+        public static string AppBar_GoUp {
+            get {
+                return ResourceManager.GetString("AppBar_GoUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Menu.
+        /// </summary>
+        public static string AppBar_Menu {
+            get {
+                return ResourceManager.GetString("AppBar_Menu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Actualiser.
+        /// </summary>
+        public static string AppBar_Refresh {
+            get {
+                return ResourceManager.GetString("AppBar_Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Réglages.
+        /// </summary>
+        public static string AppBar_Settings {
+            get {
+                return ResourceManager.GetString("AppBar_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Documents &amp; Liens.
         /// </summary>
         public static string CLDOC_Module_Name {
