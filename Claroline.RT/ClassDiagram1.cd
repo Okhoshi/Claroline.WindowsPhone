@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ClarolineApp.RT.Models.Annonce">
+    <Position X="3.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAIAAIAA=</HashCode>
+      <FileName>Models\Annonce.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClarolineApp.RT.Models.Cours">
+    <Position X="5.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQEACAQABAAAAAAAAACACIAAAAAAgAQAAAACAEAAA=</HashCode>
+      <FileName>Models\Cours.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClarolineApp.RT.Models.Document">
+    <Position X="1.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAIACACAABAAIAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Document.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClarolineApp.RT.Models.ItemModel">
+    <Position X="2.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAYAAAAAABAIAAAACAAAAAAAAAQAAAAQBAAAA=</HashCode>
+      <FileName>Models\ItemModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClarolineApp.RT.Models.ResourceModel&lt;T&gt;">
+    <Position X="8" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAiAAAIAAAQAQAAAAIAAAAIAAAACAABAA=</HashCode>
+      <FileName>Models\ResourceModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClarolineApp.RT.Models.ViewModelBase" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAACIAAAAAAAIAAAAAAAgAEAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Models\ViewModelBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

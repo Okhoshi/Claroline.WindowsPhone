@@ -1,0 +1,40 @@
+﻿<UserControl
+    x:Class="ClarolineApp.RT.Settings.Settings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:common="using:ClarolineApp.RT.Common"
+    xmlns:local="using:ClarolineApp.RT.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="768" Width="600"
+     >
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+        <Grid Margin="40,33,40,39" VerticalAlignment="Top" Grid.RowSpan="3">
+
+            <StackPanel x:Name="FlyoutContent">
+                <StackPanel Margin="0, 39, 0, 0">
+                    <TextBlock FontWeight="Bold" Text="Login" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
+                    <TextBlock Text="" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
+                    <TextBox Text="{Binding Login, Mode=TwoWay}"  HorizontalAlignment="Left" Width="170"/>
+                </StackPanel>
+                <StackPanel Margin="0, 39, 0, 0">
+                    <TextBlock FontWeight="Bold" Text="Mot de passe" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
+                    <TextBlock Text="" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
+                    <PasswordBox Password="{Binding Password, Mode=TwoWay}" HorizontalAlignment="Left" Width="170"/>
+                </StackPanel>
+                <StackPanel Margin="0, 39, 0, 0">
+                    <TextBlock FontWeight="Bold" Text="Plateforme Host" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
+                    <TextBlock Text="" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
+                    <TextBox Text="{Binding Domain, Mode=TwoWay}"  HorizontalAlignment="Left" Width="170"/>
+                </StackPanel>
+                <StackPanel Margin="0, 39, 0, 0">
+                    <TextBlock FontWeight="Bold" Text="Module" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
+                    <TextBlock Text="" TextWrapping="Wrap" Style="{StaticResource BasicTextStyle}" HorizontalAlignment="Left"/>
+                    <TextBox Text="{Binding WebServicePath, Mode=TwoWay}"  HorizontalAlignment="Left" Width="170"/>
+                </StackPanel>
+
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>
