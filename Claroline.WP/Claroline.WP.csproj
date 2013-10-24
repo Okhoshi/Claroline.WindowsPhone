@@ -93,6 +93,15 @@
     <Reference Include="System.IO">
       <HintPath>..\packages\Microsoft.Bcl.1.1.3\lib\sl4-windowsphone71\System.IO.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.15\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.15\lib\sl4-windowsphone71\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.15\lib\sl4-windowsphone71\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime">
       <HintPath>..\packages\Microsoft.Bcl.1.1.3\lib\sl4-windowsphone71\System.Runtime.dll</HintPath>
     </Reference>
@@ -117,7 +126,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BindingProxy.cs" />
+    <Compile Include="ClarolineClient.cs" />
     <Compile Include="Common\ModelBase.cs" />
     <Compile Include="Model\ClarolineDataContext.cs">
       <SubType>Code</SubType>
@@ -147,11 +156,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\Topic.cs" />
+    <Compile Include="Settings\ISettings.cs" />
     <Compile Include="Settings\User.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TemplateSelector\ResourceTemplateSelector.cs" />
     <Compile Include="TemplateSelector\ResourceListTemplateSelector.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\TopicPage.xaml.cs">
       <DependentUpon>TopicPage.xaml</DependentUpon>
     </Compile>
@@ -189,11 +201,11 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="ClaroClient.cs" />
     <Compile Include="VM\IClarolineVM.cs" />
     <Compile Include="VM\IMainPageVM.cs" />
     <Compile Include="VM\MainPageVM.cs" />
     <Compile Include="VM\TopicPageVM.cs" />
+    <Compile Include="VM\ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -232,7 +244,6 @@
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\DataSources\ClarolineApp.VM.CoursPageVM.datasource" />
     <None Include="Properties\WMAppManifest.xml" />
-    <None Include="Settings\AppSettings.cd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">

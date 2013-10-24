@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Text;
+#if WINDOWS_PHONE
+using System.Data.Linq.Mapping; 
+#endif
 
 namespace ClarolineApp.Model
 {
@@ -21,7 +23,9 @@ namespace ClarolineApp.Model
 
         private int _category;
 
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public int category
         {
             get

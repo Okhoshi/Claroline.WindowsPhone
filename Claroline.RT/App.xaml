@@ -1,28 +1,16 @@
-﻿<Application
-    x:Class="ClarolineOnTablet.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:ClarolineOnTablet"
-    xmlns:localData="using:ClarolineOnTablet.Data"
-    RequestedTheme="Light">
-
-    <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-
-                <!-- 
+<Application x:Class="Claroline.RT.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:Claroline.RT" xmlns:localData="using:Claroline.RT.Data">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <!-- 
                     Styles définissant l'apparence globale de la plateforme
                     Requis par les modèles de projets et les modèles d'éléments Visual Studio
                  -->
-                <ResourceDictionary Source="Common/StandardStyles.xaml"/>
-                <ResourceDictionary Source="Common/PersonnalStyles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-
-            <!-- Ressources spécifiques à l'application -->
-
-            <x:String x:Key="AppName">ClarolineOnTablet</x:String>
-			<x:String x:Key="DocName">Documents</x:String>
-			<x:String x:Key="AnnName">Annonces</x:String>
-        </ResourceDictionary>
-    </Application.Resources>
+        <ResourceDictionary Source="Common/StandardStyles.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+      <!-- Ressources spécifiques à l'application -->
+      <x:String x:Key="AppName">Claroline.RT</x:String>
+      <vm:ViewModelLocator x:Key="Locator" xmlns:vm="using:Claroline.RT.ViewModel" />
+    </ResourceDictionary>
+  </Application.Resources>
 </Application>

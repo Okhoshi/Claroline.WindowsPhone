@@ -11,7 +11,7 @@ using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace ClarolineApp.RT.Common
+namespace Claroline.RT.Common
 {
     /// <summary>
     /// SuspensionManager capture l'état de session global pour simplifier la gestion de la durée de vie des processus

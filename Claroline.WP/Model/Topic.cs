@@ -2,29 +2,40 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.Linq;
-using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Text;
+#if WINDOWS_PHONE
+using System.Data.Linq;
+using System.Data.Linq.Mapping; 
+#endif
 
 namespace ClarolineApp.Model
 {
-    [Table]
+#if WINDOWS_PHONE
+    [Table] 
+#endif
     public class Topic : ModelBase
     {
 
         public Topic()
             : base()
         {
-            _Posts = new EntitySet<Post>(attach_Posts, detach_Posts);
+#if WINDOWS_PHONE
+            _Posts = new EntitySet<Post>(attach_Posts, detach_Posts); 
+#else
+            _Posts = new ObservableCollection<Post>();
+#endif
         }
 
         protected int _Id;
 
         // Define ID: internal Notifications, public property and database column.
 
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+#if WINDOWS_PHONE
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)] 
+#endif
         public virtual int Id
         {
             get
@@ -44,7 +55,9 @@ namespace ClarolineApp.Model
 
         protected string _Title;
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public string title
         {
             get
@@ -64,7 +77,9 @@ namespace ClarolineApp.Model
 
         protected int _resourceId;
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public int resourceId
         {
             get
@@ -93,7 +108,9 @@ namespace ClarolineApp.Model
         private int _Views;
 
         [JsonProperty("topic_views")]
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public int Views
         {
             get
@@ -114,7 +131,9 @@ namespace ClarolineApp.Model
         private string _PosterLastname;
 
         [JsonProperty("poster_lastname")]
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public string PosterLastname
         {
             get
@@ -135,7 +154,9 @@ namespace ClarolineApp.Model
         private string _PosterFirstname;
 
         [JsonProperty("poster_firstname")]
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public string PosterFirstname
         {
             get
@@ -152,7 +173,8 @@ namespace ClarolineApp.Model
                 }
             }
         }
-        
+
+#if WINDOWS_PHONE
         #region Entity Side for Forum2Topic
 
         [Column]
@@ -193,20 +215,56 @@ namespace ClarolineApp.Model
             }
         }
 
+        #endregion
+#else
+        protected int _ForumUId;
+
+        protected Forum _Forum;
+
+        public Forum Forum
+        {
+            get { return _Forum; }
+            set
+            {
+                RaisePropertyChanging("Forum");
+
+                if (value != null)
+                {
+                    Forum previousValue = this._Forum;
+                    if (previousValue != value)
+                    {
+                        if ((previousValue != null))
+                        {
+                            this._Forum.PropertyChanged -= Forum_PropertyChanged;
+                            this._Forum = null;
+                            previousValue.Topics.Remove(this);
+                        }
+                        this._Forum = value;
+                        this._Forum.PropertyChanged += Forum_PropertyChanged;
+
+                        value.Topics.Add(this);
+                        this._ForumUId = value.UniqueIdentifier;
+                    }
+                }
+
+                RaisePropertyChanged("Forum");
+            }
+        }
+#endif   
+        
         private void Forum_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
                 case "UniqueIdentifier":
-                    this._ForumUId = this._Forum.Entity.UniqueIdentifier;
+                    this._ForumUId = Forum.UniqueIdentifier;
                     break;
                 default:
                     break;
             }
         }
 
-        #endregion
-        
+#if WINDOWS_PHONE
         #region Association Topic2Posts Many Side
 
         // Define the entity set for the collection side of the relationship.
@@ -238,6 +296,25 @@ namespace ClarolineApp.Model
             RaisePropertyChanged("Posts");
         }
 
-        #endregion
+        #endregion 
+#else
+        private ObservableCollection<Post> _Posts;
+
+        public ObservableCollection<Post> Posts
+        {
+            get
+            {
+                return _Posts;
+            }
+            set
+            {
+                if (value != _Posts)
+                {
+                    _Posts = value;
+                    RaisePropertyChanged("Resources");
+                }
+            }
+        }
+#endif
     }
 }

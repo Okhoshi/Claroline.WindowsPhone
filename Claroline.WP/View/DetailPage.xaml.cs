@@ -103,7 +103,7 @@ namespace ClarolineApp
         {
             e.Cancel = true;
 
-            string page = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.NOMOD, SupportedMethods.GetPage, genMod: e.Uri.AbsoluteUri.Replace("about:", AppSettings.Instance.DomainSetting));
+            string page = await ViewModelLocator.Client.MakeOperationAsync(SupportedModules.NOMOD, SupportedMethods.GetPage, genMod: e.Uri.AbsoluteUri.Replace("about:", AppSettings.Instance.DomainSetting));
             
             //// Replace the matched text in the InputText using the replacement pattern
             page = regex.Replace(page, regexReplace);

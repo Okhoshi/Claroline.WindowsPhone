@@ -1,16 +1,22 @@
-﻿using Microsoft.Phone.Data.Linq.Mapping;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.Linq;
-using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Text;
 
+#if WINDOWS_PHONE
+using System.Data.Linq;
+using System.Data.Linq.Mapping;
+using Microsoft.Phone.Data.Linq.Mapping;
+#endif
+
 namespace ClarolineApp.Model
 {
-    [Index(Name = "i_UID", IsUnique = true, Columns = "_resourceListId,resourceId")]
+#if WINDOWS_PHONE
+    [Index(Name = "i_UID", IsUnique = true, Columns = "_resourceListId,resourceId")] 
+#endif
     public class Forum : ResourceModel
     {
         public new const string Label = "CLFRM";
@@ -19,7 +25,9 @@ namespace ClarolineApp.Model
             : base()
         {
             DiscKey = SupportedModules.CLFRM;
-            _Topics = new EntitySet<Topic>(attach_Topics, detach_Topics);
+#if WINDOWS_PHONE
+            _Topics = new EntitySet<Topic>(attach_Topics, detach_Topics); 
+#endif
 
             PropertyChanged += Forum_PropertyChanged;
         }
@@ -41,7 +49,9 @@ namespace ClarolineApp.Model
         private string _ForumDescription;
 
         [JsonProperty("forum_desc")]
-        [Column(CanBeNull = true)]
+#if WINDPWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public string ForumDescription
         {
             get
@@ -59,7 +69,9 @@ namespace ClarolineApp.Model
             }
         }
 
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public int UniqueIdentifier
         {
             get
@@ -75,7 +87,9 @@ namespace ClarolineApp.Model
         private int _Rank;
 
         [JsonProperty("forum_order")]
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public int Rank
         {
             get
@@ -97,7 +111,9 @@ namespace ClarolineApp.Model
         private int _CategoryId;
 
         [JsonProperty("cat_id")]
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public int CategoryId
         {
             get
@@ -119,7 +135,9 @@ namespace ClarolineApp.Model
         private string _CategoryName;
 
         [JsonProperty("cat_title")]
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public string CategoryName
         {
             get
@@ -141,7 +159,9 @@ namespace ClarolineApp.Model
         private int _CategoryRank;
 
         [JsonProperty("cat_order")]
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public int CategoryRank
         {
             get
@@ -178,7 +198,8 @@ namespace ClarolineApp.Model
                 _Date = DateTime.Parse("01/01/1753");
             }
         }
-        
+
+#if WINDOWS_PHONE
         #region Association Forum2Topic Many Side
 
         // Define the entity set for the collection side of the relationship.
@@ -210,6 +231,25 @@ namespace ClarolineApp.Model
             RaisePropertyChanged("Topics");
         }
 
-        #endregion
+        #endregion 
+#else
+        private ObservableCollection<Topic> _Topics;
+
+        public ObservableCollection<Topic> Topics
+        {
+            get
+            {
+                return _Topics;
+            }
+            set
+            {
+                if (value != _Topics)
+                {
+                    _Topics = value;
+                    RaisePropertyChanged("Topics");
+                }
+            }
+        }
+#endif
     }
 }

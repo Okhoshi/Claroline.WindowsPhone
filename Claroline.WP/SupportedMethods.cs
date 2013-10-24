@@ -1,4 +1,5 @@
 ﻿using ClarolineApp.Settings;
+using ClarolineApp.VM;
 using System;
 
 namespace ClarolineApp
@@ -25,6 +26,7 @@ namespace ClarolineApp
         GetCourseList,
         GetToolList,
         GetUpdates,
+        GetPlatformData,
         //CLXXX
         GetResourcesList,
         GetSingleResource
@@ -32,8 +34,8 @@ namespace ClarolineApp
 
     public class PostDataWriter
     {
-        public String login = AppSettings.Instance.UserNameSetting;
-        public String password = AppSettings.Instance.PasswordSetting;
+        public String login = ViewModelLocator.Client.Settings.UserNameSetting;
+        public String password = ViewModelLocator.Client.Settings.PasswordSetting;
         public SupportedModules module;
         public SupportedMethods method;
         public string GenMod;
@@ -55,7 +57,7 @@ namespace ClarolineApp
                     switch (method)
                     {
                         case SupportedMethods.Authenticate:
-                            URL = AppSettings.Instance.DomainSetting + AppSettings.Instance.AuthPageSetting;
+                            URL = ViewModelLocator.Client.Settings.DomainSetting + ViewModelLocator.Client.Settings.AuthPageSetting;
                             break;
                         case SupportedMethods.GetPage:
                             URL = GenMod;
@@ -70,7 +72,7 @@ namespace ClarolineApp
                 default:
                     if (Enum.IsDefined(typeof(SupportedModules), module))
                     {
-                        URL = AppSettings.Instance.DomainSetting + AppSettings.Instance.WebServiceSetting;
+                        URL = ViewModelLocator.Client.Settings.DomainSetting + ViewModelLocator.Client.Settings.WebServiceSetting;
                         break;
                     }
                     else
@@ -120,6 +122,7 @@ namespace ClarolineApp
                         case SupportedMethods.GetUpdates:
                         case SupportedMethods.GetCourseList:
                         case SupportedMethods.GetUserData:
+                        case SupportedMethods.GetPlatformData:
                             postString += "module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
                             break;
                         default:

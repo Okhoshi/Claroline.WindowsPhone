@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Linq.Mapping;
+#if WINDOWS_PHONE
+using System.Data.Linq.Mapping; 
+#endif
 using System.Linq;
 using System.Text;
 
@@ -20,8 +22,9 @@ namespace ClarolineApp.Model
         }
 
         protected string _Content;
-
+#if WINDOWS_PHONE
         [Column(CanBeNull = true)]
+#endif
         public string content
         {
             get

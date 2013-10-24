@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml.Data;
 
-namespace ClarolineApp.RT.Common
+namespace Claroline.RT.Common
 {
     /// <summary>
     /// Convertisseur de valeur qui convertit true en false et vice versa.

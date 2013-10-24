@@ -50,7 +50,7 @@ namespace ClarolineApp
             this.DataContext = _viewModel;
             _viewModel.PropertyChanged += VM_PropertyChanged;
 
-            ClaroClient.Instance.PropertyChanged += Failure_Handler;
+            ViewModelLocator.Client.PropertyChanged += Failure_Handler;
 
             version_text.Text = Helper.GetVersionNumber();
 
@@ -92,7 +92,7 @@ namespace ClarolineApp
         protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
-            ClaroClient.Instance.PropertyChanged -= FailureOccured;
+            ViewModelLocator.Client.PropertyChanged -= FailureOccured;
             _viewModel.PropertyChanged -= VM_PropertyChanged;
         }
 
@@ -127,7 +127,7 @@ namespace ClarolineApp
         {
             if (e.PropertyName == "LastException")
             {
-                MessageBox.Show("Exception occured! " + ClaroClient.Instance.LastException.Message);
+                MessageBox.Show("Exception occured! " + ViewModelLocator.Client.LastException.Message);
             }
         }
 
@@ -142,7 +142,7 @@ namespace ClarolineApp
             indicator.IsVisible = true;
 
             bool r = true;
-            if (!ClaroClient.Instance.IsValidAccountSync())
+            if (!ViewModelLocator.Client.IsValidAccountSync())
             {
                 r = await _viewModel.GetUserDataAsync();
             }

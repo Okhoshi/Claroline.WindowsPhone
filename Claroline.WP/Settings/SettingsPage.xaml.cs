@@ -51,7 +51,7 @@ namespace ClarolineApp.Settings
             _viewModel = new ClarolineVM();
             this.DataContext = _viewModel;
 
-            ClarolineVM.Settings.PropertyChanged += (sender, e) =>
+            ViewModelLocator.Client.Settings.PropertyChanged += (sender, e) =>
             {
                 string[] _listened = new String[] { AppSettings.UserNameSettingKeyName, 
                                                     AppSettings.PasswordSettingKeyName, 
@@ -64,11 +64,11 @@ namespace ClarolineApp.Settings
                 }
             };
 
-            ClarolineVM.Client.PropertyChanged += (sender, e) =>
+            ViewModelLocator.Client.Settings.PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == "IsInSync")
                 {
-                    indicator.IsVisible = ClarolineVM.Client.IsInSync;
+                    indicator.IsVisible = ViewModelLocator.Client.IsInSync;
                 }
             };
 
@@ -96,10 +96,10 @@ namespace ClarolineApp.Settings
 
         private async void Connect_Button(object sender, RoutedEventArgs e)
         {
-            bool r = ClaroClient.IsNetworkAvailable();
+            bool r = ClarolineClient.IsNetworkAvailable();
             if (r)
             {
-                r = await ClaroClient.Instance.IsValidAccountAsync();
+                r = await ViewModelLocator.Client.IsValidAccountAsync();
                 if (r)
                 {
                     string response = await _viewModel.CheckModuleValidity();
@@ -118,13 +118,13 @@ namespace ClarolineApp.Settings
                                             int version;
                                             if (!int.TryParse(reader.Value.ToString(), out version) || App.ModuleVersionRequired > version)
                                             {
-                                                ClaroClient.Instance.InvalidateClient();
+                                                ViewModelLocator.Client.InvalidateClient();
                                                 ShowMessage(AppLanguage.ErrorMessage_OutdatedModule); //Not readable version or outdated one
                                             }
                                         }
                                         else
                                         {
-                                            ClaroClient.Instance.InvalidateClient();
+                                            ViewModelLocator.Client.InvalidateClient();
                                             ShowMessage(AppLanguage.ErrorMessage_UnreadableJson); // Unreadable
                                         }
                                         break;
@@ -135,7 +135,7 @@ namespace ClarolineApp.Settings
                                         }
                                         else
                                         {
-                                            ClaroClient.Instance.InvalidateClient();
+                                            ViewModelLocator.Client.InvalidateClient();
                                             ShowMessage(AppLanguage.ErrorMessage_UnreadableJson); // Unreadable
                                         }
                                         break;
@@ -145,7 +145,7 @@ namespace ClarolineApp.Settings
                             }
                         }
 
-                        if (ClaroClient.Instance.IsValidAccountSync())
+                        if (ViewModelLocator.Client.IsValidAccountSync())
                         {
                             _viewModel.GetUserDataAsync();
                             _viewModel.GetCoursListAsync();
@@ -182,9 +182,9 @@ namespace ClarolineApp.Settings
 
         private void Deco_Click(object sender, EventArgs e)
         {
-            string url = ClarolineVM.Settings.DomainSetting;
+            string url = ViewModelLocator.Client.Settings.DomainSetting;
             _viewModel.ResetViewModel();
-            ClarolineVM.Settings.DomainSetting = url;
+            ViewModelLocator.Client.Settings.DomainSetting = url;
         }
 
         private void passwordBox_KeyDown(object sender, KeyEventArgs e)

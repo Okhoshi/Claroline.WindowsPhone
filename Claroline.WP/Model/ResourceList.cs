@@ -1,26 +1,34 @@
 ﻿using ClarolineApp.Common;
-using Microsoft.Phone.Data.Linq.Mapping;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Data.Linq;
-using System.Data.Linq.Mapping;
 using System.Linq;
+#if WINDOWS_PHONE
+using Microsoft.Phone.Data.Linq.Mapping;
+using System.Data.Linq.Mapping;
+using System.Data.Linq; 
+#endif
 
 namespace ClarolineApp.Model
 {
+
+#if WINDOWS_PHONE
     [Table]
-    [Index(Name="i_Label", IsUnique = false, Columns = "label")]
+    [Index(Name = "i_Label", IsUnique = false, Columns = "label")] 
+#endif
     public class ResourceList : ModelBase
     {
 
         public ResourceList()
         {
+#if WINDOWS_PHONE
             _resources = new EntitySet<ResourceModel>(
-                new Action<ResourceModel>(this.attach_Resource),
-                new Action<ResourceModel>(this.detach_Resource)
-                );
+                    new Action<ResourceModel>(this.attach_Resource),
+                    new Action<ResourceModel>(this.detach_Resource)
+                    ); 
+#endif
             _resources.CollectionChanged += _resources_CollectionChanged;
         }
 
@@ -56,7 +64,9 @@ namespace ClarolineApp.Model
 
         private int _Id;
 
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+#if WINDOWS_PHONE
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)] 
+#endif
         public int Id
         {
             get
@@ -77,7 +87,9 @@ namespace ClarolineApp.Model
 
         private string _Label;
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public string label
         {
             get
@@ -97,7 +109,9 @@ namespace ClarolineApp.Model
 
         private string _Name;
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public string name
         {
             get
@@ -127,7 +141,9 @@ namespace ClarolineApp.Model
 
         private DateTime _Loaded = DateTime.Parse("01/01/1753");
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public DateTime loaded
         {
             get
@@ -147,7 +163,9 @@ namespace ClarolineApp.Model
 
         protected bool _Visibility;
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public bool visibility
         {
             get
@@ -175,7 +193,9 @@ namespace ClarolineApp.Model
 
         protected bool _Updated;
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public bool updated
         {
             get
@@ -195,7 +215,9 @@ namespace ClarolineApp.Model
 
         private string _ressourceType;
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public string ressourceTypeStr
         {
             get
@@ -236,13 +258,15 @@ namespace ClarolineApp.Model
             }
         }
 
+
+#if WINDOWS_PHONE
         #region Collection Side for ResourceModel
 
         // Define the entity set for the collection side of the relationship.
 
         private EntitySet<ResourceModel> _resources;
 
-        [Association(Storage = "_resources", OtherKey = "_resourceListId", ThisKey = "Id", DeleteRule="Cascade")]
+        [Association(Storage = "_resources", OtherKey = "_resourceListId", ThisKey = "Id", DeleteRule = "Cascade")]
         public EntitySet<ResourceModel> Resources
         {
             get { return this._resources; }
@@ -269,6 +293,27 @@ namespace ClarolineApp.Model
             RaisePropertyChanged("Resources");
         }
 
+        #endregion 
+#else
+        private ObservableCollection<ResourceModel> _resources;
+
+        public ObservableCollection<ResourceModel> Resources
+        {
+            get
+            {
+                return _resources;
+            }
+            set
+            {
+                if (value != _resources)
+                {
+                    _resources = value;
+                    RaisePropertyChanged("Resources");
+                }
+            }
+        }
+#endif
+
         public void resource_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
@@ -282,8 +327,8 @@ namespace ClarolineApp.Model
             }
         }
 
-        #endregion
 
+#if WINDOWS_PHONE
         #region Entity Side for Cours
 
         [Column]
@@ -322,7 +367,40 @@ namespace ClarolineApp.Model
             }
         }
 
-        #endregion
+        #endregion 
+#else
+        internal int _coursId;
+
+        private Cours _cours;
+
+        public Cours Cours
+        {
+            get { return _cours; }
+            set
+            {
+                RaisePropertyChanging("Cours");
+
+                if (value != null)
+                {
+                    Cours previousValue = this._cours;
+                    if (previousValue != value)
+                    {
+                        if (previousValue != null)
+                        {
+                            this._cours = null;
+                            previousValue.Resources.Remove(this);
+                        }
+                        this._cours = value;
+
+                        value.Resources.Add(this);
+                        this._coursId = value.Id;
+                    }
+                }
+
+                RaisePropertyChanged("Cours");
+            }
+        }
+#endif
 
         public override bool Equals(object obj)
         {
@@ -353,8 +431,11 @@ namespace ClarolineApp.Model
             return module;
         }
 
-        [Column(IsVersion=true)]
-        private Binary _version;
+#if WINDOWS_PHONE
+
+        [Column(IsVersion = true)]
+        private Binary _version; 
+#endif
 
         internal ResourceModel GetResourceByResId(string resource)
         {

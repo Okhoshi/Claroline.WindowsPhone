@@ -1,16 +1,16 @@
 <VM:ClarolineVM xmlns:VM="clr-namespace:ClarolineApp.VM" xmlns:ClarolineApp="clr-namespace:ClarolineApp" xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:Settings="clr-namespace:ClarolineApp.Settings" ApplicationName="Aliquam curabitur" IsConnected="True">
 	<VM:ClarolineVM.Client>
 		<ClarolineApp:ClaroClient IsInSync="True" IsExpired="False">
-			<ClarolineApp:ClaroClient.Instance>
+			<ClarolineApp:ViewModelLocator.Client>
 				<ClarolineApp:ClaroClient IsInSync="False" IsExpired="True">
-					<ClarolineApp:ClaroClient.Instance>
+					<ClarolineApp:ViewModelLocator.Client>
 						<ClarolineApp:ClaroClient IsInSync="True" IsExpired="False"/>
-					</ClarolineApp:ClaroClient.Instance>
+					</ClarolineApp:ViewModelLocator.Client>
 					<ClarolineApp:ClaroClient.LastException>
 						<System:Exception/>
 					</ClarolineApp:ClaroClient.LastException>
 				</ClarolineApp:ClaroClient>
-			</ClarolineApp:ClaroClient.Instance>
+			</ClarolineApp:ViewModelLocator.Client>
 			<ClarolineApp:ClaroClient.LastException>
 				<System:Exception/>
 			</ClarolineApp:ClaroClient.LastException>

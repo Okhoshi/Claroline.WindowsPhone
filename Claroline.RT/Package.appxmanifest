@@ -1,27 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="4fd7a270-7d14-4326-847a-6d0d004e8306" Publisher="CN=Dimitri" Version="1.0.0.0" />
+
+  <Identity Name="721dbba4-5668-4af7-9396-22464ee7a275"
+            Publisher="CN=Quentin"
+            Version="1.0.0.0" />
+
   <Properties>
-    <DisplayName>Claroline Mobile</DisplayName>
-    <PublisherDisplayName>Okhoshi</PublisherDisplayName>
+    <DisplayName>Claroline.RT</DisplayName>
+    <PublisherDisplayName>Quentin</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
+
   <Prerequisites>
     <OSMinVersion>6.2.1</OSMinVersion>
     <OSMaxVersionTested>6.2.1</OSMaxVersionTested>
   </Prerequisites>
+
   <Resources>
-    <Resource Language="x-generate" />
+    <Resource Language="x-generate"/>
   </Resources>
+
   <Applications>
-    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Claroline Mobile.App">
-      <VisualElements DisplayName="Claroline Mobile" Logo="Assets\large_logo_tile.png" SmallLogo="Assets\small_tile_logo.png" Description="Claroline Mobile" ForegroundText="light" BackgroundColor="#FF5600">
-        <DefaultTile ShowName="wideLogoOnly" WideLogo="Assets\large_logo_tile1.png" ShortName="Claroline" />
-        <SplashScreen Image="Assets\splash_logo.png" BackgroundColor="#FFFFFF" />
-      </VisualElements>
-      <Extensions>
-        <Extension Category="windows.search" />
-      </Extensions>
+    <Application Id="App"
+        Executable="$targetnametoken$.exe"
+        EntryPoint="Claroline.RT.App">
+        <VisualElements
+            DisplayName="Claroline.RT"
+            Logo="Assets\Logo.png"
+            SmallLogo="Assets\SmallLogo.png"
+            Description="Claroline.RT"
+            ForegroundText="light"
+            BackgroundColor="#464646">
+            <DefaultTile ShowName="allLogos" />
+            <SplashScreen Image="Assets\SplashScreen.png" />
+        </VisualElements>
     </Application>
   </Applications>
   <Capabilities>

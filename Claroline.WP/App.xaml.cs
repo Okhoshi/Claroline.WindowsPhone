@@ -76,7 +76,7 @@ namespace ClarolineApp
                 }
             }
 
-            AppSettings setting = AppSettings.Instance;
+            ISettings setting = AppSettings.Instance;
             if(setting.UserSetting == null)
             {
                 setting.UserSetting = new User();

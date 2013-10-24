@@ -1,12 +1,16 @@
 ﻿using ClarolineApp.Settings;
-using Microsoft.Phone.Tasks;
+using ClarolineApp.VM;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Data.Linq.Mapping;
 using System.IO;
 using System.Linq;
+
+#if WINDOWS_PHONE
+using System.Data.Linq.Mapping;
+using Microsoft.Phone.Tasks; 
+#endif
 
 namespace ClarolineApp.Model
 {
@@ -32,7 +36,9 @@ namespace ClarolineApp.Model
 
         private string _path;
 
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public string path
         {
             get
@@ -56,7 +62,8 @@ namespace ClarolineApp.Model
             {
                 if (isFolder)
                 {
-                    return getContent().Any(f => { 
+                    return getContent().Any(f =>
+                    {
                         return f.isNotified;
                     });
                 }
@@ -69,7 +76,9 @@ namespace ClarolineApp.Model
 
         private string _desc;
 
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public string description
         {
             get
@@ -89,7 +98,9 @@ namespace ClarolineApp.Model
 
         private string _ext;
 
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public string extension
         {
             get
@@ -109,7 +120,9 @@ namespace ClarolineApp.Model
 
         private bool _isFolder;
 
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public bool isFolder
         {
             get
@@ -130,7 +143,9 @@ namespace ClarolineApp.Model
 
         private double _size;
 
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public double size
         {
             get
@@ -236,7 +251,7 @@ namespace ClarolineApp.Model
         {
             if (!isFolder)
             {
-                String token = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.CLDOC, SupportedMethods.GetSingleResource, ResourceList.Cours.sysCode, path);
+                String token = await ViewModelLocator.Client.MakeOperationAsync(SupportedModules.CLDOC, SupportedMethods.GetSingleResource, ResourceList.Cours.sysCode, path);
 
                 using (JsonTextReader reader = new JsonTextReader(new StringReader(token)))
                 {
@@ -250,12 +265,15 @@ namespace ClarolineApp.Model
                         }
                     }
                 }
+                Uri TaskUri = new Uri(Uri.EscapeUriString(ViewModelLocator.Client.Settings.DomainSetting + ViewModelLocator.Client.Settings.WebServiceSetting + "download.php?token=" + token), UriKind.Absolute);
 
-                WebBrowserTask open = new WebBrowserTask()
+#if WINDOWS_PHONE
+		WebBrowserTask open = new WebBrowserTask()
                 {
-                    Uri = new Uri(Uri.EscapeUriString(AppSettings.Instance.DomainSetting + AppSettings.Instance.WebServiceSetting + "download.php?token=" + token), UriKind.Absolute)
+                    Uri = TaskUri
                 };
-                open.Show();
+                open.Show();  
+#endif
             }
             else
             {

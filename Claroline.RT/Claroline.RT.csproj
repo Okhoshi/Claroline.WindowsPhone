@@ -4,20 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F3E83EBD-2961-459D-AF6E-7D99F89E2BFA}</ProjectGuid>
+    <ProjectGuid>{E553278B-B9CF-4B02-9A6C-654B1670FCF6}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ClarolineApp</RootNamespace>
-    <AssemblyName>ClarolineApp</AssemblyName>
+    <RootNamespace>Claroline.RT</RootNamespace>
+    <AssemblyName>Claroline.RT</AssemblyName>
     <DefaultLanguage>fr-FR</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>ClarolineOnTablet_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <ExpressionBlendVersion>5.0.30709.0</ExpressionBlendVersion>
+    <PackageCertificateKeyFile>Claroline.RT_TemporaryKey.pfx</PackageCertificateKeyFile>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -107,33 +102,69 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Claroline.WP\ClarolineClient.cs">
+      <Link>ClarolineClient.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\Common\ModelBase.cs">
+      <Link>Common\ModelBase.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\Model\Annonce.cs">
+      <Link>Model\Annonce.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\Model\Cours.cs">
+      <Link>Model\Cours.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\Model\Description.cs">
+      <Link>Model\Description.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\Model\Document.cs">
+      <Link>Model\Document.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\Model\Event.cs">
+      <Link>Model\Event.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\Model\Forum.cs">
+      <Link>Model\Forum.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\Model\Notification.cs">
+      <Link>Model\Notification.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\Model\Post.cs">
+      <Link>Model\Post.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\Model\ResourceList.cs">
+      <Link>Model\ResourceList.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\Model\ResourceModel.cs">
+      <Link>Model\ResourceModel.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\Model\Topic.cs">
+      <Link>Model\Topic.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\Settings\ISettings.cs">
+      <Link>Settings\ISettings.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\Settings\User.cs">
+      <Link>Settings\User.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\SupportedMethods.cs">
+      <Link>SupportedMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\Claroline.WP\VM\ViewModelLocator.cs">
+      <Link>ViewModel\ViewModelLocator.cs</Link>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ClaroClient.cs" />
-    <Compile Include="Common\Commands.cs" />
-    <Compile Include="Controls\CharmFlyout.cs" />
-    <Compile Include="Controls\CharmFrame.cs" />
-    <Compile Include="Controls\RelayCommand.cs" />
-    <Compile Include="CoursPage.xaml.cs">
-      <DependentUpon>CoursPage.xaml</DependentUpon>
+    <Compile Include="GroupedItemsPage.xaml.cs">
+      <DependentUpon>GroupedItemsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DocumentPage.xaml.cs">
-      <DependentUpon>DocumentPage.xaml</DependentUpon>
+    <Compile Include="GroupDetailPage.xaml.cs">
+      <DependentUpon>GroupDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="HomePage.xaml.cs">
-      <DependentUpon>HomePage.xaml</DependentUpon>
+    <Compile Include="ItemDetailPage.xaml.cs">
+      <DependentUpon>ItemDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AnnoncePage.xaml.cs">
-      <DependentUpon>AnnoncePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Annonce.cs" />
-    <Compile Include="Models\ApplicationModel.cs" />
-    <Compile Include="Models\Cours.cs" />
-    <Compile Include="Models\Document.cs" />
-    <Compile Include="Models\ItemModel.cs" />
-    <Compile Include="Models\ResourceModel.cs" />
-    <Compile Include="Models\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
     <Compile Include="Common\BindableBase.cs" />
@@ -142,36 +173,20 @@
     <Compile Include="Common\LayoutAwarePage.cs" />
     <Compile Include="Common\RichTextColumns.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
-    <Compile Include="SearchResultsPage1.xaml.cs">
-      <DependentUpon>SearchResultsPage1.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\Settings.xaml.cs">
-      <DependentUpon>Settings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="SupportedMethods.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="ClassDiagram1.cd" />
     <None Include="Common\ReadMe.txt" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Claroline.RT_TemporaryKey.pfx" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\BST_UCL_FULLRESOLUTION.png" />
-    <Content Include="Assets\BST_UCL_TR.png" />
-    <Content Include="Assets\large_logo_tile.png" />
-    <Content Include="Assets\large_logo_tile1.png" />
-    <Content Include="Assets\large_logo_tile13.png" />
     <Content Include="Assets\Logo.png" />
-    <Content Include="Assets\logo_claroline[1].png" />
     <Content Include="Assets\SmallLogo.png" />
-    <Content Include="Assets\small_tile_logo.png" />
     <Content Include="Assets\SplashScreen.png" />
-    <Content Include="Assets\splash_logo.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\LightGray.png" />
     <Content Include="Assets\MediumGray.png" />
@@ -186,43 +201,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="CoursPage.xaml">
+    <Page Include="GroupedItemsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="DocumentPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="HomePage.xaml">
+    <Page Include="GroupDetailPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="AnnoncePage.xaml">
+    <Page Include="ItemDetailPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Common\PersonnalStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="SearchResultsPage1.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\Settings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Callisto, Version=1.2.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Callisto.1.2.6\lib\winrt45\Callisto.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight.Extras.Win8">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.1\lib\netcore45\GalaSoft.MvvmLight.Extras.Win8.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\winrt45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="GalaSoft.MvvmLight.Win8">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.1\lib\netcore45\GalaSoft.MvvmLight.Win8.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\MvvmLightLibs.4.1.27.1\lib\netcore45\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.7\lib\netcore45\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">

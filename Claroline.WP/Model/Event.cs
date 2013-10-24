@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Text;
+#if WINDOWS_PHONE
+using System.Data.Linq.Mapping; 
+#endif
 
 namespace ClarolineApp.Model
 {
@@ -21,7 +23,9 @@ namespace ClarolineApp.Model
         
         private string _Speakers;
 
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public string speakers
         {
             get
@@ -41,7 +45,9 @@ namespace ClarolineApp.Model
 
         private string _Location;
 
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public string location
         {
             get
@@ -61,7 +67,9 @@ namespace ClarolineApp.Model
         
         private string _Lasting;
 
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public string lasting
         {
             get

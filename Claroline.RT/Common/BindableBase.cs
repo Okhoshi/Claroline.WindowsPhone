@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml.Data;
 
-namespace ClarolineApp.RT.Common
+namespace Claroline.RT.Common
 {
     /// <summary>
     /// Implémentation de <see cref="INotifyPropertyChanged"/> pour simplifier les modèles.

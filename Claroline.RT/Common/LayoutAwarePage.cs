@@ -11,7 +11,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-namespace ClarolineApp.RT.Common
+namespace Claroline.RT.Common
 {
     /// <summary>
     /// Implémentation standard de page qui offre plusieurs avantages importants :

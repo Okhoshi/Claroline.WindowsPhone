@@ -11,7 +11,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 
-namespace ClarolineApp.RT.Common
+namespace Claroline.RT.Common
 {
     /// <summary>
     /// Convertisseur de valeur qui convertit true en <see cref="Visibility.Visible"/> et false en

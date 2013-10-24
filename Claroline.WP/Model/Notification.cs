@@ -3,13 +3,17 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+#if WINDOWS_PHONE
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
+#endif
 
 namespace ClarolineApp.Model
 {
 
-    [Table]
+#if WINDOWS_PHONE
+    [Table] 
+#endif
     public class Notification : ModelBase
     {
 
@@ -41,7 +45,9 @@ namespace ClarolineApp.Model
 
         private int _Id;
 
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+#if WINDOWS_PHONE
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)] 
+#endif
         public int Id
         {
             get
@@ -63,13 +69,15 @@ namespace ClarolineApp.Model
         {
             get
             {
-                return _resource.Entity.seenDate.CompareTo(date) < 0;
+                return resource.seenDate.CompareTo(date) < 0;
             }
         }
 
         private DateTime _date;
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public DateTime date
         {
             get
@@ -89,7 +97,9 @@ namespace ClarolineApp.Model
 
         private bool _isOldRessource;
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public bool isOldResource
         {
             get
@@ -115,6 +125,7 @@ namespace ClarolineApp.Model
             }
         }
 
+#if WINDOWS_PHONE
         #region Entity Side for Resource
 
         [Column]
@@ -152,17 +163,52 @@ namespace ClarolineApp.Model
         }
 
         #endregion
+#else
+        private int _resourceId;
+        private ResourceModel _resource;
+
+        public ResourceModel resource
+        {
+            get
+            {
+                return _resource;
+            }
+            set
+            {
+                RaisePropertyChanging("resource");
+                if (resource != null)
+                {
+                    resource.PropertyChanged -= resource_PropertyChanged;
+                }
+
+                _resource = value;
+
+                if (value != null)
+                {
+                    _resourceId = value.Id;
+                    date = resource.notifiedDate;
+                    resource.PropertyChanged += resource_PropertyChanged;
+                }
+
+                RaisePropertyChanged("resource");
+            }
+        }
+#endif
 
         // Version column aids update performance.
 
+#if WINDOWS_PHONE
         [Column(IsVersion = true)]
         private Binary _version;
 
-        // Define updated value: private Notifications, public property and database column.
+        // Define updated value: private Notifications, public property and database column.  
+#endif
 
         private bool _updated;
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public bool Updated
         {
             get

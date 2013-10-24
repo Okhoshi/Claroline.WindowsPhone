@@ -1,12 +1,17 @@
 ﻿using ClarolineApp.Common;
 using Newtonsoft.Json;
 using System;
+#if WINDOWS_PHONE
 using System.Data.Linq;
-using System.Data.Linq.Mapping;
+using System.Data.Linq.Mapping; 
+#endif
 
 namespace ClarolineApp.Model
 {
-    [Table]
+
+#if WINDOWS_PHONE
+    [Table] 
+#endif
     public class Post : ModelBase
     {
 
@@ -14,7 +19,9 @@ namespace ClarolineApp.Model
 
         // Define ID: internal Notifications, public property and database column.
 
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+#if WINDOWS_PHONE
+        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)] 
+#endif
         public virtual int Id
         {
             get
@@ -35,7 +42,9 @@ namespace ClarolineApp.Model
         private string _PosterLastname;
 
         [JsonProperty("lastname")]
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public string PosterLastname
         {
             get
@@ -56,7 +65,9 @@ namespace ClarolineApp.Model
         private string _PosterFirstname;
 
         [JsonProperty("firstname")]
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public string PosterFirstname
         {
             get
@@ -77,7 +88,9 @@ namespace ClarolineApp.Model
         private string _Text;
 
         [JsonProperty("post_text")]
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public string Text
         {
             get
@@ -97,7 +110,9 @@ namespace ClarolineApp.Model
 
         protected DateTime _NotifiedDate = DateTime.Parse("01/01/1753");
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public DateTime notifiedDate
         {
             get
@@ -126,7 +141,9 @@ namespace ClarolineApp.Model
 
         protected DateTime _SeenDate = DateTime.Parse("01/01/1753");
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public DateTime seenDate
         {
             get
@@ -147,7 +164,9 @@ namespace ClarolineApp.Model
 
         protected DateTime _Date = DateTime.Parse("01/01/1753");
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public DateTime date
         {
             get
@@ -165,7 +184,9 @@ namespace ClarolineApp.Model
             }
         }
 
-        #region Entity Side for Topic2Posts
+#if WINDOWS_PHONE
+		        #region Entity Side for Topic2Posts
+  
 
         [Column]
         protected int _TopicId;
@@ -204,6 +225,39 @@ namespace ClarolineApp.Model
         }
 
         #endregion
-        
+#else
+        protected int _TopicId;
+
+        protected Topic _Topic;
+
+        public Topic Topic
+        {
+            get { return _Topic; }
+            set
+            {
+                RaisePropertyChanging("Topic");
+
+                if (value != null)
+                {
+                    Topic previousValue = this._Topic;
+                    if (previousValue != value)
+                    {
+                        if (previousValue != null)
+                        {
+                            this._Topic = null;
+                            previousValue.Posts.Remove(this);
+                        }
+                        this._Topic = value;
+
+                        value.Posts.Add(this);
+                        this._TopicId = value.Id;
+                    }
+                }
+
+                RaisePropertyChanged("Topic");
+            }
+        }
+#endif
+
     }
 }

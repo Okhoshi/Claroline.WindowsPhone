@@ -28,7 +28,7 @@ namespace ClarolineApp.VM
                 }
                 else
                 {
-                    return AppSettings.Instance.PlatformSetting;
+                    return ViewModelLocator.Client.Settings.PlatformSetting;
                 }
             }
         }
@@ -53,27 +53,11 @@ namespace ClarolineApp.VM
             }
         }
 
-        public static AppSettings Settings
-        {
-            get
-            {
-                return AppSettings.Instance;
-            }
-        }
-
-        public static ClaroClient Client
-        {
-            get
-            {
-                return ClaroClient.Instance;
-            }
-        }
-
         public bool IsConnected
         {
             get
             {
-                return Settings.UserSetting != null && Settings.UserSetting.firstName != "";
+                return ViewModelLocator.Client.Settings.UserSetting != null && ViewModelLocator.Client.Settings.UserSetting.firstName != "";
             }
         }
 
@@ -100,7 +84,7 @@ namespace ClarolineApp.VM
 
             if (!DesignerProperties.IsInDesignTool)
             {
-                Settings.PropertyChanged += (sender, e) =>
+                ViewModelLocator.Client.PropertyChanged += (sender, e) =>
                 {
                     RaisePropertyChanged("IsConnected");
 
@@ -162,9 +146,9 @@ namespace ClarolineApp.VM
             ClarolineDB.Cours_Table.DeleteAllOnSubmit(AllCours);
             SaveChangesToDB();
 
-            Client.InvalidateClient();
+            ViewModelLocator.Client.InvalidateClient();
 
-            Settings.Reset();
+            ViewModelLocator.Client.Settings.Reset();
         }
 
         public void SaveChangesToDB()
@@ -393,7 +377,7 @@ namespace ClarolineApp.VM
             if (force || _lastClientCall.AddHours(UpdateDelay).CompareTo(DateTime.Now) < 0)
             {
                 IsLoading = true;
-                String updates = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER, SupportedMethods.GetUpdates);
+                String updates = await ViewModelLocator.Client.MakeOperationAsync(SupportedModules.USER, SupportedMethods.GetUpdates);
                 if (updates != "")
                 {
                     _lastClientCall = DateTime.Now;
@@ -498,9 +482,9 @@ namespace ClarolineApp.VM
         {
             IsLoading = true;
             _lastClientCall = DateTime.Now;
-            String strContent = await ClaroClient.Instance.MakeOperationAsync(container.GetSupportedModule(),
+            String strContent = await ViewModelLocator.Client.MakeOperationAsync(container.GetSupportedModule(),
                                                                               SupportedMethods.GetResourcesList,
-                                                                              reqCours: container.Cours.sysCode,
+                                                                              syscode: container.Cours.sysCode,
                                                                               genMod: container.label);
 
             if (strContent != "")
@@ -520,7 +504,7 @@ namespace ClarolineApp.VM
         {
             IsLoading = true;
             _lastClientCall = DateTime.Now;
-            String strContent = await ClaroClient.Instance.MakeOperationAsync(container.GetSupportedModule(),
+            String strContent = await ViewModelLocator.Client.MakeOperationAsync(container.GetSupportedModule(),
                                                                               SupportedMethods.GetSingleResource,
                                                                               container.Cours.sysCode,
                                                                               resourceString);
@@ -536,7 +520,7 @@ namespace ClarolineApp.VM
         public async Task<bool> GetUserDataAsync()
         {
             IsLoading = true;
-            String strContent = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER,
+            String strContent = await ViewModelLocator.Client.MakeOperationAsync(SupportedModules.USER,
                                                                               SupportedMethods.GetUserData);
 
             if (strContent != "")
@@ -582,7 +566,7 @@ namespace ClarolineApp.VM
         {
             IsLoading = true;
             _lastClientCall = DateTime.Now;
-            String strContent = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER,
+            String strContent = await ViewModelLocator.Client.MakeOperationAsync(SupportedModules.USER,
                                                                               SupportedMethods.GetCourseList);
             if (strContent != "")
             {
@@ -602,7 +586,7 @@ namespace ClarolineApp.VM
         {
             IsLoading = false;
             _lastClientCall = DateTime.Now;
-            String strContent = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER,
+            String strContent = await ViewModelLocator.Client.MakeOperationAsync(SupportedModules.USER,
                                                                               SupportedMethods.GetToolList,
                                                                               cours.sysCode);
             if (strContent != "")
@@ -643,19 +627,14 @@ namespace ClarolineApp.VM
 
         public async Task<bool> CheckHostValidity(string url)
         {
-            string page = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.NOMOD, SupportedMethods.GetPage, genMod: url, forAuth: true);
+            string page = await ViewModelLocator.Client.MakeOperationAsync(SupportedModules.NOMOD, SupportedMethods.GetPage, genMod: url, forAuth: true);
             return page.Contains("<!-- - - - - - - - - - - Claroline Body - - - - - - - - - -->");
         }
 
         public async Task<string> CheckModuleValidity()
         {
-            Regex regex = new Regex(@"<!-- PLATFORM SETTINGS (\P{Cn}*?) PLATFORM SETTINGS -->", RegexOptions.CultureInvariant);
-            string page = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.NOMOD, SupportedMethods.GetPage, genMod: AppSettings.Instance.DomainSetting);
-            if (regex.IsMatch(page))
-            {
-                return regex.Match(page).Groups[1].Value;
-            }
-            return "{}";
+            string page = await ViewModelLocator.Client.MakeOperationAsync(SupportedModules.USER, SupportedMethods.GetPlatformData);
+            return page;
         }
     }
 }

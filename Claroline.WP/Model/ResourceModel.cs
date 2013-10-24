@@ -1,11 +1,15 @@
 ﻿using ClarolineApp.Common;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+#if WINDOWS_PHONE
 using System.Data.Linq;
-using System.Data.Linq.Mapping;
+using System.Data.Linq.Mapping; 
+#endif
 
 namespace ClarolineApp.Model
 {
+#if WINDOWS_PHONE
     [Table]
     [InheritanceMapping(Code = SupportedModules.NOMOD, Type = typeof(ResourceModel), IsDefault = true)]
     [InheritanceMapping(Code = SupportedModules.CLANN, Type = typeof(Annonce))]
@@ -13,16 +17,31 @@ namespace ClarolineApp.Model
     [InheritanceMapping(Code = SupportedModules.CLDOC, Type = typeof(Document))]
     [InheritanceMapping(Code = SupportedModules.CLCAL, Type = typeof(Event))]
     [InheritanceMapping(Code = SupportedModules.CLFRM, Type = typeof(Forum))]
+#endif
     public class ResourceModel : ModelBase
     {
 
         public ResourceModel()
         {
             DiscKey = SupportedModules.NOMOD;
+#if WINDOWS_PHONE
             _notifications = new EntitySet<Notification>(
-                new Action<Notification>(attach_Notification),
-                new Action<Notification>(detach_Notification)
-                );
+                    new Action<Notification>(attach_Notification),
+                    new Action<Notification>(detach_Notification)
+                    );
+#else
+            _notifications.CollectionChanged += (s, e) =>
+            {
+                foreach (Notification item in e.NewItems)
+                {
+                    item.resource = this;
+                }
+                foreach (Notification item in e.OldItems)
+                {
+                    item.resource = null;
+                }
+            };
+#endif
         }
 
         public const string Label = "NOMOD";
@@ -31,7 +50,9 @@ namespace ClarolineApp.Model
 
         // Define ID: internal Notifications, public property and database column.
 
-        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+#if WINDOWS_PHONE
+		        [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+#endif
         public virtual int Id
         {
             get
@@ -49,12 +70,16 @@ namespace ClarolineApp.Model
             }
         }
 
-        [Column(IsDiscriminator = true)]
+#if WINDOWS_PHONE
+		        [Column(IsDiscriminator = true)]
+ #endif        
         public SupportedModules DiscKey;
 
         protected string _Title;
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public string title
         {
             get
@@ -74,7 +99,9 @@ namespace ClarolineApp.Model
 
         protected string _resourceId;
 
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public string resourceId
         {
             get
@@ -94,7 +121,9 @@ namespace ClarolineApp.Model
 
         protected DateTime _NotifiedDate = DateTime.Parse("01/01/1753");
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public DateTime notifiedDate
         {
             get
@@ -123,7 +152,9 @@ namespace ClarolineApp.Model
 
         protected DateTime _SeenDate = DateTime.Parse("01/01/1753");
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public DateTime seenDate
         {
             get
@@ -144,7 +175,9 @@ namespace ClarolineApp.Model
 
         protected DateTime _Date = DateTime.Parse("01/01/1753");
 
-        [Column(CanBeNull=true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public DateTime date
         {
             get
@@ -164,7 +197,9 @@ namespace ClarolineApp.Model
 
         protected bool _Visibility = true;
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public bool visibility
         {
             get
@@ -184,7 +219,9 @@ namespace ClarolineApp.Model
 
         protected string _url;
 
-        [Column(CanBeNull = true)]
+#if WINDOWS_PHONE
+        [Column(CanBeNull = true)] 
+#endif
         public string url
         {
             get
@@ -204,7 +241,9 @@ namespace ClarolineApp.Model
 
         protected bool _Updated;
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public bool updated
         {
             get
@@ -224,7 +263,9 @@ namespace ClarolineApp.Model
 
         protected DateTime _Loaded = DateTime.Parse("01/01/1753");
 
-        [Column]
+#if WINDOWS_PHONE
+        [Column] 
+#endif
         public DateTime loaded
         {
             get
@@ -242,6 +283,7 @@ namespace ClarolineApp.Model
             }
         }
 
+#if WINDOWS_PHONE
         #region Collection Side for Notification
 
         // Define the entity set for the collection side of the relationship.
@@ -271,13 +313,33 @@ namespace ClarolineApp.Model
             _notification.resource = null;
         }
 
-        #endregion
+        #endregion 
+#else
+        private ObservableCollection<Notification> _notifications;
 
+        public ObservableCollection<Notification> notifications
+        {
+            get
+            {
+                return _notifications;
+            }
+            set
+            {
+                if (value != _notifications)
+                {
+                    value = _notifications;
+                    RaisePropertyChanged("notifications");
+                }
+            }
+        }
+#endif
+
+#if WINDOWS_PHONE
         #region Entity Side for ResourceList
 
         [Column]
         protected int _resourceListId;
-
+		
         protected EntityRef<ResourceList> _resourceList;
 
         // Association, to describe the relationship between this key and that "storage" table
@@ -311,8 +373,42 @@ namespace ClarolineApp.Model
             }
         }
 
-        #endregion
+        #endregion  
+#else
+        protected int _resourceListId;
+        
+        protected ResourceList _resourceList;
 
+        public ResourceList ResourceList
+        {
+            get { return _resourceList; }
+            set
+            {
+                RaisePropertyChanging("ResourceList");
+
+                if (value != null)
+                {
+                    ResourceList previousValue = this._resourceList;
+                    if (previousValue != value)
+                    {
+                        if (previousValue != null)
+                        {
+                            this._resourceList = null;
+                            previousValue.Resources.Remove(this);
+                        }
+                        this._resourceList = value;
+
+                        value.Resources.Add(this);
+                        this._resourceListId = value.Id;
+                    }
+                }
+
+                RaisePropertyChanged("ResourceList");
+            }
+        }
+#endif
+
+#if WINDOWS_PHONE
         // Version column aids update performance.
         private Binary v;
 
@@ -327,7 +423,8 @@ namespace ClarolineApp.Model
             {
                 v = value;
             }
-        }
+        } 
+#endif
 
         public override int GetHashCode()
         {

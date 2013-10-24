@@ -9,12 +9,13 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.ApplicationModel.Activation;
+using ClarolineApp.Settings;
 
 namespace ClarolineApp.RT.Models
 {
     public delegate void SynchronizedHandler(object sender, EventArgs e);
 
-    public class ApplicationModel : ViewModelBase
+    public class ApplicationModel : ViewModelBase, ISettings
     {
         private static ApplicationModel instance;
 

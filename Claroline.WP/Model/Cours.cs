@@ -1,26 +1,36 @@
-﻿using Microsoft.Phone.Data.Linq.Mapping;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+#if WINDOWS_PHONE
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
+using Microsoft.Phone.Data.Linq.Mapping;
+#endif
 using System.Linq;
 using System.Text;
+using System.Collections.ObjectModel;
 
 namespace ClarolineApp.Model
 {
+#if WINDOWS_PHONE
     [Table]
     [Index(Name = "i_SysCode", IsUnique = true, Columns = "sysCode")]
-    public class Cours : INotifyPropertyChanged, INotifyPropertyChanging
+#endif
+    public class Cours : INotifyPropertyChanged
+#if WINDOWS_PHONE
+                       , INotifyPropertyChanging
+#endif
     {
 
         public Cours()
         {
+#if WINDOWS_PHONE
             _Resources = new EntitySet<ResourceList>(
                 new Action<ResourceList>(this.attach_Resources),
                 new Action<ResourceList>(this.detach_Resources)
                 );
+#endif
             _Resources.CollectionChanged += _resources_CollectionChanged;
         }
 
@@ -45,8 +55,9 @@ namespace ClarolineApp.Model
         // Define ID: private Notifications, public property and database column.
 
         private int _Id;
-
+#if WINDOWS_PHONE
         [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL Identity", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
+#endif
         public int Id
         {
             get
@@ -67,8 +78,9 @@ namespace ClarolineApp.Model
         // Define item name: private Notifications, public property and database column.
 
         private string _CoursName;
-
+#if WINDOWS_PHONE
         [Column]
+#endif
         public string title
         {
             get
@@ -90,7 +102,9 @@ namespace ClarolineApp.Model
 
         private string _Titular;
 
+#if WINDOWS_PHONE
         [Column]
+#endif
         public string titular
         {
             get
@@ -110,7 +124,9 @@ namespace ClarolineApp.Model
 
         private string _officialEmail;
 
+#if WINDOWS_PHONE
         [Column]
+#endif
         public string officialEmail
         {
             get
@@ -140,7 +156,9 @@ namespace ClarolineApp.Model
 
         private string _CoursTag;
 
+#if WINDOWS_PHONE
         [Column]
+#endif
         public string sysCode
         {
             get
@@ -160,7 +178,9 @@ namespace ClarolineApp.Model
 
         private string _officialCode;
 
+#if WINDOWS_PHONE
         [Column]
+#endif
         public string officialCode
         {
             get
@@ -178,7 +198,7 @@ namespace ClarolineApp.Model
             }
         }
 
-
+#if WINDOWS_PHONE
         #region Collections
 
         #region Collection Side for Resource - COURS
@@ -212,18 +232,6 @@ namespace ClarolineApp.Model
             //_resources.PropertyChanged -= this.resources_PropertyChanged;
         }
 
-        void resources_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            switch (e.PropertyName)
-            {
-                case "isNotified":
-                    NotifyPropertyChanged("isNotified");
-                    break;
-                default:
-                    break;
-            }
-        }
-
         #endregion
 
         #endregion
@@ -233,11 +241,30 @@ namespace ClarolineApp.Model
         [Column(IsVersion = true)]
         private Binary _version;
 
-        // Define updated value: private Notifications, public property and database column.
+#else
+        private ObservableCollection<ResourceList> _Resources;
+        public ObservableCollection<ResourceList> Resources
+        {
+            get
+            {
+                return _Resources;
+            }
+            set
+            {
+                if (value != _Resources)
+                {
+                    _Resources = value;
+                    NotifyPropertyChanged("Resources");
+                }
+            }
+        }
+#endif
 
         private bool _updated;
 
+#if WINDOWS_PHONE
         [Column]
+#endif
         public bool updated
         {
             get
@@ -272,17 +299,19 @@ namespace ClarolineApp.Model
         #endregion
 
         #region INotifyPropertyChanging Members
-
+#if WINDOWS_PHONE
         public event PropertyChangingEventHandler PropertyChanging;
-
+#endif
         // Used to notify that a property is about to change
 
         private void NotifyPropertyChanging(string propertyName)
         {
+#if WINDOWS_PHONE
             if (PropertyChanging != null)
             {
                 PropertyChanging(this, new PropertyChangingEventArgs(propertyName));
             }
+#endif
         }
 
         #endregion
@@ -304,7 +333,10 @@ namespace ClarolineApp.Model
 
         private DateTime _Loaded = DateTime.Parse("01/01/1753");
 
+
+#if WINDOWS_PHONE
         [Column]
+#endif
         public DateTime loaded
         {
             get
@@ -333,6 +365,18 @@ namespace ClarolineApp.Model
             {
                 item.PropertyChanged += resources_PropertyChanged;
                 item.ReloadPropertyChangedHandler();
+            }
+        }
+
+        private void resources_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "isNotified":
+                    NotifyPropertyChanged("isNotified");
+                    break;
+                default:
+                    break;
             }
         }
 

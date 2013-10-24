@@ -8,18 +8,18 @@ using System.Windows;
 
 namespace ClarolineApp.Settings
 {
-    public class AppSettings : INotifyPropertyChanged
+    public class AppSettings : ISettings
     {
-        private static AppSettings _instance;
+        private static ISettings _instance;
 
-        public static AppSettings Instance
+        public static ISettings Instance
         {
             get {
                 if (_instance == null)
                 {
                     _instance = new AppSettings();
                 }
-                return AppSettings._instance; 
+                return _instance; 
             }
         }
 
@@ -490,7 +490,7 @@ namespace ClarolineApp.Settings
 
         #endregion
 
-        internal void Reset()
+        public void Reset()
         {
             UserSetting = new User();
             PlatformSetting = PlatformSettingDefault;
