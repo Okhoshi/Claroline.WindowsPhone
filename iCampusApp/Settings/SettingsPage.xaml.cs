@@ -153,6 +153,7 @@ namespace ClarolineApp.Settings
                     }
                     else
                     {
+                        ClaroClient.Instance.InvalidateClient();
                         ShowMessage(AppLanguage.ErrorMessage_MissingModule); // Missing Module
                     }
                 }
@@ -200,6 +201,7 @@ namespace ClarolineApp.Settings
         private async void Validate_Click(object sender, RoutedEventArgs e)
         {
             string url = SiteTextBox.Text;
+            errorDetail.Text = AppLanguage.ErrorMessage_NotAClarolinePlatform;
 
             if (AppSettings.Instance.UseSSLSetting)
             {
@@ -208,8 +210,15 @@ namespace ClarolineApp.Settings
             bool isHostValid = await _viewModel.CheckHostValidity(url);
             if (AppSettings.Instance.UseSSLSetting && !isHostValid)
             {
-                url = url.Replace("https://", "http://");
-                isHostValid = await _viewModel.CheckHostValidity(url);
+                if (AppSettings.Instance.TryHTTPSetting)
+                {
+                    url = url.Replace("https://", "http://");
+                    isHostValid = await _viewModel.CheckHostValidity(url);
+                }
+                else
+                {
+                    errorDetail.Text = AppLanguage.ErrorMessage_NoSSLAvailable;
+                }
             }
 
             AppSettings.Instance.DomainSetting = url;

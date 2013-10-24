@@ -649,13 +649,9 @@ namespace ClarolineApp.VM
 
         public async Task<string> CheckModuleValidity()
         {
-            Regex regex = new Regex(@"<!-- PLATFORM SETTINGS (\P{Cn}*?) PLATFORM SETTINGS -->", RegexOptions.CultureInvariant);
-            string page = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.NOMOD, SupportedMethods.GetPage, genMod: AppSettings.Instance.DomainSetting);
-            if (regex.IsMatch(page))
-            {
-                return regex.Match(page).Groups[1].Value;
-            }
-            return "{}";
+            string page = await ClaroClient.Instance.MakeOperationAsync(SupportedModules.USER, SupportedMethods.GetPlatformData);
+            if (page == "" && ClaroClient.Instance.LastException != null) return "{}";
+            return page;
         }
     }
 }

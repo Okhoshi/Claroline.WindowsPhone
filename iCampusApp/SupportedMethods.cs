@@ -26,6 +26,7 @@ namespace ClarolineApp
         GetCourseList,
         GetToolList,
         GetUpdates,
+        GetPlatformData,
         //CLXXX
         GetResourcesList,
         GetSingleResource
@@ -121,6 +122,7 @@ namespace ClarolineApp
                         case SupportedMethods.GetUpdates:
                         case SupportedMethods.GetCourseList:
                         case SupportedMethods.GetUserData:
+                        case SupportedMethods.GetPlatformData:
                             postString += "module=" + GetEnumName(module) + "&method=" + GetEnumName(method);
                             break;
                         default:

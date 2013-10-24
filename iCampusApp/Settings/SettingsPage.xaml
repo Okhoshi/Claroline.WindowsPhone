@@ -187,8 +187,9 @@
 						<TextBlock HorizontalAlignment="Center" x:Name="SiteLabel" Text="{Binding LocalizedResources.SettingsPage_Platform_URL, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
 						<TextBox Height="72" HorizontalAlignment="Center" x:Name="SiteTextBox" Text="{Binding DomainSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412" TextChanged="SiteTextBox_TextChanged" KeyDown="SiteTextBox_KeyDown"/>
 						<Button x:Name="button" Content="{Binding LocalizedResources.SettingsPage_Platform_ValidateButton, Mode=OneWay, Source={StaticResource LocalizedStrings}}" Margin="22,0" Click="Validate_Click"/>
-						<TextBlock x:Name="errorDetail" TextWrapping="Wrap" Padding="0" Margin="35,0" Foreground="Red" Opacity="0" Text="{Binding LocalizedResources.ErrorMessage_NotAClarolinePlatform, Mode=OneWay, Source={StaticResource LocalizedStrings}}" Visibility="Collapsed"/>
-						<CheckBox HorizontalContentAlignment="Stretch" IsChecked="{Binding UseSSLSetting, Mode=TwoWay}" VerticalContentAlignment="Stretch" Padding="0" Margin="22,0"><TextBlock Text="{Binding LocalizedResources.SettingsPage_Platform_UseSSL, Mode=OneWay, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"></TextBlock></CheckBox>
+						<TextBlock x:Name="errorDetail" TextWrapping="Wrap" Padding="0" Margin="35,0" Foreground="Red" Opacity="0" Visibility="Collapsed"/>
+						<CheckBox x:Name="checkBox" HorizontalContentAlignment="Stretch" IsChecked="{Binding UseSSLSetting, Mode=TwoWay}" VerticalContentAlignment="Stretch" Padding="0,-11" Margin="22,11,22,0"><TextBlock Text="{Binding LocalizedResources.SettingsPage_Platform_UseSSL, Mode=OneWay, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"></TextBlock></CheckBox>
+						<CheckBox Margin="22,0" Padding="0,-11" Visibility="{Binding IsChecked, Converter={StaticResource VisibilityConverter}, ElementName=checkBox, Mode=TwoWay}" IsChecked="{Binding TryHTTPSetting, Mode=TwoWay}"><TextBlock Text="{Binding LocalizedResources.SettingsPage_Platform_TryHTTP, Mode=OneWay, Source={StaticResource LocalizedStrings}}" TextWrapping="Wrap"></TextBlock></CheckBox>
 						<toolkit:ToggleSwitch x:Name="toggleSwitch" Header="" Margin="22,0" Content="{Binding LocalizedResources.SettingsPage_Platform_AdvancedSwitch, Source={StaticResource LocalizedStrings}}" IsChecked="{Binding AdvancedSwitchSetting, Mode=TwoWay}"/>
 						<StackPanel x:Name="stackPanel2" Margin="22,0" Orientation="Vertical" Height="230">
 							<TextBlock HorizontalAlignment="Center" x:Name="WebServiceLabel" Text="{Binding LocalizedResources.SettingsPage_Platform_WebServicePath, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}" Width="Auto" />
@@ -216,8 +217,10 @@
 						<TextBox Height="72" HorizontalAlignment="Center" x:Name="userTextBox" Text="{Binding UserNameSetting, Mode=TwoWay}" VerticalAlignment="Top" Width="412"/>
 						<TextBlock HorizontalAlignment="Center" x:Name="passLabel" Text="{Binding LocalizedResources.SettingsPage_User_Password, Converter={StaticResource ToLower}, Source={StaticResource LocalizedStrings}}" VerticalAlignment="Top" Style="{StaticResource PhoneTextLargeStyle}"/>
 						<PasswordBox Height="72" HorizontalAlignment="Center" x:Name="passwordBox" VerticalAlignment="Top" Width="412" Password="{Binding PasswordSetting, Mode=TwoWay}" Margin="22,0" KeyDown="passwordBox_KeyDown"/>
-						<TextBlock x:Name="userError" TextWrapping="Wrap" Margin="35,0" Foreground="Red" Visibility="Collapsed" Opacity="0"/>
-						<Button x:Name="Connect" Content="{Binding LocalizedResources.SettingsPage_User_ConnectButton, Source={StaticResource LocalizedStrings}}" Margin="24,40,24,0" Click="Connect_Button" IsEnabled="{Binding IsValidHostSetting}"/>
+                        <ScrollViewer MaxHeight="200">
+                            <TextBlock x:Name="userError" TextWrapping="Wrap" Margin="35,0" Foreground="Red" Visibility="Collapsed" Opacity="0"/>
+                        </ScrollViewer>
+                        <Button x:Name="Connect" Content="{Binding LocalizedResources.SettingsPage_User_ConnectButton, Source={StaticResource LocalizedStrings}}" Margin="24,40,24,0" Click="Connect_Button" IsEnabled="{Binding IsValidHostSetting}"/>
 					</StackPanel>
 					<StackPanel x:Name="UserPage" Margin="0">
 						<StackPanel.Projection>

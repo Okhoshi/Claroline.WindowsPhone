@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{d227b75f-0d69-40c4-838b-a821a20a2e4b}" Title="Claroline Mobile" RuntimeType="Silverlight" Version="1.2.0.0" Genre="apps.normal" Author="Quentin Devos" Description="Sample description" Publisher="iCampusApp" BitsPerPixel="32">
+  <App xmlns="" ProductID="{d227b75f-0d69-40c4-838b-a821a20a2e4b}" Title="Claroline Mobile" RuntimeType="Silverlight" Version="1.2.1.0" Genre="apps.normal" Author="Quentin Devos" Description="Sample description" Publisher="iCampusApp" BitsPerPixel="32">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_MEDIALIB" />

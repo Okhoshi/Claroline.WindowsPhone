@@ -44,6 +44,7 @@ namespace ClarolineApp.Settings
         internal const string UserSettingKeyName = "UserSetting";
         internal const string ValidHostSettingKeyName = "IsValidHostSetting";
         internal const string SSLSettingKeyName = "UseSSLSetting";
+        internal const string HTTPSettingKeyName = "TryHTTPSetting";
         internal const string LastListRequestSettingKeyName = "LastListRequestSetting";
 
         // The default value of our Settings
@@ -68,6 +69,7 @@ namespace ClarolineApp.Settings
         const User UserSettingDefault = null;
         const bool ValidHostSettingDefault = false;
         const bool SSLSettingDefault = true;
+        const bool HTTPSettingDefault = false;
         DateTime LastListRequestSettingDefault = DateTime.Now;
 
         public AppSettings()
@@ -419,6 +421,21 @@ namespace ClarolineApp.Settings
             set
             {
                 if (AddOrUpdateValue(SSLSettingKeyName, value))
+                {
+                    Save();
+                }
+            }
+        }
+
+        public bool TryHTTPSetting
+        {
+            get
+            {
+                return GetValueOrDefault<bool>(HTTPSettingKeyName, HTTPSettingDefault);
+            }
+            set
+            {
+                if (AddOrUpdateValue(HTTPSettingKeyName, value))
                 {
                     Save();
                 }
