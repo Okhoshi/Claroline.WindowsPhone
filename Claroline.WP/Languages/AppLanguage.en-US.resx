@@ -297,4 +297,10 @@ Ask your platform manager to contact us for more infos</value>
   <data name="AppBar_Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="SettingsPage_Platform_TryHTTP" xml:space="preserve">
+    <value>Try unsecure connection</value>
+  </data>
+  <data name="ErrorMessage_NoSSLAvailable" xml:space="preserve">
+    <value>No securized connection are provided by the server</value>
+  </data>
 </root>

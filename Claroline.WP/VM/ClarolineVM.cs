@@ -634,6 +634,7 @@ namespace ClarolineApp.VM
         public async Task<string> CheckModuleValidity()
         {
             string page = await ViewModelLocator.Client.MakeOperationAsync(SupportedModules.USER, SupportedMethods.GetPlatformData);
+            if (page == "" && ViewModelLocator.Client.LastException != null) return "{}";
             return page;
         }
     }

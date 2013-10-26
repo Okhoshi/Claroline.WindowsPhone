@@ -307,4 +307,10 @@ Demandez à votre gestionnnaire de le mettre à jour afin de pouvoir continuer �
   <data name="AppBar_Settings" xml:space="preserve">
     <value>Réglages</value>
   </data>
+  <data name="SettingsPage_Platform_TryHTTP" xml:space="preserve">
+    <value>Autoriser les connexions non-sécurisées</value>
+  </data>
+  <data name="ErrorMessage_NoSSLAvailable" xml:space="preserve">
+    <value>Aucune connexion sécurisée n'est disponible</value>
+  </data>
 </root>
