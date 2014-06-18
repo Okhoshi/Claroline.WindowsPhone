@@ -1,55 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Application xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone" xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone" xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" xmlns:local="clr-namespace:ClarolineApp" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vsm="clr-namespace:System.Windows;assembly=System.Windows" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" x:Class="ClarolineApp.App" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" d1p1:Ignorable="d" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
-  <Application.Resources>
-    <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="TemplateSelector/ResourceListPivotItemTemplates.xaml" />
-      </ResourceDictionary.MergedDictionaries>
-      <local:LocalizedStrings x:Key="LocalizedStrings" />
-      <local:StatusConverter x:Key="StatusConverter" />
-      <local:VisibilityConverter x:Key="VisibilityConverter" />
-      <local:CoursPageTitleConverter x:Key="TitleConverter" />
-      <local:SizeFileConverter x:Key="SizeConv" />
-      <local:ToLower x:Key="ToLower" />
-      <local:ToUpper x:Key="ToUpper" />
-      <local:PostSubtitleConverter x:Key="PostSubtitle" />
-      <local:DescVisibilityConverter x:Key="DescVisibilityConverter" />
-      <Style x:Key="StretchStyle" TargetType="ListBoxItem">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-      </Style>
-      <Style x:Key="TransitionPageStyle" TargetType="phone:PhoneApplicationPage">
-        <Setter Property="toolkit:TransitionService.NavigationInTransition">
-          <Setter.Value>
-            <toolkit:NavigationInTransition>
-              <toolkit:NavigationInTransition.Backward>
-                <toolkit:TurnstileTransition Mode="BackwardIn" />
-              </toolkit:NavigationInTransition.Backward>
-              <toolkit:NavigationInTransition.Forward>
-                <toolkit:TurnstileTransition Mode="ForwardIn" />
-              </toolkit:NavigationInTransition.Forward>
-            </toolkit:NavigationInTransition>
-          </Setter.Value>
-        </Setter>
-        <Setter Property="toolkit:TransitionService.NavigationOutTransition">
-          <Setter.Value>
-            <toolkit:NavigationOutTransition>
-              <toolkit:NavigationOutTransition.Backward>
-                <toolkit:TurnstileTransition Mode="BackwardOut" />
-              </toolkit:NavigationOutTransition.Backward>
-              <toolkit:NavigationOutTransition.Forward>
-                <toolkit:TurnstileTransition Mode="ForwardOut" />
-              </toolkit:NavigationOutTransition.Forward>
-            </toolkit:NavigationOutTransition>
-          </Setter.Value>
-        </Setter>
-      </Style>
-      <Thickness x:Key="GroupHeaderTemplate">5</Thickness>
-      <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:ClarolineApp.ViewModel" />
-    </ResourceDictionary>
-  </Application.Resources>
-  <!--Ressources d'applications-->
-  <Application.ApplicationLifetimeObjects>
-    <!--Objet requis qui gère les événements de durée de vie pour l'application-->
-    <shell:PhoneApplicationService Launching="Application_Launching" Closing="Application_Closing" Activated="Application_Activated" Deactivated="Application_Deactivated" />
-  </Application.ApplicationLifetimeObjects>
+<Application xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+             xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+             xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+             xmlns:local="clr-namespace:ClarolineApp"
+             xmlns:vm="clr-namespace:ClarolineApp.VM"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vsm="clr-namespace:System.Windows;assembly=System.Windows"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             x:Class="ClarolineApp.App"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             d1p1:Ignorable="d"
+             xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="TemplateSelector/ResourceListPivotItemTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <local:LocalizedStrings x:Key="LocalizedStrings" />
+            <local:StatusConverter x:Key="StatusConverter" />
+            <local:VisibilityConverter x:Key="VisibilityConverter" />
+            <local:CoursPageTitleConverter x:Key="TitleConverter" />
+            <local:SizeFileConverter x:Key="SizeConv" />
+            <local:ToLower x:Key="ToLower" />
+            <local:ToUpper x:Key="ToUpper" />
+            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+            <local:PostSubtitleConverter x:Key="PostSubtitle" />
+            <local:DescVisibilityConverter x:Key="DescVisibilityConverter" />
+            <Style x:Key="StretchStyle" TargetType="ListBoxItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            </Style>
+            <Style x:Key="TransitionPageStyle" TargetType="phone:PhoneApplicationPage">
+                <Setter Property="toolkit:TransitionService.NavigationInTransition">
+                    <Setter.Value>
+                        <toolkit:NavigationInTransition>
+                            <toolkit:NavigationInTransition.Backward>
+                                <toolkit:TurnstileTransition Mode="BackwardIn" />
+                            </toolkit:NavigationInTransition.Backward>
+                            <toolkit:NavigationInTransition.Forward>
+                                <toolkit:TurnstileTransition Mode="ForwardIn" />
+                            </toolkit:NavigationInTransition.Forward>
+                        </toolkit:NavigationInTransition>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="toolkit:TransitionService.NavigationOutTransition">
+                    <Setter.Value>
+                        <toolkit:NavigationOutTransition>
+                            <toolkit:NavigationOutTransition.Backward>
+                                <toolkit:TurnstileTransition Mode="BackwardOut" />
+                            </toolkit:NavigationOutTransition.Backward>
+                            <toolkit:NavigationOutTransition.Forward>
+                                <toolkit:TurnstileTransition Mode="ForwardOut" />
+                            </toolkit:NavigationOutTransition.Forward>
+                        </toolkit:NavigationOutTransition>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Thickness x:Key="GroupHeaderTemplate">5</Thickness>
+        </ResourceDictionary>
+    </Application.Resources>
+    <!--Ressources d'applications-->
+    <Application.ApplicationLifetimeObjects>
+        <!--Objet requis qui gère les événements de durée de vie pour l'application-->
+        <shell:PhoneApplicationService Launching="Application_Launching" Closing="Application_Closing" Activated="Application_Activated" Deactivated="Application_Deactivated" />
+    </Application.ApplicationLifetimeObjects>
 </Application>

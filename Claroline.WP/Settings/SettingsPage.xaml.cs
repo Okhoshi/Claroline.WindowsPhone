@@ -19,6 +19,7 @@ using ClarolineApp.VM;
 using System.IO;
 using Newtonsoft.Json;
 using ClarolineApp.Languages;
+using Microsoft.Practices.ServiceLocation;
 
 namespace ClarolineApp.Settings
 {
@@ -44,12 +45,19 @@ namespace ClarolineApp.Settings
 
         ClarolineVM _viewModel;
 
+        public ISettings Settings
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ISettings>();
+            }
+        }
+
         public SettingsPage()
         {
             InitializeComponent();
 
-            _viewModel = new ClarolineVM();
-            this.DataContext = _viewModel;
+            _viewModel = this.DataContext as ClarolineVM;
 
             ViewModelLocator.Client.Settings.PropertyChanged += (sender, e) =>
             {
@@ -83,7 +91,7 @@ namespace ClarolineApp.Settings
                 }
             };
 
-            if (AppSettings.Instance.IsValidHostSetting)
+            if (Settings.IsValidHostSetting)
             {
                 VisualStateManager.GoToState(this, "Valid", true);
             }
@@ -131,7 +139,7 @@ namespace ClarolineApp.Settings
                                     case "path":
                                         if (reader.Read() && reader.TokenType == JsonToken.String)
                                         {
-                                            AppSettings.Instance.WebServiceSetting = reader.Value.ToString();
+                                            Settings.WebServiceSetting = reader.Value.ToString();
                                         }
                                         else
                                         {
@@ -153,7 +161,7 @@ namespace ClarolineApp.Settings
                     }
                     else
                     {
-                        ClaroClient.Instance.InvalidateClient();
+                        ViewModelLocator.Client.InvalidateClient();
                         ShowMessage(AppLanguage.ErrorMessage_MissingModule); // Missing Module
                     }
                 }
@@ -191,9 +199,9 @@ namespace ClarolineApp.Settings
         private void passwordBox_KeyDown(object sender, KeyEventArgs e)
         {
             ShowMessage(null);
-            if (e.Key == Key.Enter && AppSettings.Instance.IsValidHostSetting)
+            if (e.Key == Key.Enter && Settings.IsValidHostSetting)
             {
-                AppSettings.Instance.PasswordSetting = (sender as PasswordBox).Password;
+                Settings.PasswordSetting = (sender as PasswordBox).Password;
                 Connect_Button(sender, null);
             }
         }
@@ -203,14 +211,14 @@ namespace ClarolineApp.Settings
             string url = SiteTextBox.Text;
             errorDetail.Text = AppLanguage.ErrorMessage_NotAClarolinePlatform;
 
-            if (AppSettings.Instance.UseSSLSetting)
+            if (Settings.UseSSLSetting)
             {
                 url = url.Replace("http://", "https://");
             }
             bool isHostValid = await _viewModel.CheckHostValidity(url);
-            if (AppSettings.Instance.UseSSLSetting && !isHostValid)
+            if (Settings.UseSSLSetting && !isHostValid)
             {
-                if (AppSettings.Instance.TryHTTPSetting)
+                if (Settings.TryHTTPSetting)
                 {
                     url = url.Replace("https://", "http://");
                     isHostValid = await _viewModel.CheckHostValidity(url);
@@ -221,25 +229,25 @@ namespace ClarolineApp.Settings
                 }
             }
 
-            AppSettings.Instance.DomainSetting = url;
-            AppSettings.Instance.IsValidHostSetting = isHostValid;
+            Settings.DomainSetting = url;
+            Settings.IsValidHostSetting = isHostValid;
             VisualStateManager.GoToState(this, isHostValid ? "Valid" : "Invalid", true);
         }
 
         private void SiteTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!AppSettings.Instance.DomainSetting.Equals(SiteTextBox.Text))
+            if (!Settings.DomainSetting.Equals(SiteTextBox.Text))
             {
                 VisualStateManager.GoToState(this, "Default", true);
-                AppSettings.Instance.IsValidHostSetting = false;
+                Settings.IsValidHostSetting = false;
             }
         }
 
         private void SiteTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter && !AppSettings.Instance.IsValidHostSetting)
+            if (e.Key == Key.Enter && !Settings.IsValidHostSetting)
             {
-                AppSettings.Instance.DomainSetting = (sender as TextBox).Text;
+                Settings.DomainSetting = (sender as TextBox).Text;
                 Validate_Click(sender, null);
             }
         }

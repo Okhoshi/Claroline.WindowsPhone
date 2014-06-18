@@ -2,7 +2,7 @@
 
 namespace ClarolineApp.VM
 {
-    interface IDetailPageVM : IClarolineVM
+    public interface IDetailPageVM : IClarolineVM
     {
         ResourceModel currentResource
         {

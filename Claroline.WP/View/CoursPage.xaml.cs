@@ -4,6 +4,7 @@ using ClarolineApp.Settings;
 using ClarolineApp.VM;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -80,7 +81,7 @@ namespace ClarolineApp
             {
                 if (_viewModel == null)
                 {
-                    _viewModel = new CoursPageVM(parameters["cours"]);
+                    _viewModel = new CoursPageVM(ServiceLocator.Current.GetInstance<ISettings>(), parameters["cours"]);
                     this.DataContext = _viewModel;
                 }
 

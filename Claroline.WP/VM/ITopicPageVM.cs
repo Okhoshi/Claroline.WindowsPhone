@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ClarolineApp.VM
 {
-    interface ITopicPageVM : IClarolineVM
+    public interface ITopicPageVM : IClarolineVM
     {
         Topic currentTopic
         {

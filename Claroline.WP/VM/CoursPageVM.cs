@@ -18,24 +18,6 @@ namespace ClarolineApp.VM
 {
     public class CoursPageVM : ClarolineVM, ICoursPageVM
     {
-        public ICommand genericSelectedItem
-        {
-            get;
-            private set;
-        }
-
-        public ICommand documentSelectedItem
-        {
-            get;
-            private set;
-        }
-
-        public ICommand annonceSelectedItem
-        {
-            get;
-            private set;
-        }
-
         private Cours _currentCours;
 
         public Cours currentCours
@@ -223,12 +205,13 @@ namespace ClarolineApp.VM
 
 #if(DEBUG)
         public CoursPageVM()
-            : this("")
+            : this(null, "")
         {
         }
 #endif
 
-        public CoursPageVM(string sysCode)
+        public CoursPageVM(ISettings settings, string sysCode)
+            : base(settings)
         {
             if (IsInDesignMode)
             {
@@ -281,10 +264,6 @@ namespace ClarolineApp.VM
                     PrepareCoursForOpeningAsync(currentCours);
                 }
             }
-
-            genericSelectedItem = new RelayCommand<ResourceModel>(this.OnGenericItemSelected);
-            documentSelectedItem = new RelayCommand<Document>(this.OnDocumentItemSelected);
-            annonceSelectedItem = new RelayCommand<Annonce>(this.OnItemWithDetailsSelected);
         }
 
         public override void LoadCollectionsFromDatabase()

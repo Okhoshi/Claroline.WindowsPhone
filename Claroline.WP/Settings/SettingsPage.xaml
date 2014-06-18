@@ -15,7 +15,13 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-	shell:SystemTray.Opacity="0" d:DataContext="{d:DesignData /SampleData/ClarolineVMSampleData.xaml}" Style="{StaticResource TransitionPageStyle}" FontFamily="{StaticResource PhoneFontFamilyNormal}" FontSize="{StaticResource PhoneFontSizeNormal}" Foreground="{StaticResource PhoneForegroundBrush}">
+	shell:SystemTray.Opacity="0"
+    d:DataContext="{d:DesignData /SampleData/ClarolineVMSampleData.xaml}"
+    DataContext="{Binding ClarolineVM, Source={StaticResource Locator}}"
+    Style="{StaticResource TransitionPageStyle}"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}">
  
     <!--Exemple de code illustrant l'utilisation de l'ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>

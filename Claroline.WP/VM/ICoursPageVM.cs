@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ClarolineApp.VM
 {
-    interface ICoursPageVM : IClarolineVM
+    public interface ICoursPageVM : IClarolineVM
     {
         void OnItemWithDetailsSelected(ResourceModel item);
         void OnDocumentItemSelected(Document item);

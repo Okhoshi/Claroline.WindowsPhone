@@ -28,13 +28,16 @@ namespace ClarolineApp.VM
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
         /// </summary>
-        public ViewModelLocator()
+        static ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             SimpleIoc.Default.Register<ISettings, AppSettings>();
 
             SimpleIoc.Default.Register<ClarolineClient>();
+
+            SimpleIoc.Default.Register<ClarolineVM>();
+            SimpleIoc.Default.Register<MainPageVM>();
         }
 
         public static ClarolineClient Client
@@ -42,6 +45,22 @@ namespace ClarolineApp.VM
             get
             {
                 return ServiceLocator.Current.GetInstance<ClarolineClient>();
+            }
+        }
+
+        public ClarolineVM ClarolineVM
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<ClarolineVM>();
+            }
+        }
+
+        public MainPageVM MainPageVM
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<MainPageVM>();
             }
         }
         

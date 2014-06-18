@@ -1,6 +1,7 @@
 ﻿using ClarolineApp.Languages;
 using ClarolineApp.Model;
 using ClarolineApp.Settings;
+using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -91,13 +92,13 @@ namespace ClarolineApp
             }
             else
             {
-                return AppSettings.Instance.PlatformSetting.ToUpperInvariant() + " - " + (string)value;
+                return ServiceLocator.Current.GetInstance<ISettings>().PlatformSetting.ToUpperInvariant() + " - " + (string)value;
             }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((string)value).Replace(AppSettings.Instance.PlatformSetting.ToUpperInvariant() + " - ", String.Empty);
+            return ((string)value).Replace(ServiceLocator.Current.GetInstance<ISettings>().PlatformSetting.ToUpperInvariant() + " - ", String.Empty);
         }
     }
 

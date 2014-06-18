@@ -2,6 +2,7 @@
 using ClarolineApp.Settings;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Windows;
 using System.Windows.Navigation;
@@ -74,12 +75,6 @@ namespace ClarolineApp
                         throw;
                     }
                 }
-            }
-
-            ISettings setting = AppSettings.Instance;
-            if(setting.UserSetting == null)
-            {
-                setting.UserSetting = new User();
             }
         }
 

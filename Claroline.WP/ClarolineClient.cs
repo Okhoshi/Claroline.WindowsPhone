@@ -50,10 +50,13 @@ namespace ClarolineApp
             get { return _lastException; }
             set
             {
-                if (!_lastException.Equals(value))
+                if (_lastException == null || !_lastException.Equals(value))
                 {
 #if DEBUG
-                    Debug.WriteLine("Exception occured :" + value.ToString());
+                    if (value != null)
+                    {
+                        Debug.WriteLine("Exception occured :" + value.ToString());
+                    }
 #endif
                     _lastException = value;
                     NotifyPropertyChanged("LastException");
@@ -93,20 +96,22 @@ namespace ClarolineApp
             //Data request
             HttpClientHandler handler = new HttpClientHandler();
             handler.CookieContainer = cookies;
-            handler.AllowAutoRedirect = false;
+            handler.AllowAutoRedirect = args.method == SupportedMethods.GetPage;
             handler.UseCookies = true;
             HttpClient client = new HttpClient(handler);
 
             HttpResponseMessage response = null;
-            HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, args.GetUrl());
+            HttpRequestMessage message = new HttpRequestMessage(args.method == SupportedMethods.GetPage ? HttpMethod.Get : HttpMethod.Post, args.GetUrl());
 
 #if DEBUG
             Debug.WriteLine(args.GetUrl() + " / " + args.GetPostDataString());
 #endif
-
+            if (args.method != SupportedMethods.GetPage)
+            {
             StringContent content = new StringContent(args.GetPostDataString());
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/x-www-form-urlencoded");
             message.Content = content;
+        }
             message.Headers.AcceptCharset.Add(new StringWithQualityHeaderValue("gzip"));
             response = await client.SendAsync(message);
             string resp;
@@ -135,6 +140,10 @@ namespace ClarolineApp
 #if DEBUG
                     Debug.WriteLine("Call for :" + module + "/" + method + "\nResponse :" + strContent + "\n");
 #endif
+                    if (args.method != SupportedMethods.GetPage && strContent.StartsWith("<"))
+                    {
+                        strContent = "";
+                    }
                 }
                 catch (Exception ex)
                 {

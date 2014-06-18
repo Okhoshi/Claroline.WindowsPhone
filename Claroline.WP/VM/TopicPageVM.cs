@@ -1,4 +1,5 @@
 ﻿using ClarolineApp.Model;
+using ClarolineApp.Settings;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,6 +38,7 @@ namespace ClarolineApp.VM
         }
 
         public TopicPageVM()
+            : this(null, 0, 0)
         {
             if (DesignerProperties.IsInDesignTool)
             {
@@ -87,14 +89,18 @@ namespace ClarolineApp.VM
             }
         }
 
-        public TopicPageVM(int topicId, int forumUId)
+        public TopicPageVM(ISettings settings, int topicId, int forumUId)
+            : base(settings)
         {
-            using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
+            if (!DesignerProperties.IsInDesignTool)
             {
-                currentTopic = (from Topic t in cdc.Topics_Table 
-                               where t.resourceId == topicId && t.Forum.UniqueIdentifier == forumUId
-                               select t).Single();
-                var p = posts;
+                using (ClarolineDataContext cdc = new ClarolineDataContext(ClarolineDataContext.DBConnectionString))
+                {
+                    currentTopic = (from Topic t in cdc.Topics_Table
+                                    where t.resourceId == topicId && t.Forum.UniqueIdentifier == forumUId
+                                    select t).Single();
+                    var p = posts;
+                }
             }
         }
     }

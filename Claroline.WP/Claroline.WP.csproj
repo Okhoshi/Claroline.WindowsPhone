@@ -162,8 +162,6 @@
     </Compile>
     <Compile Include="TemplateSelector\ResourceTemplateSelector.cs" />
     <Compile Include="TemplateSelector\ResourceListTemplateSelector.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\TopicPage.xaml.cs">
       <DependentUpon>TopicPage.xaml</DependentUpon>
     </Compile>

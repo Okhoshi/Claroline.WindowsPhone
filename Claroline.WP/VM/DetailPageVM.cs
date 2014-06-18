@@ -31,6 +31,7 @@ namespace ClarolineApp.VM
         private bool IsNotified;
 
         public DetailPageVM()
+            : this(null, "", 0)
         {
             if (IsInDesignMode)
             {
@@ -89,7 +90,8 @@ namespace ClarolineApp.VM
             }
         }
 
-        public DetailPageVM(string resid, int listid)
+        public DetailPageVM(ISettings settings, string resid, int listid)
+            : base(settings)
         {
             if(!IsInDesignMode)
             {

@@ -18,8 +18,10 @@ namespace ClarolineApp.Settings
         string UserNameSetting { get; set; }
         User UserSetting { get; set; }
         bool UseSSLSetting { get; set; }
+        bool TryHTTPSetting { get; set; }
         string WebServiceSetting { get; set; }
 
         void Reset();
+
     }
 }

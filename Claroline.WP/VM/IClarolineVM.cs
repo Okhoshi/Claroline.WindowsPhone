@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace ClarolineApp.VM
 {
-    interface IClarolineVM : INotifyPropertyChanged
+    public interface IClarolineVM : INotifyPropertyChanged
     {
         bool IsLoading { get; }
+        ISettings Settings { get; }
 
         void LoadCollectionsFromDatabase();
         void ResetViewModel();

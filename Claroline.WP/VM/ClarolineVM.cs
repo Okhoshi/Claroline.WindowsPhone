@@ -1,6 +1,7 @@
 ﻿using ClarolineApp.Model;
 using ClarolineApp.Settings;
 using GalaSoft.MvvmLight;
+using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -28,7 +29,7 @@ namespace ClarolineApp.VM
                 }
                 else
                 {
-                    return ViewModelLocator.Client.Settings.PlatformSetting;
+                    return Settings.PlatformSetting;
                 }
             }
         }
@@ -57,8 +58,14 @@ namespace ClarolineApp.VM
         {
             get
             {
-                return ViewModelLocator.Client.Settings.UserSetting != null && ViewModelLocator.Client.Settings.UserSetting.firstName != "";
+                return Settings.UserSetting != null && Settings.UserSetting.firstName != "";
             }
+        }
+
+        public ISettings Settings
+        {
+            get;
+            private set;
         }
 
         private bool _isLoading;
@@ -78,13 +85,15 @@ namespace ClarolineApp.VM
             }
         }
 
-        public ClarolineVM()
+        public ClarolineVM(ISettings settings)
         {
+
             LoadCollectionsFromDatabase();
 
             if (!DesignerProperties.IsInDesignTool)
             {
-                ViewModelLocator.Client.PropertyChanged += (sender, e) =>
+                Settings = settings;
+                Settings.PropertyChanged += (sender, e) =>
                 {
                     RaisePropertyChanged("IsConnected");
 
@@ -148,7 +157,7 @@ namespace ClarolineApp.VM
 
             ViewModelLocator.Client.InvalidateClient();
 
-            ViewModelLocator.Client.Settings.Reset();
+            Settings.Reset();
         }
 
         public void SaveChangesToDB()
@@ -551,9 +560,9 @@ namespace ClarolineApp.VM
                 reader.Close();
                 str.Close();
 
-                AppSettings.Instance.UserSetting.setUser(connectedUser);
-                AppSettings.Instance.InstituteSetting = institution;
-                AppSettings.Instance.PlatformSetting = platform;
+                Settings.UserSetting.setUser(connectedUser);
+                Settings.InstituteSetting = institution;
+                Settings.PlatformSetting = platform;
 
                 IsLoading = false;
                 return true;

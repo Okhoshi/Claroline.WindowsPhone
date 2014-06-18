@@ -10,20 +10,6 @@ namespace ClarolineApp.Settings
 {
     public class AppSettings : ISettings
     {
-        private static ISettings _instance;
-
-        public static ISettings Instance
-        {
-            get {
-                if (_instance == null)
-                {
-                    _instance = new AppSettings();
-                }
-                return _instance; 
-            }
-        }
-
-
         // Our isolated storage Settings
 
         IsolatedStorageSettings settings;
@@ -66,7 +52,6 @@ namespace ClarolineApp.Settings
         const bool RadioButton3SettingDefault = false;
         const string InstituteSettingDefault = "";
         const string PlatformSettingDefault = "Claroline";
-        const User UserSettingDefault = null;
         const bool ValidHostSettingDefault = false;
         const bool SSLSettingDefault = true;
         const bool HTTPSettingDefault = false;
@@ -467,7 +452,7 @@ namespace ClarolineApp.Settings
         {
             get
             {
-                return GetValueOrDefault<User>(UserSettingKeyName, UserSettingDefault);
+                return GetValueOrDefault<User>(UserSettingKeyName, new User());
             }
             set
             {

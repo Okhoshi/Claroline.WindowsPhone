@@ -1,8 +1,10 @@
-﻿using ClarolineApp.Model;
+﻿using ClarolineApp.Languages;
+using ClarolineApp.Model;
 using ClarolineApp.Settings;
 using ClarolineApp.VM;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -42,8 +44,6 @@ namespace ClarolineApp
                                               ">\\P{Cn}*?<!-- end of claroPage -->\\P{Cn}*?</div>)",
                                               RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
-        public static string host = AppSettings.Instance.DomainSetting.Substring(0, AppSettings.Instance.DomainSetting.LastIndexOf("/"));
-
         // This is the replacement string
         public static string regexReplace = "<div id=\"claroPage\">${Content}<!-- end of claroPage --></div>";
 
@@ -61,8 +61,8 @@ namespace ClarolineApp
             if (parameters.ContainsKey("resource")
              && parameters.ContainsKey("list") && int.TryParse(parameters["list"], out listid))
             {
-                
-                _viewModel = new DetailPageVM(parameters["resource"], listid);
+
+                _viewModel = new DetailPageVM(ServiceLocator.Current.GetInstance<ISettings>(), parameters["resource"], listid);
                 this.DataContext = _viewModel;
                 _viewModel.PropertyChanged += VM_PropertyChanged;
                 if (_viewModel.currentResource is Document)
@@ -99,16 +99,26 @@ namespace ClarolineApp
             }
         }
 
+        private string LastUri;
+
         protected async void WB_Navigating(object sender, NavigatingEventArgs e)
         {
             e.Cancel = true;
 
-            string page = await ViewModelLocator.Client.MakeOperationAsync(SupportedModules.NOMOD, SupportedMethods.GetPage, genMod: e.Uri.AbsoluteUri.Replace("about:", AppSettings.Instance.DomainSetting));
-            
-            //// Replace the matched text in the InputText using the replacement pattern
-            page = regex.Replace(page, regexReplace);
-            page = page.Replace("</head>", "<meta name=\"viewport\" Content=\"width=" + (sender as WebBrowser).ActualWidth + "\"/>\n</head>");
-            page = page.Replace("=\"/", "=\"" + host + "/");
+            LastUri = e.Uri.AbsoluteUri.Replace("about:", LastUri == null ? _viewModel.Settings.DomainSetting + "/" : LastUri.Substring(0, LastUri.LastIndexOf("/") + 1));
+        
+            string page = await ViewModelLocator.Client.MakeOperationAsync(SupportedModules.NOMOD, SupportedMethods.GetPage, genMod: LastUri);
+
+            if (page == "" && ViewModelLocator.Client.LastException != null)
+            {
+                page = String.Format(AppLanguage.ErrorMessage_ServerReturnCode, "000", ViewModelLocator.Client.LastException);
+                ViewModelLocator.Client.LastException = null;
+            } else {
+                //// Replace the matched text in the InputText using the replacement pattern
+                page = regex.Replace(page, regexReplace);
+                page = page.Replace("</head>", "<meta name=\"viewport\" Content=\"width=" + (sender as WebBrowser).ActualWidth + "\"/>\n</head>");
+                page = page.Replace("=\"/", "=\"" + _viewModel.Settings.DomainSetting.Substring(0, _viewModel.Settings.DomainSetting.LastIndexOf("/") + 1));
+            }
             (sender as WebBrowser).NavigateToString(page);
         }
 

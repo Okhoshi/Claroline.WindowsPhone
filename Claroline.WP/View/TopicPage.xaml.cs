@@ -11,6 +11,8 @@ using ClarolineApp.VM;
 using System.Windows.Markup;
 using System.Threading;
 using System.ComponentModel;
+using Microsoft.Practices.ServiceLocation;
+using ClarolineApp.Settings;
 
 namespace ClarolineApp.View
 {
@@ -51,7 +53,7 @@ namespace ClarolineApp.View
              && parameters.ContainsKey("forum") && int.TryParse(parameters["forum"], out forumid))
             {
 
-                _viewModel = new TopicPageVM(topicid, forumid);
+                _viewModel = new TopicPageVM(ServiceLocator.Current.GetInstance<ISettings>(), forumid, topicid);
                 this.DataContext = _viewModel;
                 _viewModel.PropertyChanged += VM_PropertyChanged;
 

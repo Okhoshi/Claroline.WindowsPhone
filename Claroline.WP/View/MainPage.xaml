@@ -17,7 +17,8 @@
 	shell:SystemTray.Opacity="0"
     toolkit:TiltEffect.IsTiltEnabled="true"
     Style="{StaticResource TransitionPageStyle}"
-    d:DataContext="{d:DesignInstance Type=vm:MainPageVM, IsDesignTimeCreatable=True}">
+    d:DataContext="{d:DesignInstance Type=vm:MainPageVM, IsDesignTimeCreatable=True}"
+    DataContext="{Binding MainPageVM, Source={StaticResource Locator}}">
 
     <phone:PhoneApplicationPage.Resources>
     </phone:PhoneApplicationPage.Resources>

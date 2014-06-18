@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using ClarolineApp.Model;
 using System.ComponentModel;
+using GalaSoft.MvvmLight.Ioc;
 
 namespace ClarolineApp.VM
 {
@@ -47,6 +48,13 @@ namespace ClarolineApp.VM
                 }
             }
         }
+
+        public MainPageVM()
+            : this(null) { }
+
+        [PreferredConstructor]
+        public MainPageVM(ISettings settings)
+            : base(settings) { }
 
         public override void LoadCollectionsFromDatabase()
         {

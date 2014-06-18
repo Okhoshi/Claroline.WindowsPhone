@@ -2,6 +2,7 @@
 using ClarolineApp.Model;
 using ClarolineApp.Settings;
 using ClarolineApp.VM;
+using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Tasks;
@@ -46,8 +47,7 @@ namespace ClarolineApp
             this.Language = XmlLanguage.GetLanguage(Thread.CurrentThread.CurrentCulture.Name);
             Failure_Handler = new PropertyChangedEventHandler(FailureOccured);
 
-            _viewModel = new MainPageVM();
-            this.DataContext = _viewModel;
+            _viewModel = DataContext as MainPageVM;
             _viewModel.PropertyChanged += VM_PropertyChanged;
 
             ViewModelLocator.Client.PropertyChanged += Failure_Handler;
@@ -65,7 +65,7 @@ namespace ClarolineApp
             (ApplicationBar.MenuItems[0] as ApplicationBarMenuItem).Click += SettingsPage_Click;
 #if DEBUG
             ApplicationBar.MenuItems.Add(new ApplicationBarMenuItem("[DEV] CLEAR"));
-            (ApplicationBar.MenuItems[0] as ApplicationBarMenuItem).Click += DEV_clrDB_Click ;
+            (ApplicationBar.MenuItems[1] as ApplicationBarMenuItem).Click += DEV_clrDB_Click ;
 #endif
         }
 
@@ -78,7 +78,7 @@ namespace ClarolineApp
         {
             base.OnNavigatedTo(e);
 
-            if (AppSettings.Instance.UserNameSetting == "")
+            if (_viewModel.Settings.UserNameSetting == "")
             {
                 if (MessageBox.Show(AppLanguage.ErrorMessage_NoLogin_Message, AppLanguage.ErrorMessage_NoLogin_Caption, MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                 {
@@ -116,7 +116,6 @@ namespace ClarolineApp
             }
 
             Cours _cours = CoursList.SelectedItem as Cours;
-
             string destination = String.Format("/View/CoursPage.xaml?cours={0}", _cours.sysCode);
             NavigationService.Navigate(new Uri(destination, UriKind.Relative));
 
@@ -146,7 +145,7 @@ namespace ClarolineApp
             {
                 r = await _viewModel.GetUserDataAsync();
             }
-            if (r && ((_viewModel as MainPageVM).allCours.Count == 0 || AppSettings.Instance.LastListRequestSetting.CompareTo(DateTime.Now.AddDays(-2)) < 0))
+            if (r && ((_viewModel as MainPageVM).allCours.Count == 0 || _viewModel.Settings.LastListRequestSetting.CompareTo(DateTime.Now.AddDays(-2)) < 0))
             {
                 indicator.Text = String.Format(AppLanguage.ProgressBar_ProcessResult, AppLanguage.MainPage_Cours_PI);
                 await _viewModel.GetCoursListAsync();
@@ -169,12 +168,12 @@ namespace ClarolineApp
         {
             WebBrowserTask homepage = new WebBrowserTask()
             {
-                Uri = new Uri(AppSettings.Instance.DomainSetting
-                            + AppSettings.Instance.AuthPageSetting
+                Uri = new Uri(_viewModel.Settings.DomainSetting
+                            + _viewModel.Settings.AuthPageSetting
                             + "?login="
-                            + AppSettings.Instance.UserNameSetting
+                            + _viewModel.Settings.UserNameSetting
                             + "&password="
-                            + AppSettings.Instance.PasswordSetting
+                            + _viewModel.Settings.PasswordSetting
                            , UriKind.Absolute)
             };
             homepage.Show();
@@ -186,7 +185,7 @@ namespace ClarolineApp
             {
                 To = String.Format("\"{0} Development Team\" <support.develop@live.be>", App.ApplicationName),
                 Subject = String.Format("[{0}] {1}", App.ApplicationName, AppLanguage.MainPage_About_DevMailButton),
-                Body = String.Format("[V:{0} Campus:{1}]\n\n", Helper.GetVersionNumber(true), AppSettings.Instance.PlatformSetting)
+                Body = String.Format("[V:{0} Campus:{1}]\n\n", Helper.GetVersionNumber(true), _viewModel.Settings.PlatformSetting)
             };
             mailToDev.Show();
         }
@@ -199,7 +198,7 @@ namespace ClarolineApp
                 EmailComposeTask mailToManagers = new EmailComposeTask()
                 {
                     To = String.Format("\"{0}\" <{1}>", _item.titular, _item.officialEmail),
-                    Subject = String.Format("[{0}][{1}]", AppSettings.Instance.PlatformSetting, _item.title)
+                    Subject = String.Format("[{0}][{1}]", _viewModel.Settings.PlatformSetting, _item.title)
                 };
                 mailToManagers.Show();
             }
